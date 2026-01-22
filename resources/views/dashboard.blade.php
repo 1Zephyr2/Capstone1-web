@@ -550,6 +550,142 @@
         .status-pending { background: #fef3c7; color: #92400e; }
         .status-scheduled { background: #dbeafe; color: #1e40af; }
 
+        /* Floating AI Button */
+        .floating-ai-button {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 75px;
+            height: 75px;
+            background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            border: 3px solid white;
+        }
+
+        .floating-ai-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(245, 158, 11, 0.6);
+        }
+
+        .floating-ai-button:active {
+            transform: scale(0.95);
+        }
+
+        /* AI Modal */
+        .ai-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .ai-modal.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .ai-modal-content {
+            background: white;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            animation: slideUp 0.3s ease;
+        }
+
+        .ai-modal-header {
+            background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+            color: white;
+            padding: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ai-modal-header h2 {
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .ai-modal-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .ai-modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .ai-modal-body {
+            padding: 40px;
+            text-align: center;
+            overflow-y: auto;
+            max-height: calc(80vh - 88px);
+        }
+
+        .ai-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .ai-modal-body h3 {
+            font-size: 22px;
+            color: #111827;
+            margin-bottom: 12px;
+        }
+
+        .ai-modal-body p {
+            color: #6B7280;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
         @media (max-width: 768px) {
             .sidebar {
                 width: 70px;
@@ -624,34 +760,6 @@
                     <span class="menu-text">Today's Queue</span>
                 </a>
             </div>
-
-            <div class="menu-section">
-                <div class="menu-label">Services</div>
-                <a href="{{ route('immunizations.index') }}" class="menu-item">
-                    <span class="menu-icon">💉</span>
-                    <span class="menu-text">Immunization</span>
-                </a>
-                <a href="{{ route('prenatal.care') }}" class="menu-item">
-                    <span class="menu-icon">🤰</span>
-                    <span class="menu-text">Prenatal Care</span>
-                </a>
-                <a href="{{ route('general.checkup') }}" class="menu-item">
-                    <span class="menu-icon">🏥</span>
-                    <span class="menu-text">General Checkup</span>
-                </a>
-            </div>
-
-            <div class="menu-section">
-                <div class="menu-label">Tools</div>
-                <a href="{{ route('ai.support') }}" class="menu-item">
-                    <span class="menu-icon">🤖</span>
-                    <span class="menu-text">AI Assistant</span>
-                </a>
-                <a href="{{ route('reports') }}" class="menu-item">
-                    <span class="menu-icon">📊</span>
-                    <span class="menu-text">Reports</span>
-                </a>
-            </div>
         </nav>
     </aside>
 
@@ -705,14 +813,6 @@
                         <p>Find patient records</p>
                     </div>
                 </a>
-
-                <a href="{{ route('ai.support') }}" class="action-card">
-                    <div class="action-icon orange">🤖</div>
-                    <div class="action-details">
-                        <h3>AI Decision Support</h3>
-                        <p>Get health insights</p>
-                    </div>
-                </a>
             </div>
 
             <!-- Statistics -->
@@ -756,5 +856,50 @@
             </div>
         </main>
     </div>
+
+    <!-- Floating AI Assistant Button -->
+    <button class="floating-ai-button" onclick="openAIModal()" title="AI Assistant">
+        🤖
+    </button>
+
+    <!-- AI Modal -->
+    <div id="aiModal" class="ai-modal" onclick="closeAIModalOnBackdrop(event)">
+        <div class="ai-modal-content">
+            <div class="ai-modal-header">
+                <h2><span>🤖</span> AI Decision Support</h2>
+                <button class="ai-modal-close" onclick="closeAIModal()">
+                    ✕
+                </button>
+            </div>
+            <div class="ai-modal-body">
+                <div class="ai-icon">🤖</div>
+                <h3>AI-Powered Health Insights</h3>
+                <p>This feature is under development. Get AI-driven health recommendations and decision support here.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openAIModal() {
+            document.getElementById('aiModal').classList.add('active');
+        }
+
+        function closeAIModal() {
+            document.getElementById('aiModal').classList.remove('active');
+        }
+
+        function closeAIModalOnBackdrop(event) {
+            if (event.target.id === 'aiModal') {
+                closeAIModal();
+            }
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeAIModal();
+            }
+        });
+    </script>
 </body>
 </html>
