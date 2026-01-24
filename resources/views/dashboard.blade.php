@@ -1337,30 +1337,38 @@
 
             <div class="menu-section">
                 <div class="menu-label">Patient Management</div>
-                <div class="menu-item" onclick="openModal('medicalRecords')" style="cursor: pointer;">
-                    <span class="menu-icon">📋</span>
-                    <span class="menu-text">Medical Records</span>
-                </div>
-                <div class="menu-item" onclick="openModal('patientList')" style="cursor: pointer;">
+                <a href="{{ route('patients.index') }}" class="menu-item">
                     <span class="menu-icon">👥</span>
                     <span class="menu-text">Patient List</span>
-                </div>
-                <div class="menu-item" onclick="openModal('newPatient')" style="cursor: pointer;">
-                    <span class="menu-icon">➕</span>
-                    <span class="menu-text">Add New Patient</span>
-                </div>
+                </a>
+                <a href="{{ route('visits.today') }}" class="menu-item">
+                    <span class="menu-icon">📋</span>
+                    <span class="menu-text">Today's Visits</span>
+                </a>
             </div>
 
             <div class="menu-section">
-                <div class="menu-label">Appointments</div>
-                <div class="menu-item" onclick="openModal('schedule')" style="cursor: pointer;">
-                    <span class="menu-icon">📅</span>
-                    <span class="menu-text">Schedule</span>
-                </div>
-                <div class="menu-item" onclick="openModal('todayQueue')" style="cursor: pointer;">
-                    <span class="menu-icon">🕐</span>
-                    <span class="menu-text">Today's Queue</span>
-                </div>
+                <div class="menu-label">Services</div>
+                <a href="{{ route('immunizations.index') }}" class="menu-item">
+                    <span class="menu-icon">💉</span>
+                    <span class="menu-text">Immunizations</span>
+                </a>
+                <a href="{{ route('prenatal.care') }}" class="menu-item">
+                    <span class="menu-icon">🤰</span>
+                    <span class="menu-text">Prenatal Care</span>
+                </a>
+            </div>
+
+            <div class="menu-section">
+                <div class="menu-label">Reports & Tools</div>
+                <a href="{{ route('reports.index') }}" class="menu-item">
+                    <span class="menu-icon">📊</span>
+                    <span class="menu-text">Monthly Reports</span>
+                </a>
+                <a href="{{ route('ai.support') }}" class="menu-item">
+                    <span class="menu-icon">🤖</span>
+                    <span class="menu-text">AI Support</span>
+                </a>
             </div>
         </nav>
     </aside>
@@ -2292,54 +2300,115 @@
             const tbody = document.getElementById('patientTableBody');
             const noMessage = document.getElementById('noPatientsMessage');
             
-            tbody.innerHTML = '';
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">Loading patients...</td></tr>';
             
-            if (patientRecords.length === 0) {
-                noMessage.style.display = 'block';
-                return;
-            }
-            
-            noMessage.style.display = 'none';
-            
-            patientRecords.forEach((patient, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${patient.id}</td>
-                    <td>${patient.fullName}</td>
-                    <td>${patient.age}</td>
-                    <td>${patient.gender}</td>
-                    <td>${patient.phone}</td>
-                    <td>${patient.bloodType}</td>
-                    <td>
-                        <div class="table-actions">
-                            <button class="btn-view" onclick="viewPatient(${index})">View</button>
-                            <button class="btn-delete" onclick="deletePatient(${index})">Delete</button>
-                        </div>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
+            // Fetch real patient data from API
+            fetch('/patients')
+                .then(response => {
+                    if (!response.ok) throw new Error('Failed to fetch patients');
+                    return response.text();
+                })
+                .then(html => {
+                    // Parse the HTML to extract patient data
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    
+                    // Extract patient data from the page
+                    const patientRows = doc.querySelectorAll('tbody tr');
+                    
+                    tbody.innerHTML = '';
+                    
+                    if (patientRows.length === 0) {
+                        noMessage.style.display = 'block';
+                        return;
+                    }
+                    
+                    noMessage.style.display = 'none';
+                    
+                    patientRows.forEach(row => {
+                        const cells = row.querySelectorAll('td');
+                        if (cells.length > 0) {
+                            const patientId = cells[0].textContent.trim();
+                            const name = cells[1].textContent.trim();
+                            const age = cells[2].textContent.trim();
+                            const sex = cells[3].textContent.trim();
+                            const contact = cells[4].textContent.trim();
+                            const viewLink = cells[6].querySelector('a[href*="patients/"]');
+                            const patientIdNum = viewLink ? viewLink.href.split('/').pop() : '';
+                            
+                            const newRow = document.createElement('tr');
+                            newRow.innerHTML = `
+                                <td>${patientId}</td>
+                                <td>${name}</td>
+                                <td>${age}</td>
+                                <td><span class="badge badge-${sex.toLowerCase()}">${sex}</span></td>
+                                <td>${contact}</td>
+                                <td>-</td>
+                                <td>
+                                    <div class="table-actions">
+                                        <button class="btn-view" onclick="window.location.href='/patients/${patientIdNum}'">View</button>
+                                        <button class="btn-view" onclick="window.location.href='/visits/create?patient_id=${patientIdNum}'" style="background: #10b981;">+ Visit</button>
+                                    </div>
+                                </td>
+                            `;
+                            tbody.appendChild(newRow);
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading patients:', error);
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px; color: #ef4444;">Error loading patients. Please try again.</td></tr>';
+                });
         }
 
         function filterPatients() {
             const searchTerm = document.getElementById('patientSearchInput').value.toLowerCase();
-            const tbody = document.getElementById('patientTableBody');
-            const rows = tbody.getElementsByTagName('tr');
             
-            let visibleCount = 0;
-            
-            for (let row of rows) {
-                const text = row.textContent.toLowerCase();
-                if (text.includes(searchTerm)) {
-                    row.style.display = '';
-                    visibleCount++;
-                } else {
-                    row.style.display = 'none';
-                }
+            if (searchTerm.length < 2) {
+                renderPatientList();
+                return;
             }
             
-            const noMessage = document.getElementById('noPatientsMessage');
-            noMessage.style.display = visibleCount === 0 ? 'block' : 'none';
+            const tbody = document.getElementById('patientTableBody');
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">Searching...</td></tr>';
+            
+            // Use the real search API
+            fetch(`/api/patients/search?term=${encodeURIComponent(searchTerm)}`)
+                .then(response => response.json())
+                .then(patients => {
+                    tbody.innerHTML = '';
+                    const noMessage = document.getElementById('noPatientsMessage');
+                    
+                    if (patients.length === 0) {
+                        noMessage.style.display = 'block';
+                        return;
+                    }
+                    
+                    noMessage.style.display = 'none';
+                    
+                    patients.forEach(patient => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${patient.patient_id}</td>
+                            <td>${patient.name}</td>
+                            <td>${patient.age} yrs</td>
+                            <td><span class="badge badge-${patient.sex.toLowerCase()}">${patient.sex}</span></td>
+                            <td>${patient.contact || '-'}</td>
+                            <td>-</td>
+                            <td>
+                                <div class="table-actions">
+                                    <button class="btn-view" onclick="window.location.href='/patients/${patient.id}'">View</button>
+                                    <button class="btn-view" onclick="window.location.href='/visits/create?patient_id=${patient.id}'" style="background: #10b981;">+ Visit</button>
+                                </div>
+                            </td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error('Search error:', error);
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px; color: #ef4444;">Search failed. Please try again.</td></tr>';
+                });
         }
 
         function viewPatient(index) {
@@ -2639,7 +2708,7 @@ Created: ${new Date(record.createdAt).toLocaleString()}
 
         // Patient Search Functions
         function performQuickSearch() {
-            const searchTerm = document.getElementById('quickSearchInput').value.toLowerCase();
+            const searchTerm = document.getElementById('quickSearchInput').value;
             const genderFilter = document.getElementById('searchGenderFilter').value;
             const bloodTypeFilter = document.getElementById('searchBloodTypeFilter').value;
             const ageFilter = document.getElementById('searchAgeFilter').value;
@@ -2647,95 +2716,99 @@ Created: ${new Date(record.createdAt).toLocaleString()}
             const resultsContainer = document.getElementById('searchResults');
             const noResultsMessage = document.getElementById('noSearchResults');
             
-            resultsContainer.innerHTML = '';
+            resultsContainer.innerHTML = '<div style="padding: 20px; text-align: center;">Searching...</div>';
             
-            let filteredPatients = patientRecords.filter(patient => {
-                // Search term filter
-                const matchesSearch = !searchTerm || 
-                    patient.fullName.toLowerCase().includes(searchTerm) ||
-                    patient.id.toLowerCase().includes(searchTerm) ||
-                    patient.phone.includes(searchTerm) ||
-                    (patient.email && patient.email.toLowerCase().includes(searchTerm));
-                
-                // Gender filter
-                const matchesGender = !genderFilter || patient.gender === genderFilter;
-                
-                // Blood type filter
-                const matchesBloodType = !bloodTypeFilter || patient.bloodType === bloodTypeFilter;
-                
-                // Age filter
-                let matchesAge = true;
-                if (ageFilter) {
-                    const age = patient.age;
-                    if (ageFilter === '0-17') matchesAge = age >= 0 && age <= 17;
-                    else if (ageFilter === '18-35') matchesAge = age >= 18 && age <= 35;
-                    else if (ageFilter === '36-50') matchesAge = age >= 36 && age <= 50;
-                    else if (ageFilter === '51-65') matchesAge = age >= 51 && age <= 65;
-                    else if (ageFilter === '66+') matchesAge = age >= 66;
-                }
-                
-                return matchesSearch && matchesGender && matchesBloodType && matchesAge;
-            });
+            // Use the real search API
+            const params = new URLSearchParams();
+            if (searchTerm) params.append('term', searchTerm);
             
-            if (filteredPatients.length === 0) {
-                noResultsMessage.style.display = 'block';
-                return;
-            }
-            
-            noResultsMessage.style.display = 'none';
-            
-            filteredPatients.forEach(patient => {
-                const card = document.createElement('div');
-                card.className = 'patient-result-card';
-                
-                // Count medical records for this patient
-                const recordCount = medicalRecords.filter(r => r.patientId === patient.id).length;
-                
-                card.innerHTML = `
-                    <div class="patient-result-header">
-                        <div>
-                            <div class="patient-result-name">${patient.fullName}</div>
-                            <div class="patient-result-id">ID: ${patient.id}</div>
-                        </div>
-                        <div class="patient-badge">${patient.gender}</div>
-                    </div>
+            fetch(`/api/patients/search?${params.toString()}`)
+                .then(response => response.json())
+                .then(patients => {
+                    resultsContainer.innerHTML = '';
                     
-                    <div class="patient-info-grid">
-                        <div class="patient-info-item">
-                            <span class="patient-info-label">Age</span>
-                            <span class="patient-info-value">${patient.age} years</span>
-                        </div>
-                        <div class="patient-info-item">
-                            <span class="patient-info-label">Blood Type</span>
-                            <span class="patient-info-value">${patient.bloodType || 'N/A'}</span>
-                        </div>
-                        <div class="patient-info-item">
-                            <span class="patient-info-label">Phone</span>
-                            <span class="patient-info-value">${patient.phone}</span>
-                        </div>
-                        <div class="patient-info-item">
-                            <span class="patient-info-label">Email</span>
-                            <span class="patient-info-value">${patient.email || 'N/A'}</span>
-                        </div>
-                        <div class="patient-info-item">
-                            <span class="patient-info-label">Address</span>
-                            <span class="patient-info-value">${patient.address}</span>
-                        </div>
-                        <div class="patient-info-item">
-                            <span class="patient-info-label">Medical Records</span>
-                            <span class="patient-info-value">${recordCount} record(s)</span>
-                        </div>
-                    </div>
+                    // Apply client-side filters
+                    let filteredPatients = patients.filter(patient => {
+                        // Gender filter
+                        const matchesGender = !genderFilter || patient.sex === genderFilter;
+                        
+                        // Blood type filter - skip for now as it's not in the base patient model
+                        const matchesBloodType = true;
+                        
+                        // Age filter
+                        let matchesAge = true;
+                        if (ageFilter) {
+                            const age = patient.age;
+                            if (ageFilter === '0-17') matchesAge = age >= 0 && age <= 17;
+                            else if (ageFilter === '18-35') matchesAge = age >= 18 && age <= 35;
+                            else if (ageFilter === '36-50') matchesAge = age >= 36 && age <= 50;
+                            else if (ageFilter === '51-65') matchesAge = age >= 51 && age <= 65;
+                            else if (ageFilter === '66+') matchesAge = age >= 66;
+                        }
+                        
+                        return matchesGender && matchesBloodType && matchesAge;
+                    });
                     
-                    <div class="patient-actions-row">
-                        <button class="btn-action btn-view-records" onclick="viewPatientDetails('${patient.id}')">View Full Details</button>
-                        <button class="btn-action btn-schedule" onclick="scheduleFromSearch('${patient.id}')">Schedule Appointment</button>
-                        <button class="btn-action btn-primary" onclick="addRecordFromSearch('${patient.id}')">Add Medical Record</button>
-                    </div>
-                `;
-                
-                resultsContainer.appendChild(card);
-            });
+                    if (filteredPatients.length === 0) {
+                        noResultsMessage.style.display = 'block';
+                        return;
+                    }
+                    
+                    noResultsMessage.style.display = 'none';
+                    
+                    filteredPatients.forEach(patient => {
+                        const card = document.createElement('div');
+                        card.className = 'patient-result-card';
+                        
+                        card.innerHTML = `
+                            <div class="patient-result-header">
+                                <div>
+                                    <div class="patient-result-name">${patient.name}</div>
+                                    <div class="patient-result-id">ID: ${patient.patient_id}</div>
+                                </div>
+                                <div class="patient-badge">${patient.sex}</div>
+                            </div>
+                            
+                            <div class="patient-info-grid">
+                                <div class="patient-info-item">
+                                    <span class="patient-info-label">Age</span>
+                                    <span class="patient-info-value">${patient.age} years</span>
+                                </div>
+                                <div class="patient-info-item">
+                                    <span class="patient-info-label">Blood Type</span>
+                                    <span class="patient-info-value">N/A</span>
+                                </div>
+                                <div class="patient-info-item">
+                                    <span class="patient-info-label">Phone</span>
+                                    <span class="patient-info-value">${patient.contact || 'N/A'}</span>
+                                </div>
+                                <div class="patient-info-item">
+                                    <span class="patient-info-label">Email</span>
+                                    <span class="patient-info-value">N/A</span>
+                                </div>
+                                <div class="patient-info-item">
+                                    <span class="patient-info-label">Address</span>
+                                    <span class="patient-info-value">${patient.address || 'N/A'}</span>
+                                </div>
+                                <div class="patient-info-item">
+                                    <span class="patient-info-label">Date of Birth</span>
+                                    <span class="patient-info-value">${patient.date_of_birth}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="patient-actions-row">
+                                <button class="btn-action btn-view-records" onclick="window.location.href='/patients/${patient.id}'">View Full Details</button>
+                                <button class="btn-action btn-primary" onclick="window.location.href='/visits/create?patient_id=${patient.id}'">Add Visit</button>
+                            </div>
+                        `;
+                        
+                        resultsContainer.appendChild(card);
+                    });
+                })
+                .catch(error => {
+                    console.error('Search error:', error);
+                    resultsContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #ef4444;">Search failed. Please try again.</div>';
+                });
         }
 
         function viewPatientDetails(patientId) {
