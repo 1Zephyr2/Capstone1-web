@@ -89,6 +89,34 @@
         .btn-back:hover {
             background: #4b5563;
         }
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: inherit;
+            transition: opacity 0.2s;
+        }
+        .header-logo:hover {
+            opacity: 0.8;
+        }
+        .header-logo-icon {
+            width: 32px;
+            height: 32px;
+            background: #f59e0b;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+        }
+        .header-logo-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #047857;
+        }
         h1 {
             color: #047857;
             margin: 0;
@@ -416,23 +444,322 @@
         .btn-modal-submit:hover {
             background: #065f46;
         }
+        
+        /* Registration Modal Styles */
+        .registration-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        .registration-modal.active {
+            display: flex;
+        }
+        .registration-modal-content {
+            background: white;
+            border-radius: 8px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            margin: auto;
+        }
+        .registration-modal-header {
+            padding: 24px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+        }
+        .registration-modal-header h2 {
+            margin: 0;
+            color: #047857;
+            font-size: 20px;
+        }
+        .registration-modal-body {
+            padding: 24px;
+        }
+        .registration-modal-body .modal-section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 16px;
+            margin-top: 24px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        .registration-modal-body .modal-section-title:first-child {
+            margin-top: 0;
+        }
+        .registration-modal-body .modal-form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .registration-modal-body .modal-form-row.full {
+            grid-template-columns: 1fr;
+        }
+        .registration-modal-body .modal-form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .registration-modal-body .modal-form-group label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 6px;
+        }
+        .registration-modal-body .modal-form-group .required {
+            color: #dc2626;
+        }
+        .registration-modal-body .modal-form-group input,
+        .registration-modal-body .modal-form-group select,
+        .registration-modal-body .modal-form-group textarea {
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+        .registration-modal-body .modal-form-group input:focus,
+        .registration-modal-body .modal-form-group select:focus,
+        .registration-modal-body .modal-form-group textarea:focus {
+            outline: none;
+            border-color: #047857;
+            box-shadow: 0 0 0 3px rgba(4,120,87,0.1);
+        }
+        .registration-modal-body .modal-form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .registration-modal-body .modal-form-group .hint {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+        .registration-modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+        .registration-modal-actions .btn-modal-cancel {
+            padding: 10px 20px;
+            background: #e5e7eb;
+            color: #374151;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .registration-modal-actions .btn-modal-cancel:hover {
+            background: #d1d5db;
+        }
+        .registration-modal-actions .btn-modal-submit {
+            padding: 10px 20px;
+            background: #047857;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .registration-modal-actions .btn-modal-submit:hover {
+            background: #059669;
+        }
+        .alert-modal {
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .alert-modal.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #6ee7b7;
+        }
+        .alert-modal.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+        .modal-optional-section {
+            background: #f9fafb;
+            padding: 16px;
+            border-radius: 6px;
+            margin-top: 16px;
+        }
+        
+        /* Import Modal Styles */
+        .import-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        .import-modal.active {
+            display: flex;
+        }
+        .import-modal-content {
+            background: white;
+            border-radius: 8px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            margin: auto;
+        }
+        .import-modal-header {
+            padding: 24px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+        }
+        .import-modal-header h2 {
+            margin: 0;
+            color: #047857;
+            font-size: 20px;
+        }
+        .import-modal-body {
+            padding: 24px;
+        }
+        .import-info-box {
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 16px;
+            border-radius: 6px;
+            margin-bottom: 24px;
+        }
+        .import-info-box h3 {
+            color: #1e40af;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        .import-info-box ul {
+            margin-left: 20px;
+            color: #1e40af;
+        }
+        .import-info-box li {
+            margin: 4px 0;
+        }
+        .upload-area {
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            background: #f9fafb;
+            margin: 20px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .upload-area:hover {
+            border-color: #047857;
+            background: #f0fdf4;
+        }
+        .upload-area.dragover {
+            border-color: #047857;
+            background: #f0fdf4;
+        }
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        .file-info {
+            background: #fef3c7;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 16px 0;
+            display: none;
+        }
+        .file-info.show {
+            display: block;
+        }
+        .sample-table {
+            margin-top: 16px;
+            overflow-x: auto;
+        }
+        .sample-table table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        .sample-table th {
+            background: #f9fafb;
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #e5e7eb;
+        }
+        .sample-table td {
+            padding: 6px 8px;
+            border: 1px solid #e5e7eb;
+        }
+        .template-section {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 24px;
+        }
+        .btn-download {
+            background: #3b82f6;
+            color: white;
+        }
+        .btn-download:hover {
+            background: #2563eb;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <div class="header-top">
+                <a href="{{ route('dashboard') }}" class="header-logo">
+                    <div class="header-logo-icon">V</div>
+                    <div class="header-logo-text">VaxLog</div>
+                </a>
                 <button onclick="goBack()" class="btn-back">← Back</button>
                 <h1>Patient List</h1>
             </div>
             
             <div class="header-actions">
-                <a href="{{ route('patients.create') }}" class="btn-new-patient">
+                <button onclick="openRegistrationModal()" class="btn-new-patient">
                     ➕ Register New Patient
-                </a>
-                <a href="{{ route('patients.import.form') }}" class="btn-import">
+                </button>
+                <button onclick="openImportModal()" class="btn-import">
                     📥 Import from CSV
-                </a>
+                </button>
             </div>
             
             @if(session('success'))
@@ -453,8 +780,8 @@
                     <div id="autocompleteResults" class="autocomplete-results"></div>
                 </div>
                 <div style="display: flex; gap: 8px;">
-                    <a href="{{ route('patients.import.form') }}" class="btn" style="background: #3b82f6; color: white;">📥 Import</a>
-                    <a href="{{ route('patients.create') }}" class="btn btn-primary">+ New Patient</a>
+                    <button onclick="openImportModal()" class="btn" style="background: #3b82f6; color: white; border: none; cursor: pointer;">📥 Import</button>
+                    <button onclick="openRegistrationModal()" class="btn btn-primary">+ New Patient</button>
                 </div>
             </div>
         </div>
@@ -611,6 +938,220 @@
                 closeVisitModal();
             }
         });
+        
+        // Registration Modal Functions
+        function openRegistrationModal() {
+            document.getElementById('registrationModal').classList.add('active');
+        }
+
+        function closeRegistrationModal() {
+            document.getElementById('registrationModal').classList.remove('active');
+            document.getElementById('registrationForm').reset();
+            document.getElementById('registrationAlert').style.display = 'none';
+        }
+
+        // Handle registration form submission via AJAX
+        document.getElementById('registrationForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const alertDiv = document.getElementById('registrationAlert');
+            
+            // Disable submit button
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Registering...';
+            
+            fetch('{{ route("patients.store") }}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Show success message
+                    alertDiv.className = 'alert-modal success';
+                    alertDiv.textContent = data.message || 'Patient registered successfully!';
+                    alertDiv.style.display = 'block';
+                    
+                    // Reset form
+                    this.reset();
+                    
+                    // Reload page after 1.5 seconds
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    // Show error message
+                    alertDiv.className = 'alert-modal error';
+                    if (data.errors) {
+                        const errorList = Object.values(data.errors).flat().map(err => `<li>${err}</li>`).join('');
+                        alertDiv.innerHTML = '<strong>Please fix the following errors:</strong><ul style="margin-top: 8px; margin-left: 20px;">' + errorList + '</ul>';
+                    } else {
+                        alertDiv.textContent = data.message || 'An error occurred. Please try again.';
+                    }
+                    alertDiv.style.display = 'block';
+                    
+                    // Re-enable submit button
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Register Patient';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alertDiv.className = 'alert-modal error';
+                alertDiv.textContent = 'An error occurred. Please try again.';
+                alertDiv.style.display = 'block';
+                
+                // Re-enable submit button
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Register Patient';
+            });
+        });
+
+        // Close registration modal when clicking outside
+        document.getElementById('registrationModal')?.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeRegistrationModal();
+            }
+        });
+        
+        // Import Modal Functions
+        function openImportModal() {
+            document.getElementById('importModal').classList.add('active');
+        }
+
+        function closeImportModal() {
+            document.getElementById('importModal').classList.remove('active');
+            document.getElementById('importForm').reset();
+            document.getElementById('importFileInfo').classList.remove('show');
+            document.getElementById('importBtn').disabled = true;
+            document.getElementById('importAlert').style.display = 'none';
+        }
+
+        // File upload handling
+        const importFileInput = document.getElementById('importFileInput');
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInfo = document.getElementById('importFileInfo');
+        const fileName = document.getElementById('importFileName');
+        const importBtn = document.getElementById('importBtn');
+
+        importFileInput?.addEventListener('change', function(e) {
+            if (this.files.length > 0) {
+                fileName.textContent = this.files[0].name;
+                fileInfo.classList.add('show');
+                importBtn.disabled = false;
+            }
+        });
+
+        // Drag and drop
+        uploadArea?.addEventListener('click', function() {
+            importFileInput.click();
+        });
+
+        uploadArea?.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+
+        uploadArea?.addEventListener('dragleave', function() {
+            this.classList.remove('dragover');
+        });
+
+        uploadArea?.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            
+            if (e.dataTransfer.files.length > 0) {
+                importFileInput.files = e.dataTransfer.files;
+                fileName.textContent = e.dataTransfer.files[0].name;
+                fileInfo.classList.add('show');
+                importBtn.disabled = false;
+            }
+        });
+
+        // Handle import form submission
+        document.getElementById('importForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const submitBtn = importBtn;
+            const alertDiv = document.getElementById('importAlert');
+            
+            // Disable submit button
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Importing...';
+            
+            fetch('{{ route("patients.import") }}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Show success message
+                    alertDiv.className = 'alert-modal success';
+                    let message = data.message;
+                    if (data.errors && data.errors.length > 0) {
+                        message += '<br><br><strong>Some rows failed:</strong><ul style="margin-top: 8px; margin-left: 20px;">';
+                        data.errors.forEach(err => {
+                            message += `<li>${err}</li>`;
+                        });
+                        message += '</ul>';
+                    }
+                    alertDiv.innerHTML = message;
+                    alertDiv.style.display = 'block';
+                    
+                    // Reset form
+                    this.reset();
+                    fileInfo.classList.remove('show');
+                    
+                    // Reload page after 2 seconds
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
+                } else {
+                    // Show error message
+                    alertDiv.className = 'alert-modal error';
+                    if (data.errors) {
+                        const errorList = Object.values(data.errors).flat().map(err => `<li>${err}</li>`).join('');
+                        alertDiv.innerHTML = '<strong>Please fix the following errors:</strong><ul style="margin-top: 8px; margin-left: 20px;">' + errorList + '</ul>';
+                    } else {
+                        alertDiv.textContent = data.message || 'Import failed. Please check your file and try again.';
+                    }
+                    alertDiv.style.display = 'block';
+                    
+                    // Re-enable submit button
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Import Patients';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alertDiv.className = 'alert-modal error';
+                alertDiv.textContent = 'An error occurred during import. Please try again.';
+                alertDiv.style.display = 'block';
+                
+                // Re-enable submit button
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Import Patients';
+            });
+        });
+
+        // Close import modal when clicking outside
+        document.getElementById('importModal')?.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeImportModal();
+            }
+        });
     </script>
 
     <!-- Visit Modal -->
@@ -708,6 +1249,194 @@
                     <div class="modal-actions">
                         <button type="button" class="btn-modal-cancel" onclick="closeVisitModal()">Cancel</button>
                         <button type="submit" class="btn-modal-submit">Save Visit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Import Modal -->
+    <div id="importModal" class="import-modal">
+        <div class="import-modal-content">
+            <div class="import-modal-header">
+                <h2>📥 Import Patient Records</h2>
+                <button class="modal-close" onclick="closeImportModal()" style="background: none; border: none; font-size: 28px; color: #6b7280; cursor: pointer; padding: 0; line-height: 1;">×</button>
+            </div>
+            <div class="import-modal-body">
+                <div id="importAlert" class="alert-modal" style="display: none;"></div>
+                
+                <p style="color: #6b7280; margin-bottom: 20px; font-size: 14px;">Bulk upload patient data from CSV file</p>
+
+                <div class="import-info-box">
+                    <h3>📝 CSV File Requirements:</h3>
+                    <ul>
+                        <li><strong>Format:</strong> CSV (Comma-separated values)</li>
+                        <li><strong>Required Columns:</strong> first_name, last_name, birthdate, sex, address</li>
+                        <li><strong>Optional Columns:</strong> middle_name, contact_number, philhealth_number</li>
+                        <li><strong>Date Format:</strong> YYYY-MM-DD (e.g., 1990-05-15)</li>
+                        <li><strong>Sex Values:</strong> Male or Female</li>
+                    </ul>
+                </div>
+
+                <form id="importForm" enctype="multipart/form-data">
+                    @csrf
+                    
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-icon">📁</div>
+                        <h3>Drag and drop your file here</h3>
+                        <p style="color: #6b7280; margin: 12px 0;">or</p>
+                        <label for="importFileInput" class="btn btn-primary" style="cursor: pointer;">Choose File</label>
+                        <input type="file" id="importFileInput" name="file" accept=".csv,.xlsx,.xls" style="display: none;" required>
+                    </div>
+
+                    <div class="file-info" id="importFileInfo">
+                        <strong>Selected file:</strong> <span id="importFileName"></span>
+                    </div>
+
+                    <div class="registration-modal-actions">
+                        <button type="button" class="btn-modal-cancel" onclick="closeImportModal()">Cancel</button>
+                        <button type="submit" class="btn-modal-submit" id="importBtn" disabled>Import Patients</button>
+                    </div>
+                </form>
+
+                <div class="template-section">
+                    <h3 style="margin-bottom: 16px; color: #374151;">📥 Download Sample Template</h3>
+                    <p style="color: #6b7280; margin-bottom: 16px;">
+                        Download this template, fill in your patient data, and upload it above.
+                    </p>
+                    <a href="{{ route('patients.download-template') }}" class="btn btn-download" target="_blank">Download CSV Template</a>
+
+                    <div class="sample-table">
+                        <p style="font-weight: 600; margin: 20px 0 12px; color: #374151;">Sample Format:</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>first_name</th>
+                                    <th>last_name</th>
+                                    <th>middle_name</th>
+                                    <th>birthdate</th>
+                                    <th>sex</th>
+                                    <th>contact_number</th>
+                                    <th>address</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Maria</td>
+                                    <td>Santos</td>
+                                    <td>Cruz</td>
+                                    <td>1990-05-15</td>
+                                    <td>Female</td>
+                                    <td>09171234567</td>
+                                    <td>123 Main St, Brgy San Roque</td>
+                                </tr>
+                                <tr>
+                                    <td>Juan</td>
+                                    <td>Dela Cruz</td>
+                                    <td></td>
+                                    <td>1985-12-01</td>
+                                    <td>Male</td>
+                                    <td>09181234567</td>
+                                    <td>456 Side St, Brgy Poblacion</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Registration Modal -->
+    <div id="registrationModal" class="registration-modal">
+        <div class="registration-modal-content">
+            <div class="registration-modal-header">
+                <h2>➕ Register New Patient</h2>
+                <button class="modal-close" onclick="closeRegistrationModal()" style="background: none; border: none; font-size: 28px; color: #6b7280; cursor: pointer; padding: 0; line-height: 1;">×</button>
+            </div>
+            <div class="registration-modal-body">
+                <div id="registrationAlert" class="alert-modal" style="display: none;"></div>
+                
+                <p style="color: #6b7280; margin-bottom: 20px; font-size: 14px;">Fill in essential patient information. Patient ID will be auto-generated.</p>
+
+                <form id="registrationForm">
+                    @csrf
+
+                    <!-- Basic Information -->
+                    <div class="modal-section-title">Basic Information</div>
+                    
+                    <div class="modal-form-row">
+                        <div class="modal-form-group">
+                            <label>First Name <span class="required">*</span></label>
+                            <input type="text" name="first_name" required>
+                        </div>
+                        <div class="modal-form-group">
+                            <label>Last Name <span class="required">*</span></label>
+                            <input type="text" name="last_name" required>
+                        </div>
+                    </div>
+
+                    <div class="modal-form-row">
+                        <div class="modal-form-group">
+                            <label>Middle Name</label>
+                            <input type="text" name="middle_name">
+                            <span class="hint">Optional</span>
+                        </div>
+                        <div class="modal-form-group">
+                            <label>Birthdate <span class="required">*</span></label>
+                            <input type="date" name="birthdate" required max="{{ date('Y-m-d') }}">
+                            <span class="hint">Age will be auto-calculated</span>
+                        </div>
+                    </div>
+
+                    <div class="modal-form-row">
+                        <div class="modal-form-group">
+                            <label>Sex <span class="required">*</span></label>
+                            <select name="sex" required>
+                                <option value="">Select</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                        <div class="modal-form-group">
+                            <label>Contact Number</label>
+                            <input type="tel" name="contact_number" placeholder="09XX-XXX-XXXX">
+                        </div>
+                    </div>
+
+                    <div class="modal-form-row full">
+                        <div class="modal-form-group">
+                            <label>Address <span class="required">*</span></label>
+                            <textarea name="address" required></textarea>
+                            <span class="hint">House No., Street, Barangay, City</span>
+                        </div>
+                    </div>
+
+                    <!-- Optional Information -->
+                    <div class="modal-section-title">Additional Information (Optional)</div>
+                    <div class="modal-optional-section">
+                        <div class="modal-form-row">
+                            <div class="modal-form-group">
+                                <label>PhilHealth Number</label>
+                                <input type="text" name="philhealth_number">
+                            </div>
+                            <div class="modal-form-group">
+                                <label>Emergency Contact Name</label>
+                                <input type="text" name="emergency_contact_name">
+                            </div>
+                        </div>
+                        <div class="modal-form-row">
+                            <div class="modal-form-group">
+                                <label>Emergency Contact Number</label>
+                                <input type="tel" name="emergency_contact_number">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="registration-modal-actions">
+                        <button type="button" class="btn-modal-cancel" onclick="closeRegistrationModal()">Cancel</button>
+                        <button type="submit" class="btn-modal-submit">Register Patient</button>
                     </div>
                 </form>
             </div>

@@ -82,10 +82,27 @@ class PatientController extends Controller
         ]);
 
         if ($validator->fails()) {
+            // Check if request is AJAX
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validation failed',
+                    'errors' => $validator->errors()
+                ], 422);
+            }
             return back()->withErrors($validator)->withInput();
         }
 
         $patient = Patient::create($request->all());
+
+        // Check if request is AJAX
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Patient registered successfully! Patient ID: ' . $patient->patient_id,
+                'patient' => $patient
+            ]);
+        }
 
         return redirect()
             ->route('patients.show', $patient)
@@ -200,12 +217,45 @@ class PatientController extends Controller
             
             // Handle CSV files
             if ($extension == 'csv' || $extension == 'txt') {
-                return $this->importCsv($file);
+                $result = $this->importCsv($file);
+                
+                // Check if request is AJAX
+                if ($request->wantsJson() || $request->ajax()) {
+                    return response()->json([
+                        'success' => true,
+                        'message' => $result['message'],
+                        'imported' => $result['imported'],
+                        'errors' => $result['errors']
+                    ]);
+                }
+                
+                return redirect()
+                    ->route('patients.index')
+                    ->with('success', $result['message'])
+                    ->with('import_errors', $result['errors']);
             } else {
-                return back()->with('error', 'Please use CSV format. Excel support coming soon!');
+                $errorMsg = 'Please use CSV format. Excel support coming soon!';
+                
+                if ($request->wantsJson() || $request->ajax()) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => $errorMsg
+                    ], 400);
+                }
+                
+                return back()->with('error', $errorMsg);
             }
         } catch (\Exception $e) {
-            return back()->with('error', 'Import failed: ' . $e->getMessage());
+            $errorMsg = 'Import failed: ' . $e->getMessage();
+            
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $errorMsg
+                ], 500);
+            }
+            
+            return back()->with('error', $errorMsg);
         }
     }
 
@@ -279,10 +329,11 @@ class PatientController extends Controller
             $message .= " " . count($errors) . " rows failed.";
         }
 
-        return redirect()
-            ->route('patients.index')
-            ->with('success', $message)
-            ->with('import_errors', $errors);
+        return [
+            'message' => $message,
+            'imported' => $imported,
+            'errors' => $errors
+        ];
     }
 
     /**

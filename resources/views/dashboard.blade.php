@@ -40,6 +40,14 @@
             align-items: center;
             gap: 12px;
             margin-bottom: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            transition: opacity 0.2s;
+        }
+        
+        .logo-container:hover {
+            opacity: 0.8;
         }
 
         .logo-icon {
@@ -386,9 +394,152 @@
         /* Statistics Cards */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: 1fr 1.2fr;
             gap: 20px;
             margin-bottom: 32px;
+            align-items: start;
+        }
+        
+        .stats-left-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .calendar-summary {
+            background: #FFFFFF;
+            border-radius: 14px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+            border: 1px solid #E5E7EB;
+            display: flex;
+            flex-direction: column;
+            max-height: 700px;
+        }
+        
+        .calendar-header {
+            border-bottom: 2px solid #E5E7EB;
+            padding-bottom: 16px;
+            margin-bottom: 20px;
+            flex-shrink: 0;
+        }
+        
+        .calendar-date {
+            font-size: 24px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+        
+        .calendar-subtitle {
+            font-size: 13px;
+            color: #6B7280;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        
+        .appointment-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overflow-y: auto;
+            padding-right: 8px;
+            flex: 1;
+        }
+        
+        .appointment-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .appointment-list::-webkit-scrollbar-track {
+            background: #F3F4F6;
+            border-radius: 10px;
+        }
+        
+        .appointment-list::-webkit-scrollbar-thumb {
+            background: #D1D5DB;
+            border-radius: 10px;
+        }
+        
+        .appointment-list::-webkit-scrollbar-thumb:hover {
+            background: #9CA3AF;
+        }
+        
+        .appointment-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background: #F9FAFB;
+            border-radius: 10px;
+            border-left: 4px solid #10B981;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .appointment-item:hover {
+            background: #F3F4F6;
+            transform: translateX(4px);
+        }
+        
+        .appointment-time {
+            font-size: 14px;
+            font-weight: 600;
+            color: #047857;
+            min-width: 80px;
+        }
+        
+        .appointment-details {
+            flex: 1;
+            margin-left: 16px;
+        }
+        
+        .appointment-patient {
+            font-size: 15px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 2px;
+        }
+        
+        .appointment-status {
+            font-size: 12px;
+            color: #6B7280;
+        }
+        
+        .appointment-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        
+        .badge-pending {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+        
+        .badge-confirmed {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+        
+        .badge-completed {
+            background: #E0E7FF;
+            color: #3730A3;
+        }
+        
+        .no-appointments {
+            text-align: center;
+            padding: 40px 20px;
+            color: #9CA3AF;
+        }
+        
+        .no-appointments-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            opacity: 0.5;
         }
 
         .stat-card {
@@ -1319,10 +1470,10 @@
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <div class="logo-container">
+            <a href="{{ route('dashboard') }}" class="logo-container">
                 <div class="logo-icon">V</div>
                 <div class="logo-text">VaxLog</div>
-            </div>
+            </a>
             <div class="sidebar-subtitle">Health Center System</div>
         </div>
 
@@ -1427,6 +1578,8 @@
 
             <!-- Statistics -->
             <div class="stats-grid">
+                <!-- Left Column: Stat Cards -->
+                <div class="stats-left-column">
                     <div class="stat-card" onclick="openModal('todayPatients')" style="cursor: pointer;">
                         <div class="stat-header">
                             <span class="stat-title">Today's Patients</span>
@@ -1434,15 +1587,6 @@
                         </div>
                         <div class="stat-value">24</div>
                         <div class="stat-change">↑ 12% from yesterday</div>
-                    </div>
-
-                    <div class="stat-card" onclick="openModal('appointmentsToday')" style="cursor: pointer;">
-                        <div class="stat-header">
-                            <span class="stat-title">Appointments Today</span>
-                            <div class="stat-icon" style="background: #ECFDF5; color: #10B981;">📅</div>
-                        </div>
-                        <div class="stat-value">18</div>
-                        <div class="stat-change">5 pending</div>
                     </div>
 
                     <div class="stat-card" onclick="openModal('totalPatients')" style="cursor: pointer;">
@@ -1463,7 +1607,90 @@
                         <div class="stat-change">This month</div>
                     </div>
                 </div>
+
+                <!-- Right Column: Calendar Summary -->
+                <div class="calendar-summary">
+                    <div class="calendar-header">
+                        <div class="calendar-date">📅 Today's Appointments</div>
+                        <div class="calendar-subtitle">{{ now()->format('l, F j, Y') }}</div>
+                    </div>
+                    
+                    <div class="appointment-list">
+                        <div class="appointment-item">
+                            <div class="appointment-time">08:00 AM</div>
+                            <div class="appointment-details">
+                                <div class="appointment-patient">Maria C. Santos</div>
+                                <div class="appointment-status">General Checkup</div>
+                            </div>
+                            <span class="appointment-badge badge-confirmed">Confirmed</span>
+                        </div>
+                        
+                        <div class="appointment-item">
+                            <div class="appointment-time">09:30 AM</div>
+                            <div class="appointment-details">
+                                <div class="appointment-patient">Juan G. Dela Cruz</div>
+                                <div class="appointment-status">Immunization</div>
+                            </div>
+                            <span class="appointment-badge badge-confirmed">Confirmed</span>
+                        </div>
+                        
+                        <div class="appointment-item">
+                            <div class="appointment-time">10:00 AM</div>
+                            <div class="appointment-details">
+                                <div class="appointment-patient">Baby Reyes</div>
+                                <div class="appointment-status">Prenatal Care</div>
+                            </div>
+                            <span class="appointment-badge badge-pending">Pending</span>
+                        </div>
+                        
+                        <div class="appointment-item">
+                            <div class="appointment-time">11:00 AM</div>
+                            <div class="appointment-details">
+                                <div class="appointment-patient">Ana Lopez</div>
+                                <div class="appointment-status">Follow-up Visit</div>
+                            </div>
+                            <span class="appointment-badge badge-pending">Pending</span>
+                        </div>
+                        
+                        <div class="appointment-item">
+                            <div class="appointment-time">01:00 PM</div>
+                            <div class="appointment-details">
+                                <div class="appointment-patient">Pedro Martinez</div>
+                                <div class="appointment-status">General Checkup</div>
+                            </div>
+                            <span class="appointment-badge badge-confirmed">Confirmed</span>
+                        </div>
+                        
+                        <div class="appointment-item">
+                            <div class="appointment-time">02:30 PM</div>
+                            <div class="appointment-details">
+                                <div class="appointment-patient">Rosa Garcia</div>
+                                <div class="appointment-status">Vaccination</div>
+                            </div>
+                            <span class="appointment-badge badge-pending">Pending</span>
+                        </div>
+                        
+                        <div class="appointment-item">
+                            <div class="appointment-time">03:00 PM</div>
+                            <div class="appointment-details">
+                                <div class="appointment-patient">Carlos Reyes</div>
+                                <div class="appointment-status">Health Education</div>
+                            </div>
+                            <span class="appointment-badge badge-confirmed">Confirmed</span>
+                        </div>
+                        
+                        <div class="appointment-item">
+                            <div class="appointment-time">04:00 PM</div>
+                            <div class="appointment-details">
+                                <div class="appointment-patient">Linda Santos</div>
+                                <div class="appointment-status">Prenatal Care</div>
+                            </div>
+                            <span class="appointment-badge badge-pending">Pending</span>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
         </main>
     </div>
 
@@ -1564,15 +1791,95 @@
 
     <!-- Book Appointment Modal -->
     <div id="bookAppointmentModal" class="ai-modal" onclick="closeModalOnBackdrop(event, 'bookAppointment')">
-        <div class="ai-modal-content">
+        <div class="ai-modal-content" style="max-width: 600px;">
             <div class="ai-modal-header" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
                 <h2><span>📅</span> Book Appointment</h2>
                 <button class="ai-modal-close" onclick="closeModal('bookAppointment')">✕</button>
             </div>
-            <div class="ai-modal-body">
-                <div class="ai-icon">📅</div>
-                <h3>Schedule New Visit</h3>
-                <p>This feature is under development. You will be able to schedule patient appointments and manage visit times here.</p>
+            <div class="ai-modal-body" style="padding: 24px;">
+                <form id="appointmentForm" action="{{ route('visits.store') }}" method="POST" style="display: flex; flex-direction: column; gap: 20px;">
+                    @csrf
+                    
+                    <!-- Patient Selection -->
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <label style="font-weight: 600; color: #374151; font-size: 14px;">
+                            Patient <span style="color: #dc2626;">*</span>
+                        </label>
+                        <select name="patient_id" id="appointmentPatient" required style="padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px;">
+                            <option value="">Select a patient</option>
+                            @foreach(\App\Models\Patient::orderBy('last_name')->get() as $patient)
+                                <option value="{{ $patient->id }}">{{ $patient->full_name }} ({{ $patient->patient_id }})</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Date and Time -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <label style="font-weight: 600; color: #374151; font-size: 14px;">
+                                Date <span style="color: #dc2626;">*</span>
+                            </label>
+                            <input type="date" name="visit_date" required min="{{ date('Y-m-d') }}" value="{{ date('Y-m-d') }}" style="padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <label style="font-weight: 600; color: #374151; font-size: 14px;">
+                                Time <span style="color: #dc2626;">*</span>
+                            </label>
+                            <input type="time" name="visit_time_input" required value="08:00" style="padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px;">
+                        </div>
+                    </div>
+
+                    <!-- Service Type -->
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <label style="font-weight: 600; color: #374151; font-size: 14px;">
+                            Service Type <span style="color: #dc2626;">*</span>
+                        </label>
+                        <select name="service_type" required style="padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px;">
+                            <option value="">Select service</option>
+                            <option value="General Checkup">General Checkup</option>
+                            <option value="Immunization">Immunization</option>
+                            <option value="Prenatal">Prenatal Care</option>
+                            <option value="Family Planning">Family Planning</option>
+                            <option value="Referral">Referral</option>
+                            <option value="Health Education">Health Education</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <!-- Chief Complaint / Reason -->
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <label style="font-weight: 600; color: #374151; font-size: 14px;">
+                            Reason for Visit
+                        </label>
+                        <textarea name="chief_complaint" rows="3" placeholder="Enter the reason for this appointment..." style="padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; resize: vertical;"></textarea>
+                    </div>
+
+                    <!-- Health Worker -->
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <label style="font-weight: 600; color: #374151; font-size: 14px;">
+                            Assigned Health Worker
+                        </label>
+                        <input type="text" name="health_worker" placeholder="Enter health worker name" style="padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px;">
+                    </div>
+
+                    <!-- Notes -->
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <label style="font-weight: 600; color: #374151; font-size: 14px;">
+                            Additional Notes
+                        </label>
+                        <textarea name="notes" rows="2" placeholder="Any additional information..." style="padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; resize: vertical;"></textarea>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 8px; padding-top: 16px; border-top: 1px solid #e5e7eb;">
+                        <button type="button" onclick="closeModal('bookAppointment')" style="padding: 10px 20px; border: 1px solid #d1d5db; background: white; color: #374151; border-radius: 6px; font-weight: 600; cursor: pointer;">
+                            Cancel
+                        </button>
+                        <button type="submit" style="padding: 10px 20px; border: none; background: #10b981; color: white; border-radius: 6px; font-weight: 600; cursor: pointer;">
+                            Book Appointment
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

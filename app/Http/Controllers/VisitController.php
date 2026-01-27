@@ -45,6 +45,8 @@ class VisitController extends Controller
             'chief_complaint' => 'nullable|string',
             'notes' => 'nullable|string',
             'health_worker' => 'nullable|string|max:255',
+            'visit_date' => 'nullable|date',
+            'visit_time_input' => 'nullable|date_format:H:i',
             // Vital signs
             'blood_pressure' => 'nullable|string|max:20',
             'temperature' => 'nullable|numeric|min:30|max:45',
@@ -55,14 +57,22 @@ class VisitController extends Controller
 
         DB::beginTransaction();
         try {
-            // Create visit (dates auto-filled by model)
-            $visit = Visit::create($request->only([
+            // Prepare visit data
+            $visitData = $request->only([
                 'patient_id',
                 'service_type',
                 'chief_complaint',
                 'notes',
                 'health_worker',
-            ]));
+            ]);
+            
+            // Handle custom visit time if provided
+            if ($request->filled('visit_date') && $request->filled('visit_time_input')) {
+                $visitData['visit_time'] = $request->visit_date . ' ' . $request->visit_time_input;
+            }
+            
+            // Create visit
+            $visit = Visit::create($visitData);
 
             // Create vital signs if any provided
             if ($request->filled(['blood_pressure', 'temperature', 'pulse_rate', 'weight', 'height'])) {
@@ -79,12 +89,12 @@ class VisitController extends Controller
             DB::commit();
 
             return redirect()
-                ->route('patients.show', $visit->patient_id)
-                ->with('success', 'Visit recorded successfully!');
+                ->route('dashboard')
+                ->with('success', 'Appointment booked successfully!');
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->withErrors(['error' => 'Failed to record visit: ' . $e->getMessage()])->withInput();
+            return back()->withErrors(['error' => 'Failed to book appointment: ' . $e->getMessage()])->withInput();
         }
     }
 

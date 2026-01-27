@@ -46,6 +46,35 @@
         .btn-back:hover {
             background: #4b5563;
         }
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: inherit;
+            transition: opacity 0.2s;
+            margin-right: auto;
+        }
+        .header-logo:hover {
+            opacity: 0.8;
+        }
+        .header-logo-icon {
+            width: 32px;
+            height: 32px;
+            background: #f59e0b;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+        }
+        .header-logo-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #047857;
+        }
         h1 {
             color: #047857;
             margin: 0;
@@ -165,6 +194,10 @@
 <body>
     <div class="container">
         <div class="header-top">
+            <a href="{{ route('dashboard') }}" class="header-logo">
+                <div class="header-logo-icon">V</div>
+                <div class="header-logo-text">VaxLog</div>
+            </a>
             <button onclick="goBack()" class="btn-back">← Back</button>
             <h1>Register New Patient</h1>
         </div>

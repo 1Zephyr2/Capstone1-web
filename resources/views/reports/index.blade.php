@@ -11,50 +11,74 @@
             box-sizing: border-box;
         }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f5f5;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             padding: 20px;
         }
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
         .header-top {
             display: flex;
             align-items: center;
             gap: 16px;
-            margin-bottom: 24px;
+            margin-bottom: 32px;
+            animation: slideDown 0.5s ease-out;
+        }
+        @keyframes slideDown {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes fadeInUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes scaleIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
         .btn-back {
-            padding: 8px 16px;
-            background: #6b7280;
-            color: white;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #667eea;
             border: none;
-            border-radius: 6px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 600;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
         .btn-back:hover {
-            background: #4b5563;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            background: white;
         }
         h1 {
-            color: #047857;
+            color: white;
             margin: 0;
             flex: 1;
+            font-size: 32px;
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
         .filters {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 24px;
+            border-radius: 16px;
+            margin-bottom: 24px;
             display: flex;
             gap: 16px;
             align-items: end;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 0.6s ease-out;
         }
         .form-group {
             flex: 1;
@@ -62,98 +86,201 @@
         label {
             display: block;
             font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 6px;
-            color: #374151;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #4a5568;
         }
         input, select {
             width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
             font-size: 14px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
         .btn {
-            padding: 11px 24px;
+            padding: 12px 28px;
             border: none;
-            border-radius: 6px;
+            border-radius: 10px;
             font-weight: 600;
             cursor: pointer;
             font-size: 14px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
         .btn-primary {
-            background: #047857;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
         }
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-bottom: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
         }
         .stat-card {
             background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 28px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            animation: scaleIn 0.5s ease-out backwards;
+        }
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+        .stat-card:nth-child(4) { animation-delay: 0.4s; }
+        .stat-card:nth-child(5) { animation-delay: 0.5s; }
+        .stat-card:nth-child(6) { animation-delay: 0.6s; }
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+        .stat-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+            display: block;
         }
         .stat-label {
             font-size: 13px;
-            color: #6b7280;
+            color: #718096;
             text-transform: uppercase;
             margin-bottom: 8px;
             letter-spacing: 0.5px;
+            font-weight: 600;
         }
         .stat-value {
-            font-size: 32px;
-            font-weight: 700;
-            color: #047857;
+            font-size: 36px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         .section {
             background: white;
-            padding: 24px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 32px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 0.7s ease-out;
         }
         h2 {
-            color: #374151;
-            font-size: 18px;
-            margin-bottom: 16px;
-            padding-bottom: 12px;
-            border-bottom: 2px solid #e5e7eb;
+            color: #2d3748;
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 3px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        h2::before {
+            content: '📊';
+            font-size: 28px;
         }
         table {
             width: 100%;
             border-collapse: collapse;
         }
         th {
-            background: #f9fafb;
-            padding: 12px;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            padding: 16px;
             text-align: left;
             font-size: 13px;
-            font-weight: 600;
-            color: #374151;
+            font-weight: 700;
+            color: #4a5568;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         td {
-            padding: 12px;
-            border-top: 1px solid #e5e7eb;
+            padding: 16px;
+            border-top: 1px solid #e2e8f0;
+            transition: background 0.2s ease;
+        }
+        tr:hover td {
+            background: #f7fafc;
         }
         .progress-bar {
-            height: 24px;
-            background: #e5e7eb;
-            border-radius: 12px;
+            height: 32px;
+            background: #e2e8f0;
+            border-radius: 16px;
             overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
         }
         .progress-fill {
             height: 100%;
-            background: #047857;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
             display: flex;
             align-items: center;
-            padding: 0 12px;
+            padding: 0 16px;
             color: white;
-            font-size: 12px;
-            font-weight: 600;
+            font-size: 13px;
+            font-weight: 700;
+            transition: width 1s ease-out;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+        }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #a0aec0;
+        }
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        .empty-state-text {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .footer {
+            margin-top: 40px;
+            padding: 24px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            text-align: center;
+            color: #718096;
+            font-size: 13px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        .footer p {
+            margin: 4px 0;
+        }
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .btn-back, .filters {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -174,26 +301,32 @@
 
         <div class="stats-grid">
             <div class="stat-card">
+                <span class="stat-icon">👥</span>
                 <div class="stat-label">New Patients</div>
                 <div class="stat-value">{{ $stats['new_patients'] }}</div>
             </div>
             <div class="stat-card">
+                <span class="stat-icon">🏥</span>
                 <div class="stat-label">Total Visits</div>
                 <div class="stat-value">{{ $stats['total_visits'] }}</div>
             </div>
             <div class="stat-card">
+                <span class="stat-icon">💉</span>
                 <div class="stat-label">Immunizations</div>
                 <div class="stat-value">{{ $stats['immunizations'] }}</div>
             </div>
             <div class="stat-card">
+                <span class="stat-icon">🤰</span>
                 <div class="stat-label">Prenatal Visits</div>
                 <div class="stat-value">{{ $stats['prenatal_visits'] }}</div>
             </div>
             <div class="stat-card">
+                <span class="stat-icon">📋</span>
                 <div class="stat-label">Referrals</div>
                 <div class="stat-value">{{ $stats['referrals'] }}</div>
             </div>
             <div class="stat-card">
+                <span class="stat-icon">📊</span>
                 <div class="stat-label">Total Registered</div>
                 <div class="stat-value">{{ $stats['total_patients'] }}</div>
             </div>
@@ -230,7 +363,10 @@
                 </tbody>
             </table>
             @else
-            <p style="text-align: center; padding: 40px; color: #9ca3af;">No services recorded this month</p>
+            <div class="empty-state">
+                <div class="empty-state-icon">📭</div>
+                <div class="empty-state-text">No services recorded this month</div>
+            </div>
             @endif
         </div>
 
@@ -265,13 +401,16 @@
                 </tbody>
             </table>
             @else
-            <p style="text-align: center; padding: 40px; color: #9ca3af;">No immunizations recorded this month</p>
+            <div class="empty-state">
+                <div class="empty-state-icon">💉</div>
+                <div class="empty-state-text">No immunizations recorded this month</div>
+            </div>
             @endif
         </div>
 
-        <div style="margin-top: 40px; padding: 20px; background: white; border-radius: 8px; text-align: center; color: #6b7280; font-size: 13px;">
-            <p>Report generated on {{ now()->format('F d, Y h:i A') }}</p>
-            <p>Barangay Health Center Management System</p>
+        <div class="footer">
+            <p><strong>Report generated on {{ now()->format('F d, Y h:i A') }}</strong></p>
+            <p>© 2026 VaxLog - Health Center Management System</p>
         </div>
     </div>
 
