@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\VisitController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ProfileController;
 
 // Redirect root to login
 Route::get('/', function () {
@@ -28,6 +29,12 @@ Route::get('/dashboard', function () {
 
 // Protected routes group
 Route::middleware('auth')->group(function () {
+    
+    // Profile Routes
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile/picture', [ProfileController::class, 'deleteProfilePicture'])->name('profile.delete-picture');
     
     // Patient Management Routes
     Route::resource('patients', PatientController::class);

@@ -250,6 +250,16 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .user-info:hover {
+            background: #f3f4f6;
         }
 
         .user-avatar {
@@ -262,6 +272,13 @@
             justify-content: center;
             color: white;
             font-weight: 600;
+            overflow: hidden;
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .user-details {
@@ -544,8 +561,8 @@
 
         .stat-card {
             background: #FFFFFF;
-            border-radius: 14px;
-            padding: 22px;
+            border-radius: 12px;
+            padding: 18px 20px;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
             transition: all 0.2s ease;
             border: 1px solid #E5E7EB;
@@ -584,11 +601,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         .stat-title {
-            font-size: 13px;
+            font-size: 11px;
             color: #6B7280;
             font-weight: 500;
             text-transform: uppercase;
@@ -596,25 +613,25 @@
         }
 
         .stat-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 11px;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 18px;
         }
 
         .stat-value {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 700;
             color: #111827;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             letter-spacing: -0.02em;
         }
 
         .stat-change {
-            font-size: 13px;
+            font-size: 12px;
             color: #10B981;
             font-weight: 500;
         }
@@ -1533,13 +1550,19 @@
                 <p>{{ date('l, F j, Y') }}</p>
             </div>
             <div class="top-nav-right">
-                <div class="user-info">
+                <a href="{{ route('profile.show') }}" class="user-info">
                     <div class="user-details">
                         <div class="user-name">{{ Auth::user()->name }}</div>
                         <div class="user-role">Health Center Staff</div>
                     </div>
-                    <div class="user-avatar">{{ substr(Auth::user()->name, 0, 1) }}</div>
-                </div>
+                    <div class="user-avatar">
+                        @if(Auth::user()->profile_picture)
+                            <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="{{ Auth::user()->name }}">
+                        @else
+                            {{ substr(Auth::user()->name, 0, 1) }}
+                        @endif
+                    </div>
+                </a>
                 <form method="POST" action="{{ route('logout') }}" style="margin: 0;">
                     @csrf
                     <button type="submit" class="logout-btn">Logout</button>
@@ -1585,7 +1608,7 @@
                             <span class="stat-title">Today's Patients</span>
                             <div class="stat-icon" style="background: #ECFDF5; color: #10B981;">👥</div>
                         </div>
-                        <div class="stat-value">24</div>
+                        <div class="stat-value">6</div>
                         <div class="stat-change">↑ 12% from yesterday</div>
                     </div>
 
@@ -1594,7 +1617,7 @@
                             <span class="stat-title">Total Patients</span>
                             <div class="stat-icon" style="background: #FEF3C7; color: #F59E0B;">📊</div>
                         </div>
-                        <div class="stat-value">1,247</div>
+                        <div class="stat-value">6</div>
                         <div class="stat-change">↑ 8% this month</div>
                     </div>
 
@@ -1603,8 +1626,12 @@
                             <span class="stat-title">Immunizations</span>
                             <div class="stat-icon" style="background: #FEF3C7; color: #F59E0B;">💉</div>
                         </div>
-                        <div class="stat-value">156</div>
-                        <div class="stat-change">This month</div>
+                        @php
+                            use App\Models\Immunization as ImmunizationModel;
+                            $totalImm = ImmunizationModel::count();
+                        @endphp
+                        <div class="stat-value">{{ $totalImm }}</div>
+                        <div class="stat-change">Total records</div>
                     </div>
                 </div>
 
@@ -1646,46 +1673,28 @@
                         <div class="appointment-item">
                             <div class="appointment-time">11:00 AM</div>
                             <div class="appointment-details">
-                                <div class="appointment-patient">Ana Lopez</div>
+                                <div class="appointment-patient">Ana M. Lopez</div>
                                 <div class="appointment-status">Follow-up Visit</div>
                             </div>
-                            <span class="appointment-badge badge-pending">Pending</span>
+                            <span class="appointment-badge badge-confirmed">Confirmed</span>
                         </div>
                         
                         <div class="appointment-item">
                             <div class="appointment-time">01:00 PM</div>
                             <div class="appointment-details">
-                                <div class="appointment-patient">Pedro Martinez</div>
+                                <div class="appointment-patient">Pedro R. Martinez</div>
                                 <div class="appointment-status">General Checkup</div>
                             </div>
-                            <span class="appointment-badge badge-confirmed">Confirmed</span>
+                            <span class="appointment-badge badge-pending">Pending</span>
                         </div>
                         
                         <div class="appointment-item">
                             <div class="appointment-time">02:30 PM</div>
                             <div class="appointment-details">
-                                <div class="appointment-patient">Rosa Garcia</div>
+                                <div class="appointment-patient">Rosa T. Garcia</div>
                                 <div class="appointment-status">Vaccination</div>
                             </div>
-                            <span class="appointment-badge badge-pending">Pending</span>
-                        </div>
-                        
-                        <div class="appointment-item">
-                            <div class="appointment-time">03:00 PM</div>
-                            <div class="appointment-details">
-                                <div class="appointment-patient">Carlos Reyes</div>
-                                <div class="appointment-status">Health Education</div>
-                            </div>
                             <span class="appointment-badge badge-confirmed">Confirmed</span>
-                        </div>
-                        
-                        <div class="appointment-item">
-                            <div class="appointment-time">04:00 PM</div>
-                            <div class="appointment-details">
-                                <div class="appointment-patient">Linda Santos</div>
-                                <div class="appointment-status">Prenatal Care</div>
-                            </div>
-                            <span class="appointment-badge badge-pending">Pending</span>
                         </div>
                     </div>
                 </div>
@@ -1994,8 +2003,49 @@
             </div>
             <div class="ai-modal-body">
                 <div class="ai-icon">💉</div>
-                <h3>156 Immunizations This Month</h3>
-                <p>This feature is under development. Track and manage all immunization records and schedules.</p>
+                @php
+                    use App\Models\Immunization;
+                    $allImmunizations = Immunization::with('patient')->orderBy('date_given', 'desc')->get();
+                    $thisMonthImm = $allImmunizations->filter(function($imm) {
+                        return \Carbon\Carbon::parse($imm->date_given)->isCurrentMonth();
+                    });
+                    $patientGroups = $allImmunizations->groupBy('patient_id');
+                @endphp
+                <h3>{{ $thisMonthImm->count() }} Immunizations This Month</h3>
+                <div style="margin-top: 24px; text-align: left; max-width: 800px; margin-left: auto; margin-right: auto; max-height: 500px; overflow-y: auto;">
+                    @foreach($patientGroups as $patientId => $immunizations)
+                        @php $patient = $immunizations->first()->patient; @endphp
+                        <div style="background: #fff; border-radius: 8px; padding: 16px; margin-bottom: 12px; border-left: 4px solid #f59e0b; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 14px;">
+                                        {{ strtoupper(substr($patient->first_name, 0, 1) . substr($patient->last_name, 0, 1)) }}
+                                    </div>
+                                    <div>
+                                        <div style="font-weight: 600; font-size: 16px; color: #111827;">{{ $patient->first_name }} {{ $patient->last_name }}</div>
+                                        <div style="font-size: 12px; color: #6b7280;">{{ $patient->age }} years old • {{ $patient->bhc_id }}</div>
+                                    </div>
+                                </div>
+                                <div style="background: #e0e7ff; color: #3730a3; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600;">
+                                    {{ $immunizations->count() }} {{ $immunizations->count() === 1 ? 'Vaccine' : 'Vaccines' }}
+                                </div>
+                            </div>
+                            @foreach($immunizations as $imm)
+                                <div style="background: #fef3c7; padding: 12px; border-radius: 6px; margin-top: 8px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                        <div style="font-weight: 600; color: #92400e;">{{ $imm->vaccine_name }}</div>
+                                        <span style="background: #10b981; color: white; padding: 2px 8px; border-radius: 4px; font-size: 11px;">Dose {{ $imm->dose_number }}</span>
+                                    </div>
+                                    <div style="font-size: 13px; color: #78716c;">Date: {{ \Carbon\Carbon::parse($imm->date_given)->format('F j, Y') }}</div>
+                                    <div style="font-size: 12px; color: #78716c; margin-top: 2px;">Administered by: {{ $imm->administered_by }}</div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endforeach
+                </div>
+                <div style="margin-top: 20px;">
+                    <a href="{{ route('immunizations.index') }}" style="display: inline-block; background: #f59e0b; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 500;">View All Records</a>
+                </div>
             </div>
         </div>
     </div>

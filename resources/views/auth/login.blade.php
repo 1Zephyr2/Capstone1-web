@@ -249,7 +249,7 @@
                 <a href="{{ route('password.request') }}" class="forgot-link">Forgot Password?</a>
             </div>
 
-            <button type="submit" class="btn-login">Login to Dashboard</button>
+            <button type="submit" class="btn-login">Login</button>
         </form>
 
         <div class="footer-text">
