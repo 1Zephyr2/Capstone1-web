@@ -54,7 +54,7 @@
         .logo-icon {
             width: 40px;
             height: 40px;
-            background: #f59e0b;
+            background: linear-gradient(135deg, #047857 0%, #059669 100%);
             border-radius: 8px;
             display: flex;
             align-items: center;
@@ -62,6 +62,7 @@
             font-size: 20px;
             font-weight: bold;
             flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(4, 120, 87, 0.3);
         }
 
         .logo-text {
@@ -3361,6 +3362,8 @@ Created: ${new Date(record.createdAt).toLocaleString()}
                     filteredPatients.forEach(patient => {
                         const card = document.createElement('div');
                         card.className = 'patient-result-card';
+                        card.style.cursor = 'pointer';
+                        card.onclick = () => showPatientQuickView(patient);
                         
                         card.innerHTML = `
                             <div class="patient-result-header">
@@ -3369,38 +3372,6 @@ Created: ${new Date(record.createdAt).toLocaleString()}
                                     <div class="patient-result-id">ID: ${patient.patient_id}</div>
                                 </div>
                                 <div class="patient-badge">${patient.sex}</div>
-                            </div>
-                            
-                            <div class="patient-info-grid">
-                                <div class="patient-info-item">
-                                    <span class="patient-info-label">Age</span>
-                                    <span class="patient-info-value">${patient.age} years</span>
-                                </div>
-                                <div class="patient-info-item">
-                                    <span class="patient-info-label">Blood Type</span>
-                                    <span class="patient-info-value">N/A</span>
-                                </div>
-                                <div class="patient-info-item">
-                                    <span class="patient-info-label">Phone</span>
-                                    <span class="patient-info-value">${patient.contact || 'N/A'}</span>
-                                </div>
-                                <div class="patient-info-item">
-                                    <span class="patient-info-label">Email</span>
-                                    <span class="patient-info-value">N/A</span>
-                                </div>
-                                <div class="patient-info-item">
-                                    <span class="patient-info-label">Address</span>
-                                    <span class="patient-info-value">${patient.address || 'N/A'}</span>
-                                </div>
-                                <div class="patient-info-item">
-                                    <span class="patient-info-label">Date of Birth</span>
-                                    <span class="patient-info-value">${patient.date_of_birth}</span>
-                                </div>
-                            </div>
-                            
-                            <div class="patient-actions-row">
-                                <button class="btn-action btn-view-records" onclick="window.location.href='/patients/${patient.id}'">View Full Details</button>
-                                <button class="btn-action btn-primary" onclick="window.location.href='/visits/create?patient_id=${patient.id}'">Add Visit</button>
                             </div>
                         `;
                         
@@ -3411,6 +3382,75 @@ Created: ${new Date(record.createdAt).toLocaleString()}
                     console.error('Search error:', error);
                     resultsContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #ef4444;">Search failed. Please try again.</div>';
                 });
+        }
+
+        // Show patient quick view modal
+        function showPatientQuickView(patient) {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.6);
+                z-index: 10000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                animation: fadeIn 0.2s ease;
+            `;
+            
+            modal.innerHTML = `
+                <div style="background: white; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: slideUp 0.3s ease;">
+                    <div style="background: linear-gradient(135deg, #047857 0%, #059669 100%); color: white; padding: 16px 20px; border-radius: 12px 12px 0 0; display: flex; justify-content: space-between; align-items: center;">
+                        <h2 style="margin: 0; font-size: 18px; font-weight: 700;">👤 Patient Details</h2>
+                        <button onclick="this.closest('[style*=fixed]').remove(); document.body.style.overflow='auto'" style="background: rgba(255,255,255,0.2); border: none; color: white; font-size: 24px; cursor: pointer; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease;">&times;</button>
+                    </div>
+                    <div style="padding: 20px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
+                            <div style="grid-column: span 2; padding: 10px 12px; background: #f9fafb; border-radius: 6px; border-left: 3px solid #047857;">
+                                <label style="display: block; font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 4px; font-weight: 600;">Full Name</label>
+                                <div style="font-size: 15px; color: #111827; font-weight: 500;">${patient.name}</div>
+                            </div>
+                            <div style="padding: 10px 12px; background: #f9fafb; border-radius: 6px; border-left: 3px solid #047857;">
+                                <label style="display: block; font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 4px; font-weight: 600;">Patient ID</label>
+                                <div style="font-size: 15px; color: #111827; font-weight: 500;">${patient.patient_id}</div>
+                            </div>
+                            <div style="padding: 10px 12px; background: #f9fafb; border-radius: 6px; border-left: 3px solid #047857;">
+                                <label style="display: block; font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 4px; font-weight: 600;">Age</label>
+                                <div style="font-size: 15px; color: #111827; font-weight: 500;">${patient.age} years</div>
+                            </div>
+                            <div style="padding: 10px 12px; background: #f9fafb; border-radius: 6px; border-left: 3px solid #047857;">
+                                <label style="display: block; font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 4px; font-weight: 600;">Sex</label>
+                                <div style="font-size: 15px; color: #111827; font-weight: 500;">${patient.sex}</div>
+                            </div>
+                            <div style="padding: 10px 12px; background: #f9fafb; border-radius: 6px; border-left: 3px solid #047857;">
+                                <label style="display: block; font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 4px; font-weight: 600;">Contact</label>
+                                <div style="font-size: 15px; color: #111827; font-weight: 500;">${patient.contact || 'N/A'}</div>
+                            </div>
+                            <div style="grid-column: span 2; padding: 10px 12px; background: #f9fafb; border-radius: 6px; border-left: 3px solid #047857;">
+                                <label style="display: block; font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 4px; font-weight: 600;">Address</label>
+                                <div style="font-size: 15px; color: #111827; font-weight: 500;">${patient.address || 'N/A'}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px; padding: 16px 20px; border-top: 1px solid #e5e7eb; background: #f9fafb; border-radius: 0 0 12px 12px;">
+                        <a href="/patients/${patient.id}" style="flex: 1; padding: 10px 18px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; background: #047857; color: white; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">📋 View Full Record</a>
+                        <a href="/visits/create?patient_id=${patient.id}" style="flex: 1; padding: 10px 18px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; background: #3b82f6; color: white; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">🏥 Add Visit</a>
+                    </div>
+                </div>
+            `;
+            
+            modal.onclick = (e) => {
+                if (e.target === modal) {
+                    modal.remove();
+                    document.body.style.overflow = 'auto';
+                }
+            };
+            
+            document.body.appendChild(modal);
+            document.body.style.overflow = 'hidden';
         }
 
         function viewPatientDetails(patientId) {

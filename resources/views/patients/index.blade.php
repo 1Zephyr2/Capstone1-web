@@ -103,7 +103,7 @@
         .header-logo-icon {
             width: 32px;
             height: 32px;
-            background: #f59e0b;
+            background: linear-gradient(135deg, #047857 0%, #059669 100%);
             border-radius: 6px;
             display: flex;
             align-items: center;
@@ -111,6 +111,7 @@
             font-size: 16px;
             font-weight: bold;
             color: white;
+            box-shadow: 0 2px 6px rgba(4, 120, 87, 0.3);
         }
         .header-logo-text {
             font-size: 18px;
@@ -298,6 +299,152 @@
             font-size: 12px;
             color: #6b7280;
             margin-top: 4px;
+        }
+
+        /* Patient Quick View Modal */
+        .patient-quick-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 2000;
+            animation: fadeIn 0.2s ease;
+        }
+        .patient-quick-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .patient-quick-content {
+            background: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideUp 0.3s ease;
+        }
+        .patient-quick-header {
+            background: linear-gradient(135deg, #047857 0%, #059669 100%);
+            color: white;
+            padding: 16px 20px;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .patient-quick-header h2 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .patient-quick-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        .patient-quick-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+        .patient-quick-body {
+            padding: 20px;
+        }
+        .patient-quick-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .patient-quick-field {
+            padding: 10px 12px;
+            background: #f9fafb;
+            border-radius: 6px;
+            border-left: 3px solid #047857;
+        }
+        .patient-quick-field.full {
+            grid-column: span 2;
+        }
+        .patient-quick-field label {
+            display: block;
+            font-size: 10px;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        .patient-quick-field .value {
+            font-size: 15px;
+            color: #111827;
+            font-weight: 500;
+        }
+        .patient-quick-actions {
+            display: flex;
+            gap: 10px;
+            padding: 16px 20px;
+            border-top: 1px solid #e5e7eb;
+            background: #f9fafb;
+            border-radius: 0 0 12px 12px;
+        }
+        .patient-quick-btn {
+            flex: 1;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .patient-quick-btn-primary {
+            background: #047857;
+            color: white;
+        }
+        .patient-quick-btn-primary:hover {
+            background: #059669;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(4, 120, 87, 0.3);
+        }
+        .patient-quick-btn-secondary {
+            background: #3b82f6;
+            color: white;
+        }
+        .patient-quick-btn-secondary:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
         
         /* Visit Modal Styles */
@@ -842,6 +989,88 @@
                 <p>Start by registering a new patient</p>
             </div>
             @endif
+        </div>
+    </div>
+
+    <!-- Patient Quick View Modal -->
+    <div id="patientQuickModal" class="patient-quick-modal">
+        <div class="patient-quick-content">
+            <div class="patient-quick-header">
+                <h2>👤 Patient Details</h2>
+                <button class="patient-quick-close" onclick="closePatientQuickModal()">&times;</button>
+            </div>
+            <div class="patient-quick-body">
+                <div class="patient-quick-info">
+                    <div class="patient-quick-field full">
+                        <label>Full Name</label>
+                        <div class="value" id="quickPatientName"></div>
+                    </div>
+                    <div class="patient-quick-field">
+                        <label>Patient ID</label>
+                        <div class="value" id="quickPatientId"></div>
+                    </div>
+                    <div class="patient-quick-field">
+                        <label>Age</label>
+                        <div class="value" id="quickPatientAge"></div>
+                    </div>
+                    <div class="patient-quick-field">
+                        <label>Sex</label>
+                        <div class="value" id="quickPatientSex"></div>
+                    </div>
+                    <div class="patient-quick-field">
+                        <label>Contact Number</label>
+                        <div class="value" id="quickPatientContact"></div>
+                    </div>showPatientQuickModal(${JSON.stringify(patient).replace(/"/g, '&quot;')})">
+                                <div class="name">${patient.name} <span style="color: #047857; font-size: 12px; font-weight: 500;">(${patient.patient_id})</span></div>
+                                <div class="details">${patient.age} yrs • ${patient.sex} ${patient.contact ? '• ' + patient.contact : ''}</div>
+                            </div>
+                        `).join('');
+                    }
+                    autocompleteResults.classList.add('show');
+                })
+                .catch(error => console.error('Search error:', error));
+            }, 300);
+        });
+
+        // Patient Quick View Modal Functions
+        function showPatientQuickModal(patient) {
+            document.getElementById('quickPatientName').textContent = patient.name;
+            document.getElementById('quickPatientId').textContent = patient.patient_id;
+            document.getElementById('quickPatientAge').textContent = `${patient.age} years old`;
+            document.getElementById('quickPatientSex').textContent = patient.sex;
+            document.getElementById('quickPatientContact').textContent = patient.contact || 'Not provided';
+            document.getElementById('quickPatientAddress').textContent = patient.address || 'Not provided';
+            
+            document.getElementById('quickViewFullBtn').href = `/patients/${patient.id}`;
+            document.getElementById('quickAddVisitBtn').href = `/visits/create?patient_id=${patient.id}`;
+            
+            document.getElementById('patientQuickModal').classList.add('active');
+            autocompleteResults.classList.remove('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePatientQuickModal() {
+            document.getElementById('patientQuickModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal on outside click
+        document.getElementById('patientQuickModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePatientQuickModal();
+            }
+        });
+
+        // Close modal on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePatientQuickModal();
+            }📋 View Full Record
+                </a>
+                <a id="quickAddVisitBtn" href="#" class="patient-quick-btn patient-quick-btn-secondary">
+                    🏥 Add Visit
+                </a>
+            </div>
         </div>
     </div>
 
