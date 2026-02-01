@@ -212,5 +212,8 @@ class DemoDataSeeder extends Seeder
         $this->command->info('- Maria Santos (BHC-2026-0001)');
         $this->command->info('- Juan Dela Cruz (BHC-2026-0002)');
         $this->command->info('- Baby Reyes (BHC-2026-0003)');
+        $this->command->info('- Ana Lopez (BHC-2026-0004)');
+        $this->command->info('- Pedro Martinez (BHC-2026-0005)');
+        $this->command->info('- Rosa Garcia (BHC-2026-0006)');
     }
 }

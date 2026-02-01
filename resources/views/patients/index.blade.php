@@ -747,7 +747,7 @@
             <div class="header-top">
                 <a href="{{ route('dashboard') }}" class="header-logo">
                     <div class="header-logo-icon">V</div>
-                    <div class="header-logo-text">VaxLog</div>
+                    <img src="/images/systemlogo.png" alt="CareSync" style="height: 35px; object-fit: contain;">
                 </a>
                 <button onclick="goBack()" class="btn-back">← Back</button>
                 <h1>Patient List</h1>

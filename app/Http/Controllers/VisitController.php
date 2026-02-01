@@ -53,6 +53,25 @@ class VisitController extends Controller
             'pulse_rate' => 'nullable|numeric|min:30|max:200',
             'weight' => 'nullable|numeric|min:0|max:500',
             'height' => 'nullable|numeric|min:0|max:300',
+            // Immunization fields
+            'vaccine_name' => 'required_if:service_type,Immunization|string|max:255',
+            'dose_number' => 'required_if:service_type,Immunization|string|max:50',
+            'batch_number' => 'nullable|string|max:100',
+            'next_dose_date' => 'nullable|date',
+            // Prenatal fields
+            'gestational_age' => 'required_if:service_type,Prenatal|integer|min:1|max:42',
+            'fundal_height' => 'nullable|numeric|min:0',
+            'fetal_heart_rate' => 'nullable|integer|min:0|max:200',
+            'presentation' => 'nullable|in:Cephalic,Breech,Transverse',
+            'prenatal_notes' => 'nullable|string',
+            // Family Planning fields
+            'fp_method' => 'required_if:service_type,Family Planning|string|max:255',
+            'fp_quantity' => 'nullable|string|max:100',
+            'fp_followup_date' => 'nullable|date',
+            // Referral fields
+            'referred_to' => 'required_if:service_type,Referral|string|max:255',
+            'referral_reason' => 'required_if:service_type,Referral|string|max:255',
+            'referral_urgency' => 'nullable|in:Routine,Urgent,Emergency',
         ]);
 
         DB::beginTransaction();
@@ -62,9 +81,74 @@ class VisitController extends Controller
                 'patient_id',
                 'service_type',
                 'chief_complaint',
-                'notes',
                 'health_worker',
             ]);
+            
+            // Build comprehensive notes from all sources
+            $allNotes = [];
+            if ($request->filled('notes')) {
+                $allNotes[] = $request->notes;
+            }
+            
+            // Add service-specific data to notes
+            if ($request->service_type === 'Immunization') {
+                $immunizationNotes = [
+                    "Vaccine: {$request->vaccine_name}",
+                    "Dose: {$request->dose_number}"
+                ];
+                if ($request->filled('batch_number')) {
+                    $immunizationNotes[] = "Batch: {$request->batch_number}";
+                }
+                if ($request->filled('next_dose_date')) {
+                    $immunizationNotes[] = "Next Dose: {$request->next_dose_date}";
+                }
+                $allNotes[] = "IMMUNIZATION:\n" . implode("\n", $immunizationNotes);
+            }
+            
+            if ($request->service_type === 'Prenatal') {
+                $prenatalNotes = [
+                    "Gestational Age: {$request->gestational_age} weeks"
+                ];
+                if ($request->filled('fundal_height')) {
+                    $prenatalNotes[] = "Fundal Height: {$request->fundal_height} cm";
+                }
+                if ($request->filled('fetal_heart_rate')) {
+                    $prenatalNotes[] = "FHR: {$request->fetal_heart_rate} bpm";
+                }
+                if ($request->filled('presentation')) {
+                    $prenatalNotes[] = "Presentation: {$request->presentation}";
+                }
+                if ($request->filled('prenatal_notes')) {
+                    $prenatalNotes[] = "Notes: {$request->prenatal_notes}";
+                }
+                $allNotes[] = "PRENATAL:\n" . implode("\n", $prenatalNotes);
+            }
+            
+            if ($request->service_type === 'Family Planning') {
+                $fpNotes = [
+                    "Method: {$request->fp_method}"
+                ];
+                if ($request->filled('fp_quantity')) {
+                    $fpNotes[] = "Quantity: {$request->fp_quantity}";
+                }
+                if ($request->filled('fp_followup_date')) {
+                    $fpNotes[] = "Follow-up: {$request->fp_followup_date}";
+                }
+                $allNotes[] = "FAMILY PLANNING:\n" . implode("\n", $fpNotes);
+            }
+            
+            if ($request->service_type === 'Referral') {
+                $referralNotes = [
+                    "Referred To: {$request->referred_to}",
+                    "Reason: {$request->referral_reason}"
+                ];
+                if ($request->filled('referral_urgency')) {
+                    $referralNotes[] = "Urgency: {$request->referral_urgency}";
+                }
+                $allNotes[] = "REFERRAL:\n" . implode("\n", $referralNotes);
+            }
+            
+            $visitData['notes'] = implode("\n\n", $allNotes);
             
             // Handle custom visit time if provided
             if ($request->filled('visit_date') && $request->filled('visit_time_input')) {
@@ -85,16 +169,44 @@ class VisitController extends Controller
                     'height' => $request->height,
                 ]);
             }
+            
+            // Create immunization record if service is immunization
+            if ($request->service_type === 'Immunization') {
+                \App\Models\Immunization::create([
+                    'patient_id' => $request->patient_id,
+                    'vaccine_name' => $request->vaccine_name,
+                    'dose_number' => $request->dose_number,
+                    'date_given' => $visitData['visit_time'] ?? now(),
+                    'next_dose_date' => $request->next_dose_date,
+                    'administered_by' => $request->health_worker,
+                    'notes' => $request->filled('batch_number') ? "Batch: {$request->batch_number}" : null,
+                ]);
+            }
+            
+            // Create prenatal record if service is prenatal
+            if ($request->service_type === 'Prenatal') {
+                \App\Models\PrenatalRecord::create([
+                    'patient_id' => $request->patient_id,
+                    'visit_date' => $visitData['visit_time'] ?? now(),
+                    'gestational_age' => $request->gestational_age,
+                    'blood_pressure' => $request->blood_pressure,
+                    'weight' => $request->weight,
+                    'fundal_height' => $request->fundal_height,
+                    'fetal_heart_rate' => $request->fetal_heart_rate,
+                    'presentation' => $request->presentation,
+                    'remarks' => $request->prenatal_notes,
+                ]);
+            }
 
             DB::commit();
 
             return redirect()
                 ->route('dashboard')
-                ->with('success', 'Appointment booked successfully!');
+                ->with('success', 'Visit recorded successfully!');
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->withErrors(['error' => 'Failed to book appointment: ' . $e->getMessage()])->withInput();
+            return back()->withErrors(['error' => 'Failed to record visit: ' . $e->getMessage()])->withInput();
         }
     }
 

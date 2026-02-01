@@ -410,7 +410,7 @@
 
         <div class="footer">
             <p><strong>Report generated on {{ now()->format('F d, Y h:i A') }}</strong></p>
-            <p>© 2026 VaxLog - Health Center Management System</p>
+            <p>© 2026 CareSync - Health Center Management System</p>
         </div>
     </div>
 

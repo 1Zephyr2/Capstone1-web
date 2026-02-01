@@ -17,10 +17,14 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'username' => 'testuser',
-            'email' => 'test@example.com',
+        User::create([
+            'name' => 'Admin User',
+            'username' => 'admin',
+            'email' => 'admin@caresync.local',
+            'password' => bcrypt('password'),
         ]);
+
+        // Seed demo patient data
+        $this->call(DemoDataSeeder::class);
     }
 }

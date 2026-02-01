@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patient Search - VaxLog</title>
+    <title>Patient Search - CareSync</title>
     <style>
         * {
             margin: 0;

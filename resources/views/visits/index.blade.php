@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Today's Visits - VaxLog</title>
+    <title>Today's Visits - CareSync</title>
     <style>
         * {
             margin: 0;
@@ -322,7 +322,7 @@
             <div class="header-top">
                 <a href="{{ route('dashboard') }}" class="header-logo">
                     <div class="header-logo-icon">V</div>
-                    <div class="header-logo-text">VaxLog</div>
+                    <img src="/images/systemlogo.png" alt="CareSync" style="height: 35px; object-fit: contain;">
                 </a>
                 <a href="{{ route('dashboard') }}" class="btn-back">← Back</a>
                 <h1>📋 Today's Visits</h1>

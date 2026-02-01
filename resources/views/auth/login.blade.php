@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VaxLog - Login</title>
+    <link rel="icon" href="/favicon.ico?v={{ time() }}">
+    <title>CareSync - Login</title>
     <style>
         * {
             margin: 0;
@@ -13,21 +14,75 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 50%, #e0f2fe 100%);
             min-height: 100vh;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        .login-wrapper {
+            display: flex;
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        .login-left {
+            flex: 0 0 45%;
+            background: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 40px;
         }
 
         .login-container {
-            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 420px;
+            max-width: 450px;
             padding: 40px;
+        }
+
+        .login-right {
+            flex: 1;
+            background: url('/images/login_bg.jpg') center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-right::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(16, 185, 129, 0.6);
+            z-index: 0;
+        }
+
+        .background-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: white;
+            padding: 40px;
+        }
+
+        .background-content h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .background-content p {
+            font-size: 20px;
+            opacity: 1;
+            line-height: 1.6;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+            font-weight: 500;
         }
 
         .login-header {
@@ -36,17 +91,18 @@
         }
 
         .logo {
-            width: 80px;
-            height: 80px;
+            width: 150px;
+            height: 150px;
             margin: 0 auto 20px;
-            background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%);
-            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 36px;
-            color: white;
-            font-weight: bold;
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         .login-header h1 {
@@ -179,7 +235,20 @@
             font-size: 13px;
         }
 
-        @media (max-width: 480px) {
+        @media (max-width: 768px) {
+            .login-wrapper {
+                flex-direction: column;
+            }
+
+            .login-left {
+                flex: 1;
+                padding: 20px;
+            }
+
+            .login-right {
+                display: none;
+            }
+
             .login-container {
                 padding: 30px 24px;
             }
@@ -191,69 +260,83 @@
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-header">
-            <div class="logo">V</div>
-            <h1>VaxLog</h1>
-            <p>Health Center Management System</p>
+    <div class="login-wrapper">
+        <!-- Left Side - Login Form -->
+        <div class="login-left">
+            <div class="login-container">
+                <div class="login-header">
+                    <div class="logo"><img src="/images/systemlogo.png" alt="CareSync Logo"></div>
+                    <h1>CareSync</h1>
+                    <p>Health Center Management System</p>
+                </div>
+
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <strong>Error:</strong> {{ $errors->first() }}
+                    </div>
+                @endif
+
+                @if (session('status'))
+                    <div class="alert alert-success">
+                        {{ session('status') }}
+                    </div>
+                @endif
+
+                <form method="POST" action="{{ route('login') }}">
+                    @csrf
+
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <div class="input-wrapper">
+                            <input 
+                                type="text" 
+                                id="username" 
+                                name="username" 
+                                value="{{ old('username') }}" 
+                                required 
+                                autofocus
+                                placeholder="Enter your username"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-wrapper">
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                required
+                                placeholder="Enter your password"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="remember" name="remember">
+                            <label for="remember" class="checkbox-label">Remember Me</label>
+                        </div>
+                        <a href="{{ route('password.request') }}" class="forgot-link">Forgot Password?</a>
+                    </div>
+
+                    <button type="submit" class="btn-login">Login</button>
+                </form>
+
+                <div class="footer-text">
+                    &copy; {{ date('Y') }} CareSync. Designed for Health Center Staff.
+                </div>
+            </div>
         </div>
 
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <strong>Error:</strong> {{ $errors->first() }}
+        <!-- Right Side - Background -->
+        <div class="login-right">
+            <div class="background-content">
+                <h2>Welcome to CareSync</h2>
+                <p>Streamlining health center operations<br>
+                for better patient care and efficient record management.</p>
             </div>
-        @endif
-
-        @if (session('status'))
-            <div class="alert alert-success">
-                {{ session('status') }}
-            </div>
-        @endif
-
-        <form method="POST" action="{{ route('login') }}">
-            @csrf
-
-            <div class="form-group">
-                <label for="username">Username</label>
-                <div class="input-wrapper">
-                    <input 
-                        type="text" 
-                        id="username" 
-                        name="username" 
-                        value="{{ old('username') }}" 
-                        required 
-                        autofocus
-                        placeholder="Enter your username"
-                    >
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="password">Password</label>
-                <div class="input-wrapper">
-                    <input 
-                        type="password" 
-                        id="password" 
-                        name="password" 
-                        required
-                        placeholder="Enter your password"
-                    >
-                </div>
-            </div>
-
-            <div class="checkbox-group">
-                <div class="checkbox-wrapper">
-                    <input type="checkbox" id="remember" name="remember">
-                    <label for="remember" class="checkbox-label">Remember Me</label>
-                </div>
-                <a href="{{ route('password.request') }}" class="forgot-link">Forgot Password?</a>
-            </div>
-
-            <button type="submit" class="btn-login">Login</button>
-        </form>
-
-        <div class="footer-text">
-            &copy; {{ date('Y') }} VaxLog. Designed for Health Center Staff.
         </div>
     </div>
 </body>

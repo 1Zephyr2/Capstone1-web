@@ -23,9 +23,7 @@ Route::get('/password/reset', function () {
 })->name('password.request');
 
 // Dashboard (protected route)
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware('auth')->name('dashboard');
+Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 
 // Protected routes group
 Route::middleware('auth')->group(function () {
@@ -110,8 +108,6 @@ Route::middleware('auth')->group(function () {
     })->name('general.checkup');
 
     // Tools Routes
-    Route::get('/ai-support', function () {
-        return view('ai-support');
-    })->name('ai.support');
+    Route::get('/automation-support', [\App\Http\Controllers\AutomationController::class, 'index'])->name('automation.support');
 });
 

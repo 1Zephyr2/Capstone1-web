@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - VaxLog</title>
+    <link rel="icon" href="/favicon.ico?v={{ time() }}">
+    <title>Dashboard - CareSync</title>
     <style>
         * {
             margin: 0;
@@ -71,7 +72,8 @@
         .sidebar-subtitle {
             font-size: 12px;
             opacity: 0.9;
-            padding-left: 52px;
+            padding-left: 0;
+            text-align: left;
         }
 
         .sidebar-menu {
@@ -408,6 +410,114 @@
             font-weight: 400;
         }
 
+        /* AI Alerts Summary */
+        .alerts-summary-section {
+            margin-bottom: 32px;
+        }
+
+        .alerts-summary-card {
+            background: #FFFFFF;
+            border-radius: 14px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+            border: 1px solid #E5E7EB;
+            border-top: 4px solid #f97316;
+        }
+
+        .alerts-summary-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .view-all-btn {
+            background: #f97316;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .view-all-btn:hover {
+            background: #ea580c;
+            transform: translateX(2px);
+        }
+
+        .alerts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .alert-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            border-radius: 10px;
+            border: 1px solid;
+            transition: all 0.2s ease;
+        }
+
+        .alert-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .alert-warning {
+            background: #fef3c7;
+            border-color: #fbbf24;
+        }
+
+        .alert-danger {
+            background: #fee2e2;
+            border-color: #ef4444;
+        }
+
+        .alert-info {
+            background: #dbeafe;
+            border-color: #3b82f6;
+        }
+
+        .alert-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .alert-content {
+            flex: 1;
+        }
+
+        .alert-content h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #111827;
+            margin: 0 0 4px 0;
+        }
+
+        .alert-content p {
+            font-size: 13px;
+            color: #6b7280;
+            margin: 0;
+        }
+
+        .alert-badge {
+            background: #1f2937;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
         /* Statistics Cards */
         .stats-grid {
             display: grid;
@@ -720,7 +830,7 @@
 
         /* Floating AI Button */
         .floating-ai-button {
-            position: fixed;
+            position: fixed !important;
             bottom: 24px;
             right: 24px;
             width: 75px;
@@ -746,6 +856,24 @@
 
         .floating-ai-button:active {
             transform: scale(0.95);
+        }
+
+        .ai-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            border: 2px solid white;
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
         }
 
         /* AI Modal */
@@ -1488,9 +1616,9 @@
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <a href="{{ route('dashboard') }}" class="logo-container">
-                <div class="logo-icon">V</div>
-                <div class="logo-text">VaxLog</div>
+                <img src="/images/systemlogo.png" alt="CareSync" style="height: 70px; object-fit: contain; display: block; margin: 0;">
             </a>
+            <div style="font-size: 18px; font-weight: 600; color: white; margin-bottom: 4px;">CareSync</div>
             <div class="sidebar-subtitle">Health Center System</div>
         </div>
 
@@ -1533,9 +1661,9 @@
                     <span class="menu-icon">📊</span>
                     <span class="menu-text">Monthly Reports</span>
                 </a>
-                <a href="{{ route('ai.support') }}" class="menu-item">
+                <a href="{{ route('automation.support') }}" class="menu-item">
                     <span class="menu-icon">🤖</span>
-                    <span class="menu-text">AI Support</span>
+                    <span class="menu-text">Automation Support</span>
                 </a>
             </div>
         </nav>
@@ -1546,7 +1674,7 @@
         <!-- Top Navigation -->
         <header class="top-nav">
             <div class="top-nav-left">
-                <h1>Good {{ date('A') === 'AM' ? 'Morning' : 'Afternoon' }}, {{ Auth::user()->name }}!</h1>
+                <h1>Welcome back, {{ Auth::user()->name }}!</h1>
                 <p>{{ date('l, F j, Y') }}</p>
             </div>
             <div class="top-nav-right">
@@ -1598,6 +1726,33 @@
                     </div>
                 </div>
             </div>
+
+            <!-- AI Alerts Summary (only show if there are alerts) -->
+            @if(isset($totalAlerts) && $totalAlerts > 0)
+            <div class="alerts-summary-section">
+                <div class="alerts-summary-card">
+                    <div class="alerts-summary-header">
+                        <div>
+                            <h2 style="margin: 0; font-size: 20px; color: #1f2937;">🤖 Automation Support Alerts</h2>
+                            <p style="margin: 4px 0 0 0; font-size: 14px; color: #6b7280;">{{ $totalAlerts }} active alert(s) requiring attention</p>
+                        </div>
+                        <a href="{{ route('automation.support') }}" class="view-all-btn">View All →</a>
+                    </div>
+                    <div class="alerts-grid">
+                        @foreach($topAlerts as $alert)
+                        <div class="alert-item alert-{{ $alert['type'] }}">
+                            <div class="alert-icon">{{ $alert['icon'] }}</div>
+                            <div class="alert-content">
+                                <h4>{{ $alert['title'] }}</h4>
+                                <p>{{ $alert['message'] }}</p>
+                            </div>
+                            <div class="alert-badge">{{ $alert['count'] }}</div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+            @endif
 
             <!-- Statistics -->
             <div class="stats-grid">
@@ -1703,10 +1858,13 @@
         </main>
     </div>
 
-    <!-- Floating AI Assistant Button -->
-    <button class="floating-ai-button" onclick="openModal('ai')" title="AI Assistant">
+    <!-- Floating Automation Support Button -->
+    <a href="{{ route('automation.support') }}" class="floating-ai-button" title="Automation Support">
         🤖
-    </button>
+        @if(isset($totalAlerts) && $totalAlerts > 0)
+        <span class="ai-badge">{{ $totalAlerts > 9 ? '9+' : $totalAlerts }}</span>
+        @endif
+    </a>
 
     <!-- New Patient Modal -->
     <div id="newPatientModal" class="ai-modal" onclick="closeModalOnBackdrop(event, 'newPatient')">
@@ -1810,16 +1968,18 @@
                     @csrf
                     
                     <!-- Patient Selection -->
-                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <div style="display: flex; flex-direction: column; gap: 8px; position: relative;">
                         <label style="font-weight: 600; color: #374151; font-size: 14px;">
                             Patient <span style="color: #dc2626;">*</span>
                         </label>
-                        <select name="patient_id" id="appointmentPatient" required style="padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px;">
-                            <option value="">Select a patient</option>
-                            @foreach(\App\Models\Patient::orderBy('last_name')->get() as $patient)
-                                <option value="{{ $patient->id }}">{{ $patient->full_name }} ({{ $patient->patient_id }})</option>
-                            @endforeach
-                        </select>
+                        <input type="text" id="appointmentPatientSearch" placeholder="🔍 Search patient by name or ID..." autocomplete="off" style="padding: 10px 12px; border: 2px solid #d1d5db; border-radius: 6px; font-size: 14px;">
+                        <input type="hidden" name="patient_id" id="appointmentPatientId" required>
+                        <div id="appointmentSearchResults" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #d1d5db; border-radius: 6px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-height: 200px; overflow-y: auto; z-index: 1000; margin-top: 4px;">
+                        </div>
+                        <div id="selectedPatientDisplay" style="display: none; padding: 10px; background: #f0fdf4; border: 1px solid #10b981; border-radius: 6px; font-size: 13px;">
+                            <strong id="selectedPatientName" style="color: #047857;"></strong>
+                            <button type="button" onclick="clearAppointmentPatient()" style="float: right; background: #dc2626; color: white; border: none; padding: 2px 8px; border-radius: 4px; font-size: 11px; cursor: pointer;">Change</button>
+                        </div>
                     </div>
 
                     <!-- Date and Time -->
@@ -1843,7 +2003,7 @@
                         <label style="font-weight: 600; color: #374151; font-size: 14px;">
                             Service Type <span style="color: #dc2626;">*</span>
                         </label>
-                        <select name="service_type" required style="padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px;">
+                        <select name="service_type" id="appointmentServiceType" required style="padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px;">
                             <option value="">Select service</option>
                             <option value="General Checkup">General Checkup</option>
                             <option value="Immunization">Immunization</option>
@@ -1853,6 +2013,87 @@
                             <option value="Health Education">Health Education</option>
                             <option value="Other">Other</option>
                         </select>
+                    </div>
+
+                    <!-- Immunization Section -->
+                    <div id="appointmentImmunization" style="display: none; background: #f0f9ff; padding: 16px; border-radius: 8px; gap: 12px; flex-direction: column;">
+                        <h4 style="margin: 0 0 12px 0; color: #1e40af; font-size: 14px;">Immunization Details</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div style="display: flex; flex-direction: column; gap: 6px;">
+                                <label style="font-weight: 500; color: #374151; font-size: 13px;">Vaccine</label>
+                                <select name="vaccine_name" style="padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px;">
+                                    <option value="">Select vaccine</option>
+                                    <option value="BCG">BCG</option>
+                                    <option value="Hepatitis B">Hepatitis B</option>
+                                    <option value="Pentavalent">Pentavalent</option>
+                                    <option value="OPV">OPV</option>
+                                    <option value="PCV">PCV</option>
+                                    <option value="MMR">MMR</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 6px;">
+                                <label style="font-weight: 500; color: #374151; font-size: 13px;">Dose</label>
+                                <select name="dose_number" style="padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px;">
+                                    <option value="">Select dose</option>
+                                    <option value="1st Dose">1st Dose</option>
+                                    <option value="2nd Dose">2nd Dose</option>
+                                    <option value="3rd Dose">3rd Dose</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Prenatal Section -->
+                    <div id="appointmentPrenatal" style="display: none; background: #fef3c7; padding: 16px; border-radius: 8px; gap: 12px; flex-direction: column;">
+                        <h4 style="margin: 0 0 12px 0; color: #92400e; font-size: 14px;">Prenatal Care Details</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div style="display: flex; flex-direction: column; gap: 6px;">
+                                <label style="font-weight: 500; color: #374151; font-size: 13px;">Gestational Age (weeks)</label>
+                                <input type="number" name="gestational_age" min="1" max="42" placeholder="e.g., 28" style="padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px;">
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 6px;">
+                                <label style="font-weight: 500; color: #374151; font-size: 13px;">Presentation</label>
+                                <select name="presentation" style="padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px;">
+                                    <option value="">Select</option>
+                                    <option value="Cephalic">Cephalic</option>
+                                    <option value="Breech">Breech</option>
+                                    <option value="Transverse">Transverse</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Family Planning Section -->
+                    <div id="appointmentFP" style="display: none; background: #f0fdf4; padding: 16px; border-radius: 8px; gap: 12px; flex-direction: column;">
+                        <h4 style="margin: 0 0 12px 0; color: #166534; font-size: 14px;">Family Planning Details</h4>
+                        <div style="display: flex; flex-direction: column; gap: 6px;">
+                            <label style="font-weight: 500; color: #374151; font-size: 13px;">Method</label>
+                            <select name="fp_method" style="padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px;">
+                                <option value="">Select method</option>
+                                <option value="Pills">Pills</option>
+                                <option value="Condoms">Condoms</option>
+                                <option value="Injectable">Injectable</option>
+                                <option value="IUD">IUD</option>
+                                <option value="Implant">Implant</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Referral Section -->
+                    <div id="appointmentReferral" style="display: none; background: #fef2f2; padding: 16px; border-radius: 8px; gap: 12px; flex-direction: column;">
+                        <h4 style="margin: 0 0 12px 0; color: #991b1b; font-size: 14px;">Referral Details</h4>
+                        <div style="display: flex; flex-direction: column; gap: 6px;">
+                            <label style="font-weight: 500; color: #374151; font-size: 13px;">Referred To</label>
+                            <input type="text" name="referred_to" placeholder="Hospital/Clinic name" style="padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 6px;">
+                            <label style="font-weight: 500; color: #374151; font-size: 13px;">Urgency</label>
+                            <select name="referral_urgency" style="padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px;">
+                                <option value="Routine">Routine</option>
+                                <option value="Urgent">Urgent</option>
+                                <option value="Emergency">Emergency</option>
+                            </select>
+                        </div>
                     </div>
 
                     <!-- Chief Complaint / Reason -->
@@ -3242,6 +3483,112 @@ Registered: ${new Date(patient.registeredDate).toLocaleString()}
         }
 
         // Initialize search when modal opens
+        
+        // Appointment booking - Service type handler
+        document.addEventListener('DOMContentLoaded', function() {
+            const appointmentServiceType = document.getElementById('appointmentServiceType');
+            if (appointmentServiceType) {
+                appointmentServiceType.addEventListener('change', function() {
+                    const immunizationSection = document.getElementById('appointmentImmunization');
+                    const prenatalSection = document.getElementById('appointmentPrenatal');
+                    const fpSection = document.getElementById('appointmentFP');
+                    const referralSection = document.getElementById('appointmentReferral');
+                    
+                    // Hide all sections
+                    immunizationSection.style.display = 'none';
+                    prenatalSection.style.display = 'none';
+                    fpSection.style.display = 'none';
+                    referralSection.style.display = 'none';
+                    
+                    // Remove required attributes
+                    document.querySelectorAll('#appointmentImmunization input, #appointmentImmunization select, #appointmentPrenatal input, #appointmentPrenatal select, #appointmentFP input, #appointmentFP select, #appointmentReferral input, #appointmentReferral select').forEach(field => {
+                        field.removeAttribute('required');
+                    });
+                    
+                    // Show relevant section and set required
+                    if (this.value === 'Immunization') {
+                        immunizationSection.style.display = 'flex';
+                        immunizationSection.querySelector('[name="vaccine_name"]').setAttribute('required', 'required');
+                        immunizationSection.querySelector('[name="dose_number"]').setAttribute('required', 'required');
+                    } else if (this.value === 'Prenatal') {
+                        prenatalSection.style.display = 'flex';
+                        prenatalSection.querySelector('[name="gestational_age"]').setAttribute('required', 'required');
+                    } else if (this.value === 'Family Planning') {
+                        fpSection.style.display = 'flex';
+                        fpSection.querySelector('[name="fp_method"]').setAttribute('required', 'required');
+                    } else if (this.value === 'Referral') {
+                        referralSection.style.display = 'flex';
+                        referralSection.querySelector('[name="referred_to"]').setAttribute('required', 'required');
+                    }
+                });
+            }
+            
+            // Appointment patient search
+            const appointmentSearchInput = document.getElementById('appointmentPatientSearch');
+            const appointmentSearchResults = document.getElementById('appointmentSearchResults');
+            const appointmentPatientId = document.getElementById('appointmentPatientId');
+            const selectedPatientDisplay = document.getElementById('selectedPatientDisplay');
+            const selectedPatientName = document.getElementById('selectedPatientName');
+            let searchTimeout;
+            
+            if (appointmentSearchInput) {
+                appointmentSearchInput.addEventListener('input', function() {
+                    clearTimeout(searchTimeout);
+                    const query = this.value.trim();
+                    
+                    if (query.length < 2) {
+                        appointmentSearchResults.style.display = 'none';
+                        return;
+                    }
+                    
+                    searchTimeout = setTimeout(() => {
+                        fetch(`/api/patients/search?q=${encodeURIComponent(query)}`)
+                            .then(res => res.json())
+                            .then(patients => {
+                                if (patients.length > 0) {
+                                    displayAppointmentResults(patients);
+                                } else {
+                                    appointmentSearchResults.innerHTML = '<div style="padding: 12px; color: #6b7280; text-align: center;">No patients found</div>';
+                                    appointmentSearchResults.style.display = 'block';
+                                }
+                            })
+                            .catch(err => console.error('Search error:', err));
+                    }, 300);
+                });
+                
+                // Hide results when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!e.target.closest('#appointmentPatientSearch') && !e.target.closest('#appointmentSearchResults')) {
+                        appointmentSearchResults.style.display = 'none';
+                    }
+                });
+            }
+            
+            function displayAppointmentResults(patients) {
+                appointmentSearchResults.innerHTML = patients.map(patient => `
+                    <div onclick="selectAppointmentPatient(${patient.id}, '${patient.full_name}', '${patient.patient_id}')" style="padding: 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; transition: background 0.2s;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='white'">
+                        <strong style="color: #047857; display: block;">${patient.full_name}</strong>
+                        <small style="color: #6b7280; font-size: 12px;">ID: ${patient.patient_id} | ${patient.sex} | ${patient.age} yrs</small>
+                    </div>
+                `).join('');
+                appointmentSearchResults.style.display = 'block';
+            }
+            
+            window.selectAppointmentPatient = function(id, name, patientId) {
+                appointmentPatientId.value = id;
+                selectedPatientName.textContent = `${name} (${patientId})`;
+                appointmentSearchInput.style.display = 'none';
+                selectedPatientDisplay.style.display = 'block';
+                appointmentSearchResults.style.display = 'none';
+            };
+            
+            window.clearAppointmentPatient = function() {
+                appointmentPatientId.value = '';
+                appointmentSearchInput.value = '';
+                appointmentSearchInput.style.display = 'block';
+                selectedPatientDisplay.style.display = 'none';
+            };
+        });
     </script>
 </body>
 </html>

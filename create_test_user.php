@@ -8,7 +8,7 @@ $app->make('Illuminate\Contracts\Console\Kernel')->bootstrap();
 use App\Models\User;
 
 // Update existing user with username or create new one
-$user = User::where('email', 'admin@vaxlog.local')->first();
+$user = User::where('email', 'admin@caresync.local')->first();
 
 if ($user) {
     $user->username = 'admin';
@@ -18,7 +18,7 @@ if ($user) {
     $user = User::create([
         'name' => 'Admin User',
         'username' => 'admin',
-        'email' => 'admin@vaxlog.local',
+        'email' => 'admin@caresync.local',
         'password' => bcrypt('password123'),
     ]);
     echo "New user created successfully!\n";

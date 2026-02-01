@@ -32,7 +32,7 @@ class PatientController extends Controller
      */
     public function search(Request $request)
     {
-        $term = $request->get('term', '');
+        $term = $request->get('q', $request->get('term', ''));
         
         if (strlen($term) < 2) {
             return response()->json([]);
@@ -45,10 +45,19 @@ class PatientController extends Controller
                 return [
                     'id' => $patient->id,
                     'patient_id' => $patient->patient_id,
+                    'full_name' => $patient->full_name,
                     'name' => $patient->full_name,
                     'age' => $patient->age,
                     'sex' => $patient->sex,
                     'contact' => $patient->contact_number,
+                    'address' => $patient->address,
+                    'birthdate' => $patient->birthdate,
+                    'first_name' => $patient->first_name,
+                    'last_name' => $patient->last_name,
+                    'middle_name' => $patient->middle_name,
+                    'philhealth_number' => $patient->philhealth_number,
+                    'emergency_contact_name' => $patient->emergency_contact_name,
+                    'emergency_contact_number' => $patient->emergency_contact_number,
                 ];
             });
 
