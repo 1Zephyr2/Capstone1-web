@@ -1661,6 +1661,10 @@
                     <span class="menu-icon">📊</span>
                     <span class="menu-text">Monthly Reports</span>
                 </a>
+                <a href="{{ route('analytics.index') }}" class="menu-item">
+                    <span class="menu-icon">🔍</span>
+                    <span class="menu-text">Data Analytics</span>
+                </a>
                 <a href="{{ route('automation.support') }}" class="menu-item">
                     <span class="menu-icon">🤖</span>
                     <span class="menu-text">Automation Support</span>

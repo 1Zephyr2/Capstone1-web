@@ -109,5 +109,6 @@ Route::middleware('auth')->group(function () {
 
     // Tools Routes
     Route::get('/automation-support', [\App\Http\Controllers\AutomationController::class, 'index'])->name('automation.support');
+    Route::get('/analytics', [\App\Http\Controllers\AnalyticsController::class, 'index'])->name('analytics.index');
 });
 

@@ -83,7 +83,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🤰 Prenatal Care</h1>
+            <h1>Prenatal Care</h1>
             <a href="{{ route('dashboard') }}" class="back-btn">← Back to Dashboard</a>
         </div>
 

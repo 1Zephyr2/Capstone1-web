@@ -210,7 +210,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>💉 Immunization Records</h1>
+            <h1>Immunization Records</h1>
             <a href="{{ route('dashboard') }}" class="back-btn">← Back to Dashboard</a>
         </div>
 
