@@ -445,9 +445,9 @@
                 @endforelse
             </div>
 
-            <!-- Overdue Immunizations -->
+            <!-- Due for Follow Up -->
             <div class="alert-card">
-                <h2>💉 Overdue Immunizations<span class="badge danger">{{ $overdueImmunizations->count() }}</span></h2>
+                <h2>💉 Due for Follow Up<span class="badge danger">{{ $overdueImmunizations->count() }}</span></h2>
                 @forelse($overdueImmunizations as $immunization)
                     <div class="alert-item danger" onclick="showPatientModal({{ json_encode($immunization->patient) }}, 'immunization', '{{ $immunization->vaccine_name }}', '{{ Carbon\Carbon::parse($immunization->next_dose_date)->format('M d, Y') }}')">
                         <strong>{{ $immunization->patient->full_name }}</strong>

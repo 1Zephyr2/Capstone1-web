@@ -299,5 +299,40 @@ class VisitController extends Controller
             ->route('patients.show', $patientId)
             ->with('success', 'Visit deleted successfully.');
     }
+
+    /**
+     * Display calendar view
+     */
+    public function calendar()
+    {
+        return view('visits.calendar');
+    }
+
+    /**
+     * Get visits for a specific date (AJAX endpoint)
+     */
+    public function getVisitsByDate(Request $request)
+    {
+        $date = $request->get('date');
+        
+        $visits = Visit::with(['patient', 'vitalSigns'])
+            ->whereDate('visit_date', $date)
+            ->orderBy('visit_time', 'asc')
+            ->get();
+
+        return response()->json([
+            'visits' => $visits->map(function($visit) {
+                return [
+                    'id' => $visit->id,
+                    'patient_name' => $visit->patient->name,
+                    'service_type' => $visit->service_type,
+                    'visit_time' => \Carbon\Carbon::parse($visit->visit_time)->format('h:i A'),
+                    'chief_complaint' => $visit->chief_complaint,
+                    'status' => $visit->visit_date == now()->toDateString() && 
+                               \Carbon\Carbon::parse($visit->visit_time)->isPast() ? 'CONFIRMED' : 'PENDING'
+                ];
+            })
+        ]);
+    }
 }
 

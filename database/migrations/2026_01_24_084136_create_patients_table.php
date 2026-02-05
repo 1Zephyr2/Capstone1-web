@@ -24,6 +24,8 @@ return new class extends Migration
             $table->string('philhealth_number')->nullable();
             $table->string('emergency_contact_name')->nullable();
             $table->string('emergency_contact_number')->nullable();
+            $table->string('secondary_contact_name')->nullable();
+            $table->string('secondary_contact_number')->nullable();
             $table->timestamps();
             $table->softDeletes();
             

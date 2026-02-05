@@ -333,20 +333,44 @@
 
         <div class="stats">
             <div class="stat-card">
-                <div class="stat-value">{{ $visits->count() }}</div>
+                <div class="stat-value" id="totalVisitsToday">0</div>
                 <div class="stat-label">Total Visits Today</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value">{{ $visits->where('service_type', 'General Checkup')->count() }}</div>
+                <div class="stat-value" id="totalAbsentToday">0</div>
+                <div class="stat-label">Absent Today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="generalCheckupsToday">0</div>
                 <div class="stat-label">General Checkups</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value">{{ $visits->where('service_type', 'Immunization')->count() }}</div>
+                <div class="stat-value" id="immunizationsToday">0</div>
                 <div class="stat-label">Immunizations</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value">{{ $visits->where('service_type', 'Prenatal')->count() }}</div>
+                <div class="stat-value" id="prenatalCareToday">0</div>
                 <div class="stat-label">Prenatal Care</div>
+            </div>
+        </div>
+
+        <!-- Appointment Attendance Section -->
+        <div style="background: white; padding: 24px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #e5e7eb; padding-bottom: 12px;">
+                <h2 style="color: #047857; font-size: 20px; margin: 0;">📋 Today's Appointments Attendance</h2>
+                <div style="display: flex; gap: 12px; align-items: center;">
+                    <button onclick="resetAllAttendance()" style="padding: 8px 16px; background: #6b7280; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.2s;" onmouseover="this.style.background='#4b5563'" onmouseout="this.style.background='#6b7280'">
+                        🔄 Reset All
+                    </button>
+                    <div id="currentDateDisplay" style="font-size: 14px; color: #6b7280;"></div>
+                </div>
+            </div>
+            
+            <div id="appointmentAttendanceList">
+                <div style="text-align: center; padding: 40px; color: #9ca3af;">
+                    <div style="font-size: 48px; margin-bottom: 16px;">⏳</div>
+                    <div style="font-size: 16px; font-weight: 600; color: #6b7280;">Loading appointments...</div>
+                </div>
             </div>
         </div>
 
@@ -508,6 +532,148 @@
             if (e.target === this) {
                 closeVisitModal();
             }
+        });
+
+        // Appointment Attendance System
+        const appointmentsData = {
+            '2026-02-05': [
+                { time: '11:00 AM', patient: 'Ana M. Lopez', type: 'Follow-up Visit', id: 4 },
+                { time: '01:00 PM', patient: 'Pedro R. Martinez', type: 'General Checkup', id: 5 },
+                { time: '02:30 PM', patient: 'Rosa T. Garcia', type: 'Vaccination', id: 6 }
+            ],
+            '2026-02-06': [
+                { time: '09:00 AM', patient: 'Carlos J. Fernandez', type: 'General Checkup', id: 7 },
+                { time: '10:30 AM', patient: 'Linda P. Gonzales', type: 'Prenatal Care', id: 8 },
+                { time: '02:00 PM', patient: 'Miguel A. Torres', type: 'Follow-up Visit', id: 9 }
+            ],
+            '2026-02-07': [
+                { time: '08:30 AM', patient: 'Sofia R. Mendoza', type: 'Immunization', id: 10 },
+                { time: '11:00 AM', patient: 'Roberto L. Cruz', type: 'General Checkup', id: 11 },
+                { time: '01:30 PM', patient: 'Elena M. Ramos', type: 'Vaccination', id: 12 },
+                { time: '03:00 PM', patient: 'Diego S. Alvarez', type: 'Follow-up Visit', id: 13 }
+            ],
+            '2026-02-08': [
+                { time: '09:00 AM', patient: 'Carmen V. Diaz', type: 'Prenatal Care', id: 14 },
+                { time: '10:00 AM', patient: 'Fernando N. Morales', type: 'General Checkup', id: 15 },
+                { time: '02:30 PM', patient: 'Isabella C. Santos', type: 'Immunization', id: 16 }
+            ]
+        };
+
+        function loadTodayAppointments() {
+            const today = new Date(2026, 1, 5); // Hardcoded to Feb 5, 2026
+            const dateStr = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+            const appointments = appointmentsData[dateStr] || [];
+            
+            const container = document.getElementById('appointmentAttendanceList');
+            
+            if (appointments.length === 0) {
+                container.innerHTML = '<div style="text-align:center;padding:40px;color:#9ca3af;"><div style="font-size:48px;margin-bottom:16px;">📅</div><div style="font-size:16px;font-weight:600;color:#6b7280;">No appointments scheduled for today</div></div>';
+            } else {
+                container.innerHTML = '<div style="display:grid;gap:12px;">' + appointments.map(apt => 
+                    '<div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:16px;display:flex;justify-content:space-between;align-items:center;" id="apt-' + apt.id + '">' +
+                        '<div style="flex:1;">' +
+                            '<div style="font-weight:600;color:#111827;font-size:15px;margin-bottom:4px;">' + apt.patient + '</div>' +
+                            '<div style="display:flex;gap:12px;font-size:13px;color:#6b7280;"><span>🕐 ' + apt.time + '</span><span>• ' + apt.type + '</span></div>' +
+                        '</div>' +
+                        '<div style="display:flex;gap:8px;align-items:center;">' +
+                            '<div id="status-' + apt.id + '" style="min-width:100px;text-align:center;"></div>' +
+                            '<div id="buttons-' + apt.id + '" style="display:flex;gap:8px;">' +
+                                '<button onclick="markAppointmentAttendance(' + apt.id + ',\'attended\')" style="padding:8px 16px;background:#10b981;color:white;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;transition:all 0.2s;" onmouseover="this.style.background=\'#059669\'" onmouseout="this.style.background=\'#10b981\'">✓ Attended</button>' +
+                                '<button onclick="markAppointmentAttendance(' + apt.id + ',\'absent\')" style="padding:8px 16px;background:#ef4444;color:white;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;transition:all 0.2s;" onmouseover="this.style.background=\'#dc2626\'" onmouseout="this.style.background=\'#ef4444\'">✕ Absent</button>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>'
+                ).join('') + '</div>';
+                
+                appointments.forEach(apt => {
+                    const savedStatus = localStorage.getItem('apt-status-' + apt.id);
+                    if (savedStatus) updateAppointmentStatus(apt.id, savedStatus);
+                });
+            }
+        }
+
+        function markAppointmentAttendance(aptId, status) {
+            localStorage.setItem('apt-status-' + aptId, status);
+            updateAppointmentStatus(aptId, status);
+            updateVisitStats(); // Update stats when attendance is marked
+        }
+
+        function updateAppointmentStatus(aptId, status) {
+            const statusDiv = document.getElementById('status-' + aptId);
+            const buttonsDiv = document.getElementById('buttons-' + aptId);
+            if (status === 'attended') {
+                statusDiv.innerHTML = '<span style="display:inline-block;padding:6px 12px;background:#d1fae5;color:#065f46;border-radius:6px;font-size:13px;font-weight:600;">✓ Attended</span>';
+                buttonsDiv.style.display = 'none';
+            } else if (status === 'absent') {
+                statusDiv.innerHTML = '<span style="display:inline-block;padding:6px 12px;background:#fee2e2;color:#991b1b;border-radius:6px;font-size:13px;font-weight:600;">✕ Absent</span>';
+                buttonsDiv.style.display = 'none';
+            }
+        }
+
+        function updateVisitStats() {
+            console.log('=== Updating Visit Stats ===');
+            const today = new Date(2026, 1, 5); // Hardcoded to Feb 5, 2026
+            const dateStr = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+            const appointments = appointmentsData[dateStr] || [];
+            console.log('Date:', dateStr, 'Appointments:', appointments.length);
+            
+            let totalAttended = 0;
+            let totalAbsent = 0;
+            let generalCheckups = 0;
+            let immunizations = 0;
+            let prenatalCare = 0;
+            
+            appointments.forEach(apt => {
+                const storageKey = 'apt-status-' + apt.id;
+                const status = localStorage.getItem(storageKey);
+                console.log('Checking appointment', apt.id, ':', storageKey, '=', status);
+                
+                if (status === 'attended') {
+                    totalAttended++;
+                    
+                    // Count by type
+                    if (apt.type.includes('General Checkup') || apt.type.includes('Checkup')) {
+                        generalCheckups++;
+                    } else if (apt.type.includes('Immunization') || apt.type.includes('Vaccination')) {
+                        immunizations++;
+                    } else if (apt.type.includes('Prenatal')) {
+                        prenatalCare++;
+                    }
+                } else if (status === 'absent') {
+                    totalAbsent++;
+                }
+            });
+            
+            console.log('Stats - Attended:', totalAttended, 'Absent:', totalAbsent, 'General:', generalCheckups, 'Immunizations:', immunizations, 'Prenatal:', prenatalCare);
+            
+            document.getElementById('totalVisitsToday').textContent = totalAttended;
+            document.getElementById('totalAbsentToday').textContent = totalAbsent;
+            document.getElementById('generalCheckupsToday').textContent = generalCheckups;
+            document.getElementById('immunizationsToday').textContent = immunizations;
+            document.getElementById('prenatalCareToday').textContent = prenatalCare;
+        }
+
+        function resetAllAttendance() {
+            if (confirm('Reset all attendance records? This will clear all attendance data and refresh both pages.')) {
+                // Clear all localStorage items starting with 'apt-status-'
+                Object.keys(localStorage).forEach(key => {
+                    if (key.startsWith('apt-status-')) {
+                        localStorage.removeItem(key);
+                    }
+                });
+                // Reload the entire page to show cleared state
+                window.location.reload();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update current date display - hardcoded to Feb 5, 2026 to match appointment data
+            const today = new Date(2026, 1, 5); // Month is 0-indexed, so 1 = February
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDateDisplay').textContent = today.toLocaleDateString('en-US', options);
+            
+            loadTodayAppointments();
+            updateVisitStats(); // Count and update the stats!
         });
     </script>
 </body>

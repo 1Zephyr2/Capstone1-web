@@ -21,10 +21,10 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin User',
             'username' => 'admin',
             'email' => 'admin@caresync.local',
-            'password' => bcrypt('password'),
+            'password' => bcrypt('password123'),
         ]);
 
         // Seed demo patient data
-        $this->call(DemoDataSeeder::class);
+        // $this->call(DemoDataSeeder::class);
     }
 }

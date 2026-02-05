@@ -522,7 +522,7 @@
         /* Statistics Cards */
         .stats-grid {
             display: grid;
-            grid-template-columns: 1fr 1.2fr;
+            grid-template-columns: minmax(250px, 1fr) minmax(350px, 1.2fr);
             gap: 20px;
             margin-bottom: 32px;
             align-items: start;
@@ -537,42 +537,187 @@
         .calendar-summary {
             background: #FFFFFF;
             border-radius: 14px;
-            padding: 24px;
+            padding: 12px;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
             border: 1px solid #E5E7EB;
             display: flex;
             flex-direction: column;
             max-height: 700px;
+            height: fit-content;
+            overflow: visible;
+            min-width: 350px;
         }
         
         .calendar-header {
             border-bottom: 2px solid #E5E7EB;
-            padding-bottom: 16px;
-            margin-bottom: 20px;
+            padding-bottom: 8px;
+            margin-bottom: 8px;
+            flex-shrink: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .calendar-header-left {
+            flex: 1;
+        }
+        
+        .calendar-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s;
+            box-shadow: 0 2px 6px rgba(16, 185, 129, 0.3);
             flex-shrink: 0;
         }
         
+        .calendar-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+        
         .calendar-date {
-            font-size: 24px;
+            font-size: 18px;
             font-weight: 700;
             color: #111827;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
         
         .calendar-subtitle {
-            font-size: 13px;
+            font-size: 11px;
             color: #6B7280;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
+            margin-top: 2px;
+        }
+        
+        /* Mini Calendar Widget */
+        .mini-calendar {
+            background: #f9fafb;
+            border-radius: 6px;
+            padding: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .mini-calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+        
+        .mini-calendar-month {
+            font-size: 13px;
+            font-weight: 600;
+            color: #111827;
+        }
+        
+        .mini-calendar-nav {
+            background: none;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: all 0.2s;
+            font-size: 12px;
+        }
+        
+        .mini-calendar-nav:hover {
+            background: #e5e7eb;
+            color: #111827;
+        }
+        
+        .mini-calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+        }
+        
+        .mini-calendar-day-label {
+            text-align: center;
+            font-size: 9px;
+            font-weight: 600;
+            color: #6b7280;
+            padding: 1px;
+        }
+        
+        .mini-calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #374151;
+            padding: 0;
+            border: 1px solid #E5E7EB;
+        }
+        
+        .mini-calendar-day:hover {
+            background: #e5e7eb;
+        }
+        
+        .mini-calendar-day.other-month {
+            color: #e5e7eb;
+            pointer-events: none;
+        }
+        
+        .mini-calendar-day.today {
+            background: #10b981;
+            color: white;
+            font-weight: 700;
+        }
+        
+        .mini-calendar-day.selected {
+            background: #1e40af;
+            color: white;
+            font-weight: 700;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+        
+        .mini-calendar-day.selected:hover {
+            background: #1e3a8a;
+        }
+        
+        .mini-calendar-day.has-appointments {
+            position: relative;
+        }
+        
+        .mini-calendar-day.has-appointments::after {
+            content: '';
+            position: absolute;
+            bottom: 1px;
+            width: 3px;
+            height: 3px;
+            background: #f59e0b;
+            border-radius: 50%;
+        }
+        
+        .mini-calendar-day.today.has-appointments::after {
+            background: white;
         }
         
         .appointment-list {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 6px;
             overflow-y: auto;
-            padding-right: 8px;
+            overflow-x: hidden;
+            padding-right: 6px;
             flex: 1;
+            min-height: 150px;
+            max-height: 400px;
+            margin-top: 0;
+            width: 100%;
         }
         
         .appointment-list::-webkit-scrollbar {
@@ -596,12 +741,13 @@
         .appointment-item {
             display: flex;
             align-items: center;
-            padding: 16px;
+            padding: 10px;
             background: #F9FAFB;
-            border-radius: 10px;
-            border-left: 4px solid #10B981;
+            border-radius: 8px;
+            border-left: 3px solid #10B981;
             transition: all 0.2s;
             cursor: pointer;
+            width: 100%;
         }
         
         .appointment-item:hover {
@@ -610,26 +756,32 @@
         }
         
         .appointment-time {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             color: #047857;
-            min-width: 80px;
+            min-width: 75px;
+            flex-shrink: 0;
         }
         
         .appointment-details {
             flex: 1;
-            margin-left: 16px;
+            margin-left: 12px;
+            min-width: 0;
+            overflow: hidden;
         }
         
         .appointment-patient {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             color: #111827;
-            margin-bottom: 2px;
+            margin-bottom: 1px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         
         .appointment-status {
-            font-size: 12px;
+            font-size: 11px;
             color: #6B7280;
         }
         
@@ -656,6 +808,58 @@
         .badge-completed {
             background: #E0E7FF;
             color: #3730A3;
+        }
+        
+        .badge-attended {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+        
+        .badge-absent {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+        
+        .attendance-buttons {
+            display: flex;
+            gap: 4px;
+            margin-left: 8px;
+            flex-shrink: 0;
+        }
+        
+        .attendance-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .attendance-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .btn-check {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+        
+        .btn-check:hover {
+            background: #A7F3D0;
+        }
+        
+        .btn-cross {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+        
+        .btn-cross:hover {
+            background: #FECACA;
         }
         
         .no-appointments {
@@ -909,6 +1113,28 @@
             to {
                 transform: translateY(0);
                 opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
             }
         }
 
@@ -1798,78 +2024,34 @@
                 <!-- Right Column: Calendar Summary -->
                 <div class="calendar-summary">
                     <div class="calendar-header">
-                        <div class="calendar-date">📅 Today's Appointments</div>
-                        <div class="calendar-subtitle">{{ now()->format('l, F j, Y') }}</div>
+                        <div class="calendar-header-left">
+                            <div class="calendar-date">📅 Appointments</div>
+                            <div class="calendar-subtitle" id="selectedDateDisplay">{{ now()->format('l, F j, Y') }}</div>
+                        </div>
+                        <button class="calendar-btn" onclick="openCalendarView()" title="Open Calendar">
+                            <span style="font-size: 18px;">📆</span>
+                            Calendar
+                        </button>
                     </div>
                     
-                    <div class="appointment-list">
-                        <div class="appointment-item">
-                            <div class="appointment-time">08:00 AM</div>
-                            <div class="appointment-details">
-                                <div class="appointment-patient">Maria C. Santos</div>
-                                <div class="appointment-status">General Checkup</div>
-                            </div>
-                            <span class="appointment-badge badge-confirmed">Confirmed</span>
+                    <!-- Mini Calendar Widget -->
+                    <div class="mini-calendar">
+                        <div class="mini-calendar-header">
+                            <button class="mini-calendar-nav" onclick="changeCalendarMonth(-1)">◀</button>
+                            <div class="mini-calendar-month" id="calendarMonthDisplay"></div>
+                            <button class="mini-calendar-nav" onclick="changeCalendarMonth(1)">▶</button>
                         </div>
-                        
-                        <div class="appointment-item">
-                            <div class="appointment-time">09:30 AM</div>
-                            <div class="appointment-details">
-                                <div class="appointment-patient">Juan G. Dela Cruz</div>
-                                <div class="appointment-status">Immunization</div>
-                            </div>
-                            <span class="appointment-badge badge-confirmed">Confirmed</span>
-                        </div>
-                        
-                        <div class="appointment-item">
-                            <div class="appointment-time">10:00 AM</div>
-                            <div class="appointment-details">
-                                <div class="appointment-patient">Baby Reyes</div>
-                                <div class="appointment-status">Prenatal Care</div>
-                            </div>
-                            <span class="appointment-badge badge-pending">Pending</span>
-                        </div>
-                        
-                        <div class="appointment-item">
-                            <div class="appointment-time">11:00 AM</div>
-                            <div class="appointment-details">
-                                <div class="appointment-patient">Ana M. Lopez</div>
-                                <div class="appointment-status">Follow-up Visit</div>
-                            </div>
-                            <span class="appointment-badge badge-confirmed">Confirmed</span>
-                        </div>
-                        
-                        <div class="appointment-item">
-                            <div class="appointment-time">01:00 PM</div>
-                            <div class="appointment-details">
-                                <div class="appointment-patient">Pedro R. Martinez</div>
-                                <div class="appointment-status">General Checkup</div>
-                            </div>
-                            <span class="appointment-badge badge-pending">Pending</span>
-                        </div>
-                        
-                        <div class="appointment-item">
-                            <div class="appointment-time">02:30 PM</div>
-                            <div class="appointment-details">
-                                <div class="appointment-patient">Rosa T. Garcia</div>
-                                <div class="appointment-status">Vaccination</div>
-                            </div>
-                            <span class="appointment-badge badge-confirmed">Confirmed</span>
-                        </div>
+                        <div class="mini-calendar-grid" id="miniCalendarGrid"></div>
+                    </div>
+                    
+                    <div class="appointment-list" id="appointmentListContainer">
+                        <!-- Appointments will be loaded here dynamically -->
                     </div>
                 </div>
             </div>
         </div>
         </main>
     </div>
-
-    <!-- Floating Automation Support Button -->
-    <a href="{{ route('automation.support') }}" class="floating-ai-button" title="Automation Support">
-        🤖
-        @if(isset($totalAlerts) && $totalAlerts > 0)
-        <span class="ai-badge">{{ $totalAlerts > 9 ? '9+' : $totalAlerts }}</span>
-        @endif
-    </a>
 
     <!-- New Patient Modal -->
     <div id="newPatientModal" class="ai-modal" onclick="closeModalOnBackdrop(event, 'newPatient')">
@@ -1947,8 +2129,26 @@
                         </div>
                         
                         <div class="form-group">
+                            <label for="patientSecondaryContact">Secondary Contact Name</label>
+                            <input type="text" id="patientSecondaryContact" placeholder="Name of secondary contact">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="patientSecondaryPhone">Secondary Contact Number</label>
+                            <input type="tel" id="patientSecondaryPhone" placeholder="09XX XXX XXXX" oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="11">
+                        </div>
+                        
+                        <div class="form-group">
                             <label for="patientMedicalHistory">Medical History / Allergies</label>
                             <textarea id="patientMedicalHistory" placeholder="Enter any known medical conditions, allergies, or current medications..."></textarea>
+                        </div>
+                        
+                        <!-- Data Privacy Consent -->
+                        <div style="display: flex; gap: 12px; padding: 16px; background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px; margin: 16px 0;">
+                            <input type="checkbox" id="patientDataPrivacyConsent" required style="margin-top: 2px; width: 18px; height: 18px; cursor: pointer; accent-color: #10b981; flex-shrink: 0;">
+                            <label for="patientDataPrivacyConsent" style="font-size: 13px; color: #166534; line-height: 1.5; cursor: pointer;">
+                                <span style="font-weight: 600;">Data Privacy Consent:</span> I consent to the collection, processing, and storage of my personal and medical information for healthcare purposes only. I understand that my data will be protected and will not be shared with unauthorized parties or leaked. <span style="color: #dc2626; font-weight: 700;">*</span>
+                            </label>
                         </div>
                         
                         <div class="form-actions">
@@ -2123,6 +2323,14 @@
                             Additional Notes
                         </label>
                         <textarea name="notes" rows="2" placeholder="Any additional information..." style="padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; resize: vertical;"></textarea>
+                    </div>
+
+                    <!-- Data Privacy Consent -->
+                    <div style="display: flex; gap: 12px; padding: 16px; background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px; margin-top: 8px;">
+                        <input type="checkbox" id="appointmentDataPrivacyConsent" name="data_privacy_consent" required style="margin-top: 2px; width: 18px; height: 18px; cursor: pointer; accent-color: #10b981; flex-shrink: 0;">
+                        <label for="appointmentDataPrivacyConsent" style="font-size: 13px; color: #166534; line-height: 1.5; cursor: pointer;">
+                            <span style="font-weight: 600;">Data Privacy Consent:</span> I consent to the collection, processing, and storage of my personal and medical information for healthcare purposes only. I understand that my data will be protected and will not be shared with unauthorized parties or leaked. <span style="color: #dc2626; font-weight: 700;">*</span>
+                        </label>
                     </div>
 
                     <!-- Action Buttons -->
@@ -2559,6 +2767,309 @@
     </div>
 
     <script>
+        // VERSION 2.0 - FORCE CACHE BREAK
+        console.log('CALENDAR SCRIPT VERSION 2.0 LOADED');
+        
+        // Mini Calendar State - Force to current date
+        let currentCalendarDate = new Date(2026, 1, 5); // February 5, 2026 (month is 0-indexed)
+        let selectedDate = new Date(2026, 1, 5);
+        
+        // Sample appointments data (replace with actual data from backend)
+        const appointmentsData = {
+            '2026-02-05': [
+                { time: '11:00 AM', patient: 'Ana M. Lopez', type: 'Follow-up Visit', id: 4 },
+                { time: '01:00 PM', patient: 'Pedro R. Martinez', type: 'General Checkup', id: 5 },
+                { time: '02:30 PM', patient: 'Rosa T. Garcia', type: 'Vaccination', id: 6 }
+            ],
+            '2026-02-06': [
+                { time: '09:00 AM', patient: 'Carlos J. Fernandez', type: 'General Checkup', id: 7 },
+                { time: '10:30 AM', patient: 'Linda P. Gonzales', type: 'Prenatal Care', id: 8 },
+                { time: '02:00 PM', patient: 'Miguel A. Torres', type: 'Follow-up Visit', id: 9 }
+            ],
+            '2026-02-07': [
+                { time: '08:30 AM', patient: 'Sofia R. Mendoza', type: 'Immunization', id: 10 },
+                { time: '11:00 AM', patient: 'Roberto L. Cruz', type: 'General Checkup', id: 11 },
+                { time: '01:30 PM', patient: 'Elena M. Ramos', type: 'Vaccination', id: 12 },
+                { time: '03:00 PM', patient: 'Diego S. Alvarez', type: 'Follow-up Visit', id: 13 }
+            ],
+            '2026-02-08': [
+                { time: '09:00 AM', patient: 'Carmen V. Diaz', type: 'Prenatal Care', id: 14 },
+                { time: '10:00 AM', patient: 'Fernando N. Morales', type: 'General Checkup', id: 15 },
+                { time: '02:30 PM', patient: 'Isabella C. Santos', type: 'Immunization', id: 16 }
+            ]
+        };
+        
+        // Debug: Log all appointment dates
+        console.log('Available appointment dates:', Object.keys(appointmentsData));
+        
+        // Test function - call from console: testDate('2026-02-06')
+        window.testDate = function(dateStr) {
+            console.log('Testing date:', dateStr);
+            console.log('Has appointments:', appointmentsData[dateStr]);
+            if (appointmentsData[dateStr]) {
+                console.log('Number of appointments:', appointmentsData[dateStr].length);
+                appointmentsData[dateStr].forEach(apt => {
+                    console.log(' -', apt.time, apt.patient);
+                });
+            }
+        };
+        
+        function renderMiniCalendar() {
+            const y = currentCalendarDate.getFullYear();
+            const m = currentCalendarDate.getMonth();
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            
+            // Calculate days
+            const lastDayOfMonth = new Date(y, m + 1, 0);
+            const totalDays = lastDayOfMonth.getDate();
+            const firstDay = new Date(y, m, 1).getDay();
+            const prevMonthDays = new Date(y, m, 0).getDate();
+            
+            // Update header
+            document.getElementById('calendarMonthDisplay').textContent = months[m] + ' ' + y;
+            
+            // Get grid
+            const gridElement = document.getElementById('miniCalendarGrid');
+            gridElement.innerHTML = '';
+            
+            // Create day headers
+            const headers = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            for (let h = 0; h < headers.length; h++) {
+                const hdr = document.createElement('div');
+                hdr.className = 'mini-calendar-day-label';
+                hdr.textContent = headers[h];
+                gridElement.appendChild(hdr);
+            }
+            
+            const todayRef = new Date(2026, 1, 5);
+            
+            // Previous month filler
+            for (let p = firstDay - 1; p >= 0; p--) {
+                const prevCell = document.createElement('div');
+                prevCell.className = 'mini-calendar-day other-month';
+                prevCell.textContent = prevMonthDays - p;
+                gridElement.appendChild(prevCell);
+            }
+            
+            // Current month - ALL DAYS
+            for (let d = 1; d <= totalDays; d++) {
+                const dayCell = document.createElement('div');
+                dayCell.className = 'mini-calendar-day';
+                dayCell.textContent = d;
+                
+                const cellDate = new Date(y, m, d);
+                const dateKey = y + '-' + String(m + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+                
+                if (cellDate.toDateString() === todayRef.toDateString()) {
+                    dayCell.classList.add('today');
+                }
+                
+                if (cellDate.toDateString() === selectedDate.toDateString()) {
+                    dayCell.classList.add('selected');
+                }
+                
+                if (appointmentsData[dateKey]) {
+                    dayCell.classList.add('has-appointments');
+                }
+                
+                // Direct click handler - NO DATASET
+                dayCell.style.cursor = 'pointer';
+                dayCell.onclick = (function(year, month, day, key) {
+                    return function() {
+                        const clickedDate = new Date(year, month, day);
+                        selectedDate = clickedDate;
+                        renderMiniCalendar();
+                        
+                        // Update date display
+                        const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
+                        document.getElementById('selectedDateDisplay').textContent = clickedDate.toLocaleDateString('en-US', options).toUpperCase();
+                        
+                        // Get appointments
+                        const apts = appointmentsData[key] || [];
+                        const container = document.getElementById('appointmentListContainer');
+                        
+                        if (apts.length === 0) {
+                            container.innerHTML = '<div style="text-align:center;padding:40px 20px;color:#9ca3af;"><div style="font-size:48px;margin-bottom:12px;opacity:0.5;">📅</div><div style="font-size:16px;font-weight:600;color:#6b7280;">No appointments</div></div>';
+                        } else {
+                            container.innerHTML = apts.map(apt => '<div class="appointment-item"><div class="appointment-time">' + apt.time + '</div><div class="appointment-details"><div class="appointment-patient">' + apt.patient + '</div><div class="appointment-status">' + apt.type + '</div></div><div class="attendance-buttons"><button class="attendance-btn btn-check" onclick="markAttendance(event,' + apt.id + ',\'attended\')" title="Mark as Attended">✓</button><button class="attendance-btn btn-cross" onclick="markAttendance(event,' + apt.id + ',\'absent\')" title="Mark as Absent">✕</button></div></div>').join('');
+                        }
+                    };
+                })(y, m, d, dateKey);
+                
+                gridElement.appendChild(dayCell);
+            }
+            
+            // Next month filler
+            const usedCells = firstDay + totalDays;
+            const weeksRequired = Math.ceil(usedCells / 7);
+            const totalRequired = weeksRequired * 7;
+            const nextMonthCells = totalRequired - usedCells;
+            
+            for (let n = 1; n <= nextMonthCells; n++) {
+                const nextCell = document.createElement('div');
+                nextCell.className = 'mini-calendar-day other-month';
+                nextCell.textContent = n;
+                gridElement.appendChild(nextCell);
+            }
+        }
+        
+        function changeCalendarMonth(dir) {
+            currentCalendarDate.setMonth(currentCalendarDate.getMonth() + dir);
+            renderMiniCalendar();
+        }
+        
+        function selectDate(date) {
+            console.log('=== SELECT DATE CALLED ===');
+            console.log('Date received:', date);
+            selectedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+            console.log('Selected date set to:', selectedDate);
+            renderMiniCalendar();
+            displayAppointmentsForDate(selectedDate);
+        }
+        
+        function displayAppointmentsForDate(date) {
+            console.log('=== DISPLAY APPOINTMENTS CALLED ===');
+            console.log('Date:', date);
+            
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+            const dateStr = year + '-' + String(month).padStart(2, '0') + '-' + String(day).padStart(2, '0');
+            
+            console.log('Looking for appointments with key:', dateStr);
+            console.log('Available keys:', Object.keys(appointmentsData));
+            
+            const appointments = appointmentsData[dateStr] || [];
+            console.log('Found appointments:', appointments.length);
+            
+            // Update date display header
+            const dateDisplay = document.getElementById('selectedDateDisplay');
+            if (dateDisplay) {
+                const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
+                dateDisplay.textContent = date.toLocaleDateString('en-US', options).toUpperCase();
+                console.log('Updated header to:', dateDisplay.textContent);
+            } else {
+                console.error('selectedDateDisplay element NOT FOUND');
+            }
+            
+            // Update appointments list
+            const listContainer = document.getElementById('appointmentListContainer');
+            if (!listContainer) {
+                console.error('appointmentListContainer element NOT FOUND');
+                return;
+            }
+            
+            console.log('Updating appointment list...');
+            
+            if (appointments.length === 0) {
+                listContainer.innerHTML = `
+                    <div style="text-align: center; padding: 40px 20px; color: #9ca3af;">
+                        <div style="font-size: 48px; margin-bottom: 12px; opacity: 0.5;">📅</div>
+                        <div style="font-size: 16px; font-weight: 600; color: #6b7280;">No appointments scheduled</div>
+                        <div style="font-size: 14px; color: #9ca3af; margin-top: 4px;">${date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</div>
+                    </div>
+                `;
+                console.log('Displayed empty state');
+            } else {
+                const html = appointments.map((apt, idx) => {
+                    // Check if appointment has saved attendance status
+                    const savedStatus = localStorage.getItem('apt-status-' + apt.id);
+                    let statusHTML = '';
+                    let buttonsHTML = '';
+                    
+                    if (savedStatus === 'attended') {
+                        statusHTML = '<span class="badge-attended" style="display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 10px; background: #D1FAE5; color: #065F46;">✓ Attended</span>';
+                    } else if (savedStatus === 'absent') {
+                        statusHTML = '<span class="badge-absent" style="display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 10px; background: #FEE2E2; color: #991B1B;">✗ Absent</span>';
+                    } else {
+                        statusHTML = apt.type;
+                        buttonsHTML = `
+                            <button class="attendance-btn btn-check" onclick="markAttendance(event, ${apt.id}, 'attended')" title="Mark as Attended">✓</button>
+                            <button class="attendance-btn btn-cross" onclick="markAttendance(event, ${apt.id}, 'absent')" title="Mark as Absent">✕</button>
+                        `;
+                    }
+                    
+                    return `
+                    <div class="appointment-item">
+                        <div class="appointment-time">${apt.time}</div>
+                        <div class="appointment-details">
+                            <div class="appointment-patient">${apt.patient}</div>
+                            <div class="appointment-status">${statusHTML}</div>
+                        </div>
+                        <div class="attendance-buttons" style="${savedStatus ? 'display: none;' : ''}">${buttonsHTML}</div>
+                    </div>
+                `;
+                }).join('');
+                listContainer.innerHTML = html;
+                console.log('Displayed', appointments.length, 'appointments');
+            }
+            
+            console.log('=== DISPLAY COMPLETE ===');
+        }
+        
+        // Initialize calendar on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            renderMiniCalendar();
+            displayAppointmentsForDate(selectedDate);
+        });
+        
+        // Attendance tracking
+        function markAttendance(event, appointmentId, status) {
+            event.stopPropagation();
+            
+            // Save to localStorage for sync with Today's Visits page
+            const storageKey = 'apt-status-' + appointmentId;
+            localStorage.setItem(storageKey, status);
+            console.log('Saved to localStorage:', storageKey, '=', status);
+            
+            const appointmentItem = event.target.closest('.appointment-item');
+            if (!appointmentItem) return;
+            
+            const statusElement = appointmentItem.querySelector('.appointment-status');
+            const buttons = appointmentItem.querySelector('.attendance-buttons');
+            
+            if (status === 'attended') {
+                if (statusElement) {
+                    statusElement.innerHTML = '<span class="badge-attended" style="display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 10px; background: #D1FAE5; color: #065F46;">✓ Attended</span>';
+                }
+                if (buttons) buttons.style.display = 'none';
+            } else if (status === 'absent') {
+                if (statusElement) {
+                    statusElement.innerHTML = '<span class="badge-absent" style="display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 10px; background: #FEE2E2; color: #991B1B;">✗ Absent</span>';
+                }
+                if (buttons) buttons.style.display = 'none';
+            }
+        }
+        
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 12px 20px;
+                background: ${type === 'success' ? '#D1FAE5' : '#FEF3C7'};
+                color: ${type === 'success' ? '#065F46' : '#92400E'};
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 10000;
+                font-weight: 500;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 2000);
+        }
+
+        function openCalendarView() {
+            // Redirect to calendar view page or appointments page
+            window.location.href = '{{ route("visits.today") }}';
+        }
+
         function openModal(modalType) {
             const modalMap = {
                 'ai': 'aiModal',
@@ -2656,6 +3167,11 @@
             const daysInMonth = new Date(year, month + 1, 0).getDate();
             const daysInPrevMonth = new Date(year, month, 0).getDate();
             
+            console.log('***** RENDERING LARGE CALENDAR *****');
+            console.log('Year:', year, 'Month:', monthNames[month]);
+            console.log('Days in month:', daysInMonth);
+            console.log('************************************');
+            
             const calendarDays = document.getElementById('calendarDays');
             calendarDays.innerHTML = '';
             
@@ -2670,6 +3186,7 @@
             }
             
             // Current month days
+            console.log('Rendering days 1 to', daysInMonth);
             for (let day = 1; day <= daysInMonth; day++) {
                 const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                 let classes = '';
@@ -2685,10 +3202,13 @@
                 const dayDiv = createDayElement(day, classes, dateStr);
                 calendarDays.appendChild(dayDiv);
             }
+            console.log('Finished rendering. Total elements:', calendarDays.children.length);
             
-            // Next month days
-            const totalCells = calendarDays.children.length;
-            const remainingCells = 42 - totalCells; // 6 rows * 7 days
+            // Next month days - only fill to complete current week
+            const totalCells = firstDay + daysInMonth;
+            const weeksNeeded = Math.ceil(totalCells / 7);
+            const totalSlotsNeeded = weeksNeeded * 7;
+            const remainingCells = totalSlotsNeeded - totalCells;
             for (let day = 1; day <= remainingCells; day++) {
                 const dayDiv = createDayElement(day, 'other-month');
                 calendarDays.appendChild(dayDiv);
@@ -2828,7 +3348,16 @@
             const bloodType = document.getElementById('patientBloodType').value;
             const emergencyContact = document.getElementById('patientEmergencyContact').value.trim();
             const emergencyPhone = document.getElementById('patientEmergencyPhone').value.trim();
+            const secondaryContact = document.getElementById('patientSecondaryContact').value.trim();
+            const secondaryPhone = document.getElementById('patientSecondaryPhone').value.trim();
             const medicalHistory = document.getElementById('patientMedicalHistory').value.trim();
+            const dataPrivacyConsent = document.getElementById('patientDataPrivacyConsent').checked;
+            
+            // Validate Data Privacy Consent FIRST
+            if (!dataPrivacyConsent) {
+                alert('⚠️ You must accept the Data Privacy Consent to register a patient.\n\nPlease check the consent checkbox to proceed.');
+                return;
+            }
             
             // Validate required fields
             if (!fullName || !dob || !gender || !address || !phone) {
@@ -2867,6 +3396,8 @@
                 bloodType: bloodType || 'N/A',
                 emergencyContact: emergencyContact,
                 emergencyPhone: emergencyPhone,
+                secondaryContact: secondaryContact,
+                secondaryPhone: secondaryPhone,
                 medicalHistory: medicalHistory,
                 registeredDate: new Date().toISOString()
             };
@@ -2887,6 +3418,8 @@
             document.getElementById('patientBloodType').value = '';
             document.getElementById('patientEmergencyContact').value = '';
             document.getElementById('patientEmergencyPhone').value = '';
+            document.getElementById('patientSecondaryContact').value = '';
+            document.getElementById('patientSecondaryPhone').value = '';
             document.getElementById('patientMedicalHistory').value = '';
             
             alert(`Patient registered successfully!\n\nPatient ID: ${patientId}\nName: ${fullName}\nAge: ${age} years\nGender: ${gender}\n\nPlease provide this ID to the patient.`);
