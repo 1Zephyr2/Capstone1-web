@@ -815,9 +815,9 @@
             color: #065F46;
         }
         
-        .badge-absent {
-            background: #FEE2E2;
-            color: #991B1B;
+        .badge-rescheduled {
+            background: #FEF3C7;
+            color: #92400E;
         }
         
         .attendance-buttons {
@@ -1329,26 +1329,26 @@
 
         .appointment-form {
             margin-top: 20px;
-            padding: 20px;
+            padding: 16px;
             background: #f9fafb;
             border-radius: 12px;
         }
 
         .appointment-form h4 {
-            font-size: 16px;
+            font-size: 15px;
             color: #111827;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         .form-group {
-            margin-bottom: 16px;
+            margin-bottom: 10px;
         }
 
         .form-group label {
             display: block;
-            font-size: 14px;
+            font-size: 13px;
             color: #374151;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             font-weight: 500;
         }
 
@@ -1356,10 +1356,10 @@
         .form-group select,
         .form-group textarea {
             width: 100%;
-            padding: 10px 12px;
+            padding: 8px 10px;
             border: 1px solid #d1d5db;
-            border-radius: 8px;
-            font-size: 14px;
+            border-radius: 6px;
+            font-size: 13px;
             transition: all 0.2s;
         }
 
@@ -1373,7 +1373,7 @@
 
         .form-group textarea {
             resize: vertical;
-            min-height: 80px;
+            min-height: 60px;
         }
 
         .form-actions {
@@ -2028,10 +2028,6 @@
                             <div class="calendar-date">📅 Appointments</div>
                             <div class="calendar-subtitle" id="selectedDateDisplay">{{ now()->format('l, F j, Y') }}</div>
                         </div>
-                        <button class="calendar-btn" onclick="openCalendarView()" title="Open Calendar">
-                            <span style="font-size: 18px;">📆</span>
-                            Calendar
-                        </button>
                     </div>
                     
                     <!-- Mini Calendar Widget -->
@@ -2065,12 +2061,38 @@
                     <div class="appointment-form" style="margin-top: 0;">
                         <h4>Patient Information</h4>
                         
-                        <div class="form-group">
-                            <label for="patientFullName">Full Name <span style="color: red;">*</span></label>
-                            <input type="text" id="patientFullName" placeholder="Enter full name" required>
+                        <div style="display: grid; grid-template-columns: 2fr 2fr 1fr 1fr; gap: 10px;">
+                            <div class="form-group">
+                                <label for="patientLastName">Last Name <span style="color: red;">*</span></label>
+                                <input type="text" id="patientLastName" placeholder="Enter last name" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="patientFirstName">First Name <span style="color: red;">*</span></label>
+                                <input type="text" id="patientFirstName" placeholder="Enter first name" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="patientMiddleInitial">Middle Initial</label>
+                                <input type="text" id="patientMiddleInitial" placeholder="M.I." maxlength="2" style="text-transform: uppercase;">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="patientSuffix">Suffix</label>
+                                <select id="patientSuffix">
+                                    <option value="">Select suffix</option>
+                                    <option value="Jr.">Jr.</option>
+                                    <option value="Sr.">Sr.</option>
+                                    <option value="I">I</option>
+                                    <option value="II">II</option>
+                                    <option value="III">III</option>
+                                    <option value="IV">IV</option>
+                                    <option value="V">V</option>
+                                </select>
+                            </div>
                         </div>
                         
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                             <div class="form-group">
                                 <label for="patientDOB">Date of Birth <span style="color: red;">*</span></label>
                                 <input type="date" id="patientDOB" required>
@@ -2088,34 +2110,19 @@
                         
                         <div class="form-group">
                             <label for="patientAddress">Address <span style="color: red;">*</span></label>
-                            <textarea id="patientAddress" placeholder="Enter complete address" required style="min-height: 60px;"></textarea>
+                            <textarea id="patientAddress" placeholder="Enter complete address" required style="min-height: 50px;"></textarea>
                         </div>
                         
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                             <div class="form-group">
                                 <label for="patientPhone">Phone Number <span style="color: red;">*</span></label>
                                 <input type="tel" id="patientPhone" placeholder="09XX XXX XXXX" required oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="11">
                             </div>
                             
                             <div class="form-group">
-                                <label for="patientEmail">Email Address</label>
-                                <input type="email" id="patientEmail" placeholder="email@example.com">
+                                <label for="patientSecondaryPhone">Secondary Contact Number</label>
+                                <input type="tel" id="patientSecondaryPhone" placeholder="09XX XXX XXXX" oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="11">
                             </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="patientBloodType">Blood Type</label>
-                            <select id="patientBloodType">
-                                <option value="">Select blood type</option>
-                                <option value="A+">A+</option>
-                                <option value="A-">A-</option>
-                                <option value="B+">B+</option>
-                                <option value="B-">B-</option>
-                                <option value="AB+">AB+</option>
-                                <option value="AB-">AB-</option>
-                                <option value="O+">O+</option>
-                                <option value="O-">O-</option>
-                            </select>
                         </div>
                         
                         <div class="form-group">
@@ -2129,18 +2136,13 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="patientSecondaryContact">Secondary Contact Name</label>
-                            <input type="text" id="patientSecondaryContact" placeholder="Name of secondary contact">
+                            <label for="patientMedicalHistory">Complaint</label>
+                            <textarea id="patientMedicalHistory" placeholder="Enter chief complaint or reason for visit..."></textarea>
                         </div>
                         
                         <div class="form-group">
-                            <label for="patientSecondaryPhone">Secondary Contact Number</label>
-                            <input type="tel" id="patientSecondaryPhone" placeholder="09XX XXX XXXX" oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="11">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="patientMedicalHistory">Medical History / Allergies</label>
-                            <textarea id="patientMedicalHistory" placeholder="Enter any known medical conditions, allergies, or current medications..."></textarea>
+                            <label for="patientEmail">Email Address</label>
+                            <input type="email" id="patientEmail" placeholder="email@example.com">
                         </div>
                         
                         <!-- Data Privacy Consent -->
@@ -2169,7 +2171,7 @@
                 <button class="ai-modal-close" onclick="closeModal('bookAppointment')">✕</button>
             </div>
             <div class="ai-modal-body" style="padding: 24px;">
-                <form id="appointmentForm" action="{{ route('visits.store') }}" method="POST" style="display: flex; flex-direction: column; gap: 20px;">
+                <form id="appointmentForm" action="{{ route('appointments.store') }}" method="POST" style="display: flex; flex-direction: column; gap: 20px;">
                     @csrf
                     
                     <!-- Patient Selection -->
@@ -2301,12 +2303,12 @@
                         </div>
                     </div>
 
-                    <!-- Chief Complaint / Reason -->
+                    <!-- Remarks -->
                     <div style="display: flex; flex-direction: column; gap: 8px;">
                         <label style="font-weight: 600; color: #374151; font-size: 14px;">
-                            Reason for Visit
+                            Remarks
                         </label>
-                        <textarea name="chief_complaint" rows="3" placeholder="Enter the reason for this appointment..." style="padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; resize: vertical;"></textarea>
+                        <textarea name="chief_complaint" rows="3" placeholder="Enter remarks for this appointment..." style="padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; resize: vertical;"></textarea>
                     </div>
 
                     <!-- Health Worker -->
@@ -2315,14 +2317,6 @@
                             Assigned Health Worker
                         </label>
                         <input type="text" name="health_worker" placeholder="Enter health worker name" style="padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px;">
-                    </div>
-
-                    <!-- Notes -->
-                    <div style="display: flex; flex-direction: column; gap: 8px;">
-                        <label style="font-weight: 600; color: #374151; font-size: 14px;">
-                            Additional Notes
-                        </label>
-                        <textarea name="notes" rows="2" placeholder="Any additional information..." style="padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; resize: vertical;"></textarea>
                     </div>
 
                     <!-- Data Privacy Consent -->
@@ -2358,13 +2352,13 @@
                 <div class="search-container">
                     <div class="search-header">
                         <div class="search-box">
-                            <input type="text" id="quickSearchInput" placeholder="🔍 Search by name, ID, phone, or email..." oninput="performQuickSearch()">
-                        </div>
+                        <input type="text" id="quickSearchInput" placeholder="🔍 Search by name, ID, phone, email, or birthday..." oninput="performQuickSearch()">
                     </div>
+                </div>
+                
+                <div class="search-filters">
+                    <input type="date" id="searchBirthdayFilter" placeholder="Birthday" onchange="performQuickSearch()" style="padding:8px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:14px;color:#374151;">
                     
-                    <div class="search-filters">
-                        <select id="searchGenderFilter" onchange="performQuickSearch()">
-                            <option value="">All Genders</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                         </select>
@@ -2774,30 +2768,8 @@
         let currentCalendarDate = new Date(2026, 1, 5); // February 5, 2026 (month is 0-indexed)
         let selectedDate = new Date(2026, 1, 5);
         
-        // Sample appointments data (replace with actual data from backend)
-        const appointmentsData = {
-            '2026-02-05': [
-                { time: '11:00 AM', patient: 'Ana M. Lopez', type: 'Follow-up Visit', id: 4 },
-                { time: '01:00 PM', patient: 'Pedro R. Martinez', type: 'General Checkup', id: 5 },
-                { time: '02:30 PM', patient: 'Rosa T. Garcia', type: 'Vaccination', id: 6 }
-            ],
-            '2026-02-06': [
-                { time: '09:00 AM', patient: 'Carlos J. Fernandez', type: 'General Checkup', id: 7 },
-                { time: '10:30 AM', patient: 'Linda P. Gonzales', type: 'Prenatal Care', id: 8 },
-                { time: '02:00 PM', patient: 'Miguel A. Torres', type: 'Follow-up Visit', id: 9 }
-            ],
-            '2026-02-07': [
-                { time: '08:30 AM', patient: 'Sofia R. Mendoza', type: 'Immunization', id: 10 },
-                { time: '11:00 AM', patient: 'Roberto L. Cruz', type: 'General Checkup', id: 11 },
-                { time: '01:30 PM', patient: 'Elena M. Ramos', type: 'Vaccination', id: 12 },
-                { time: '03:00 PM', patient: 'Diego S. Alvarez', type: 'Follow-up Visit', id: 13 }
-            ],
-            '2026-02-08': [
-                { time: '09:00 AM', patient: 'Carmen V. Diaz', type: 'Prenatal Care', id: 14 },
-                { time: '10:00 AM', patient: 'Fernando N. Morales', type: 'General Checkup', id: 15 },
-                { time: '02:30 PM', patient: 'Isabella C. Santos', type: 'Immunization', id: 16 }
-            ]
-        };
+        // Appointments data from backend
+        const appointmentsData = @json($appointments ?? []);
         
         // Debug: Log all appointment dates
         console.log('Available appointment dates:', Object.keys(appointmentsData));
@@ -2891,7 +2863,7 @@
                         if (apts.length === 0) {
                             container.innerHTML = '<div style="text-align:center;padding:40px 20px;color:#9ca3af;"><div style="font-size:48px;margin-bottom:12px;opacity:0.5;">📅</div><div style="font-size:16px;font-weight:600;color:#6b7280;">No appointments</div></div>';
                         } else {
-                            container.innerHTML = apts.map(apt => '<div class="appointment-item"><div class="appointment-time">' + apt.time + '</div><div class="appointment-details"><div class="appointment-patient">' + apt.patient + '</div><div class="appointment-status">' + apt.type + '</div></div><div class="attendance-buttons"><button class="attendance-btn btn-check" onclick="markAttendance(event,' + apt.id + ',\'attended\')" title="Mark as Attended">✓</button><button class="attendance-btn btn-cross" onclick="markAttendance(event,' + apt.id + ',\'absent\')" title="Mark as Absent">✕</button></div></div>').join('');
+                            container.innerHTML = apts.map(apt => '<div class="appointment-item"><div class="appointment-time">' + apt.time + '</div><div class="appointment-details"><div class="appointment-patient">' + apt.patient + '</div><div class="appointment-status">' + apt.type + '</div></div><div class="attendance-buttons"><button class="attendance-btn btn-check" onclick="markAttendance(event,' + apt.id + ',\'attended\')" title="Mark as Attended">✓</button><button class="attendance-btn" onclick="openDashboardReschedule(' + apt.id + ',\'' + apt.patient.replace(/'/g, "\\'") + '\',\'' + key + '\',\'' + apt.time + '\')" title="Re-schedule" style="background:#f59e0b;color:white;font-size:11px;">🔄</button></div></div>').join('');
                         }
                     };
                 })(y, m, d, dateKey);
@@ -2979,13 +2951,13 @@
                     
                     if (savedStatus === 'attended') {
                         statusHTML = '<span class="badge-attended" style="display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 10px; background: #D1FAE5; color: #065F46;">✓ Attended</span>';
-                    } else if (savedStatus === 'absent') {
-                        statusHTML = '<span class="badge-absent" style="display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 10px; background: #FEE2E2; color: #991B1B;">✗ Absent</span>';
+                    } else if (savedStatus === 'rescheduled') {
+                        statusHTML = '<span class="badge-rescheduled" style="display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 10px; background: #FEF3C7; color: #92400E;">🔄 Rescheduled</span>';
                     } else {
                         statusHTML = apt.type;
                         buttonsHTML = `
                             <button class="attendance-btn btn-check" onclick="markAttendance(event, ${apt.id}, 'attended')" title="Mark as Attended">✓</button>
-                            <button class="attendance-btn btn-cross" onclick="markAttendance(event, ${apt.id}, 'absent')" title="Mark as Absent">✕</button>
+                            <button class="attendance-btn" onclick="openDashboardReschedule(${apt.id}, '${apt.patient.replace(/'/g, "\\'")}',' + '${dateToShow}' + ', '${apt.time}')" title="Re-schedule" style="background:#f59e0b;color:white;font-size:11px;">🔄</button>
                         `;
                     }
                     
@@ -3033,9 +3005,9 @@
                     statusElement.innerHTML = '<span class="badge-attended" style="display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 10px; background: #D1FAE5; color: #065F46;">✓ Attended</span>';
                 }
                 if (buttons) buttons.style.display = 'none';
-            } else if (status === 'absent') {
+            } else if (status === 'rescheduled') {
                 if (statusElement) {
-                    statusElement.innerHTML = '<span class="badge-absent" style="display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 10px; background: #FEE2E2; color: #991B1B;">✗ Absent</span>';
+                    statusElement.innerHTML = '<span class="badge-rescheduled" style="display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 10px; background: #FEF3C7; color: #92400E;">🔄 Rescheduled</span>';
                 }
                 if (buttons) buttons.style.display = 'none';
             }
@@ -3339,19 +3311,29 @@
 
         // New Patient Registration Function
         function saveNewPatient() {
-            const fullName = document.getElementById('patientFullName').value.trim();
+            const lastName = document.getElementById('patientLastName').value.trim();
+            const firstName = document.getElementById('patientFirstName').value.trim();
+            const middleInitial = document.getElementById('patientMiddleInitial').value.trim();
+            const suffix = document.getElementById('patientSuffix').value;
             const dob = document.getElementById('patientDOB').value;
             const gender = document.getElementById('patientGender').value;
             const address = document.getElementById('patientAddress').value.trim();
             const phone = document.getElementById('patientPhone').value.trim();
             const email = document.getElementById('patientEmail').value.trim();
-            const bloodType = document.getElementById('patientBloodType').value;
             const emergencyContact = document.getElementById('patientEmergencyContact').value.trim();
             const emergencyPhone = document.getElementById('patientEmergencyPhone').value.trim();
-            const secondaryContact = document.getElementById('patientSecondaryContact').value.trim();
             const secondaryPhone = document.getElementById('patientSecondaryPhone').value.trim();
             const medicalHistory = document.getElementById('patientMedicalHistory').value.trim();
             const dataPrivacyConsent = document.getElementById('patientDataPrivacyConsent').checked;
+            
+            // Build full name from components
+            let fullName = lastName + ', ' + firstName;
+            if (middleInitial) {
+                fullName += ' ' + middleInitial.toUpperCase() + '.';
+            }
+            if (suffix) {
+                fullName += ' ' + suffix;
+            }
             
             // Validate Data Privacy Consent FIRST
             if (!dataPrivacyConsent) {
@@ -3360,7 +3342,7 @@
             }
             
             // Validate required fields
-            if (!fullName || !dob || !gender || !address || !phone) {
+            if (!lastName || !firstName || !dob || !gender || !address || !phone) {
                 alert('Please fill in all required fields marked with *');
                 return;
             }
@@ -3373,62 +3355,69 @@
                 return;
             }
             
-            // Calculate age from date of birth
-            const birthDate = new Date(dob);
-            const today = new Date();
-            let age = today.getFullYear() - birthDate.getFullYear();
-            const monthDiff = today.getMonth() - birthDate.getMonth();
-            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-                age--;
-            }
-            
-            // Create patient object
-            const patientId = 'P' + String(patientIdCounter++).padStart(4, '0');
-            const patient = {
-                id: patientId,
-                fullName: fullName,
-                dob: dob,
-                age: age,
-                gender: gender,
+            // Prepare data for backend
+            const formData = {
+                first_name: firstName,
+                last_name: lastName,
+                middle_name: middleInitial.toUpperCase() || null,
+                birthdate: dob,
+                sex: gender.charAt(0).toUpperCase() + gender.slice(1), // Capitalize: male -> Male
                 address: address,
-                phone: phone,
-                email: email,
-                bloodType: bloodType || 'N/A',
-                emergencyContact: emergencyContact,
-                emergencyPhone: emergencyPhone,
-                secondaryContact: secondaryContact,
-                secondaryPhone: secondaryPhone,
-                medicalHistory: medicalHistory,
-                registeredDate: new Date().toISOString()
+                contact_number: phone,
+                emergency_contact_name: emergencyContact || null,
+                emergency_contact_number: emergencyPhone || null,
+                _token: '{{ csrf_token() }}'
             };
             
-            // Add to patient records
-            patientRecords.push(patient);
-            
-            // Here you would normally send this to your backend
-            console.log('New Patient Registered:', patient);
-            
-            // Clear form
-            document.getElementById('patientFullName').value = '';
-            document.getElementById('patientDOB').value = '';
-            document.getElementById('patientGender').value = '';
-            document.getElementById('patientAddress').value = '';
-            document.getElementById('patientPhone').value = '';
-            document.getElementById('patientEmail').value = '';
-            document.getElementById('patientBloodType').value = '';
-            document.getElementById('patientEmergencyContact').value = '';
-            document.getElementById('patientEmergencyPhone').value = '';
-            document.getElementById('patientSecondaryContact').value = '';
-            document.getElementById('patientSecondaryPhone').value = '';
-            document.getElementById('patientMedicalHistory').value = '';
-            
-            alert(`Patient registered successfully!\n\nPatient ID: ${patientId}\nName: ${fullName}\nAge: ${age} years\nGender: ${gender}\n\nPlease provide this ID to the patient.`);
-            closeModal('newPatient');
-            
-            // Update patient list if open
-            if (document.getElementById('patientListModal').classList.contains('active')) {
-                renderPatientList();
-            }
+            // Send AJAX request to backend
+            fetch('{{ route("patients.store") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Clear form
+                    document.getElementById('patientLastName').value = '';
+                    document.getElementById('patientFirstName').value = '';
+                    document.getElementById('patientMiddleInitial').value = '';
+                    document.getElementById('patientSuffix').value = '';
+                    document.getElementById('patientDOB').value = '';
+                    document.getElementById('patientGender').value = '';
+                    document.getElementById('patientAddress').value = '';
+                    document.getElementById('patientPhone').value = '';
+                    document.getElementById('patientSecondaryPhone').value = '';
+                    document.getElementById('patientEmergencyContact').value = '';
+                    document.getElementById('patientEmergencyPhone').value = '';
+                    document.getElementById('patientMedicalHistory').value = '';
+                    document.getElementById('patientEmail').value = '';
+                    document.getElementById('patientDataPrivacyConsent').checked = false;
+                    
+                    alert(`✅ ${data.message}\n\nName: ${fullName}`);
+                    closeModal('newPatient');
+                    
+                    // Refresh the page to show the new patient in lists
+                    window.location.reload();
+                } else {
+                    let errorMsg = 'Failed to register patient.';
+                    if (data.errors) {
+                        errorMsg += '\n\n';
+                        Object.values(data.errors).forEach(errors => {
+                            errorMsg += errors.join('\n') + '\n';
+                        });
+                    }
+                    alert('❌ ' + errorMsg);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('❌ An error occurred while registering the patient. Please try again.');
+            });
         }
 
         // Patient List Functions
@@ -3845,6 +3834,7 @@ Created: ${new Date(record.createdAt).toLocaleString()}
         // Patient Search Functions
         function performQuickSearch() {
             const searchTerm = document.getElementById('quickSearchInput').value;
+            const birthdayFilter = document.getElementById('searchBirthdayFilter').value;
             const genderFilter = document.getElementById('searchGenderFilter').value;
             const bloodTypeFilter = document.getElementById('searchBloodTypeFilter').value;
             const ageFilter = document.getElementById('searchAgeFilter').value;
@@ -3857,6 +3847,7 @@ Created: ${new Date(record.createdAt).toLocaleString()}
             // Use the real search API
             const params = new URLSearchParams();
             if (searchTerm) params.append('term', searchTerm);
+            if (birthdayFilter) params.append('birthday', birthdayFilter);
             
             fetch(`/api/patients/search?${params.toString()}`)
                 .then(response => response.json())
@@ -3865,6 +3856,9 @@ Created: ${new Date(record.createdAt).toLocaleString()}
                     
                     // Apply client-side filters
                     let filteredPatients = patients.filter(patient => {
+                        // Birthday filter
+                        const matchesBirthday = !birthdayFilter || patient.birthdate === birthdayFilter;
+                        
                         // Gender filter
                         const matchesGender = !genderFilter || patient.sex === genderFilter;
                         
@@ -3882,7 +3876,7 @@ Created: ${new Date(record.createdAt).toLocaleString()}
                             else if (ageFilter === '66+') matchesAge = age >= 66;
                         }
                         
-                        return matchesGender && matchesBloodType && matchesAge;
+                        return matchesBirthday && matchesGender && matchesBloodType && matchesAge;
                     });
                     
                     if (filteredPatients.length === 0) {
@@ -3898,11 +3892,15 @@ Created: ${new Date(record.createdAt).toLocaleString()}
                         card.style.cursor = 'pointer';
                         card.onclick = () => showPatientQuickView(patient);
                         
+                        // Format birthdate
+                        const birthdate = patient.birthdate ? new Date(patient.birthdate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : 'N/A';
+                        
                         card.innerHTML = `
                             <div class="patient-result-header">
                                 <div>
                                     <div class="patient-result-name">${patient.name}</div>
                                     <div class="patient-result-id">ID: ${patient.patient_id}</div>
+                                    <div class="patient-result-id" style="color:#10b981;margin-top:2px;">🎂 ${birthdate}</div>
                                 </div>
                                 <div class="patient-badge">${patient.sex}</div>
                             </div>
@@ -3934,6 +3932,9 @@ Created: ${new Date(record.createdAt).toLocaleString()}
                 animation: fadeIn 0.2s ease;
             `;
             
+            // Format birthdate
+            const birthdate = patient.birthdate ? new Date(patient.birthdate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : 'N/A';
+            
             modal.innerHTML = `
                 <div style="background: white; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: slideUp 0.3s ease;">
                     <div style="background: linear-gradient(135deg, #047857 0%, #059669 100%); color: white; padding: 16px 20px; border-radius: 12px 12px 0 0; display: flex; justify-content: space-between; align-items: center;">
@@ -3949,6 +3950,10 @@ Created: ${new Date(record.createdAt).toLocaleString()}
                             <div style="padding: 10px 12px; background: #f9fafb; border-radius: 6px; border-left: 3px solid #047857;">
                                 <label style="display: block; font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 4px; font-weight: 600;">Patient ID</label>
                                 <div style="font-size: 15px; color: #111827; font-weight: 500;">${patient.patient_id}</div>
+                            </div>
+                            <div style="padding: 10px 12px; background: #f9fafb; border-radius: 6px; border-left: 3px solid #10b981;">
+                                <label style="display: block; font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 4px; font-weight: 600;">🎂 Birthday</label>
+                                <div style="font-size: 15px; color: #10b981; font-weight: 500;">${birthdate}</div>
                             </div>
                             <div style="padding: 10px 12px; background: #f9fafb; border-radius: 6px; border-left: 3px solid #047857;">
                                 <label style="display: block; font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 4px; font-weight: 600;">Age</label>
@@ -4166,6 +4171,126 @@ Registered: ${new Date(patient.registeredDate).toLocaleString()}
                 selectedPatientDisplay.style.display = 'none';
             };
         });
+
+        // Dashboard Reschedule Modal Functions
+        function openDashboardReschedule(aptId, patientName, currentDate, currentTime) {
+            document.getElementById('dashboardRescheduleAppointmentId').value = aptId;
+            document.getElementById('dashboardReschedulePatientName').textContent = 'Patient: ' + patientName;
+            document.getElementById('dashboardCurrentAppointmentInfo').innerHTML = 
+                '<strong>📅 ' + currentDate + '</strong><br>🕐 ' + currentTime;
+            
+            const modal = document.getElementById('dashboardRescheduleModal');
+            modal.style.display = 'flex';
+        }
+
+        function closeDashboardRescheduleModal() {
+            document.getElementById('dashboardRescheduleModal').style.display = 'none';
+            document.getElementById('dashboardRescheduleForm').reset();
+        }
+
+        // Handle dashboard reschedule form submission
+        document.addEventListener('DOMContentLoaded', function() {
+            const rescheduleForm = document.getElementById('dashboardRescheduleForm');
+            if (rescheduleForm) {
+                rescheduleForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const aptId = document.getElementById('dashboardRescheduleAppointmentId').value;
+                    const newDate = document.getElementById('dashboardNewAppointmentDate').value;
+                    const newTime = document.getElementById('dashboardNewAppointmentTime').value;
+                    
+                    // Format the time for display
+                    const timeObj = new Date('2000-01-01 ' + newTime);
+                    const formattedTime = timeObj.toLocaleTimeString('en-US', { 
+                        hour: 'numeric', 
+                        minute: '2-digit', 
+                        hour12: true 
+                    });
+                    
+                    // Format the date for display
+                    const dateObj = new Date(newDate);
+                    const formattedDate = dateObj.toLocaleDateString('en-US', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    });
+                    
+                    // Send reschedule request to backend
+                    fetch(`/appointments/${aptId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            appointment_date: newDate,
+                            appointment_time: newTime,
+                            status: 'scheduled'
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success || data.message) {
+                            // Mark as rescheduled in local storage
+                            localStorage.setItem('apt-status-' + aptId, 'rescheduled');
+                            
+                            alert(`✅ Appointment rescheduled successfully!\n\nNew Date: ${formattedDate}\nNew Time: ${formattedTime}`);
+                            closeDashboardRescheduleModal();
+                            
+                            // Reload the page to show updated calendar
+                            window.location.reload();
+                        } else {
+                            alert('❌ Failed to reschedule appointment. Please try again.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('❌ An error occurred while rescheduling. Please try again.');
+                    });
+                });
+            }
+        });
     </script>
+
+    <!-- Dashboard Reschedule Modal -->
+    <div id="dashboardRescheduleModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:3000;align-items:center;justify-content:center;">
+        <div style="background:white;border-radius:12px;max-width:500px;width:90%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 25px -5px rgba(0,0,0,0.3);">
+            <div style="padding:24px;border-bottom:1px solid #e5e7eb;">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <h2 style="margin:0;color:#047857;font-size:20px;">🔄 Reschedule Appointment</h2>
+                    <button onclick="closeDashboardRescheduleModal()" style="background:none;border:none;font-size:28px;color:#6b7280;cursor:pointer;padding:0;line-height:1;" onmouseover="this.style.color='#111827'" onmouseout="this.style.color='#6b7280'">&times;</button>
+                </div>
+                <p id="dashboardReschedulePatientName" style="margin:8px 0 0 0;color:#6b7280;font-size:14px;"></p>
+            </div>
+            <form id="dashboardRescheduleForm" method="POST" style="padding:24px;">
+                @csrf
+                @method('PUT')
+                <input type="hidden" id="dashboardRescheduleAppointmentId" name="appointment_id">
+                
+                <div style="margin-bottom:20px;">
+                    <label style="display:block;font-weight:500;color:#374151;margin-bottom:8px;font-size:14px;">Current Appointment</label>
+                    <div style="padding:12px;background:#f9fafb;border-radius:6px;color:#6b7280;font-size:14px;">
+                        <div id="dashboardCurrentAppointmentInfo"></div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom:20px;">
+                    <label for="dashboardNewAppointmentDate" style="display:block;font-weight:500;color:#374151;margin-bottom:8px;font-size:14px;">New Date <span style="color:#ef4444;">*</span></label>
+                    <input type="date" id="dashboardNewAppointmentDate" name="appointment_date" required style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:6px;font-size:14px;" min="{{ date('Y-m-d') }}">
+                </div>
+
+                <div style="margin-bottom:24px;">
+                    <label for="dashboardNewAppointmentTime" style="display:block;font-weight:500;color:#374151;margin-bottom:8px;font-size:14px;">New Time <span style="color:#ef4444;">*</span></label>
+                    <input type="time" id="dashboardNewAppointmentTime" name="appointment_time" required style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:6px;font-size:14px;">
+                </div>
+
+                <div style="display:flex;gap:12px;justify-content:flex-end;">
+                    <button type="button" onclick="closeDashboardRescheduleModal()" style="padding:10px 20px;background:#e5e7eb;color:#374151;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-weight:500;" onmouseover="this.style.background='#d1d5db'" onmouseout="this.style.background='#e5e7eb'">Cancel</button>
+                    <button type="submit" style="padding:10px 20px;background:#047857;color:white;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-weight:500;" onmouseover="this.style.background='#065f46'" onmouseout="this.style.background='#047857'">Confirm Reschedule</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Visit;
 use App\Models\Patient;
 use App\Models\VitalSign;
+use App\Models\Appointment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -20,7 +21,21 @@ class VisitController extends Controller
             ->orderBy('visit_time', 'desc')
             ->get();
 
-        return view('visits.index', compact('visits'));
+        // Get today's appointments
+        $todayAppointments = Appointment::with('patient')
+            ->whereDate('appointment_date', now()->format('Y-m-d'))
+            ->orderBy('appointment_time')
+            ->get()
+            ->map(function($appointment) {
+                return [
+                    'id' => $appointment->id,
+                    'time' => $appointment->formatted_time,
+                    'patient' => $appointment->patient->full_name,
+                    'type' => $appointment->service_type,
+                ];
+            });
+
+        return view('visits.index', compact('visits', 'todayAppointments'));
     }
 
     /**

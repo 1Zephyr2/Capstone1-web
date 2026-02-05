@@ -6,6 +6,7 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\VisitController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AppointmentController;
 
 // Redirect root to login
 Route::get('/', function () {
@@ -79,19 +80,16 @@ Route::middleware('auth')->group(function () {
         return view('medical-records');
     })->middleware('auth')->name('medical.records');
 
-    // Appointment Routes (placeholder - to be implemented)
-    Route::get('/appointments/book', function () {
-        return view('appointments.book');
-    })->name('appointments.book');
-
-    Route::get('/appointments/today', function () {
-        return view('appointments.today');
-    })->name('appointments.today');
-
+    // Appointment Routes
+    Route::resource('appointments', AppointmentController::class);
+    Route::get('/appointments/calendar/data', [AppointmentController::class, 'calendar'])->name('appointments.calendar.data');
+    Route::get('/appointments-today', [AppointmentController::class, 'today'])->name('appointments.today');
+    
+    // Legacy appointment routes for backward compatibility
+    Route::get('/appointments/book', [AppointmentController::class, 'create'])->name('appointments.book');
     Route::get('/appointments/schedule', function () {
         return view('appointments.schedule');
     })->name('appointments.schedule');
-
     Route::get('/appointments/queue', function () {
         return view('appointments.queue');
     })->name('appointments.queue');

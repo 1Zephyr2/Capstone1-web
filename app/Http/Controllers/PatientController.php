@@ -33,13 +33,21 @@ class PatientController extends Controller
     public function search(Request $request)
     {
         $term = $request->get('q', $request->get('term', ''));
+        $birthday = $request->get('birthday', '');
         
-        if (strlen($term) < 2) {
+        $query = Patient::query();
+        
+        // Search by term (name, ID, contact)
+        if (strlen($term) >= 2) {
+            $query->search($term);
+        } elseif ($birthday) {
+            // If no term but birthday is provided, search by birthday
+            $query->whereDate('birthdate', $birthday);
+        } else {
             return response()->json([]);
         }
 
-        $patients = Patient::search($term)
-            ->limit(10)
+        $patients = $query->limit(10)
             ->get()
             ->map(function($patient) {
                 return [
@@ -51,7 +59,7 @@ class PatientController extends Controller
                     'sex' => $patient->sex,
                     'contact' => $patient->contact_number,
                     'address' => $patient->address,
-                    'birthdate' => $patient->birthdate,
+                    'birthdate' => $patient->birthdate ? $patient->birthdate->format('Y-m-d') : null,
                     'first_name' => $patient->first_name,
                     'last_name' => $patient->last_name,
                     'middle_name' => $patient->middle_name,

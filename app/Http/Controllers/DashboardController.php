@@ -6,6 +6,7 @@ use App\Models\Patient;
 use App\Models\Visit;
 use App\Models\Immunization;
 use App\Models\PrenatalRecord;
+use App\Models\Appointment;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -83,13 +84,33 @@ class DashboardController extends Controller
         // Limit to top 3 alerts for dashboard
         $topAlerts = array_slice($topAlerts, 0, 3);
         
+        // Get appointments for calendar (scheduled appointments only)
+        $appointments = Appointment::with('patient')
+            ->where('status', '!=', 'cancelled')
+            ->get()
+            ->groupBy(function($appointment) {
+                return $appointment->appointment_date->format('Y-m-d');
+            })
+            ->map(function($dayAppointments) {
+                return $dayAppointments->map(function($appointment) {
+                    return [
+                        'id' => $appointment->id,
+                        'time' => $appointment->formatted_time,
+                        'patient' => $appointment->patient->full_name,
+                        'type' => $appointment->service_type,
+                        'status' => $appointment->status,
+                    ];
+                })->sortBy('time')->values();
+            });
+        
         return view('dashboard', compact(
             'totalPatients',
             'weeklyVisits',
             'overdueImmunizations',
             'activePrenatal',
             'totalAlerts',
-            'topAlerts'
+            'topAlerts',
+            'appointments'
         ));
     }
 }

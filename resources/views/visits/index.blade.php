@@ -338,7 +338,7 @@
             </div>
             <div class="stat-card">
                 <div class="stat-value" id="totalAbsentToday">0</div>
-                <div class="stat-label">Absent Today</div>
+                <div class="stat-label">Rescheduled Today</div>
             </div>
             <div class="stat-card">
                 <div class="stat-value" id="generalCheckupsToday">0</div>
@@ -449,6 +449,46 @@
         </div>
     </div>
 
+    <!-- Reschedule Modal -->
+    <div id="rescheduleModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:2000;align-items:center;justify-content:center;">
+        <div style="background:white;border-radius:12px;max-width:500px;width:90%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 25px -5px rgba(0,0,0,0.3);">
+            <div style="padding:24px;border-bottom:1px solid #e5e7eb;">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <h2 style="margin:0;color:#047857;font-size:20px;">🔄 Reschedule Appointment</h2>
+                    <button onclick="closeRescheduleModal()" style="background:none;border:none;font-size:28px;color:#6b7280;cursor:pointer;padding:0;line-height:1;" onmouseover="this.style.color='#111827'" onmouseout="this.style.color='#6b7280'">&times;</button>
+                </div>
+                <p id="reschedulePatientName" style="margin:8px 0 0 0;color:#6b7280;font-size:14px;"></p>
+            </div>
+            <form id="rescheduleForm" method="POST" style="padding:24px;">
+                @csrf
+                @method('PUT')
+                <input type="hidden" id="rescheduleAppointmentId" name="appointment_id">
+                
+                <div style="margin-bottom:20px;">
+                    <label style="display:block;font-weight:500;color:#374151;margin-bottom:8px;font-size:14px;">Current Appointment</label>
+                    <div style="padding:12px;background:#f9fafb;border-radius:6px;color:#6b7280;font-size:14px;">
+                        <div id="currentAppointmentInfo"></div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom:20px;">
+                    <label for="newAppointmentDate" style="display:block;font-weight:500;color:#374151;margin-bottom:8px;font-size:14px;">New Date <span style="color:#ef4444;">*</span></label>
+                    <input type="date" id="newAppointmentDate" name="appointment_date" required style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:6px;font-size:14px;" min="{{ date('Y-m-d') }}">
+                </div>
+
+                <div style="margin-bottom:24px;">
+                    <label for="newAppointmentTime" style="display:block;font-weight:500;color:#374151;margin-bottom:8px;font-size:14px;">New Time <span style="color:#ef4444;">*</span></label>
+                    <input type="time" id="newAppointmentTime" name="appointment_time" required style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:6px;font-size:14px;">
+                </div>
+
+                <div style="display:flex;gap:12px;justify-content:flex-end;">
+                    <button type="button" onclick="closeRescheduleModal()" style="padding:10px 20px;background:#e5e7eb;color:#374151;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-weight:500;" onmouseover="this.style.background='#d1d5db'" onmouseout="this.style.background='#e5e7eb'">Cancel</button>
+                    <button type="submit" style="padding:10px 20px;background:#047857;color:white;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-weight:500;" onmouseover="this.style.background='#065f46'" onmouseout="this.style.background='#047857'">Confirm Reschedule</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
         const visits = @json($visits);
 
@@ -534,35 +574,11 @@
             }
         });
 
-        // Appointment Attendance System
-        const appointmentsData = {
-            '2026-02-05': [
-                { time: '11:00 AM', patient: 'Ana M. Lopez', type: 'Follow-up Visit', id: 4 },
-                { time: '01:00 PM', patient: 'Pedro R. Martinez', type: 'General Checkup', id: 5 },
-                { time: '02:30 PM', patient: 'Rosa T. Garcia', type: 'Vaccination', id: 6 }
-            ],
-            '2026-02-06': [
-                { time: '09:00 AM', patient: 'Carlos J. Fernandez', type: 'General Checkup', id: 7 },
-                { time: '10:30 AM', patient: 'Linda P. Gonzales', type: 'Prenatal Care', id: 8 },
-                { time: '02:00 PM', patient: 'Miguel A. Torres', type: 'Follow-up Visit', id: 9 }
-            ],
-            '2026-02-07': [
-                { time: '08:30 AM', patient: 'Sofia R. Mendoza', type: 'Immunization', id: 10 },
-                { time: '11:00 AM', patient: 'Roberto L. Cruz', type: 'General Checkup', id: 11 },
-                { time: '01:30 PM', patient: 'Elena M. Ramos', type: 'Vaccination', id: 12 },
-                { time: '03:00 PM', patient: 'Diego S. Alvarez', type: 'Follow-up Visit', id: 13 }
-            ],
-            '2026-02-08': [
-                { time: '09:00 AM', patient: 'Carmen V. Diaz', type: 'Prenatal Care', id: 14 },
-                { time: '10:00 AM', patient: 'Fernando N. Morales', type: 'General Checkup', id: 15 },
-                { time: '02:30 PM', patient: 'Isabella C. Santos', type: 'Immunization', id: 16 }
-            ]
-        };
+        // Appointment Attendance System - Real data from backend
+        const todayAppointments = @json($todayAppointments ?? []);
 
         function loadTodayAppointments() {
-            const today = new Date(2026, 1, 5); // Hardcoded to Feb 5, 2026
-            const dateStr = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
-            const appointments = appointmentsData[dateStr] || [];
+            const appointments = todayAppointments;
             
             const container = document.getElementById('appointmentAttendanceList');
             
@@ -579,7 +595,7 @@
                             '<div id="status-' + apt.id + '" style="min-width:100px;text-align:center;"></div>' +
                             '<div id="buttons-' + apt.id + '" style="display:flex;gap:8px;">' +
                                 '<button onclick="markAppointmentAttendance(' + apt.id + ',\'attended\')" style="padding:8px 16px;background:#10b981;color:white;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;transition:all 0.2s;" onmouseover="this.style.background=\'#059669\'" onmouseout="this.style.background=\'#10b981\'">✓ Attended</button>' +
-                                '<button onclick="markAppointmentAttendance(' + apt.id + ',\'absent\')" style="padding:8px 16px;background:#ef4444;color:white;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;transition:all 0.2s;" onmouseover="this.style.background=\'#dc2626\'" onmouseout="this.style.background=\'#ef4444\'">✕ Absent</button>' +
+                                '<button onclick="openRescheduleModal(' + apt.id + ',\'' + apt.patient + '\',\'' + apt.date + '\',\'' + apt.time + '\')" style="padding:8px 16px;background:#f59e0b;color:white;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;transition:all 0.2s;" onmouseover="this.style.background=\'#d97706\'" onmouseout="this.style.background=\'#f59e0b\'">🔄 Re-schedule</button>' +
                             '</div>' +
                         '</div>' +
                     '</div>'
@@ -604,21 +620,19 @@
             if (status === 'attended') {
                 statusDiv.innerHTML = '<span style="display:inline-block;padding:6px 12px;background:#d1fae5;color:#065f46;border-radius:6px;font-size:13px;font-weight:600;">✓ Attended</span>';
                 buttonsDiv.style.display = 'none';
-            } else if (status === 'absent') {
-                statusDiv.innerHTML = '<span style="display:inline-block;padding:6px 12px;background:#fee2e2;color:#991b1b;border-radius:6px;font-size:13px;font-weight:600;">✕ Absent</span>';
+            } else if (status === 'rescheduled') {
+                statusDiv.innerHTML = '<span style="display:inline-block;padding:6px 12px;background:#fef3c7;color:#92400e;border-radius:6px;font-size:13px;font-weight:600;">🔄 Rescheduled</span>';
                 buttonsDiv.style.display = 'none';
             }
         }
 
         function updateVisitStats() {
             console.log('=== Updating Visit Stats ===');
-            const today = new Date(2026, 1, 5); // Hardcoded to Feb 5, 2026
-            const dateStr = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
-            const appointments = appointmentsData[dateStr] || [];
-            console.log('Date:', dateStr, 'Appointments:', appointments.length);
+            const appointments = todayAppointments;
+            console.log('Today\'s Appointments:', appointments.length);
             
             let totalAttended = 0;
-            let totalAbsent = 0;
+            let totalRescheduled = 0;
             let generalCheckups = 0;
             let immunizations = 0;
             let prenatalCare = 0;
@@ -639,15 +653,15 @@
                     } else if (apt.type.includes('Prenatal')) {
                         prenatalCare++;
                     }
-                } else if (status === 'absent') {
-                    totalAbsent++;
+                } else if (status === 'rescheduled') {
+                    totalRescheduled++;
                 }
             });
             
-            console.log('Stats - Attended:', totalAttended, 'Absent:', totalAbsent, 'General:', generalCheckups, 'Immunizations:', immunizations, 'Prenatal:', prenatalCare);
+            console.log('Stats - Attended:', totalAttended, 'Rescheduled:', totalRescheduled, 'General:', generalCheckups, 'Immunizations:', immunizations, 'Prenatal:', prenatalCare);
             
             document.getElementById('totalVisitsToday').textContent = totalAttended;
-            document.getElementById('totalAbsentToday').textContent = totalAbsent;
+            document.getElementById('totalAbsentToday').textContent = totalRescheduled;
             document.getElementById('generalCheckupsToday').textContent = generalCheckups;
             document.getElementById('immunizationsToday').textContent = immunizations;
             document.getElementById('prenatalCareToday').textContent = prenatalCare;
@@ -666,9 +680,88 @@
             }
         }
 
+        function openRescheduleModal(aptId, patientName, currentDate, currentTime) {
+            document.getElementById('rescheduleAppointmentId').value = aptId;
+            document.getElementById('reschedulePatientName').textContent = 'Patient: ' + patientName;
+            document.getElementById('currentAppointmentInfo').innerHTML = 
+                '<strong>📅 ' + currentDate + '</strong><br>🕐 ' + currentTime;
+            
+            // Show modal
+            const modal = document.getElementById('rescheduleModal');
+            modal.style.display = 'flex';
+        }
+
+        function closeRescheduleModal() {
+            document.getElementById('rescheduleModal').style.display = 'none';
+            document.getElementById('rescheduleForm').reset();
+        }
+
+        // Handle reschedule form submission
         document.addEventListener('DOMContentLoaded', function() {
-            // Update current date display - hardcoded to Feb 5, 2026 to match appointment data
-            const today = new Date(2026, 1, 5); // Month is 0-indexed, so 1 = February
+            const rescheduleForm = document.getElementById('rescheduleForm');
+            if (rescheduleForm) {
+                rescheduleForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const aptId = document.getElementById('rescheduleAppointmentId').value;
+                    const newDate = document.getElementById('newAppointmentDate').value;
+                    const newTime = document.getElementById('newAppointmentTime').value;
+                    
+                    // Format the time for display
+                    const timeObj = new Date('2000-01-01 ' + newTime);
+                    const formattedTime = timeObj.toLocaleTimeString('en-US', { 
+                        hour: 'numeric', 
+                        minute: '2-digit', 
+                        hour12: true 
+                    });
+                    
+                    // Format the date for display
+                    const dateObj = new Date(newDate);
+                    const formattedDate = dateObj.toLocaleDateString('en-US', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    });
+                    
+                    // Send reschedule request to backend
+                    fetch(`/appointments/${aptId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            appointment_date: newDate,
+                            appointment_time: newTime,
+                            status: 'scheduled'
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success || data.message) {
+                            // Mark as rescheduled in local storage
+                            localStorage.setItem('apt-status-' + aptId, 'rescheduled');
+                            updateAppointmentStatus(aptId, 'rescheduled');
+                            updateVisitStats();
+                            
+                            alert(`✅ Appointment rescheduled successfully!\n\nNew Date: ${formattedDate}\nNew Time: ${formattedTime}`);
+                            closeRescheduleModal();
+                        } else {
+                            alert('❌ Failed to reschedule appointment. Please try again.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('❌ An error occurred while rescheduling. Please try again.');
+                    });
+                });
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update current date display
+            const today = new Date();
             const options = { year: 'numeric', month: 'long', day: 'numeric' };
             document.getElementById('currentDateDisplay').textContent = today.toLocaleDateString('en-US', options);
             
