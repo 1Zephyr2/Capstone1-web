@@ -54,7 +54,7 @@ class DashboardController extends Controller
         if ($incompleteRecords > 0) {
             $topAlerts[] = [
                 'type' => 'warning',
-                'icon' => '⚠️',
+                'icon' => 'bi-exclamation-triangle-fill',
                 'title' => 'Incomplete Records',
                 'count' => $incompleteRecords,
                 'message' => "$incompleteRecords patient(s) with missing information"
@@ -64,7 +64,7 @@ class DashboardController extends Controller
         if ($overdueImmunizations > 0) {
             $topAlerts[] = [
                 'type' => 'danger',
-                'icon' => '💉',
+                'icon' => 'bi-shield-fill-exclamation',
                 'title' => 'Overdue Immunizations',
                 'count' => $overdueImmunizations,
                 'message' => "$overdueImmunizations immunization(s) overdue"

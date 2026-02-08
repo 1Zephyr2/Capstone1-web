@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Record Visit - Health Center</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
             margin: 0;
@@ -13,16 +14,19 @@
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f5f5;
+            background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
             padding: 20px;
+            min-height: 100vh;
         }
         .container {
             max-width: 900px;
             margin: 0 auto;
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+            padding: 36px;
+            border-radius: 16px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .header-top {
             display: flex;
@@ -31,26 +35,34 @@
             margin-bottom: 8px;
         }
         .btn-back {
-            padding: 8px 16px;
-            background: #6b7280;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 700;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(107, 114, 128, 0.3);
         }
+        
         .btn-back:hover {
-            background: #4b5563;
+            background: linear-gradient(135deg, #4b5563 0%, #374151 100());
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(107, 114, 128, 0.4);
         }
         h1 {
             color: #047857;
             margin: 0;
             flex: 1;
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
         }
         .patient-info {
             background: #f0fdf4;
@@ -292,7 +304,7 @@
             
             <!-- Immunization Section -->
             <div id="immunizationSection" class="service-section">
-                <h3>💉 Immunization Details</h3>
+                <h3><i class="bi bi-shield-fill-check"></i> Immunization Details</h3>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Vaccine Name <span class="required">*</span></label>
@@ -337,7 +349,7 @@
 
             <!-- Prenatal Section -->
             <div id="prenatalSection" class="service-section">
-                <h3>🤰 Prenatal Care Details</h3>
+                <h3><i class="bi bi-heart-pulse-fill"></i> Prenatal Care Details</h3>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Gestational Age (weeks) <span class="required">*</span></label>
@@ -406,7 +418,7 @@
 
             <!-- Referral Section -->
             <div id="referralSection" class="service-section">
-                <h3>🏥 Referral Details</h3>
+                <h3><i class="bi bi-hospital"></i> Referral Details</h3>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Referred To <span class="required">*</span></label>
@@ -434,7 +446,7 @@
                 <span>Vital Signs</span>
                 @if($patient && $patient->lastVitalSigns)
                 <button type="button" class="btn btn-copy" onclick="copyLastVitalSigns()">
-                    📋 Copy from Last Visit
+                    <i class="bi bi-clipboard2"></i> Copy from Last Visit
                 </button>
                 @endif
             </div>

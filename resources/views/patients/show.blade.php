@@ -12,8 +12,9 @@
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f5f5;
+            background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
             padding: 20px;
+            min-height: 100vh;
         }
         .container {
             max-width: 1200px;
@@ -37,21 +38,26 @@
             font-size: 14px;
         }
         .btn-back {
-            padding: 8px 16px;
-            background: #6b7280;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 700;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(107, 114, 128, 0.3);
         }
+        
         .btn-back:hover {
-            background: #4b5563;
+            background: linear-gradient(135deg, #4b5563 0%, #374151 100());
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(107, 114, 128, 0.4);
         }
         .btn-primary {
             background: #047857;
@@ -62,15 +68,25 @@
             color: white;
         }
         .patient-header {
-            background: white;
-            padding: 24px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+            padding: 28px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+        
+        .patient-header:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
+        }
+
         .patient-header h1 {
             color: #047857;
             margin-bottom: 8px;
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
         }
         .patient-id {
             color: #6b7280;

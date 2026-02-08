@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Today's Visits - CareSync</title>
+    <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
             margin: 0;
@@ -12,19 +13,26 @@
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f5f5;
+            background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
             padding: 20px;
+            min-height: 100vh;
         }
         .container {
             max-width: 1400px;
             margin: 0 auto;
         }
         .header {
-            background: white;
-            padding: 24px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+            padding: 28px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .header:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
         }
         .header-top {
             display: flex;
@@ -63,27 +71,34 @@
             color: #047857;
         }
         .btn-back {
-            padding: 8px 16px;
-            background: #6b7280;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 700;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(107, 114, 128, 0.3);
         }
+        
         .btn-back:hover {
-            background: #4b5563;
+            background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(107, 114, 128, 0.4);
         }
         h1 {
             color: #047857;
             margin: 0;
             flex: 1;
-            font-size: 28px;
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
         }
         .stats {
             display: grid;
@@ -92,10 +107,17 @@
             margin-bottom: 20px;
         }
         .stat-card {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+            padding: 24px;
+            border-radius: 14px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
         }
         .stat-value {
             font-size: 32px;
@@ -326,7 +348,7 @@
                     <img src="/images/systemlogo.png" alt="CareSync" style="height: 35px; object-fit: contain;">
                 </a>
                 <a href="{{ route('dashboard') }}" class="btn-back">← Back</a>
-                <h1>📋 Today's Visits</h1>
+                <h1><i class="bi bi-clipboard2-check"></i> Today's Visits</h1>
             </div>
             <p style="color: #6b7280; font-size: 14px;">{{ now()->format('l, F j, Y') }}</p>
         </div>
@@ -357,7 +379,7 @@
         <!-- Appointment Attendance Section -->
         <div style="background: white; padding: 24px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #e5e7eb; padding-bottom: 12px;">
-                <h2 style="color: #047857; font-size: 20px; margin: 0;">📋 Today's Appointments Attendance</h2>
+                <h2 style="color: #047857; font-size: 20px; margin: 0;"><i class="bi bi-calendar2-check"></i> Today's Appointments Attendance</h2>
                 <div style="display: flex; gap: 12px; align-items: center;">
                     <button onclick="resetAllAttendance()" style="padding: 8px 16px; background: #6b7280; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.2s;" onmouseover="this.style.background='#4b5563'" onmouseout="this.style.background='#6b7280'">
                         🔄 Reset All
@@ -393,7 +415,7 @@
                                 {{ $visit->service_type }}
                             </span>
                             <div class="visit-time">
-                                🕐 {{ \Carbon\Carbon::parse($visit->visit_time)->format('h:i A') }}
+                                <i class="bi bi-clock"></i> {{ \Carbon\Carbon::parse($visit->visit_time)->format('h:i A') }}
                             </div>
                         </div>
                     </div>
@@ -442,7 +464,7 @@
                 </div>
 
                 <div id="modalHealthWorker" class="health-worker" style="display: none; margin-top: 16px;">
-                    <span class="health-worker-label">👨‍⚕️ Health Worker:</span>
+                    <span class="health-worker-label"><i class="bi bi-person-badge"></i> Health Worker:</span>
                     <span class="health-worker-name" id="modalHealthWorkerName"></span>
                 </div>
             </div>
@@ -508,7 +530,7 @@
             
             const visitTime = new Date(visit.visit_time);
             document.getElementById('modalVisitTime').textContent = 
-                `🕐 ${visitTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}`;
+                visitTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
 
             // Set vital signs
             const vitalSignsDiv = document.getElementById('modalVitalSigns');
@@ -583,13 +605,13 @@
             const container = document.getElementById('appointmentAttendanceList');
             
             if (appointments.length === 0) {
-                container.innerHTML = '<div style="text-align:center;padding:40px;color:#9ca3af;"><div style="font-size:48px;margin-bottom:16px;">📅</div><div style="font-size:16px;font-weight:600;color:#6b7280;">No appointments scheduled for today</div></div>';
+                container.innerHTML = '<div style="text-align:center;padding:40px;color:#9ca3af;"><div style="font-size:48px;margin-bottom:16px;"><i class="bi bi-calendar-x" style="font-size:48px;"></i></div><div style="font-size:16px;font-weight:600;color:#6b7280;">No appointments scheduled for today</div></div>';
             } else {
                 container.innerHTML = '<div style="display:grid;gap:12px;">' + appointments.map(apt => 
                     '<div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:16px;display:flex;justify-content:space-between;align-items:center;" id="apt-' + apt.id + '">' +
                         '<div style="flex:1;">' +
                             '<div style="font-weight:600;color:#111827;font-size:15px;margin-bottom:4px;">' + apt.patient + '</div>' +
-                            '<div style="display:flex;gap:12px;font-size:13px;color:#6b7280;"><span>🕐 ' + apt.time + '</span><span>• ' + apt.type + '</span></div>' +
+                            '<div style="display:flex;gap:12px;font-size:13px;color:#6b7280;"><span>' + apt.time + '</span><span>• ' + apt.type + '</span></div>' +
                         '</div>' +
                         '<div style="display:flex;gap:8px;align-items:center;">' +
                             '<div id="status-' + apt.id + '" style="min-width:100px;text-align:center;"></div>' +
@@ -684,7 +706,7 @@
             document.getElementById('rescheduleAppointmentId').value = aptId;
             document.getElementById('reschedulePatientName').textContent = 'Patient: ' + patientName;
             document.getElementById('currentAppointmentInfo').innerHTML = 
-                '<strong>📅 ' + currentDate + '</strong><br>🕐 ' + currentTime;
+                '<strong>' + currentDate + '</strong><br>' + currentTime;
             
             // Show modal
             const modal = document.getElementById('rescheduleModal');
@@ -745,15 +767,15 @@
                             updateAppointmentStatus(aptId, 'rescheduled');
                             updateVisitStats();
                             
-                            alert(`✅ Appointment rescheduled successfully!\n\nNew Date: ${formattedDate}\nNew Time: ${formattedTime}`);
+                            alert(`Appointment rescheduled successfully!\n\nNew Date: ${formattedDate}\nNew Time: ${formattedTime}`);
                             closeRescheduleModal();
                         } else {
-                            alert('❌ Failed to reschedule appointment. Please try again.');
+                            alert('Failed to reschedule appointment. Please try again.');
                         }
                     })
                     .catch(error => {
                         console.error('Error:', error);
-                        alert('❌ An error occurred while rescheduling. Please try again.');
+                        alert('An error occurred while rescheduling. Please try again.');
                     });
                 });
             }

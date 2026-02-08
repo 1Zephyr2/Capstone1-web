@@ -243,7 +243,7 @@
             @endif
 
             <div class="info-box">
-                <h3>📝 CSV File Requirements:</h3>
+                <h3><i class="bi bi-file-earmark-text"></i> CSV File Requirements:</h3>
                 <ul>
                     <li><strong>Format:</strong> CSV (Comma-separated values) or Excel (.xlsx, .xls)</li>
                     <li><strong>Required Columns:</strong> first_name, last_name, birthdate, sex, address</li>

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Today's Patients - CareSync</title>
+    <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
             margin: 0;
@@ -83,13 +84,13 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>📊 Today's Patients</h1>
+            <h1><i class="bi bi-bar-chart-fill"></i> Today's Patients</h1>
             <a href="{{ route('dashboard') }}" class="back-btn">← Back to Dashboard</a>
         </div>
 
         <div class="content-card">
             <div class="coming-soon">
-                <div class="icon">👥</div>
+                <div class="icon"><i class="bi bi-people-fill"></i></div>
                 <h2>Today's Patient List</h2>
                 <p>This feature is under development. View all patients seen today here.</p>
             </div>

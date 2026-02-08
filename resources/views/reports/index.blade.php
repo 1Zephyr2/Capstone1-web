@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Monthly Reports - Health Center</title>
+    <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
             margin: 0;
@@ -200,10 +201,6 @@
             align-items: center;
             gap: 12px;
         }
-        h2::before {
-            content: '📊';
-            font-size: 28px;
-        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -296,37 +293,37 @@
                 <label>Select Month</label>
                 <input type="month" id="monthSelector" value="{{ $month }}" onchange="loadReport()">
             </div>
-            <button class="btn btn-primary" onclick="window.print()">🖨️ Print Report</button>
+            <button class="btn btn-primary" onclick="window.print()"><i class="bi bi-printer"></i> Print Report</button>
         </div>
 
         <div class="stats-grid">
             <div class="stat-card">
-                <span class="stat-icon">👥</span>
+                <span class="stat-icon"><i class="bi bi-people-fill"></i></span>
                 <div class="stat-label">New Patients</div>
                 <div class="stat-value">{{ $stats['new_patients'] }}</div>
             </div>
             <div class="stat-card">
-                <span class="stat-icon">🏥</span>
+                <span class="stat-icon"><i class="bi bi-hospital"></i></span>
                 <div class="stat-label">Total Visits</div>
                 <div class="stat-value">{{ $stats['total_visits'] }}</div>
             </div>
             <div class="stat-card">
-                <span class="stat-icon">💉</span>
+                <span class="stat-icon"><i class="bi bi-shield-fill-check"></i></span>
                 <div class="stat-label">Immunizations</div>
                 <div class="stat-value">{{ $stats['immunizations'] }}</div>
             </div>
             <div class="stat-card">
-                <span class="stat-icon">🤰</span>
+                <span class="stat-icon"><i class="bi bi-heart-pulse-fill"></i></span>
                 <div class="stat-label">Prenatal Visits</div>
                 <div class="stat-value">{{ $stats['prenatal_visits'] }}</div>
             </div>
             <div class="stat-card">
-                <span class="stat-icon">📋</span>
+                <span class="stat-icon"><i class="bi bi-clipboard2-check"></i></span>
                 <div class="stat-label">Referrals</div>
                 <div class="stat-value">{{ $stats['referrals'] }}</div>
             </div>
             <div class="stat-card">
-                <span class="stat-icon">📊</span>
+                <span class="stat-icon"><i class="bi bi-bar-chart-fill"></i></span>
                 <div class="stat-label">Total Registered</div>
                 <div class="stat-value">{{ $stats['total_patients'] }}</div>
             </div>
@@ -402,7 +399,7 @@
             </table>
             @else
             <div class="empty-state">
-                <div class="empty-state-icon">💉</div>
+                <div class="empty-state-icon"><i class="bi bi-shield-fill-check"></i></div>
                 <div class="empty-state-text">No immunizations recorded this month</div>
             </div>
             @endif

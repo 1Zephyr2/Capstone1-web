@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New Patient Record - CareSync</title>
+    <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
             margin: 0;
@@ -83,13 +84,13 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>📋 New Patient Record</h1>
+            <h1><i class="bi bi-clipboard2-check"></i> New Patient Record</h1>
             <a href="{{ route('dashboard') }}" class="back-btn">← Back to Dashboard</a>
         </div>
 
         <div class="content-card">
             <div class="coming-soon">
-                <div class="icon">📋</div>
+                <div class="icon"><i class="bi bi-clipboard2-check" style="font-size: 48px;"></i></div>
                 <h2>New Patient Record Form</h2>
                 <p>This feature is under development. Patient registration form will be available here.</p>
             </div>

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patients - Health Center</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
             margin: 0;
@@ -13,19 +14,26 @@
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f5f5;
+            background: linear-gradient(135deg, #f5f5f5 0%, #f0f9ff 100%);
             padding: 20px;
+            min-height: 100vh;
         }
         .container {
             max-width: 1200px;
             margin: 0 auto;
         }
         .header {
-            background: white;
-            padding: 24px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+            padding: 28px;
+            border-radius: 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .header:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
         }
         .header-top {
             display: flex;
@@ -39,28 +47,53 @@
             margin-bottom: 20px;
         }
         .btn-new-patient {
-            padding: 12px 24px;
-            background: #047857;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #047857 0%, #059669 100%);
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
+            font-size: 15px;
+            font-weight: 700;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(4, 120, 87, 0.3);
         }
         .btn-new-patient:hover {
-            background: #065f46;
+            background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(4, 120, 87, 0.4);
         }
         .btn-import {
-            padding: 12px 24px;
-            background: #3b82f6;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+        }
+        .btn-import:hover {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+        }
+        .btn-back {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 14px;
             font-weight: 600;
@@ -68,26 +101,11 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-        }
-        .btn-import:hover {
-            background: #2563eb;
-        }
-        .btn-back {
-            padding: 8px 16px;
-            background: #6b7280;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .btn-back:hover {
-            background: #4b5563;
+            background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
+            transform: translateY(-1px);
         }
         .header-logo {
             display: flex;
@@ -122,11 +140,14 @@
             color: #047857;
             margin: 0;
             flex: 1;
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
         }
         .search-bar {
             display: flex;
-            gap: 12px;
-            margin-bottom: 16px;
+            gap: 14px;
+            margin-bottom: 18px;
         }
         .search-wrapper {
             flex: 1;
@@ -134,14 +155,17 @@
         }
         input[type="search"] {
             width: 100%;
-            padding: 12px 40px 12px 16px;
+            padding: 14px 44px 14px 18px;
             border: 2px solid #e5e7eb;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 15px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            background: white;
         }
         input[type="search"]:focus {
             outline: none;
             border-color: #047857;
+            box-shadow: 0 0 0 3px rgba(4, 120, 87, 0.1);
         }
         .search-icon {
             position: absolute;
@@ -190,33 +214,34 @@
             border: 1px solid #a7f3d0;
         }
         .patients-table {
-            background: white;
-            border-radius: 8px;
+            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.06);
         }
         table {
             width: 100%;
             border-collapse: collapse;
         }
         thead {
-            background: #f9fafb;
+            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
         }
         th {
-            padding: 14px 16px;
+            padding: 16px 18px;
             text-align: left;
             font-size: 13px;
-            font-weight: 600;
+            font-weight: 700;
             color: #374151;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
         }
         td {
-            padding: 16px;
+            padding: 18px;
             border-top: 1px solid #e5e7eb;
         }
         tr:hover {
-            background: #f9fafb;
+            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
         }
         .patient-id {
             font-family: monospace;
@@ -228,17 +253,18 @@
             color: #111827;
         }
         .badge {
-            padding: 4px 10px;
-            border-radius: 12px;
+            padding: 5px 12px;
+            border-radius: 14px;
             font-size: 12px;
-            font-weight: 600;
+            font-weight: 700;
+            letter-spacing: 0.3px;
         }
         .badge-male {
-            background: #dbeafe;
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
             color: #1e40af;
         }
         .badge-female {
-            background: #fce7f3;
+            background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
             color: #9f1239;
         }
         .actions {
@@ -923,7 +949,7 @@
                         placeholder="Search by name, patient ID, or contact number..."
                         autocomplete="off"
                     >
-                    <span class="search-icon">🔍</span>
+                    <span class="search-icon"><i class="bi bi-search"></i></span>
                     <div id="autocompleteResults" class="autocomplete-results"></div>
                 </div>
                 <div style="display: flex; gap: 8px;">
@@ -996,7 +1022,7 @@
     <div id="patientQuickModal" class="patient-quick-modal">
         <div class="patient-quick-content">
             <div class="patient-quick-header">
-                <h2>👤 Patient Details</h2>
+                <h2><i class="bi bi-person-circle"></i> Patient Details</h2>
                 <button class="patient-quick-close" onclick="closePatientQuickModal()">&times;</button>
             </div>
             <div class="patient-quick-body">
@@ -1065,10 +1091,10 @@
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closePatientQuickModal();
-            }📋 View Full Record
+            }<i class="bi bi-clipboard2-check"></i> View Full Record
                 </a>
                 <a id="quickAddVisitBtn" href="#" class="patient-quick-btn patient-quick-btn-secondary">
-                    🏥 Add Visit
+                    <i class="bi bi-hospital"></i> Add Visit
                 </a>
             </div>
         </div>
@@ -1387,7 +1413,7 @@
     <div id="visitModal" class="visit-modal">
         <div class="visit-modal-content">
             <div class="visit-modal-header">
-                <h2>📋 Record Patient Visit</h2>
+                <h2><i class="bi bi-clipboard2-plus"></i> Record Patient Visit</h2>
                 <button class="modal-close" onclick="closeVisitModal()">×</button>
             </div>
             <div class="visit-modal-body">
@@ -1497,7 +1523,7 @@
                 <p style="color: #6b7280; margin-bottom: 20px; font-size: 14px;">Bulk upload patient data from CSV file</p>
 
                 <div class="import-info-box">
-                    <h3>📝 CSV File Requirements:</h3>
+                    <h3><i class="bi bi-file-earmark-text"></i> CSV File Requirements:</h3>
                     <ul>
                         <li><strong>Format:</strong> CSV (Comma-separated values)</li>
                         <li><strong>Required Columns:</strong> first_name, last_name, birthdate, sex, address</li>

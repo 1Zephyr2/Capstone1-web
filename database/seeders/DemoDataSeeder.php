@@ -43,9 +43,12 @@ class DemoDataSeeder extends Seeder
                 'sex' => 'Male',
                 'contact_number' => '09181234567',
                 'address' => '456 Secondary Road, Scout Barrio, Baguio City',
-            ],\n            [\n                          ],
-             [
-        'middle_name' => null,
+            ],
+            [
+                'patient_id' => 'BHC-2026-0003',
+                'first_name' => 'Baby',
+                'last_name' => 'Reyes',
+                'middle_name' => null,
                 'birthdate' => '2025-12-01',
                 'sex' => 'Female',
                 'contact_number' => '09191234567',
@@ -61,9 +64,7 @@ class DemoDataSeeder extends Seeder
                 'contact_number' => '09201234567',
                 'address' => '321 Upper Road, Scout Barrio, Baguio City',
                 'philhealth_number' => '12-345678902-3',
-            },
-            [
-                'patient_id' => 'BHC-            ],
+            ],
             [
                 'patient_id' => 'BHC-2026-0005',
                 'first_name' => 'Pedro',
@@ -74,7 +75,9 @@ class DemoDataSeeder extends Seeder
                 'contact_number' => '09211234567',
                 'address' => '654 Lower Road, Scout Barrio, Baguio City',
             ],
-  'first_name' => 'Rosa',
+            [
+                'patient_id' => 'BHC-2026-0006',
+                'first_name' => 'Rosa',
                 'last_name' => 'Garcia',
                 'middle_name' => 'Torres',
                 'birthdate' => '1988-07-18',

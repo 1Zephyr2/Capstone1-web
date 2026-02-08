@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patient Search - CareSync</title>
+    <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
             margin: 0;
@@ -83,13 +84,13 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>👥 Patient Search</h1>
+            <h1><i class="bi bi-people-fill"></i> Patient Search</h1>
             <a href="{{ route('dashboard') }}" class="back-btn">← Back to Dashboard</a>
         </div>
 
         <div class="content-card">
             <div class="coming-soon">
-                <div class="icon">👥</div>
+                <div class="icon"><i class="bi bi-people-fill" style="font-size: 48px;"></i></div>
                 <h2>Patient Search & Records</h2>
                 <p>This feature is under development. Search and view patient records here.</p>
             </div>

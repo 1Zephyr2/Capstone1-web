@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Automation Support - CareSync</title>
+    <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
             margin: 0;
@@ -13,8 +14,9 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f8fafc;
+            background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
             padding: 40px;
+            min-height: 100vh;
         }
 
         .container {
@@ -23,35 +25,47 @@
         }
 
         .header {
-            background: white;
-            padding: 24px 32px;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-            margin-bottom: 32px;
+            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+            padding: 28px 36px;
+            border-radius: 20px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
+            margin-bottom: 36px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .header:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
         }
 
         .header h1 {
-            font-size: 28px;
+            font-size: 32px;
+            font-weight: 800;
             color: #111827;
+            letter-spacing: -0.02em;
         }
 
         .back-btn {
-            background: #10B981;
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
             color: white;
             border: none;
-            padding: 10px 24px;
-            border-radius: 8px;
+            padding: 12px 28px;
+            border-radius: 12px;
             cursor: pointer;
             text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
+            font-size: 15px;
+            font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
         }
 
         .back-btn:hover {
-            background: #059669;
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
         }
 
         .stats-grid {
@@ -62,22 +76,32 @@
         }
 
         .stat-card {
-            background: white;
-            padding: 24px;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+            padding: 28px;
+            border-radius: 16px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
         }
 
         .stat-card h3 {
             font-size: 14px;
+            font-weight: 600;
             color: #6B7280;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            letter-spacing: -0.01em;
         }
 
         .stat-card .number {
-            font-size: 32px;
-            font-weight: 700;
+            font-size: 36px;
+            font-weight: 800;
             color: #111827;
+            letter-spacing: -0.02em;
         }
 
         .alerts-grid {
@@ -87,16 +111,25 @@
         }
 
         .alert-card {
-            background: white;
-            padding: 24px;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+            padding: 28px;
+            border-radius: 16px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .alert-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
         }
 
         .alert-card h2 {
-            font-size: 18px;
+            font-size: 20px;
+            font-weight: 700;
             color: #111827;
-            margin-bottom: 16px;
+            margin-bottom: 18px;
+            letter-spacing: -0.01em;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -198,7 +231,7 @@
         <div class="alerts-grid">
             <!-- Incomplete Records -->
             <div class="alert-card">
-                <h2>⚠️ Incomplete Patient Records<span class="badge warning">{{ $incompleteRecords->count() }}</span></h2>
+                <h2><i class="bi bi-exclamation-triangle-fill"></i> Incomplete Patient Records<span class="badge warning">{{ $incompleteRecords->count() }}</span></h2>
                 @forelse($incompleteRecords as $patient)
                     <div class="alert-item">
                         <strong>{{ $patient->full_name }} ({{ $patient->patient_id }})</strong>
@@ -215,7 +248,7 @@
 
             <!-- Overdue Immunizations -->
             <div class="alert-card">
-                <h2>💉 Overdue Immunizations<span class="badge danger">{{ $overdueImmunizations->count() }}</span></h2>
+                <h2><i class="bi bi-shield-fill-exclamation"></i> Overdue Immunizations<span class="badge danger">{{ $overdueImmunizations->count() }}</span></h2>
                 @forelse($overdueImmunizations as $immunization)
                     <div class="alert-item danger">
                         <strong>{{ $immunization->patient->full_name }}</strong>
@@ -228,7 +261,7 @@
 
             <!-- Inactive Patients -->
             <div class="alert-card">
-                <h2>📅 Inactive Patients (30+ days)<span class="badge warning">{{ $inactivePatients->count() }}</span></h2>
+                <h2><i class="bi bi-calendar-x"></i> Inactive Patients (30+ days)<span class="badge warning">{{ $inactivePatients->count() }}</span></h2>
                 @forelse($inactivePatients as $patient)
                     <div class="alert-item info">
                         <strong>{{ $patient->full_name }} ({{ $patient->patient_id }})</strong>
@@ -247,7 +280,7 @@
 
             <!-- High Risk Prenatal -->
             <div class="alert-card">
-                <h2>🤰 High-Risk Prenatal Cases<span class="badge danger">{{ $highRiskPrenatal->count() }}</span></h2>
+                <h2><i class="bi bi-heart-pulse-fill"></i> High-Risk Prenatal Cases<span class="badge danger">{{ $highRiskPrenatal->count() }}</span></h2>
                 @forelse($highRiskPrenatal as $record)
                     <div class="alert-item danger">
                         <strong>{{ $record->patient->full_name }}</strong>
@@ -260,7 +293,7 @@
 
             <!-- Recent Visits -->
             <div class="alert-card">
-                <h2>🏥 Recent Visits<span class="badge success">{{ $recentVisits->count() }}</span></h2>
+                <h2><i class="bi bi-hospital"></i> Recent Visits<span class="badge success">{{ $recentVisits->count() }}</span></h2>
                 @forelse($recentVisits as $visit)
                     <div class="alert-item success">
                         <strong>{{ $visit->patient->full_name }}</strong>

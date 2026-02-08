@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/favicon.ico?v={{ time() }}">
     <title>Dashboard - CareSync</title>
+    <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
             margin: 0;
@@ -321,25 +322,25 @@
             flex: 1;
         }
 
-        /* Quick Actions */
+        /* Quick Actions - Modern & Clean */
         .quick-actions {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 20px;
-            margin-bottom: 32px;
+            gap: 24px;
+            margin-bottom: 40px;
         }
 
         .action-card {
             background: #FFFFFF;
-            border-radius: 14px;
-            padding: 20px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 18px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            border: 1px solid #E5E7EB;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(0, 0, 0, 0.06);
             position: relative;
             overflow: hidden;
             text-decoration: none;
@@ -352,8 +353,13 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 3px;
+            height: 0;
             background: currentColor;
+            transition: height 0.3s ease;
+        }
+
+        .action-card:hover::before {
+            height: 4px;
         }
 
         .action-card:nth-child(1) { color: #3B82F6; }
@@ -362,53 +368,59 @@
         .action-card:nth-child(4) { color: #F59E0B; }
 
         .action-card:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08), 0 8px 32px rgba(0, 0, 0, 0.08);
+            transform: translateY(-4px);
         }
 
         .action-icon {
-            width: 52px;
-            height: 52px;
-            border-radius: 12px;
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 26px;
             flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .action-card:hover .action-icon {
+            transform: scale(1.1);
         }
 
         .action-icon.blue {
-            background: #EFF6FF;
+            background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
             color: #3B82F6;
         }
 
         .action-icon.green {
-            background: #ECFDF5;
+            background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
             color: #10B981;
         }
 
         .action-icon.purple {
-            background: #F5F3FF;
+            background: linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 100%);
             color: #8B5CF6;
         }
 
         .action-icon.orange {
-            background: #FEF3C7;
+            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
             color: #F59E0B;
         }
 
         .action-details h3 {
-            font-size: 15px;
+            font-size: 16px;
             color: #111827;
             font-weight: 600;
-            margin-bottom: 4px;
-            letter-spacing: -0.01em;
+            margin-bottom: 6px;
+            letter-spacing: -0.02em;
         }
 
         .action-details p {
             font-size: 13px;
             color: #6B7280;
             font-weight: 400;
+            line-height: 1.4;
         }
 
         /* AI Alerts Summary */
@@ -417,73 +429,80 @@
         }
 
         .alerts-summary-card {
-            background: #FFFFFF;
-            border-radius: 14px;
-            padding: 24px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-            border: 1px solid #E5E7EB;
-            border-top: 4px solid #f97316;
+            background: linear-gradient(135deg, #ffffff 0%, #fef3f2 100%);
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(249, 115, 22, 0.1);
+            border-top: 5px solid #f97316;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .alerts-summary-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
         }
 
         .alerts-summary-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .view-all-btn {
-            background: #f97316;
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
             color: white;
-            padding: 8px 16px;
-            border-radius: 8px;
+            padding: 10px 20px;
+            border-radius: 12px;
             text-decoration: none;
             font-size: 14px;
-            font-weight: 500;
-            transition: all 0.2s ease;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
+            box-shadow: 0 2px 8px rgba(249, 115, 22, 0.2);
         }
 
         .view-all-btn:hover {
-            background: #ea580c;
-            transform: translateX(2px);
+            background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
         }
 
         .alerts-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 16px;
+            gap: 20px;
         }
 
         .alert-item {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 16px;
-            border-radius: 10px;
+            gap: 14px;
+            padding: 18px;
+            border-radius: 14px;
             border: 1px solid;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .alert-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
         }
 
         .alert-warning {
-            background: #fef3c7;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
             border-color: #fbbf24;
         }
 
         .alert-danger {
-            background: #fee2e2;
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
             border-color: #ef4444;
         }
 
         .alert-info {
-            background: #dbeafe;
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
             border-color: #3b82f6;
         }
 
@@ -535,23 +554,27 @@
         }
         
         .calendar-summary {
-            background: #FFFFFF;
-            border-radius: 14px;
-            padding: 12px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-            border: 1px solid #E5E7EB;
+            background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+            border-radius: 20px;
+            padding: 16px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(16, 185, 129, 0.1);
             display: flex;
             flex-direction: column;
-            max-height: 700px;
             height: fit-content;
             overflow: visible;
             min-width: 350px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .calendar-summary:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
         }
         
         .calendar-header {
-            border-bottom: 2px solid #E5E7EB;
-            padding-bottom: 8px;
-            margin-bottom: 8px;
+            border-bottom: 2px solid #d1fae5;
+            padding-bottom: 12px;
+            margin-bottom: 12px;
             flex-shrink: 0;
             display: flex;
             justify-content: space-between;
@@ -566,86 +589,97 @@
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             color: white;
             border: none;
-            padding: 6px 10px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 4px;
-            transition: all 0.2s;
-            box-shadow: 0 2px 6px rgba(16, 185, 129, 0.3);
+            gap: 6px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
             flex-shrink: 0;
         }
         
         .calendar-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
         }
         
         .calendar-date {
-            font-size: 18px;
-            font-weight: 700;
+            font-size: 20px;
+            font-weight: 800;
             color: #111827;
-            margin-bottom: 2px;
+            margin-bottom: 4px;
+            letter-spacing: -0.02em;
         }
         
         .calendar-subtitle {
-            font-size: 11px;
+            font-size: 12px;
             color: #6B7280;
             margin-top: 2px;
+            font-weight: 500;
         }
         
-        /* Mini Calendar Widget */
+        /* Mini Calendar Widget - Modern & Clean */
         .mini-calendar {
-            background: #f9fafb;
-            border-radius: 6px;
-            padding: 8px;
-            margin-bottom: 8px;
+            background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.06);
         }
         
         .mini-calendar-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 6px;
+            margin-bottom: 16px;
         }
         
         .mini-calendar-month {
-            font-size: 13px;
-            font-weight: 600;
+            font-size: 14px;
+            font-weight: 700;
             color: #111827;
+            letter-spacing: -0.01em;
         }
         
         .mini-calendar-nav {
-            background: none;
-            border: none;
+            background: white;
+            border: 1px solid #e5e7eb;
             color: #6b7280;
             cursor: pointer;
-            padding: 2px 6px;
-            border-radius: 4px;
-            transition: all 0.2s;
+            padding: 6px 10px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
             font-size: 12px;
+            font-weight: 600;
         }
         
         .mini-calendar-nav:hover {
-            background: #e5e7eb;
+            background: #f3f4f6;
             color: #111827;
+            border-color: #d1d5db;
+            transform: scale(1.05);
         }
         
         .mini-calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 1px;
+            gap: 4px;
         }
         
         .mini-calendar-day-label {
             text-align: center;
-            font-size: 9px;
-            font-weight: 600;
-            color: #6b7280;
-            padding: 1px;
+            font-size: 10px;
+            font-weight: 700;
+            color: #9ca3af;
+            padding: 6px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .mini-calendar-day {
@@ -653,39 +687,50 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 10px;
-            border-radius: 3px;
+            font-size: 12px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             color: #374151;
             padding: 0;
-            border: 1px solid #E5E7EB;
+            border: 1px solid transparent;
+            background: white;
+            font-weight: 500;
         }
         
         .mini-calendar-day:hover {
-            background: #e5e7eb;
+            background: #f3f4f6;
+            border-color: #d1d5db;
+            transform: scale(1.1);
         }
         
         .mini-calendar-day.other-month {
-            color: #e5e7eb;
+            color: #d1d5db;
             pointer-events: none;
+            background: transparent;
         }
         
         .mini-calendar-day.today {
-            background: #10b981;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             color: white;
             font-weight: 700;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+        }
+        
+        .mini-calendar-day.today:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            transform: scale(1.1);
         }
         
         .mini-calendar-day.selected {
-            background: #1e40af;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             color: white;
             font-weight: 700;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
         }
         
         .mini-calendar-day.selected:hover {
-            background: #1e3a8a;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
         }
         
         .mini-calendar-day.has-appointments {
@@ -695,24 +740,160 @@
         .mini-calendar-day.has-appointments::after {
             content: '';
             position: absolute;
-            bottom: 1px;
-            width: 3px;
-            height: 3px;
+            bottom: 3px;
+            width: 4px;
+            height: 4px;
             background: #f59e0b;
             border-radius: 50%;
+            box-shadow: 0 0 4px rgba(245, 158, 11, 0.6);
         }
         
         .mini-calendar-day.today.has-appointments::after {
             background: white;
+            box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
+        }
+        
+        /* Calendar Date Pop-out Modal */
+        .calendar-date-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .calendar-date-modal.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .calendar-date-content {
+            background: white;
+            border-radius: 20px;
+            padding: 0;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .calendar-date-header {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .calendar-date-header h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: -0.02em;
+        }
+
+        .calendar-date-header p {
+            font-size: 13px;
+            opacity: 0.9;
+            margin: 4px 0 0 0;
+        }
+
+        .calendar-date-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            cursor: pointer;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: all 0.2s;
+        }
+
+        .calendar-date-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .calendar-date-body {
+            padding: 24px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .calendar-date-appointments {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .calendar-date-appointment-item {
+            background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.2s;
+        }
+
+        .calendar-date-appointment-item:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transform: translateX(4px);
+        }
+
+        .calendar-date-empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: #9ca3af;
+        }
+
+        .calendar-date-empty i {
+            font-size: 48px;
+            margin-bottom: 12px;
+            display: block;
+            opacity: 0.5;
         }
         
         .appointment-list {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 8px;
             overflow-y: auto;
             overflow-x: hidden;
-            padding-right: 6px;
+            padding-right: 8px;
             flex: 1;
             min-height: 150px;
             max-height: 400px;
@@ -721,119 +902,122 @@
         }
         
         .appointment-list::-webkit-scrollbar {
-            width: 6px;
+            width: 8px;
         }
         
         .appointment-list::-webkit-scrollbar-track {
             background: #F3F4F6;
-            border-radius: 10px;
+            border-radius: 12px;
         }
         
         .appointment-list::-webkit-scrollbar-thumb {
-            background: #D1D5DB;
-            border-radius: 10px;
+            background: linear-gradient(180deg, #D1D5DB 0%, #9CA3AF 100%);
+            border-radius: 12px;
         }
         
         .appointment-list::-webkit-scrollbar-thumb:hover {
-            background: #9CA3AF;
+            background: linear-gradient(180deg, #9CA3AF 0%, #6B7280 100%);
         }
         
         .appointment-item {
             display: flex;
             align-items: center;
-            padding: 10px;
-            background: #F9FAFB;
-            border-radius: 8px;
-            border-left: 3px solid #10B981;
-            transition: all 0.2s;
+            padding: 14px;
+            background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+            border-radius: 12px;
+            border-left: 4px solid #10B981;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             width: 100%;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
         }
         
         .appointment-item:hover {
-            background: #F3F4F6;
-            transform: translateX(4px);
+            background: linear-gradient(135deg, #f3f4f6 0%, #f9fafb 100%);
+            transform: translateX(6px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
         
         .appointment-time {
-            font-size: 13px;
-            font-weight: 600;
+            font-size: 14px;
+            font-weight: 700;
             color: #047857;
-            min-width: 75px;
+            min-width: 80px;
             flex-shrink: 0;
         }
         
         .appointment-details {
             flex: 1;
-            margin-left: 12px;
+            margin-left: 14px;
             min-width: 0;
             overflow: hidden;
         }
         
         .appointment-patient {
-            font-size: 14px;
-            font-weight: 600;
+            font-size: 15px;
+            font-weight: 700;
             color: #111827;
-            margin-bottom: 1px;
+            margin-bottom: 2px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
         
         .appointment-status {
-            font-size: 11px;
+            font-size: 12px;
             color: #6B7280;
+            font-weight: 500;
         }
         
         .appointment-badge {
             display: inline-block;
-            padding: 4px 10px;
-            border-radius: 12px;
+            padding: 5px 12px;
+            border-radius: 14px;
             font-size: 11px;
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.03em;
+            letter-spacing: 0.5px;
         }
         
         .badge-pending {
-            background: #FEF3C7;
+            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
             color: #92400E;
         }
         
         .badge-confirmed {
-            background: #D1FAE5;
+            background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
             color: #065F46;
         }
         
         .badge-completed {
-            background: #E0E7FF;
+            background: linear-gradient(135deg, #E0E7FF 0%, #C7D2FE 100%);
             color: #3730A3;
         }
         
         .badge-attended {
-            background: #D1FAE5;
+            background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
             color: #065F46;
         }
         
         .badge-rescheduled {
-            background: #FEF3C7;
+            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
             color: #92400E;
         }
         
         .attendance-buttons {
             display: flex;
-            gap: 4px;
-            margin-left: 8px;
+            gap: 6px;
+            margin-left: 10px;
             flex-shrink: 0;
         }
         
         .attendance-btn {
-            width: 28px;
-            height: 28px;
-            border-radius: 5px;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
             border: none;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -875,12 +1059,12 @@
         }
 
         .stat-card {
-            background: #FFFFFF;
-            border-radius: 12px;
-            padding: 18px 20px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-            transition: all 0.2s ease;
-            border: 1px solid #E5E7EB;
+            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(0, 0, 0, 0.06);
             position: relative;
             overflow: hidden;
             text-decoration: none;
@@ -894,61 +1078,71 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 3px;
+            height: 4px;
+            transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .stat-card:nth-child(1)::before,
         .stat-card:nth-child(2)::before {
-            background: #10B981;
+            background: linear-gradient(90deg, #10B981 0%, #059669 100%);
         }
 
         .stat-card:nth-child(3)::before,
         .stat-card:nth-child(4)::before {
-            background: #F59E0B;
+            background: linear-gradient(90deg, #F59E0B 0%, #D97706 100%);
         }
 
         .stat-card:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
+            transform: translateY(-4px);
+        }
+        
+        .stat-card:hover::before {
+            height: 6px;
         }
 
         .stat-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
 
         .stat-title {
-            font-size: 11px;
+            font-size: 12px;
             color: #6B7280;
-            font-weight: 500;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.03em;
+            letter-spacing: 0.5px;
         }
 
         .stat-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 20px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .stat-card:hover .stat-icon {
+            transform: scale(1.1) rotate(5deg);
         }
 
         .stat-value {
-            font-size: 28px;
-            font-weight: 700;
+            font-size: 32px;
+            font-weight: 800;
             color: #111827;
-            margin-bottom: 4px;
-            letter-spacing: -0.02em;
+            margin-bottom: 6px;
+            letter-spacing: -0.03em;
         }
 
         .stat-change {
-            font-size: 12px;
+            font-size: 13px;
             color: #10B981;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .stat-change.negative {
@@ -1853,7 +2047,7 @@
             <div class="menu-section">
                 <div class="menu-label">Main</div>
                 <a href="{{ route('dashboard') }}" class="menu-item active">
-                    <span class="menu-icon">📊</span>
+                    <span class="menu-icon"><i class="bi bi-speedometer2"></i></span>
                     <span class="menu-text">Dashboard</span>
                 </a>
             </div>
@@ -1861,11 +2055,11 @@
             <div class="menu-section">
                 <div class="menu-label">Patient Management</div>
                 <a href="{{ route('patients.index') }}" class="menu-item">
-                    <span class="menu-icon">👥</span>
+                    <span class="menu-icon"><i class="bi bi-people-fill"></i></span>
                     <span class="menu-text">Patient List</span>
                 </a>
                 <a href="{{ route('visits.today') }}" class="menu-item">
-                    <span class="menu-icon">📋</span>
+                    <span class="menu-icon"><i class="bi bi-clipboard2-check"></i></span>
                     <span class="menu-text">Today's Visits</span>
                 </a>
             </div>
@@ -1873,11 +2067,11 @@
             <div class="menu-section">
                 <div class="menu-label">Services</div>
                 <a href="{{ route('immunizations.index') }}" class="menu-item">
-                    <span class="menu-icon">💉</span>
+                    <span class="menu-icon"><i class="bi bi-shield-fill-check"></i></span>
                     <span class="menu-text">Immunizations</span>
                 </a>
                 <a href="{{ route('prenatal.care') }}" class="menu-item">
-                    <span class="menu-icon">🤰</span>
+                    <span class="menu-icon"><i class="bi bi-heart-pulse-fill"></i></span>
                     <span class="menu-text">Prenatal Care</span>
                 </a>
             </div>
@@ -1885,15 +2079,15 @@
             <div class="menu-section">
                 <div class="menu-label">Reports & Tools</div>
                 <a href="{{ route('reports.index') }}" class="menu-item">
-                    <span class="menu-icon">📊</span>
+                    <span class="menu-icon"><i class="bi bi-file-earmark-bar-graph"></i></span>
                     <span class="menu-text">Monthly Reports</span>
                 </a>
                 <a href="{{ route('analytics.index') }}" class="menu-item">
-                    <span class="menu-icon">🔍</span>
+                    <span class="menu-icon"><i class="bi bi-graph-up-arrow"></i></span>
                     <span class="menu-text">Data Analytics</span>
                 </a>
                 <a href="{{ route('automation.support') }}" class="menu-item">
-                    <span class="menu-icon">🤖</span>
+                    <span class="menu-icon"><i class="bi bi-cpu"></i></span>
                     <span class="menu-text">Automation Support</span>
                 </a>
             </div>
@@ -1934,7 +2128,7 @@
             <!-- Quick Actions -->
             <div class="quick-actions">
                 <div class="action-card" onclick="openModal('newPatient')" style="cursor: pointer;">
-                    <div class="action-icon blue">📋</div>
+                    <div class="action-icon blue"><i class="bi bi-clipboard2-check"></i></div>
                     <div class="action-details">
                         <h3>New Patient Record</h3>
                         <p>Create medical record</p>
@@ -1942,7 +2136,7 @@
                 </div>
 
                 <div class="action-card" onclick="openModal('bookAppointment')" style="cursor: pointer;">
-                    <div class="action-icon green">📅</div>
+                    <div class="action-icon green"><i class="bi bi-calendar-event"></i></div>
                     <div class="action-details">
                         <h3>Book Appointment</h3>
                         <p>Schedule new visit</p>
@@ -1950,7 +2144,7 @@
                 </div>
 
                 <div class="action-card" onclick="openModal('patientSearch')" style="cursor: pointer;">
-                    <div class="action-icon purple">👥</div>
+                    <div class="action-icon purple"><i class="bi bi-people-fill"></i></div>
                     <div class="action-details">
                         <h3>Patient Search</h3>
                         <p>Find patient records</p>
@@ -1964,7 +2158,7 @@
                 <div class="alerts-summary-card">
                     <div class="alerts-summary-header">
                         <div>
-                            <h2 style="margin: 0; font-size: 20px; color: #1f2937;">🤖 Automation Support Alerts</h2>
+                            <h2 style="margin: 0; font-size: 20px; color: #1f2937;"><i class="bi bi-cpu-fill"></i> Automation Support Alerts</h2>
                             <p style="margin: 4px 0 0 0; font-size: 14px; color: #6b7280;">{{ $totalAlerts }} active alert(s) requiring attention</p>
                         </div>
                         <a href="{{ route('automation.support') }}" class="view-all-btn">View All →</a>
@@ -1972,7 +2166,7 @@
                     <div class="alerts-grid">
                         @foreach($topAlerts as $alert)
                         <div class="alert-item alert-{{ $alert['type'] }}">
-                            <div class="alert-icon">{{ $alert['icon'] }}</div>
+                            <div class="alert-icon"><i class="bi {{ $alert['icon'] }}"></i></div>
                             <div class="alert-content">
                                 <h4>{{ $alert['title'] }}</h4>
                                 <p>{{ $alert['message'] }}</p>
@@ -1992,7 +2186,7 @@
                     <div class="stat-card" onclick="openModal('todayPatients')" style="cursor: pointer;">
                         <div class="stat-header">
                             <span class="stat-title">Today's Patients</span>
-                            <div class="stat-icon" style="background: #ECFDF5; color: #10B981;">👥</div>
+                            <div class="stat-icon" style="background: #ECFDF5; color: #10B981;"><i class="bi bi-people-fill"></i></div>
                         </div>
                         <div class="stat-value">6</div>
                         <div class="stat-change">↑ 12% from yesterday</div>
@@ -2001,7 +2195,7 @@
                     <div class="stat-card" onclick="openModal('totalPatients')" style="cursor: pointer;">
                         <div class="stat-header">
                             <span class="stat-title">Total Patients</span>
-                            <div class="stat-icon" style="background: #FEF3C7; color: #F59E0B;">📊</div>
+                            <div class="stat-icon" style="background: #FEF3C7; color: #F59E0B;"><i class="bi bi-bar-chart-fill"></i></div>
                         </div>
                         <div class="stat-value">6</div>
                         <div class="stat-change">↑ 8% this month</div>
@@ -2010,7 +2204,7 @@
                     <div class="stat-card" onclick="openModal('immunizations')" style="cursor: pointer;">
                         <div class="stat-header">
                             <span class="stat-title">Immunizations</span>
-                            <div class="stat-icon" style="background: #FEF3C7; color: #F59E0B;">💉</div>
+                            <div class="stat-icon" style="background: #FEF3C7; color: #F59E0B;"><i class="bi bi-shield-fill-check"></i></div>
                         </div>
                         @php
                             use App\Models\Immunization as ImmunizationModel;
@@ -2025,7 +2219,7 @@
                 <div class="calendar-summary">
                     <div class="calendar-header">
                         <div class="calendar-header-left">
-                            <div class="calendar-date">📅 Appointments</div>
+                            <div class="calendar-date"><i class="bi bi-calendar-event"></i> Appointments</div>
                             <div class="calendar-subtitle" id="selectedDateDisplay">{{ now()->format('l, F j, Y') }}</div>
                         </div>
                     </div>
@@ -2039,21 +2233,35 @@
                         </div>
                         <div class="mini-calendar-grid" id="miniCalendarGrid"></div>
                     </div>
-                    
-                    <div class="appointment-list" id="appointmentListContainer">
-                        <!-- Appointments will be loaded here dynamically -->
-                    </div>
                 </div>
             </div>
         </div>
         </main>
     </div>
 
+    <!-- Calendar Date Pop-out Modal -->
+    <div id="calendarDateModal" class="calendar-date-modal" onclick="closeCalendarModal(event)">
+        <div class="calendar-date-content" onclick="event.stopPropagation()">
+            <div class="calendar-date-header">
+                <div>
+                    <h3 id="modalDateTitle">Select a Date</h3>
+                    <p id="modalDateSubtitle"></p>
+                </div>
+                <button class="calendar-date-close" onclick="closeCalendarModal()">&times;</button>
+            </div>
+            <div class="calendar-date-body">
+                <div class="calendar-date-appointments" id="modalAppointmentList">
+                    <!-- Appointments will be populated here by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- New Patient Modal -->
     <div id="newPatientModal" class="ai-modal" onclick="closeModalOnBackdrop(event, 'newPatient')">
         <div class="ai-modal-content" style="max-width: 700px;">
             <div class="ai-modal-header">
-                <h2><span>📋</span> New Patient Record</h2>
+                <h2><i class="bi bi-clipboard2-check"></i> New Patient Record</h2>
                 <button class="ai-modal-close" onclick="closeModal('newPatient')">✕</button>
             </div>
             <div class="ai-modal-body" style="padding: 0;">
@@ -2167,7 +2375,7 @@
     <div id="bookAppointmentModal" class="ai-modal" onclick="closeModalOnBackdrop(event, 'bookAppointment')">
         <div class="ai-modal-content" style="max-width: 600px;">
             <div class="ai-modal-header" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
-                <h2><span>📅</span> Book Appointment</h2>
+                <h2><i class="bi bi-calendar-event"></i> Book Appointment</h2>
                 <button class="ai-modal-close" onclick="closeModal('bookAppointment')">✕</button>
             </div>
             <div class="ai-modal-body" style="padding: 24px;">
@@ -2179,7 +2387,7 @@
                         <label style="font-weight: 600; color: #374151; font-size: 14px;">
                             Patient <span style="color: #dc2626;">*</span>
                         </label>
-                        <input type="text" id="appointmentPatientSearch" placeholder="🔍 Search patient by name or ID..." autocomplete="off" style="padding: 10px 12px; border: 2px solid #d1d5db; border-radius: 6px; font-size: 14px;">
+                        <input type="text" id="appointmentPatientSearch" placeholder="Search patient by name or ID..." autocomplete="off" style="padding: 10px 12px; border: 2px solid #d1d5db; border-radius: 6px; font-size: 14px;">
                         <input type="hidden" name="patient_id" id="appointmentPatientId" required>
                         <div id="appointmentSearchResults" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #d1d5db; border-radius: 6px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-height: 200px; overflow-y: auto; z-index: 1000; margin-top: 4px;">
                         </div>
@@ -2345,14 +2553,14 @@
     <div id="patientSearchModal" class="ai-modal" onclick="closeModalOnBackdrop(event, 'patientSearch')">
         <div class="ai-modal-content" style="max-width: 800px;">
             <div class="ai-modal-header" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);">
-                <h2><span>👥</span> Patient Search</h2>
+                <h2><i class="bi bi-people-fill"></i> Patient Search</h2>
                 <button class="ai-modal-close" onclick="closeModal('patientSearch')">✕</button>
             </div>
             <div class="ai-modal-body" style="padding: 0;">
                 <div class="search-container">
                     <div class="search-header">
                         <div class="search-box">
-                        <input type="text" id="quickSearchInput" placeholder="🔍 Search by name, ID, phone, email, or birthday..." oninput="performQuickSearch()">
+                        <input type="text" id="quickSearchInput" placeholder="Search by name, ID, phone, email, or birthday..." oninput="performQuickSearch()">
                     </div>
                 </div>
                 
@@ -2401,11 +2609,11 @@
     <div id="todayPatientsModal" class="ai-modal" onclick="closeModalOnBackdrop(event, 'todayPatients')">
         <div class="ai-modal-content">
             <div class="ai-modal-header" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
-                <h2><span>👥</span> Today's Patients</h2>
+                <h2><i class="bi bi-people-fill"></i> Today's Patients</h2>
                 <button class="ai-modal-close" onclick="closeModal('todayPatients')">✕</button>
             </div>
             <div class="ai-modal-body">
-                <div class="ai-icon">👥</div>
+                <div class="ai-icon"><i class="bi bi-people-fill"></i></div>
                 <h3>24 Patients Today</h3>
                 <p>This feature is under development. View the list of all patients scheduled for today, with ↑ 12% from yesterday.</p>
             </div>
@@ -2416,11 +2624,11 @@
     <div id="appointmentsTodayModal" class="ai-modal" onclick="closeModalOnBackdrop(event, 'appointmentsToday')">
         <div class="ai-modal-content">
             <div class="ai-modal-header" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
-                <h2><span>📅</span> Appointments Today</h2>
+                <h2><i class="bi bi-calendar-event"></i> Appointments Today</h2>
                 <button class="ai-modal-close" onclick="closeModal('appointmentsToday')">✕</button>
             </div>
             <div class="ai-modal-body">
-                <div class="ai-icon">📅</div>
+                <div class="ai-icon"><i class="bi bi-calendar-event"></i></div>
                 <h3>18 Appointments Today</h3>
                 <p>This feature is under development. View and manage today's appointments with 5 pending confirmations.</p>
             </div>
@@ -2431,11 +2639,11 @@
     <div id="totalPatientsModal" class="ai-modal" onclick="closeModalOnBackdrop(event, 'totalPatients')">
         <div class="ai-modal-content">
             <div class="ai-modal-header" style="background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);">
-                <h2><span>📊</span> Total Patients</h2>
+                <h2><i class="bi bi-bar-chart-fill"></i> Total Patients</h2>
                 <button class="ai-modal-close" onclick="closeModal('totalPatients')">✕</button>
             </div>
             <div class="ai-modal-body">
-                <div class="ai-icon">📊</div>
+                <div class="ai-icon"><i class="bi bi-bar-chart-fill"></i></div>
                 <h3>1,247 Total Patients</h3>
                 <p>This feature is under development. View complete patient database with ↑ 8% growth this month.</p>
             </div>
@@ -2446,11 +2654,11 @@
     <div id="immunizationsModal" class="ai-modal" onclick="closeModalOnBackdrop(event, 'immunizations')">
         <div class="ai-modal-content">
             <div class="ai-modal-header" style="background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);">
-                <h2><span>💉</span> Immunizations</h2>
+                <h2><i class="bi bi-shield-fill-check"></i> Immunizations</h2>
                 <button class="ai-modal-close" onclick="closeModal('immunizations')">✕</button>
             </div>
             <div class="ai-modal-body">
-                <div class="ai-icon">💉</div>
+                <div class="ai-icon"><i class="bi bi-shield-fill-check"></i></div>
                 @php
                     use App\Models\Immunization;
                     $allImmunizations = Immunization::with('patient')->orderBy('date_given', 'desc')->get();
@@ -2502,7 +2710,7 @@
     <div id="medicalRecordsModal" class="ai-modal" onclick="closeModalOnBackdrop(event, 'medicalRecords')">
         <div class="ai-modal-content" style="max-width: 900px;">
             <div class="ai-modal-header">
-                <h2><span>📋</span> Medical Records</h2>
+                <h2><i class="bi bi-clipboard2-check"></i> Medical Records</h2>
                 <button class="ai-modal-close" onclick="closeModal('medicalRecords')">✕</button>
             </div>
             <div class="ai-modal-body" style="padding: 0;">
@@ -2606,7 +2814,7 @@
                     </div>
                     
                     <div class="search-box">
-                        <input type="text" id="recordSearchInput" placeholder="🔍 Search by patient name or ID..." oninput="searchMedicalRecords()">
+                        <input type="text" id="recordSearchInput" placeholder="Search by patient name or ID..." oninput="searchMedicalRecords()">
                     </div>
                     
                     <div id="medicalRecordsList" style="max-height: 500px; overflow-y: auto;">
@@ -2625,13 +2833,13 @@
     <div id="patientListModal" class="ai-modal" onclick="closeModalOnBackdrop(event, 'patientList')">
         <div class="ai-modal-content" style="max-width: 1000px;">
             <div class="ai-modal-header" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
-                <h2><span>👥</span> Patient List</h2>
+                <h2><i class="bi bi-people-fill"></i> Patient List</h2>
                 <button class="ai-modal-close" onclick="closeModal('patientList')">✕</button>
             </div>
             <div class="ai-modal-body" style="padding: 0;">
                 <div class="patient-list-container">
                     <div class="search-box">
-                        <input type="text" id="patientSearchInput" placeholder="🔍 Search by name, ID, or phone..." oninput="filterPatients()">
+                        <input type="text" id="patientSearchInput" placeholder="Search by name, ID, or phone..." oninput="filterPatients()">
                     </div>
                     
                     <div style="overflow-x: auto; max-height: 500px;">
@@ -2664,7 +2872,7 @@
     <div id="scheduleModal" class="ai-modal" onclick="closeModalOnBackdrop(event, 'schedule')">
         <div class="ai-modal-content" style="max-width: 750px;">
             <div class="ai-modal-header" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
-                <h2><span>📅</span> Schedule</h2>
+                <h2><i class="bi bi-calendar-week"></i> Schedule</h2>
                 <button class="ai-modal-close" onclick="closeModal('schedule')">✕</button>
             </div>
             <div class="ai-modal-body" style="padding: 0;">
@@ -2732,11 +2940,11 @@
     <div id="todayQueueModal" class="ai-modal" onclick="closeModalOnBackdrop(event, 'todayQueue')">
         <div class="ai-modal-content">
             <div class="ai-modal-header" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
-                <h2><span>🕐</span> Today's Queue</h2>
+                <h2><i class="bi bi-clock-history"></i> Today's Queue</h2>
                 <button class="ai-modal-close" onclick="closeModal('todayQueue')">✕</button>
             </div>
             <div class="ai-modal-body">
-                <div class="ai-icon">🕐</div>
+                <div class="ai-icon"><i class="bi bi-clock-history"></i></div>
                 <h3>Current Patient Queue</h3>
                 <p>This feature is under development. Manage today's patient queue and wait times in real-time.</p>
             </div>
@@ -2747,13 +2955,13 @@
     <div id="aiModal" class="ai-modal" onclick="closeModalOnBackdrop(event, 'ai')">
         <div class="ai-modal-content">
             <div class="ai-modal-header">
-                <h2><span>🤖</span> AI Decision Support</h2>
+                <h2><i class="bi bi-cpu-fill"></i> AI Decision Support</h2>
                 <button class="ai-modal-close" onclick="closeModal('ai')">
                     ✕
                 </button>
             </div>
             <div class="ai-modal-body">
-                <div class="ai-icon">🤖</div>
+                <div class="ai-icon"><i class="bi bi-cpu-fill"></i></div>
                 <h3>AI-Powered Health Insights</h3>
                 <p>This feature is under development. Get AI-driven health recommendations and decision support here.</p>
             </div>
@@ -2764,9 +2972,9 @@
         // VERSION 2.0 - FORCE CACHE BREAK
         console.log('CALENDAR SCRIPT VERSION 2.0 LOADED');
         
-        // Mini Calendar State - Force to current date
-        let currentCalendarDate = new Date(2026, 1, 5); // February 5, 2026 (month is 0-indexed)
-        let selectedDate = new Date(2026, 1, 5);
+        // Mini Calendar State - Use actual current date
+        let currentCalendarDate = new Date();
+        const todayDate = new Date(); // Store today's date for comparison
         
         // Appointments data from backend
         const appointmentsData = @json($appointments ?? []);
@@ -2813,8 +3021,6 @@
                 gridElement.appendChild(hdr);
             }
             
-            const todayRef = new Date(2026, 1, 5);
-            
             // Previous month filler
             for (let p = firstDay - 1; p >= 0; p--) {
                 const prevCell = document.createElement('div');
@@ -2832,39 +3038,21 @@
                 const cellDate = new Date(y, m, d);
                 const dateKey = y + '-' + String(m + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
                 
-                if (cellDate.toDateString() === todayRef.toDateString()) {
+                if (cellDate.toDateString() === todayDate.toDateString()) {
                     dayCell.classList.add('today');
-                }
-                
-                if (cellDate.toDateString() === selectedDate.toDateString()) {
-                    dayCell.classList.add('selected');
                 }
                 
                 if (appointmentsData[dateKey]) {
                     dayCell.classList.add('has-appointments');
                 }
                 
-                // Direct click handler - NO DATASET
+                // Direct click handler - Show modal instead of inline list
                 dayCell.style.cursor = 'pointer';
                 dayCell.onclick = (function(year, month, day, key) {
                     return function() {
                         const clickedDate = new Date(year, month, day);
-                        selectedDate = clickedDate;
-                        renderMiniCalendar();
-                        
-                        // Update date display
-                        const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
-                        document.getElementById('selectedDateDisplay').textContent = clickedDate.toLocaleDateString('en-US', options).toUpperCase();
-                        
-                        // Get appointments
-                        const apts = appointmentsData[key] || [];
-                        const container = document.getElementById('appointmentListContainer');
-                        
-                        if (apts.length === 0) {
-                            container.innerHTML = '<div style="text-align:center;padding:40px 20px;color:#9ca3af;"><div style="font-size:48px;margin-bottom:12px;opacity:0.5;">📅</div><div style="font-size:16px;font-weight:600;color:#6b7280;">No appointments</div></div>';
-                        } else {
-                            container.innerHTML = apts.map(apt => '<div class="appointment-item"><div class="appointment-time">' + apt.time + '</div><div class="appointment-details"><div class="appointment-patient">' + apt.patient + '</div><div class="appointment-status">' + apt.type + '</div></div><div class="attendance-buttons"><button class="attendance-btn btn-check" onclick="markAttendance(event,' + apt.id + ',\'attended\')" title="Mark as Attended">✓</button><button class="attendance-btn" onclick="openDashboardReschedule(' + apt.id + ',\'' + apt.patient.replace(/'/g, "\\'") + '\',\'' + key + '\',\'' + apt.time + '\')" title="Re-schedule" style="background:#f59e0b;color:white;font-size:11px;">🔄</button></div></div>').join('');
-                        }
+                        // Show modal with appointments
+                        showCalendarDateModal(clickedDate, key);
                     };
                 })(y, m, d, dateKey);
                 
@@ -2890,99 +3078,106 @@
             renderMiniCalendar();
         }
         
-        function selectDate(date) {
-            console.log('=== SELECT DATE CALLED ===');
-            console.log('Date received:', date);
-            selectedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-            console.log('Selected date set to:', selectedDate);
-            renderMiniCalendar();
-            displayAppointmentsForDate(selectedDate);
-        }
-        
-        function displayAppointmentsForDate(date) {
-            console.log('=== DISPLAY APPOINTMENTS CALLED ===');
-            console.log('Date:', date);
+        // Calendar Date Modal Functions
+        function showCalendarDateModal(date, dateKey) {
+            const modal = document.getElementById('calendarDateModal');
+            const modalTitle = document.getElementById('modalDateTitle');
+            const modalSubtitle = document.getElementById('modalDateSubtitle');
+            const modalAppointmentList = document.getElementById('modalAppointmentList');
             
-            const year = date.getFullYear();
-            const month = date.getMonth() + 1;
-            const day = date.getDate();
-            const dateStr = year + '-' + String(month).padStart(2, '0') + '-' + String(day).padStart(2, '0');
+            // Format date for display
+            const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
+            const formattedDate = date.toLocaleDateString('en-US', options);
+            const dateObj = new Date(date);
+            const isToday = dateObj.toDateString() === new Date().toDateString();
+            const isFuture = dateObj > new Date();
             
-            console.log('Looking for appointments with key:', dateStr);
-            console.log('Available keys:', Object.keys(appointmentsData));
+            modalTitle.textContent = formattedDate;
+            modalSubtitle.textContent = isToday ? 'Today\'s Appointments' : (isFuture ? 'Upcoming Appointments' : 'Past Appointments');
             
-            const appointments = appointmentsData[dateStr] || [];
-            console.log('Found appointments:', appointments.length);
+            // Get appointments for this date
+            const appointments = appointmentsData[dateKey] || [];
             
-            // Update date display header
-            const dateDisplay = document.getElementById('selectedDateDisplay');
-            if (dateDisplay) {
-                const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
-                dateDisplay.textContent = date.toLocaleDateString('en-US', options).toUpperCase();
-                console.log('Updated header to:', dateDisplay.textContent);
+            if (appointments.length === 0) {
+                modalAppointmentList.innerHTML = `
+                    <div class="calendar-date-empty">
+                        <i class="bi bi-calendar-x"></i>
+                        <div style="font-size: 16px; font-weight: 600; color: #6b7280; margin-top: 8px;">No appointments scheduled</div>
+                        <div style="font-size: 13px; color: #9ca3af; margin-top: 4px;">This date is currently available</div>
+                    </div>
+                `;
             } else {
-                console.error('selectedDateDisplay element NOT FOUND');
+                modalAppointmentList.innerHTML = appointments.map(apt => `
+                    <div class="calendar-date-appointment-item">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
+                            <div>
+                                <div style="font-size: 15px; font-weight: 700; color: #111827; margin-bottom: 4px;">
+                                    <i class="bi bi-person-circle" style="margin-right: 6px; color: #10b981;"></i>${apt.patient}
+                                </div>
+                                <div style="font-size: 13px; color: #6b7280;">
+                                    <i class="bi bi-clock" style="margin-right: 4px;"></i>${apt.time}
+                                </div>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); color: #1d4ed8; padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
+                                ${apt.type}
+                            </div>
+                        </div>
+                        ${apt.notes ? `<div style="font-size: 12px; color: #6b7280; margin-top: 8px; padding: 8px; background: #f9fafb; border-radius: 6px; border-left: 3px solid #10b981;"><i class="bi bi-chat-left-text" style="margin-right: 4px;"></i>${apt.notes}</div>` : ''}
+                        <div style="display: flex; gap: 8px; margin-top: 12px;">
+                            <button onclick="markAttendance(event, ${apt.id}, 'attended'); closeCalendarModal();" style="flex: 1; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; padding: 8px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s;" 
+                                onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(16, 185, 129, 0.3)'"
+                                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                <i class="bi bi-check-circle"></i> Mark Attended
+                            </button>
+                            <button onclick="openDashboardReschedule(${apt.id}, '${apt.patient.replace(/'/g, "\\'")}', '${dateKey}', '${apt.time}'); closeCalendarModal();" style="flex: 1; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; border: none; padding: 8px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s;"
+                                onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.3)'"
+                                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                <i class="bi bi-arrow-repeat"></i> Reschedule
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
             }
             
-            // Update appointments list
-            const listContainer = document.getElementById('appointmentListContainer');
-            if (!listContainer) {
-                console.error('appointmentListContainer element NOT FOUND');
+            // Show modal
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeCalendarModal(event) {
+            // Only close if clicking on backdrop or close button
+            if (event && event.target !== event.currentTarget && !event.target.classList.contains('calendar-date-close')) {
                 return;
             }
             
-            console.log('Updating appointment list...');
-            
-            if (appointments.length === 0) {
-                listContainer.innerHTML = `
-                    <div style="text-align: center; padding: 40px 20px; color: #9ca3af;">
-                        <div style="font-size: 48px; margin-bottom: 12px; opacity: 0.5;">📅</div>
-                        <div style="font-size: 16px; font-weight: 600; color: #6b7280;">No appointments scheduled</div>
-                        <div style="font-size: 14px; color: #9ca3af; margin-top: 4px;">${date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</div>
-                    </div>
-                `;
-                console.log('Displayed empty state');
-            } else {
-                const html = appointments.map((apt, idx) => {
-                    // Check if appointment has saved attendance status
-                    const savedStatus = localStorage.getItem('apt-status-' + apt.id);
-                    let statusHTML = '';
-                    let buttonsHTML = '';
-                    
-                    if (savedStatus === 'attended') {
-                        statusHTML = '<span class="badge-attended" style="display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 10px; background: #D1FAE5; color: #065F46;">✓ Attended</span>';
-                    } else if (savedStatus === 'rescheduled') {
-                        statusHTML = '<span class="badge-rescheduled" style="display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 10px; background: #FEF3C7; color: #92400E;">🔄 Rescheduled</span>';
-                    } else {
-                        statusHTML = apt.type;
-                        buttonsHTML = `
-                            <button class="attendance-btn btn-check" onclick="markAttendance(event, ${apt.id}, 'attended')" title="Mark as Attended">✓</button>
-                            <button class="attendance-btn" onclick="openDashboardReschedule(${apt.id}, '${apt.patient.replace(/'/g, "\\'")}',' + '${dateToShow}' + ', '${apt.time}')" title="Re-schedule" style="background:#f59e0b;color:white;font-size:11px;">🔄</button>
-                        `;
-                    }
-                    
-                    return `
-                    <div class="appointment-item">
-                        <div class="appointment-time">${apt.time}</div>
-                        <div class="appointment-details">
-                            <div class="appointment-patient">${apt.patient}</div>
-                            <div class="appointment-status">${statusHTML}</div>
-                        </div>
-                        <div class="attendance-buttons" style="${savedStatus ? 'display: none;' : ''}">${buttonsHTML}</div>
-                    </div>
-                `;
-                }).join('');
-                listContainer.innerHTML = html;
-                console.log('Displayed', appointments.length, 'appointments');
+            const modal = document.getElementById('calendarDateModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('calendarDateModal');
+                if (modal.classList.contains('active')) {
+                    closeCalendarModal({ target: modal, currentTarget: modal });
+                }
             }
-            
-            console.log('=== DISPLAY COMPLETE ===');
+        });
+        
+        function selectDate(date) {
+            // Legacy function - no longer used with modal implementation
+            console.log('selectDate called (legacy) - date:', date);
+        }
+        
+        function displayAppointmentsForDate(date) {
+            // Legacy function - no longer used with modal implementation
+            console.log('displayAppointmentsForDate called (legacy) - date:', date);
         }
         
         // Initialize calendar on page load
         document.addEventListener('DOMContentLoaded', function() {
             renderMiniCalendar();
-            displayAppointmentsForDate(selectedDate);
         });
         
         // Attendance tracking
@@ -3337,7 +3532,7 @@
             
             // Validate Data Privacy Consent FIRST
             if (!dataPrivacyConsent) {
-                alert('⚠️ You must accept the Data Privacy Consent to register a patient.\n\nPlease check the consent checkbox to proceed.');
+                alert('You must accept the Data Privacy Consent to register a patient.\n\nPlease check the consent checkbox to proceed.');
                 return;
             }
             
@@ -3398,7 +3593,7 @@
                     document.getElementById('patientEmail').value = '';
                     document.getElementById('patientDataPrivacyConsent').checked = false;
                     
-                    alert(`✅ ${data.message}\n\nName: ${fullName}`);
+                    alert(`${data.message}\n\nName: ${fullName}`);
                     closeModal('newPatient');
                     
                     // Refresh the page to show the new patient in lists
@@ -3411,12 +3606,12 @@
                             errorMsg += errors.join('\n') + '\n';
                         });
                     }
-                    alert('❌ ' + errorMsg);
+                    alert(errorMsg);
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('❌ An error occurred while registering the patient. Please try again.');
+                alert('An error occurred while registering the patient. Please try again.');
             });
         }
 
@@ -3938,7 +4133,7 @@ Created: ${new Date(record.createdAt).toLocaleString()}
             modal.innerHTML = `
                 <div style="background: white; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: slideUp 0.3s ease;">
                     <div style="background: linear-gradient(135deg, #047857 0%, #059669 100%); color: white; padding: 16px 20px; border-radius: 12px 12px 0 0; display: flex; justify-content: space-between; align-items: center;">
-                        <h2 style="margin: 0; font-size: 18px; font-weight: 700;">👤 Patient Details</h2>
+                        <h2 style="margin: 0; font-size: 18px; font-weight: 700;"><i class="bi bi-person-circle"></i> Patient Details</h2>
                         <button onclick="this.closest('[style*=fixed]').remove(); document.body.style.overflow='auto'" style="background: rgba(255,255,255,0.2); border: none; color: white; font-size: 24px; cursor: pointer; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease;">&times;</button>
                     </div>
                     <div style="padding: 20px;">
@@ -3952,7 +4147,7 @@ Created: ${new Date(record.createdAt).toLocaleString()}
                                 <div style="font-size: 15px; color: #111827; font-weight: 500;">${patient.patient_id}</div>
                             </div>
                             <div style="padding: 10px 12px; background: #f9fafb; border-radius: 6px; border-left: 3px solid #10b981;">
-                                <label style="display: block; font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 4px; font-weight: 600;">🎂 Birthday</label>
+                                <label style="display: block; font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 4px; font-weight: 600;">Birthday</label>
                                 <div style="font-size: 15px; color: #10b981; font-weight: 500;">${birthdate}</div>
                             </div>
                             <div style="padding: 10px 12px; background: #f9fafb; border-radius: 6px; border-left: 3px solid #047857;">
@@ -3974,8 +4169,8 @@ Created: ${new Date(record.createdAt).toLocaleString()}
                         </div>
                     </div>
                     <div style="display: flex; gap: 10px; padding: 16px 20px; border-top: 1px solid #e5e7eb; background: #f9fafb; border-radius: 0 0 12px 12px;">
-                        <a href="/patients/${patient.id}" style="flex: 1; padding: 10px 18px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; background: #047857; color: white; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">📋 View Full Record</a>
-                        <a href="/visits/create?patient_id=${patient.id}" style="flex: 1; padding: 10px 18px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; background: #3b82f6; color: white; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">🏥 Add Visit</a>
+                        <a href="/patients/${patient.id}" style="flex: 1; padding: 10px 18px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; background: #047857; color: white; display: inline-flex; align-items: center; justify-content: center; gap: 6px;"><i class="bi bi-clipboard2-check"></i> View Full Record</a>
+                        <a href="/visits/create?patient_id=${patient.id}" style="flex: 1; padding: 10px 18px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; background: #3b82f6; color: white; display: inline-flex; align-items: center; justify-content: center; gap: 6px;"><i class="bi bi-hospital"></i> Add Visit</a>
                     </div>
                 </div>
             `;
@@ -4177,7 +4372,7 @@ Registered: ${new Date(patient.registeredDate).toLocaleString()}
             document.getElementById('dashboardRescheduleAppointmentId').value = aptId;
             document.getElementById('dashboardReschedulePatientName').textContent = 'Patient: ' + patientName;
             document.getElementById('dashboardCurrentAppointmentInfo').innerHTML = 
-                '<strong>📅 ' + currentDate + '</strong><br>🕐 ' + currentTime;
+                '<strong>' + currentDate + '</strong><br>' + currentTime;
             
             const modal = document.getElementById('dashboardRescheduleModal');
             modal.style.display = 'flex';
@@ -4235,18 +4430,18 @@ Registered: ${new Date(patient.registeredDate).toLocaleString()}
                             // Mark as rescheduled in local storage
                             localStorage.setItem('apt-status-' + aptId, 'rescheduled');
                             
-                            alert(`✅ Appointment rescheduled successfully!\n\nNew Date: ${formattedDate}\nNew Time: ${formattedTime}`);
+                            alert(`Appointment rescheduled successfully!\n\nNew Date: ${formattedDate}\nNew Time: ${formattedTime}`);
                             closeDashboardRescheduleModal();
                             
                             // Reload the page to show updated calendar
                             window.location.reload();
                         } else {
-                            alert('❌ Failed to reschedule appointment. Please try again.');
+                            alert('Failed to reschedule appointment. Please try again.');
                         }
                     })
                     .catch(error => {
                         console.error('Error:', error);
-                        alert('❌ An error occurred while rescheduling. Please try again.');
+                        alert('An error occurred while rescheduling. Please try again.');
                     });
                 });
             }

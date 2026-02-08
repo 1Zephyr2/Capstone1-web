@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register New Patient - Health Center</title>
+    <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
             margin: 0;
@@ -12,16 +13,19 @@
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f5f5;
+            background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
             padding: 20px;
+            min-height: 100vh;
         }
         .container {
             max-width: 800px;
             margin: 0 auto;
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+            padding: 36px;
+            border-radius: 16px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .header-top {
             display: flex;
@@ -30,21 +34,26 @@
             margin-bottom: 10px;
         }
         .btn-back {
-            padding: 8px 16px;
-            background: #6b7280;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 700;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(107, 114, 128, 0.3);
         }
+        
         .btn-back:hover {
-            background: #4b5563;
+            background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(107, 114, 128, 0.4);
         }
         .header-logo {
             display: flex;
@@ -79,8 +88,10 @@
         h1 {
             color: #047857;
             margin: 0;
-            font-size: 24px;
+            font-size: 28px;
+            font-weight: 800;
             flex: 1;
+            letter-spacing: -0.02em;
         }
         .subtitle {
             color: #6b7280;
@@ -276,19 +287,19 @@
         <!-- Patient Search Autocomplete -->
         <div class="autocomplete-container">
             <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">
-                🔍 Search Existing Patient (Auto-fill)
+                <i class="bi bi-search"></i> Search Existing Patient (Auto-fill)
             </label>
             <input type="text" id="patientSearch" placeholder="Type patient name to check if already exists..." 
                    style="width: 100%; padding: 12px; border: 2px solid #d1d5db; border-radius: 6px; font-size: 14px;">
             <div id="autocompleteResults" class="autocomplete-results"></div>
             <p style="font-size: 12px; color: #6b7280; margin-top: 6px;">
-                💡 Start typing to search. Click on a result to auto-fill their information (you can still edit after).
+                <i class="bi bi-lightbulb"></i> Start typing to search. Click on a result to auto-fill their information (you can still edit after).
             </p>
         </div>
 
         <!-- Duplicate Warning -->
         <div id="duplicateWarning" class="automation-alert warning" style="display: none;">
-            <span style="font-size: 20px;">⚠️</span>
+            <i class="bi bi-exclamation-triangle-fill" style="font-size: 20px;"></i>
             <div>
                 <strong>Possible Duplicate Detected!</strong>
                 <div id="duplicateMessage"></div>

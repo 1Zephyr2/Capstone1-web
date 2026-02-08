@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Analytics - CareSync</title>
     <link rel="icon" href="/favicon.ico?v={{ time() }}">
+    <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * {
@@ -15,8 +16,9 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f8fafc;
+            background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
             padding: 40px;
+            min-height: 100vh;
         }
 
         .container {
@@ -25,204 +27,246 @@
         }
 
         .header {
-            background: white;
-            padding: 28px 36px;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-            margin-bottom: 32px;
+            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+            padding: 32px 40px;
+            border-radius: 20px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
+            margin-bottom: 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .header:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
         }
 
         .header-left h1 {
-            font-size: 32px;
+            font-size: 36px;
+            font-weight: 800;
             color: #111827;
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 8px;
+            gap: 14px;
+            margin-bottom: 10px;
+            letter-spacing: -0.02em;
         }
 
         .header-left p {
-            font-size: 14px;
+            font-size: 15px;
             color: #6b7280;
+            font-weight: 500;
         }
 
         .tech-badge {
             background: linear-gradient(135deg, #059669 0%, #047857 100%);
             color: white;
-            padding: 6px 16px;
-            border-radius: 20px;
+            padding: 8px 18px;
+            border-radius: 24px;
             font-size: 11px;
             font-weight: 700;
-            letter-spacing: 0.8px;
+            letter-spacing: 1px;
             text-transform: uppercase;
+            box-shadow: 0 2px 8px rgba(5, 150, 105, 0.3);
         }
 
         .back-btn {
-            background: #059669;
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
             color: white;
             border: none;
-            padding: 12px 28px;
-            border-radius: 8px;
+            padding: 14px 32px;
+            border-radius: 12px;
             cursor: pointer;
             text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.2s;
+            font-size: 15px;
+            font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            box-shadow: 0 2px 8px rgba(5, 150, 105, 0.3);
         }
 
         .back-btn:hover {
-            background: #047857;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+            background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(5, 150, 105, 0.4);
         }
 
         .metrics-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 24px;
-            margin-bottom: 32px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 28px;
+            margin-bottom: 40px;
         }
 
         .metric-card {
-            background: white;
-            padding: 28px;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-            transition: transform 0.2s, box-shadow 0.2s;
-            border-left: 4px solid #059669;
+            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+            padding: 32px;
+            border-radius: 20px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-left: 5px solid #059669;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(5, 150, 105, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(30%, -30%);
         }
 
         .metric-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
         }
 
         .metric-label {
             color: #6b7280;
             font-size: 13px;
-            margin-bottom: 12px;
-            font-weight: 600;
+            margin-bottom: 14px;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
         }
 
         .metric-value {
-            font-size: 40px;
-            font-weight: 800;
+            font-size: 44px;
+            font-weight: 900;
             color: #059669;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             line-height: 1;
+            letter-spacing: -0.03em;
         }
 
         .metric-trend {
             font-size: 13px;
-            padding: 5px 12px;
-            border-radius: 6px;
+            padding: 6px 14px;
+            border-radius: 10px;
             display: inline-block;
-            font-weight: 600;
+            font-weight: 700;
+            letter-spacing: 0.3px;
         }
 
         .trend-up {
-            background: #d1fae5;
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
             color: #065f46;
         }
 
         .trend-down {
-            background: #fee2e2;
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
             color: #991b1b;
         }
 
         .trend-neutral {
-            background: #e0e7ff;
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
             color: #3730a3;
         }
 
         .insights-section {
-            background: white;
-            padding: 32px;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-            margin-bottom: 32px;
+            background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+            padding: 36px;
+            border-radius: 20px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
+            margin-bottom: 40px;
+            border: 1px solid rgba(5, 150, 105, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .insights-section:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
         }
 
         .insights-section h3 {
             color: #111827;
-            margin-bottom: 24px;
-            font-size: 20px;
-            font-weight: 700;
+            margin-bottom: 28px;
+            font-size: 22px;
+            font-weight: 800;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            letter-spacing: -0.02em;
         }
 
         .insight-item {
-            padding: 20px;
-            margin-bottom: 14px;
-            border-left: 4px solid #059669;
-            background: linear-gradient(to right, #f0fdf4 0%, #ffffff 100%);
-            border-radius: 8px;
-            transition: all 0.2s;
+            padding: 24px;
+            margin-bottom: 16px;
+            border-left: 5px solid #059669;
+            background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+            border-radius: 14px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
         }
 
         .insight-item:hover {
-            background: linear-gradient(to right, #ecfdf5 0%, #f9fafb 100%);
-            box-shadow: 0 2px 8px rgba(5, 150, 105, 0.1);
+            background: linear-gradient(135deg, #ecfdf5 0%, #f9fafb 100%);
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.15);
+            transform: translateX(4px);
         }
 
         .insight-item h4 {
             color: #059669;
-            margin-bottom: 8px;
-            font-size: 16px;
-            font-weight: 700;
+            margin-bottom: 10px;
+            font-size: 17px;
+            font-weight: 800;
+            letter-spacing: -0.01em;
         }
 
         .insight-item p {
             color: #4b5563;
-            font-size: 14px;
+            font-size: 15px;
             line-height: 1.7;
+            font-weight: 500;
         }
 
         .charts-section {
-            margin-bottom: 32px;
+            margin-bottom: 40px;
         }
 
         .section-title {
-            font-size: 22px;
+            font-size: 24px;
             color: #111827;
-            font-weight: 700;
-            margin-bottom: 24px;
-            padding-left: 4px;
+            font-weight: 800;
+            margin-bottom: 28px;
+            padding-left: 6px;
+            letter-spacing: -0.02em;
         }
 
         .charts-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-            gap: 24px;
+            gap: 28px;
         }
 
         .chart-card {
-            background: white;
-            padding: 32px;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-            transition: box-shadow 0.2s;
+            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+            padding: 36px;
+            border-radius: 20px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(0, 0, 0, 0.06);
         }
 
         .chart-card:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
+            transform: translateY(-2px);
         }
 
         .chart-card h3 {
             color: #111827;
-            margin-bottom: 24px;
-            font-size: 17px;
-            font-weight: 700;
+            margin-bottom: 28px;
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: -0.01em;
         }
 
         .chart-container {
@@ -295,7 +339,7 @@
 
         <!-- Predictive Insights -->
         <div class="insights-section">
-            <h3>🔮 Predictive Insights & Recommendations</h3>
+            <h3><i class="bi bi-lightbulb-fill"></i> Predictive Insights & Recommendations</h3>
             
             <div class="insight-item">
                 <h4>Visit Forecast</h4>
@@ -329,14 +373,78 @@
             @endif
         </div>
 
+        <!-- Patient Activity & Retention Analytics -->
+        <div class="insights-section" style="margin-top: 32px;">
+            <h3><i class="bi bi-graph-up-arrow"></i> Patient Activity & Retention Predictive Analytics</h3>
+            
+            <div class="metrics-grid" style="margin-bottom: 24px;">
+                <div class="metric-card">
+                    <div class="metric-label">Active Patients (30 days)</div>
+                    <div class="metric-value">{{ number_format($patientActivityMetrics['patients_with_recent_visits']) }}</div>
+                    <span class="metric-trend trend-up">{{ round(($patientActivityMetrics['patients_with_recent_visits'] / $metrics['total_patients']) * 100, 1) }}% of total</span>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-label">Inactive Patients (90+ days)</div>
+                    <div class="metric-value">{{ number_format($patientActivityMetrics['inactive_patients']) }}</div>
+                    <span class="metric-trend trend-down">Need re-engagement</span>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-label">Never Visited</div>
+                    <div class="metric-value">{{ number_format($patientActivityMetrics['never_visited']) }}</div>
+                    <span class="metric-trend trend-neutral">Registered only</span>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-label">Patient Retention Rate</div>
+                    <div class="metric-value">{{ $patientActivityMetrics['retention_rate'] }}%</div>
+                    <span class="metric-trend {{ $patientActivityMetrics['retention_rate'] >= 70 ? 'trend-up' : 'trend-down' }}">
+                        {{ $patientActivityMetrics['retention_rate'] >= 70 ? 'Good retention' : 'Needs improvement' }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="insight-item">
+                <h4><i class="bi bi-people-fill"></i> Patient Visit Patterns</h4>
+                <p>Out of <strong>{{ number_format($metrics['total_patients']) }} total patients</strong>, <strong>{{ number_format($patientActivityMetrics['patients_with_recent_visits']) }} patients ({{ round(($patientActivityMetrics['patients_with_recent_visits'] / $metrics['total_patients']) * 100, 1) }}%) have visited in the last 30 days</strong>. Meanwhile, <strong>{{ number_format($patientActivityMetrics['inactive_patients']) }} patients</strong> haven't visited in over 90 days and may need follow-up contact.</p>
+            </div>
+
+            @if($patientActivityMetrics['at_risk_patients'] > 0)
+            <div class="insight-item">
+                <h4><i class="bi bi-exclamation-circle-fill"></i> At-Risk Patient Alert</h4>
+                <p><strong>{{ number_format($patientActivityMetrics['at_risk_patients']) }} patients</strong> are at risk of becoming inactive. They last visited 60-90 days ago. Consider proactive outreach through SMS reminders or calls to re-engage these patients before they become fully inactive.</p>
+            </div>
+            @endif
+
+            @if($patientActivityMetrics['never_visited'] > 0)
+            <div class="insight-item">
+                <h4><i class="bi bi-clipboard-data"></i> Never Visited Patients</h4>
+                <p><strong>{{ number_format($patientActivityMetrics['never_visited']) }} patients ({{ round(($patientActivityMetrics['never_visited'] / $metrics['total_patients']) * 100, 1) }}%)</strong> are registered but have never visited the health center. These may be pre-registered patients or those who registered but didn't complete their first visit. Follow up to confirm their records and encourage first visit.</p>
+            </div>
+            @endif
+
+            @if($patientActivityMetrics['retention_rate'] < 70)
+            <div class="insight-item">
+                <h4><i class="bi bi-arrow-down-circle-fill"></i> Low Retention Warning</h4>
+                <p>Current patient retention rate is <strong>{{ $patientActivityMetrics['retention_rate'] }}%</strong>, which is below the recommended 70% threshold. This indicates that many patients are not returning for follow-up care. Recommended actions: implement automated appointment reminders, conduct patient satisfaction surveys, and improve follow-up protocols.</p>
+            </div>
+            @elseif($patientActivityMetrics['retention_rate'] >= 80)
+            <div class="insight-item">
+                <h4><i class="bi bi-check-circle-fill"></i> Excellent Retention</h4>
+                <p>Patient retention rate of <strong>{{ $patientActivityMetrics['retention_rate'] }}%</strong> is excellent! Patients are regularly returning for care, indicating good service quality and effective follow-up systems. Continue current practices and consider documenting successful strategies.</p>
+            </div>
+            @endif
+        </div>
+
         <!-- Charts Section -->
         <div class="charts-section">
-            <h2 class="section-title">📊 Visual Analytics</h2>
+            <h2 class="section-title"><i class="bi bi-bar-chart-fill"></i> Visual Analytics</h2>
             
             <div class="charts-grid">
                 <!-- Patient Growth -->
                 <div class="chart-card">
-                    <h3>📈 Patient Registration Trend (6 Months)</h3>
+                    <h3><i class="bi bi-graph-up"></i> Patient Registration Trend (6 Months)</h3>
                     <div class="chart-container">
                         <canvas id="patientGrowthChart"></canvas>
                     </div>
@@ -344,7 +452,7 @@
 
                 <!-- Visit Trends -->
                 <div class="chart-card">
-                    <h3>🏥 Daily Visit Patterns (30 Days)</h3>
+                    <h3><i class="bi bi-hospital"></i> Daily Visit Patterns (30 Days)</h3>
                     <div class="chart-container">
                         <canvas id="visitTrendsChart"></canvas>
                     </div>
@@ -352,7 +460,7 @@
 
                 <!-- Service Distribution -->
                 <div class="chart-card">
-                    <h3>🎯 Service Type Distribution</h3>
+                    <h3><i class="bi bi-bullseye"></i> Service Type Distribution</h3>
                     <div class="chart-container">
                         <canvas id="serviceDistributionChart"></canvas>
                     </div>
@@ -360,7 +468,7 @@
 
                 <!-- Age Demographics -->
                 <div class="chart-card">
-                    <h3>👥 Age Demographics</h3>
+                    <h3><i class="bi bi-people-fill"></i> Age Demographics</h3>
                     <div class="chart-container">
                         <canvas id="ageDemographicsChart"></canvas>
                     </div>
@@ -376,7 +484,7 @@
 
                 <!-- Immunization Coverage -->
                 <div class="chart-card">
-                    <h3>💉 Top 10 Vaccines Administered</h3>
+                    <h3><i class="bi bi-shield-fill-check"></i> Top 10 Vaccines Administered</h3>
                     <div class="chart-container">
                         <canvas id="immunizationCoverageChart"></canvas>
                     </div>
@@ -384,7 +492,7 @@
 
                 <!-- High-Risk Prenatal Trend -->
                 <div class="chart-card">
-                    <h3>⚠️ High-Risk Prenatal Cases Trend</h3>
+                    <h3><i class="bi bi-exclamation-triangle-fill"></i> High-Risk Prenatal Cases Trend</h3>
                     <div class="chart-container">
                         <canvas id="highRiskPrenatalChart"></canvas>
                     </div>
@@ -392,7 +500,7 @@
 
                 <!-- Top Complaints -->
                 <div class="chart-card">
-                    <h3>💬 Top 5 Chief Complaints</h3>
+                    <h3><i class="bi bi-chat-text"></i> Top 5 Chief Complaints</h3>
                     <div class="chart-container">
                         <canvas id="topComplaintsChart"></canvas>
                     </div>

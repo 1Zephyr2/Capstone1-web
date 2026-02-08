@@ -12,6 +12,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Immunizations - CareSync</title>
+    <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
             margin: 0;
@@ -21,8 +22,9 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f8fafc;
+            background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
             padding: 40px;
+            min-height: 100vh;
         }
 
         .container {
@@ -31,35 +33,47 @@
         }
 
         .header {
-            background: white;
-            padding: 24px 32px;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-            margin-bottom: 32px;
+            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+            padding: 28px 36px;
+            border-radius: 20px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
+            margin-bottom: 36px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .header:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
         }
 
         .header h1 {
-            font-size: 28px;
+            font-size: 32px;
+            font-weight: 800;
             color: #111827;
+            letter-spacing: -0.02em;
         }
 
         .back-btn {
-            background: #10B981;
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
             color: white;
             border: none;
-            padding: 10px 24px;
-            border-radius: 8px;
+            padding: 12px 28px;
+            border-radius: 12px;
             cursor: pointer;
             text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
+            font-size: 15px;
+            font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
         }
 
         .back-btn:hover {
-            background: #059669;
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
         }
 
         .stats-row {
@@ -70,38 +84,56 @@
         }
 
         .stat-card {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+            padding: 28px;
+            border-radius: 16px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
             border-left: 4px solid #f59e0b;
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+            border-right: 1px solid rgba(0, 0, 0, 0.06);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
         }
 
         .stat-card h3 {
             font-size: 14px;
-            color: #6b7280;
-            margin-bottom: 8px;
+            font-weight: 600;
+            color: #6B7280;
+            margin-bottom: 10px;
+            letter-spacing: -0.01em;
         }
 
         .stat-card .value {
-            font-size: 32px;
-            font-weight: 700;
+            font-size: 36px;
+            font-weight: 800;
             color: #111827;
+            letter-spacing: -0.02em;
         }
 
         .content-card {
-            background: white;
-            padding: 32px;
-            border-radius: 14px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-            border: 1px solid #E5E7EB;
+            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+            padding: 36px;
+            border-radius: 20px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .content-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
         }
 
         .section-title {
-            font-size: 20px;
-            font-weight: 600;
+            font-size: 22px;
+            font-weight: 700;
             color: #111827;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
+            letter-spacing: -0.01em;
         }
 
         .immunization-list {
@@ -263,7 +295,7 @@
                 </div>
             @else
                 <div class="empty-state">
-                    <div class="icon">💉</div>
+                    <div class="icon"><i class="bi bi-shield-fill-check" style="font-size: 48px;"></i></div>
                     <h2>No Immunization Records</h2>
                     <p>There are no immunization records in the system yet.</p>
                 </div>
