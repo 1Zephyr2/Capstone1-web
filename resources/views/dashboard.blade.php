@@ -25,23 +25,28 @@
             width: 260px;
             background: linear-gradient(180deg, #059669 0%, #047857 100%);
             color: white;
-            padding: 24px 0;
+            padding: 24px 0 0 0;
             box-shadow: 2px 0 12px rgba(0, 0, 0, 0.1);
             position: fixed;
             height: 100vh;
             overflow-y: auto;
+            display: flex;
+            flex-direction: column;
         }
 
         .sidebar-header {
-            padding: 0 24px 24px;
+            padding: 8px 16px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .logo-container {
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 8px;
+            margin-bottom: 0;
             cursor: pointer;
             text-decoration: none;
             color: inherit;
@@ -79,11 +84,11 @@
         }
 
         .sidebar-menu {
-            margin-top: 24px;
+            margin-top: 12px;
         }
 
         .menu-section {
-            margin-bottom: 24px;
+            margin-bottom: 16px;
         }
 
         .menu-label {
@@ -93,12 +98,12 @@
             opacity: 0.7;
             font-weight: 600;
             letter-spacing: 0.5px;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
 
         .menu-item {
-            margin: 0 16px 8px 16px;
-            padding: 12px 16px;
+            margin: 0 16px 6px 16px;
+            padding: 10px 16px;
             display: flex;
             align-items: center;
             gap: 12px;
@@ -135,6 +140,72 @@
             font-weight: 500;
             white-space: nowrap;
             transition: opacity 0.3s ease;
+        }
+
+        /* User Section */
+        .user-section {
+            padding: 14px 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            margin-top: auto;
+        }
+
+        .user-info-sidebar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .user-avatar-sidebar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            overflow: hidden;
+        }
+
+        .user-avatar-sidebar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .user-details-sidebar {
+            flex: 1;
+        }
+
+        .user-name-sidebar {
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .user-role-sidebar {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .logout-btn-sidebar {
+            width: 100%;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .logout-btn-sidebar:hover {
+            background: rgba(255, 255, 255, 0.2);
         }
 
         /* Main Content */
@@ -2021,13 +2092,35 @@
             .sidebar-header .logo-text,
             .sidebar-subtitle,
             .menu-text,
-            .menu-label {
+            .menu-label,
+            .user-details-sidebar {
                 display: none;
             }
 
             .menu-item {
                 justify-content: center;
                 padding: 12px;
+            }
+
+            .user-section {
+                padding: 12px;
+            }
+
+            .user-info-sidebar {
+                justify-content: center;
+            }
+
+            .logout-btn-sidebar i {
+                margin: 0;
+            }
+
+            .logout-btn-sidebar {
+                padding: 8px;
+                font-size: 0;
+            }
+
+            .logout-btn-sidebar i {
+                font-size: 18px;
             }
         }
     </style>
@@ -2037,10 +2130,10 @@
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <a href="{{ route('dashboard') }}" class="logo-container">
-                <img src="/images/systemlogo.png" alt="CareSync" style="height: 70px; object-fit: contain; display: block; margin: 0;">
+                <img src="/images/systemlogo.png" alt="CareSync" style="height: 55px; object-fit: contain; display: block; margin: 0;">
             </a>
-            <div style="font-size: 18px; font-weight: 600; color: white; margin-bottom: 4px;">CareSync</div>
-            <div class="sidebar-subtitle">Health Center System</div>
+            <div style="font-size: 18px; font-weight: 600; color: white; margin: 0; line-height: 1.2;">CareSync</div>
+            <div class="sidebar-subtitle" style="margin: 0; line-height: 1.2;">Health Center System</div>
         </div>
 
         <nav class="sidebar-menu">
@@ -2092,6 +2185,33 @@
                 </a>
             </div>
         </nav>
+
+        <div class="user-section">
+            <div class="user-info-sidebar">
+                @if(Auth::user()->profile_picture)
+                    <div class="user-avatar-sidebar">
+                        <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="{{ Auth::user()->name }}">
+                    </div>
+                @else
+                    <div class="user-avatar-sidebar">
+                        {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                    </div>
+                @endif
+                <div class="user-details-sidebar">
+                    <div class="user-name-sidebar">{{ Auth::user()->name }}</div>
+                    <div class="user-role-sidebar">Healthcare Provider</div>
+                </div>
+            </div>
+            <a href="{{ route('profile.show') }}" class="logout-btn-sidebar" style="text-decoration: none; margin-bottom: 8px;">
+                <i class="bi bi-person-circle"></i> My Profile
+            </a>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="logout-btn-sidebar">
+                    <i class="bi bi-box-arrow-right"></i> Logout
+                </button>
+            </form>
+        </div>
     </aside>
 
     <!-- Main Content -->
@@ -2101,25 +2221,6 @@
             <div class="top-nav-left">
                 <h1>Welcome back, {{ Auth::user()->name }}!</h1>
                 <p>{{ date('l, F j, Y') }}</p>
-            </div>
-            <div class="top-nav-right">
-                <a href="{{ route('profile.show') }}" class="user-info">
-                    <div class="user-details">
-                        <div class="user-name">{{ Auth::user()->name }}</div>
-                        <div class="user-role">Health Center Staff</div>
-                    </div>
-                    <div class="user-avatar">
-                        @if(Auth::user()->profile_picture)
-                            <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="{{ Auth::user()->name }}">
-                        @else
-                            {{ substr(Auth::user()->name, 0, 1) }}
-                        @endif
-                    </div>
-                </a>
-                <form method="POST" action="{{ route('logout') }}" style="margin: 0;">
-                    @csrf
-                    <button type="submit" class="logout-btn">Logout</button>
-                </form>
             </div>
         </header>
 
