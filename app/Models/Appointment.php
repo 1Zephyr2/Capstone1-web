@@ -23,6 +23,7 @@ class Appointment extends Model
         'fp_method',
         'referred_to',
         'referral_urgency',
+        'google_event_id',
     ];
 
     protected $casts = [
@@ -51,6 +52,6 @@ class Appointment extends Model
      */
     public function getFormattedTimeAttribute(): string
     {
-        return $this->appointment_time->format('h:i A');
+        return $this->appointment_time->format('g:i A');
     }
 }

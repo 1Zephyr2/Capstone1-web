@@ -13,11 +13,6 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Redirect admin users to admin dashboard
-        if (auth()->user()->role === 'admin') {
-            return redirect()->route('admin.dashboard');
-        }
-
         // Get total patients count
         $totalPatients = Patient::count();
         

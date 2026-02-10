@@ -347,7 +347,12 @@
                     <div class="header-logo-icon">V</div>
                     <img src="/images/systemlogo.png" alt="CareSync" style="height: 35px; object-fit: contain;">
                 </a>
-                <a href="{{ route('dashboard') }}" class="btn-back">← Back</a>
+                <div style="display: flex; gap: 10px;">
+                    <a href="{{ route('dashboard') }}" class="btn-back">← Back</a>
+                    <button onclick="openAppointmentsCalendar()" class="btn-calendar" style="padding: 8px 16px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3); transition: all 0.2s; display: flex; align-items: center; gap: 6px;" onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 6px rgba(16, 185, 129, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(16, 185, 129, 0.3)'">
+                        <i class="bi bi-calendar3"></i> View Calendar
+                    </button>
+                </div>
                 <h1><i class="bi bi-clipboard2-check"></i> Today's Visits</h1>
             </div>
             <p style="color: #6b7280; font-size: 14px;">{{ now()->format('l, F j, Y') }}</p>
@@ -790,6 +795,232 @@
             loadTodayAppointments();
             updateVisitStats(); // Count and update the stats!
         });
+
+        // Appointments Calendar Modal Functions
+        let appointmentsCalendarData = {};
+        let currentCalendarMonth = new Date();
+
+        function openAppointmentsCalendar() {
+            document.getElementById('appointmentsCalendarModal').style.display = 'flex';
+            document.getElementById('selectedDateAppointments').style.display = 'none';
+            loadAppointmentsCalendar();
+        }
+
+        function closeAppointmentsCalendar() {
+            document.getElementById('appointmentsCalendarModal').style.display = 'none';
+        }
+
+        function loadAppointmentsCalendar() {
+            fetch('{{ route("appointments.calendar.data") }}')
+                .then(response => response.json())
+                .then(data => {
+                    appointmentsCalendarData = data;
+                    renderAppointmentsCalendar();
+                })
+                .catch(error => {
+                    console.error('Error loading appointments:', error);
+                });
+        }
+
+        function renderAppointmentsCalendar() {
+            const year = currentCalendarMonth.getFullYear();
+            const month = currentCalendarMonth.getMonth();
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const startingDayOfWeek = firstDay.getDay();
+            const monthDays = lastDay.getDate();
+
+            // Update header
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'];
+            document.getElementById('calendarMonthYear').textContent = `${monthNames[month]} ${year}`;
+
+            // Generate calendar grid
+            let html = '<div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-top: 20px;">';
+            
+            // Day headers
+            const dayHeaders = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            dayHeaders.forEach(day => {
+                html += `<div style="text-align: center; font-weight: 600; color: #6b7280; padding: 8px; font-size: 12px;">${day}</div>`;
+            });
+
+            // Empty cells before first day
+            for (let i = 0; i < startingDayOfWeek; i++) {
+                html += '<div style="padding: 12px;"></div>';
+            }
+
+            // Days of month
+            for (let day = 1; day <= monthDays; day++) {
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const hasAppointments = appointmentsCalendarData[dateStr] && appointmentsCalendarData[dateStr].length > 0;
+                const appointmentCount = hasAppointments ? appointmentsCalendarData[dateStr].length : 0;
+                const isToday = dateStr === new Date().toISOString().split('T')[0];
+                
+                const style = `
+                    padding: 12px;
+                    text-align: center;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    background: ${hasAppointments ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)' : (isToday ? '#f3f4f6' : 'white')};
+                    color: ${hasAppointments ? 'white' : '#374151'};
+                    font-weight: ${hasAppointments ? '700' : (isToday ? '600' : '400')};
+                    border: ${isToday && !hasAppointments ? '2px solid #10b981' : 'none'};
+                    transition: all 0.2s;
+                    position: relative;
+                `;
+                
+                html += `<div style="${style}" onclick="showDateAppointments('${dateStr}')" 
+                    onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    <div>${day}</div>
+                    ${hasAppointments ? `<div style="font-size: 10px; margin-top: 2px;">${appointmentCount} apt${appointmentCount > 1 ? 's' : ''}</div>` : ''}
+                </div>`;
+            }
+
+            html += '</div>';
+            document.getElementById('calendarGrid').innerHTML = html;
+        }
+
+        function showDateAppointments(dateStr) {
+            const appointments = appointmentsCalendarData[dateStr] || [];
+            const displaySection = document.getElementById('selectedDateAppointments');
+            const contentDiv = document.getElementById('selectedDateAppointmentsContent');
+
+            const date = new Date(dateStr + 'T00:00:00');
+            const formattedDate = date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            
+            let html = `
+                <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 16px; border-radius: 8px; margin-bottom: 16px;">
+                    <h3 style="margin: 0; font-size: 18px;">${formattedDate}</h3>
+                    <p style="margin: 4px 0 0 0; font-size: 14px; opacity: 0.9;">${appointments.length} appointment${appointments.length > 1 ? 's' : ''}</p>
+                </div>
+            `;
+            
+            if (appointments.length === 0) {
+                html += `
+                    <div style="text-align: center; padding: 40px 20px; color: #6b7280; background: #f9fafb; border-radius: 8px;">
+                        <i class="bi bi-calendar-x" style="font-size: 48px; color: #d1d5db; margin-bottom: 16px;"></i>
+                        <p style="font-size: 16px; margin: 0;">No appointments scheduled for this date</p>
+                    </div>
+                `;
+            } else {
+                html += '<div style="max-height: 400px; overflow-y: auto;">';
+            
+            appointments.forEach(apt => {
+                const statusColors = {
+                    'scheduled': '#10b981',
+                    'completed': '#3b82f6',
+                    'cancelled': '#ef4444',
+                    'no-show': '#f59e0b'
+                };
+                const statusColor = statusColors[apt.status] || '#6b7280';
+                
+                html += `
+                    <div style="background: #f9fafb; padding: 16px; border-radius: 8px; margin-bottom: 12px; border-left: 4px solid ${statusColor};">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
+                            <div style="font-weight: 600; font-size: 16px; color: #111827;">${apt.patient}</div>
+                            <div style="background: ${statusColor}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase;">
+                                ${apt.status}
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 16px; font-size: 14px; color: #6b7280;">
+                            <div><i class="bi bi-clock"></i> ${apt.time}</div>
+                            <div><i class="bi bi-heart-pulse"></i> ${apt.type}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+                html += '</div>';
+            }
+            
+            contentDiv.innerHTML = html;
+            displaySection.style.display = 'block';
+            
+            // Scroll to appointments section smoothly
+            setTimeout(() => {
+                displaySection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
+        }
+
+        function changeCalendarMonth(direction) {
+            currentCalendarMonth.setMonth(currentCalendarMonth.getMonth() + direction);
+            renderAppointmentsCalendar();
+            // Hide appointments section when changing months
+            document.getElementById('selectedDateAppointments').style.display = 'none';
+        }
+
+        function closeDateAppointments() {
+            document.getElementById('dateAppointmentsModal').style.display = 'none';
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const calModal = document.getElementById('appointmentsCalendarModal');
+            const dateModal = document.getElementById('dateAppointmentsModal');
+            if (event.target === calModal) {
+                closeAppointmentsCalendar();
+            }
+            if (event.target === dateModal) {
+                closeDateAppointments();
+            }
+        }
     </script>
+
+    <!-- Appointments Calendar Modal -->
+    <div id="appointmentsCalendarModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10000; align-items: center; justify-content: center; padding: 20px;">
+        <div style="background: white; border-radius: 16px; max-width: 800px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);">
+            <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 24px; border-radius: 16px 16px 0 0; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h2 style="margin: 0; font-size: 24px; font-weight: 700;">📅 Appointments Calendar</h2>
+                    <p style="margin: 4px 0 0 0; font-size: 14px; opacity: 0.9;">View appointments by date</p>
+                </div>
+                <button onclick="closeAppointmentsCalendar()" style="background: rgba(255,255,255,0.2); border: none; color: white; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">×</button>
+            </div>
+            <div style="padding: 24px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <button onclick="changeCalendarMonth(-1)" style="background: #f3f4f6; border: none; color: #374151; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.2s;" onmouseover="this.style.background='#e5e7eb'" onmouseout="this.style.background='#f3f4f6'">
+                        ← Previous
+                    </button>
+                    <h3 id="calendarMonthYear" style="margin: 0; font-size: 18px; font-weight: 700; color: #111827;"></h3>
+                    <button onclick="changeCalendarMonth(1)" style="background: #f3f4f6; border: none; color: #374151; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.2s;" onmouseover="this.style.background='#e5e7eb'" onmouseout="this.style.background='#f3f4f6'">
+                        Next →
+                    </button>
+                </div>
+                <div id="calendarGrid"></div>
+                <div style="margin-top: 20px; padding: 16px; background: #f9fafb; border-radius: 8px; display: flex; gap: 16px; align-items: center; font-size: 13px; color: #6b7280;">
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <div style="width: 16px; height: 16px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 4px;"></div>
+                        <span>Has Appointments</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <div style="width: 16px; height: 16px; background: white; border: 2px solid #10b981; border-radius: 4px;"></div>
+                        <span>Today</span>
+                    </div>
+                </div>
+                
+                <!-- Appointments Display Section -->
+                <div id="selectedDateAppointments" style="margin-top: 24px; display: none;">
+                    <div style="border-top: 2px solid #e5e7eb; padding-top: 20px;">
+                        <div id="selectedDateAppointmentsContent"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Date Appointments Details Modal -->
+    <div id="dateAppointmentsModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10001; align-items: center; justify-content: center; padding: 20px;">
+        <div style="background: white; border-radius: 16px; max-width: 600px; width: 100%; max-height: 90vh; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);">
+            <div style="padding: 24px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <button onclick="closeDateAppointments(); openAppointmentsCalendar();" style="background: #f3f4f6; border: none; color: #374151; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.2s;" onmouseover="this.style.background='#e5e7eb'" onmouseout="this.style.background='#f3f4f6'">
+                        ← Back to Calendar
+                    </button>
+                    <button onclick="closeDateAppointments()" style="background: transparent; border: none; color: #6b7280; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 24px; transition: all 0.2s;" onmouseover="this.style.background='#f3f4f6'; this.style.color='#111827'" onmouseout="this.style.background='transparent'; this.style.color='#6b7280'">×</button>
+                </div>
+                <div id="dateAppointmentsContent"></div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

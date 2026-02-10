@@ -49,4 +49,36 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Check if user is an admin
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    /**
+     * Check if user is a staff member
+     */
+    public function isStaff(): bool
+    {
+        return $this->role === 'staff';
+    }
+
+    /**
+     * Check if user is a healthcare provider
+     */
+    public function isHealthcareProvider(): bool
+    {
+        return $this->role === 'healthcare_provider';
+    }
+
+    /**
+     * Check if user has admin or staff privileges
+     */
+    public function hasStaffAccess(): bool
+    {
+        return in_array($this->role, ['admin', 'staff']);
+    }
 }

@@ -2169,6 +2169,7 @@
                 </a>
             </div>
 
+            @if(Auth::user()->isAdmin())
             <div class="menu-section">
                 <div class="menu-label">Reports & Tools</div>
                 <a href="{{ route('reports.index') }}" class="menu-item">
@@ -2184,6 +2185,7 @@
                     <span class="menu-text">Automation Support</span>
                 </a>
             </div>
+            @endif
         </nav>
 
         <div class="user-section">
@@ -2253,8 +2255,8 @@
                 </div>
             </div>
 
-            <!-- AI Alerts Summary (only show if there are alerts) -->
-            @if(isset($totalAlerts) && $totalAlerts > 0)
+            <!-- AI Alerts Summary (only show if there are alerts and user is admin) -->
+            @if(Auth::user()->isAdmin() && isset($totalAlerts) && $totalAlerts > 0)
             <div class="alerts-summary-section">
                 <div class="alerts-summary-card">
                     <div class="alerts-summary-header">
