@@ -1,6 +1,6 @@
 # CareSync - Health Center Management System
 
-A comprehensive web-based health center management system built with Laravel, designed for rural health units (RHU) and healthcare facilities in the Philippines. This system streamlines patient management, appointments, medical records, and administrative tasks.
+**Capstone Project** - A comprehensive web-based health center management system built with Laravel, designed for rural health units and healthcare facilities in the Philippines. This system streamlines patient management, appointments, medical records, and administrative tasks.
 
 ## Table of Contents
 - [Features](#features)
@@ -259,7 +259,7 @@ routes/
 
 ## License
 
-This project is developed for educational and healthcare improvement purposes. Please ensure compliance with local healthcare data regulations when deploying in production environments.
+This project is developed as a **capstone project** for educational and healthcare improvement purposes. Please ensure compliance with local healthcare data regulations when deploying in production environments.
 
 ## Support
 
