@@ -734,7 +734,7 @@
                     </div>
                 </div>
                 <div class="stat-value">{{ number_format($stats['total_users']) }}</div>
-                <div class="stat-change">{{ $stats['admin_count'] }} Admins, {{ $stats['provider_count'] }} Providers</div>
+                <div class="stat-change">{{ $stats['admin_count'] }} Admins, {{ $stats['staff_count'] }} Staff</div>
             </div>
         </div>
 

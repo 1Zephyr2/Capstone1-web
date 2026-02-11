@@ -470,15 +470,15 @@
                         Role <span class="required">*</span>
                     </label>
                     <select name="role" class="form-select" required>
-                        <option value="healthcare_provider" {{ old('role', $user->role) === 'healthcare_provider' ? 'selected' : '' }}>
-                            Healthcare Provider
+                        <option value="staff" {{ old('role', $user->role) === 'staff' ? 'selected' : '' }}>
+                            Staff Member
                         </option>
                         <option value="admin" {{ old('role', $user->role) === 'admin' ? 'selected' : '' }}>
                             Administrator
                         </option>
                     </select>
                     <div class="help-text">
-                        <strong>Healthcare Provider:</strong> Can manage patients and medical records<br>
+                        <strong>Staff Member:</strong> Can manage patients and medical records<br>
                         <strong>Administrator:</strong> Can manage users and system settings
                     </div>
                     @error('role')

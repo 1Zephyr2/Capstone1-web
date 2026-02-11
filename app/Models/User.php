@@ -67,19 +67,11 @@ class User extends Authenticatable
     }
 
     /**
-     * Check if user is a healthcare provider
-     */
-    public function isHealthcareProvider(): bool
-    {
-        return $this->role === 'healthcare_provider';
-    }
-
-    /**
      * Check if user has admin or staff privileges
      */
     public function hasStaffAccess(): bool
     {
-        return in_array($this->role, ['admin', 'staff', 'healthcare_provider']);
+        return in_array($this->role, ['admin', 'staff']);
     }
 
     /**
@@ -89,7 +81,6 @@ class User extends Authenticatable
     {
         return match($this->role) {
             'admin' => 'Administrator',
-            'healthcare_provider' => 'Healthcare Provider',
             'staff' => 'Staff Member',
             default => ucfirst(str_replace('_', ' ', $this->role))
         };

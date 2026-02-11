@@ -508,8 +508,8 @@
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->phone ?? '-' }}</td>
                                 <td>
-                                    <span class="badge {{ $user->role === 'admin' ? 'admin' : 'provider' }}">
-                                        {{ $user->role === 'admin' ? 'Administrator' : 'Healthcare Provider' }}
+                                    <span class="badge {{ $user->role === 'admin' ? 'admin' : 'staff' }}">
+                                        {{ $user->role === 'admin' ? 'Administrator' : 'Staff Member' }}
                                     </span>
                                 </td>
                                 <td>{{ $user->created_at->format('M j, Y') }}</td>

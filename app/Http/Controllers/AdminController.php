@@ -27,7 +27,7 @@ class AdminController extends Controller
             'total_appointments_today' => Appointment::whereDate('appointment_date', today())->count(),
             'total_users' => User::count(),
             'admin_count' => User::where('role', 'admin')->count(),
-            'provider_count' => User::where('role', 'healthcare_provider')->count(),
+            'staff_count' => User::where('role', 'staff')->count(),
         ];
 
         // Get recent activity counts by date (anonymized)
@@ -68,7 +68,7 @@ class AdminController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'phone' => ['nullable', 'string', 'max:20'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'role' => ['required', 'in:admin,healthcare_provider'],
+            'role' => ['required', 'in:admin,staff'],
         ]);
 
         User::create([
@@ -102,7 +102,7 @@ class AdminController extends Controller
             'username' => ['required', 'string', 'max:255', 'unique:users,username,' . $user->id],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
             'phone' => ['nullable', 'string', 'max:20'],
-            'role' => ['required', 'in:admin,healthcare_provider'],
+            'role' => ['required', 'in:admin,staff'],
             'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
         ]);
 

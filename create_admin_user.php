@@ -19,13 +19,13 @@ echo "Admin user created successfully!\n";
 echo "Username: admin\n";
 echo "Password: admin123\n\n";
 
-// Update existing users to healthcare_provider role if they don't have a role set
+// Update existing users to staff role if they don't have a role set
 $updated = User::whereNull('role')
     ->orWhere('role', '')
-    ->update(['role' => 'healthcare_provider']);
+    ->update(['role' => 'staff']);
 
 if ($updated > 0) {
-    echo "$updated existing user(s) updated to healthcare_provider role\n";
+    echo "$updated existing user(s) updated to staff role\n";
 }
 
 echo "\nDone!\n";
