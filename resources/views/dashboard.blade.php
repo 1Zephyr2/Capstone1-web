@@ -2172,10 +2172,6 @@
             @if(Auth::user()->hasStaffAccess())
             <div class="menu-section">
                 <div class="menu-label">Reports & Tools</div>
-                <a href="{{ route('reports.index') }}" class="menu-item">
-                    <span class="menu-icon"><i class="bi bi-file-earmark-bar-graph"></i></span>
-                    <span class="menu-text">Monthly Reports</span>
-                </a>
                 <a href="{{ route('analytics.index') }}" class="menu-item">
                     <span class="menu-icon"><i class="bi bi-graph-up-arrow"></i></span>
                     <span class="menu-text">Data Analytics</span>
@@ -2506,13 +2502,13 @@
                             <label style="font-weight: 600; color: #374151; font-size: 14px;">
                                 Date <span style="color: #dc2626;">*</span>
                             </label>
-                            <input type="date" name="visit_date" required min="{{ date('Y-m-d') }}" value="{{ date('Y-m-d') }}" style="padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px;">
+                            <input type="date" name="appointment_date" required min="{{ date('Y-m-d') }}" value="{{ date('Y-m-d') }}" style="padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px;">
                         </div>
                         <div style="display: flex; flex-direction: column; gap: 8px;">
                             <label style="font-weight: 600; color: #374151; font-size: 14px;">
                                 Time <span style="color: #dc2626;">*</span>
                             </label>
-                            <input type="time" name="visit_time_input" required value="08:00" style="padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px;">
+                            <input type="time" name="appointment_time" required value="08:00" style="padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px;">
                         </div>
                     </div>
 
@@ -2607,9 +2603,9 @@
                         <div style="display: flex; flex-direction: column; gap: 6px;">
                             <label style="font-weight: 500; color: #374151; font-size: 13px;">Urgency</label>
                             <select name="referral_urgency" style="padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px;">
-                                <option value="Routine">Routine</option>
-                                <option value="Urgent">Urgent</option>
-                                <option value="Emergency">Emergency</option>
+                                <option value="routine">Routine</option>
+                                <option value="urgent">Urgent</option>
+                                <option value="emergency">Emergency</option>
                             </select>
                         </div>
                     </div>
@@ -2670,6 +2666,8 @@
                 <div class="search-filters">
                     <input type="date" id="searchBirthdayFilter" placeholder="Birthday" onchange="performQuickSearch()" style="padding:8px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:14px;color:#374151;">
                     
+                        <select id="searchGenderFilter" onchange="performQuickSearch()">
+                            <option value="">Male / Female</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                         </select>
@@ -2971,73 +2969,185 @@
         </div>
     </div>
 
-    <!-- Schedule Modal -->
+    <!-- Schedule Modal - REBUILT VERSION -->
     <div id="scheduleModal" class="ai-modal" onclick="closeModalOnBackdrop(event, 'schedule')">
         <div class="ai-modal-content" style="max-width: 750px;">
             <div class="ai-modal-header" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
-                <h2><i class="bi bi-calendar-week"></i> Schedule</h2>
+                <h2><i class="bi bi-calendar-week"></i> Appointments Calendar</h2>
                 <button class="ai-modal-close" onclick="closeModal('schedule')">✕</button>
             </div>
-            <div class="ai-modal-body" style="padding: 0;">
-                <div class="calendar-container">
-                    <div class="calendar-header">
-                        <h3 id="currentMonth">January 2026</h3>
-                        <div class="calendar-nav">
-                            <button onclick="changeMonth(-1)">← Prev</button>
-                            <button onclick="goToToday()">Today</button>
-                            <button onclick="changeMonth(1)">Next →</button>
-                        </div>
+            <div class="ai-modal-body" style="padding: 20px;">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <button onclick="scheduleChangeMonth(-1)" style="padding: 8px 16px; background: #10b981; color: white; border: none; border-radius: 6px; cursor: pointer;">← Previous</button>
+                        <h3 id="scheduleCurrentMonth" style="margin: 0;">February 2026</h3>
+                        <button onclick="scheduleChangeMonth(1)" style="padding: 8px 16px; background: #10b981; color: white; border: none; border-radius: 6px; cursor: pointer;">Next →</button>
                     </div>
-
-                    <div class="calendar-weekdays">
-                        <div class="calendar-weekday">Sun</div>
-                        <div class="calendar-weekday">Mon</div>
-                        <div class="calendar-weekday">Tue</div>
-                        <div class="calendar-weekday">Wed</div>
-                        <div class="calendar-weekday">Thu</div>
-                        <div class="calendar-weekday">Fri</div>
-                        <div class="calendar-weekday">Sat</div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 8px;">
+                        <div style="font-weight: 600; color: #6b7280; padding: 8px; font-size: 13px;">Sun</div>
+                        <div style="font-weight: 600; color: #6b7280; padding: 8px; font-size: 13px;">Mon</div>
+                        <div style="font-weight: 600; color: #6b7280; padding: 8px; font-size: 13px;">Tue</div>
+                        <div style="font-weight: 600; color: #6b7280; padding: 8px; font-size: 13px;">Wed</div>
+                        <div style="font-weight: 600; color: #6b7280; padding: 8px; font-size: 13px;">Thu</div>
+                        <div style="font-weight: 600; color: #6b7280; padding: 8px; font-size: 13px;">Fri</div>
+                        <div style="font-weight: 600; color: #6b7280; padding: 8px; font-size: 13px;">Sat</div>
                     </div>
-
-                    <div class="calendar-days" id="calendarDays"></div>
-
-                    <div id="appointmentFormContainer" style="display: none;">
-                        <div class="appointment-form">
-                            <h4>Schedule Appointment - <span id="selectedDate"></span></h4>
-                            <div class="form-group">
-                                <label for="patientName">Patient Name</label>
-                                <input type="text" id="patientName" placeholder="Enter patient name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="appointmentTime">Time</label>
-                                <input type="time" id="appointmentTime" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="appointmentType">Type</label>
-                                <select id="appointmentType">
-                                    <option value="general">General Checkup</option>
-                                    <option value="prenatal">Prenatal Care</option>
-                                    <option value="immunization">Immunization</option>
-                                    <option value="followup">Follow-up</option>
-                                    <option value="consultation">Consultation</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="appointmentNotes">Notes (Optional)</label>
-                                <textarea id="appointmentNotes" placeholder="Additional notes..."></textarea>
-                            </div>
-                            <div class="form-actions">
-                                <button class="btn-primary" onclick="saveAppointment()">Save Appointment</button>
-                                <button class="btn-secondary" onclick="cancelAppointmentForm()">Cancel</button>
-                            </div>
-                        </div>
-
-                        <div class="appointment-list" id="appointmentList"></div>
-                    </div>
+                    
+                    <div id="scheduleCalendarDays" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px;"></div>
+                </div>
+                
+                <div id="scheduleSelectedDateInfo" style="display: none; padding: 20px; background: #f9fafb; border-radius: 8px; border: 2px solid #10b981;">
+                    <h3 id="scheduleSelectedDateTitle" style="margin: 0 0 16px 0; color: #111827;"></h3>
+                    <div id="scheduleAppointmentsList"></div>
                 </div>
             </div>
         </div>
     </div>
+    
+    <script>
+    // SCHEDULE MODAL - DIRECT IMPLEMENTATION (NO CACHE ISSUES)
+    (function() {
+        const SCHEDULE_APPOINTMENTS = @json($appointments ?? []);
+        let scheduleCurrentDate = new Date();
+        
+        console.log('SCHEDULE MODAL INITIALIZED WITH DATA:', SCHEDULE_APPOINTMENTS);
+        
+        window.scheduleChangeMonth = function(delta) {
+            scheduleCurrentDate.setMonth(scheduleCurrentDate.getMonth() + delta);
+            renderScheduleCalendar();
+        };
+        
+        window.scheduleSelectDate = function(dateStr) {
+            const appointments = SCHEDULE_APPOINTMENTS[dateStr] || [];
+            const dateObj = new Date(dateStr + 'T00:00:00');
+            const formatted = dateObj.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+            
+            document.getElementById('scheduleSelectedDateInfo').style.display = 'block';
+            document.getElementById('scheduleSelectedDateTitle').textContent = formatted;
+            
+            const list = document.getElementById('scheduleAppointmentsList');
+            
+            if (appointments.length === 0) {
+                list.innerHTML = '<div style="text-align: center; padding: 32px; color: #9ca3af;"><i class="bi bi-calendar-x" style="font-size: 48px; margin-bottom: 12px;"></i><div style="font-size: 16px; font-weight: 600;">No appointments scheduled</div></div>';
+            } else {
+                list.innerHTML = '<div style="padding: 12px; background: #10b981; color: white; border-radius: 6px; margin-bottom: 16px; font-weight: 600;"><i class="bi bi-check-circle"></i> ' + appointments.length + ' appointment(s) scheduled</div>';
+                
+                appointments.forEach(function(apt) {
+                    const div = document.createElement('div');
+                    div.style.cssText = 'padding: 16px; background: white; border-radius: 8px; margin-bottom: 12px; border-left: 4px solid #10b981; box-shadow: 0 1px 3px rgba(0,0,0,0.1);';
+                    div.innerHTML = '' +
+                        '<div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">' +
+                        '<div style="font-size: 16px; font-weight: 700; color: #111827;"><i class="bi bi-person-circle" style="color: #10b981; margin-right: 6px;"></i>' + apt.patient + '</div>' +
+                        '<div style="background: #dbeafe; color: #1d4ed8; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase;">' + apt.type + '</div>' +
+                        '</div>' +
+                        '<div style="font-size: 14px; color: #6b7280; margin-bottom: 4px;"><i class="bi bi-clock" style="margin-right: 6px;"></i><strong>' + apt.time + '</strong></div>' +
+                        (apt.status ? '<div style="font-size: 13px; color: #6b7280; margin-bottom: 4px;"><i class="bi bi-info-circle" style="margin-right: 6px;"></i>Status: <span style="text-transform: capitalize; font-weight: 600;">' + apt.status + '</span></div>' : '') +
+                        (apt.notes ? '<div style="margin-top: 12px; padding: 12px; background: #fef3c7; border-radius: 6px; font-size: 13px; color: #78350f;"><i class="bi bi-chat-left-text" style="margin-right: 6px;"></i>' + apt.notes + '</div>' : '');
+                    list.appendChild(div);
+                });
+            }
+        };
+        
+        function renderScheduleCalendar() {
+            const year = scheduleCurrentDate.getFullYear();
+            const month = scheduleCurrentDate.getMonth();
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            
+            document.getElementById('scheduleCurrentMonth').textContent = months[month] + ' ' + year;
+            
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const daysInPrevMonth = new Date(year, month, 0).getDate();
+            const today = new Date();
+            
+            const container = document.getElementById('scheduleCalendarDays');
+            container.innerHTML = '';
+            
+            // Previous month days
+            for (let i = firstDay - 1; i >= 0; i--) {
+                const day = daysInPrevMonth - i;
+                const div = document.createElement('div');
+                div.style.cssText = 'padding: 12px 8px; text-align: center; border-radius: 6px; color: #d1d5db; cursor: default;';
+                div.textContent = day;
+                container.appendChild(div);
+            }
+            
+            // Current month days
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(day).padStart(2, '0');
+                const hasApts = SCHEDULE_APPOINTMENTS[dateStr] && SCHEDULE_APPOINTMENTS[dateStr].length > 0;
+                const isToday = today.getFullYear() === year && today.getMonth() === month && today.getDate() === day;
+                
+                const div = document.createElement('div');
+                div.style.cssText = 'padding: 12px 8px; text-align: center; border-radius: 6px; cursor: pointer; transition: all 0.2s; position: relative;' +
+                    (isToday ? 'background: #10b981; color: white; font-weight: 700;' : 'background: #f3f4f6; color: #111827;') +
+                    (hasApts && !isToday ? 'border: 2px solid #10b981; font-weight: 600;' : '');
+                
+                div.textContent = day;
+                
+                if (hasApts) {
+                    const dot = document.createElement('div');
+                    dot.style.cssText = 'position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); width: 6px; height: 6px; background: ' + (isToday ? 'white' : '#10b981') + '; border-radius: 50%;';
+                    div.appendChild(dot);
+                }
+                
+                div.onclick = (function(ds) {
+                    return function() {
+                        window.scheduleSelectDate(ds);
+                    };
+                })(dateStr);
+                
+                div.onmouseover = function() {
+                    if (!isToday) this.style.background = '#e5e7eb';
+                };
+                div.onmouseout = function() {
+                    if (!isToday) this.style.background = hasApts ? '#f3f4f6' : '#f3f4f6';
+                };
+                
+                container.appendChild(div);
+            }
+            
+            // Next month days
+            const totalCells = firstDay + daysInMonth;
+            const remainingCells = Math.ceil(totalCells / 7) * 7 - totalCells;
+            for (let day = 1; day <= remainingCells; day++) {
+                const div = document.createElement('div');
+                div.style.cssText = 'padding: 12px 8px; text-align: center; border-radius: 6px; color: #d1d5db; cursor: default;';
+                div.textContent = day;
+                container.appendChild(div);
+            }
+            
+            document.getElementById('scheduleSelectedDateInfo').style.display = 'none';
+        }
+        
+        // Initialize when schedule modal opens
+        const originalOpenModal = window.openModal;
+        window.openModal = function(modalType) {
+            originalOpenModal(modalType);
+            if (modalType === 'schedule') {
+                renderScheduleCalendar();
+            }
+        };
+    })();
+    
+    // CROSS-PAGE SYNC: Listen for changes from Today's Visits page
+    window.addEventListener('storage', function(e) {
+        if (e.key === 'visits-page-updated') {
+            console.log('DASHBOARD: Detected changes from visits page, reloading...');
+            location.reload();
+        }
+        if (e.key && e.key.startsWith('apt-status-')) {
+            console.log('DASHBOARD: Detected attendance status change');
+            // Calendars will automatically reflect the updated localStorage values on next render
+        }
+    });
+    
+    // Notify visits page of changes when leaving dashboard
+    window.addEventListener('beforeunload', function() {
+        localStorage.setItem('dashboard-updated', Date.now().toString());
+    });
+    </script>
 
     <!-- Today's Queue Modal -->
     <div id="todayQueueModal" class="ai-modal" onclick="closeModalOnBackdrop(event, 'todayQueue')">
@@ -3080,23 +3190,27 @@
         const todayDate = new Date(); // Store today's date for comparison
         
         // Appointments data from backend
+        // ============================================================
+        // APPOINTMENTS DATA - Single Source of Truth
+        // ============================================================
+        // This data comes from the backend and contains all appointments
+        // Both the mini calendar and schedule modal read from this
         const appointmentsData = @json($appointments ?? []);
         
-        // Debug: Log all appointment dates
-        console.log('Available appointment dates:', Object.keys(appointmentsData));
+        console.log('=== UNIFIED CALENDAR SYSTEM INITIALIZED ===');
+        console.log('Total appointment dates:', Object.keys(appointmentsData).length);
+        console.log('Appointment dates:', Object.keys(appointmentsData));
+        Object.keys(appointmentsData).forEach(dateKey => {
+            console.log(`  ${dateKey}: ${appointmentsData[dateKey].length} appointment(s)`);
+        });
+        console.log('============================================');
         
-        // Test function - call from console: testDate('2026-02-06')
-        window.testDate = function(dateStr) {
-            console.log('Testing date:', dateStr);
-            console.log('Has appointments:', appointmentsData[dateStr]);
-            if (appointmentsData[dateStr]) {
-                console.log('Number of appointments:', appointmentsData[dateStr].length);
-                appointmentsData[dateStr].forEach(apt => {
-                    console.log(' -', apt.time, apt.patient);
-                });
-            }
-        };
-        
+        // ============================================================
+        // MINI CALENDAR WIDGET
+        // ============================================================
+        // ============================================================
+        // MINI CALENDAR WIDGET
+        // ============================================================
         function renderMiniCalendar() {
             const y = currentCalendarDate.getFullYear();
             const m = currentCalendarDate.getMonth();
@@ -3141,20 +3255,21 @@
                 const cellDate = new Date(y, m, d);
                 const dateKey = y + '-' + String(m + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
                 
+                // Highlight today
                 if (cellDate.toDateString() === todayDate.toDateString()) {
                     dayCell.classList.add('today');
                 }
                 
-                if (appointmentsData[dateKey]) {
+                // Mark dates with appointments (using unified data source)
+                if (hasAppointments(dateKey)) {
                     dayCell.classList.add('has-appointments');
                 }
                 
-                // Direct click handler - Show modal instead of inline list
+                // Click handler - Show modal with appointments
                 dayCell.style.cursor = 'pointer';
                 dayCell.onclick = (function(year, month, day, key) {
                     return function() {
                         const clickedDate = new Date(year, month, day);
-                        // Show modal with appointments
                         showCalendarDateModal(clickedDate, key);
                     };
                 })(y, m, d, dateKey);
@@ -3181,7 +3296,9 @@
             renderMiniCalendar();
         }
         
-        // Calendar Date Modal Functions
+        // ============================================================
+        // CALENDAR DATE MODAL (Popup from Mini Calendar)
+        // ============================================================
         function showCalendarDateModal(date, dateKey) {
             const modal = document.getElementById('calendarDateModal');
             const modalTitle = document.getElementById('modalDateTitle');
@@ -3196,10 +3313,13 @@
             const isFuture = dateObj > new Date();
             
             modalTitle.textContent = formattedDate;
-            modalSubtitle.textContent = isToday ? 'Today\'s Appointments' : (isFuture ? 'Upcoming Appointments' : 'Past Appointments');
             
-            // Get appointments for this date
-            const appointments = appointmentsData[dateKey] || [];
+            // Get appointments using unified data source
+            const appointments = getAppointmentsForDate(dateKey);
+            
+            // Set subtitle with count
+            const countText = appointments.length === 1 ? '1 appointment' : `${appointments.length} appointments`;
+            modalSubtitle.textContent = isToday ? `Today - ${countText}` : (isFuture ? `Upcoming - ${countText}` : `Past - ${countText}`);
             
             if (appointments.length === 0) {
                 modalAppointmentList.innerHTML = `
@@ -3413,16 +3533,32 @@
             }
         });
 
-        // Calendar functionality
+        // ============================================================
+        // UNIFIED CALENDAR SYSTEM - Single Source of Truth
+        // ============================================================
+        // Use appointmentsData from backend as the ONLY source
+        // Both mini calendar and schedule modal read from this
         let currentDate = new Date();
         let selectedDateStr = '';
-        let appointments = {};
         let patientRecords = [];
         let patientIdCounter = 1001;
         let medicalRecords = [];
         let recordIdCounter = 1;
         let currentRecordFilter = 'all';
+        
+        // Helper function to get appointments for a specific date
+        function getAppointmentsForDate(dateStr) {
+            return appointmentsData[dateStr] || [];
+        }
+        
+        // Helper function to check if date has appointments
+        function hasAppointments(dateStr) {
+            return appointmentsData[dateStr] && appointmentsData[dateStr].length > 0;
+        }
 
+        // ============================================================
+        // SCHEDULE MODAL - Large Calendar
+        // ============================================================
         function renderCalendar() {
             const year = currentDate.getFullYear();
             const month = currentDate.getMonth();
@@ -3436,11 +3572,6 @@
             const firstDay = new Date(year, month, 1).getDay();
             const daysInMonth = new Date(year, month + 1, 0).getDate();
             const daysInPrevMonth = new Date(year, month, 0).getDate();
-            
-            console.log('***** RENDERING LARGE CALENDAR *****');
-            console.log('Year:', year, 'Month:', monthNames[month]);
-            console.log('Days in month:', daysInMonth);
-            console.log('************************************');
             
             const calendarDays = document.getElementById('calendarDays');
             calendarDays.innerHTML = '';
@@ -3456,7 +3587,6 @@
             }
             
             // Current month days
-            console.log('Rendering days 1 to', daysInMonth);
             for (let day = 1; day <= daysInMonth; day++) {
                 const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                 let classes = '';
@@ -3465,14 +3595,14 @@
                     classes = 'today';
                 }
                 
-                if (appointments[dateStr] && appointments[dateStr].length > 0) {
+                // Check if this date has appointments using unified data source
+                if (hasAppointments(dateStr)) {
                     classes += ' has-appointment';
                 }
                 
                 const dayDiv = createDayElement(day, classes, dateStr);
                 calendarDays.appendChild(dayDiv);
             }
-            console.log('Finished rendering. Total elements:', calendarDays.children.length);
             
             // Next month days - only fill to complete current week
             const totalCells = firstDay + daysInMonth;
@@ -3514,76 +3644,59 @@
             document.getElementById('appointmentType').value = 'general';
             document.getElementById('appointmentNotes').value = '';
             
-            // Display existing appointments for this date
+            // Display existing appointments for this date using unified data source
             displayAppointments(dateStr);
         }
 
         function displayAppointments(dateStr) {
-            const appointmentList = document.getElementById('appointmentList');
-            appointmentList.innerHTML = '';
+            console.log('\n========== DISPLAY APPOINTMENTS ==========');
+            console.log('Date to display:', dateStr);
             
-            if (appointments[dateStr] && appointments[dateStr].length > 0) {
-                appointments[dateStr].forEach((apt, index) => {
+            const appointmentList = document.getElementById('appointmentList');
+            const dateAppointments = getAppointmentsForDate(dateStr);
+            
+            console.log('Retrieved appointments:', dateAppointments);
+            console.log('Count:', dateAppointments.length);
+            console.log('==========================================\n');
+            
+            // Create header with count
+            const countText = dateAppointments.length === 1 ? '1 appointment' : `${dateAppointments.length} appointments`;
+            appointmentList.innerHTML = `
+                <div style="padding: 16px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border-radius: 8px; margin-bottom: 16px;">
+                    <h4 style="margin: 0; font-size: 16px; font-weight: 600;">${countText} scheduled</h4>
+                </div>
+            `;
+            
+            if (dateAppointments.length > 0) {
+                dateAppointments.forEach((apt) => {
+                    console.log('Displaying appointment:', apt);
                     const aptDiv = document.createElement('div');
                     aptDiv.className = 'appointment-item';
+                    aptDiv.style.cssText = 'padding: 16px; background: #f9fafb; border-radius: 8px; margin-bottom: 12px; border-left: 4px solid #10b981;';
                     aptDiv.innerHTML = `
                         <div class="appointment-info">
-                            <div class="appointment-time">${apt.time} - ${apt.type}</div>
-                            <div class="appointment-patient">${apt.patient}</div>
+                            <div style="font-size: 15px; font-weight: 600; color: #111827; margin-bottom: 4px;">
+                                <i class="bi bi-person-circle" style="color: #10b981; margin-right: 6px;"></i>${apt.patient}
+                            </div>
+                            <div style="font-size: 13px; color: #6b7280; margin-bottom: 4px;">
+                                <i class="bi bi-clock" style="margin-right: 4px;"></i>${apt.time}
+                            </div>
+                            <div style="display: inline-block; background: #dbeafe; color: #1d4ed8; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">
+                                ${apt.type}
+                            </div>
+                            ${apt.notes ? `<div style="margin-top: 8px; padding: 8px; background: white; border-radius: 4px; font-size: 12px; color: #6b7280;"><i class="bi bi-chat-left-text" style="margin-right: 4px;"></i>${apt.notes}</div>` : ''}
                         </div>
-                        <button class="btn-delete" onclick="deleteAppointment('${dateStr}', ${index})">Delete</button>
                     `;
                     appointmentList.appendChild(aptDiv);
                 });
             }
         }
 
+        // Note: To book appointments, use the "Book Appointment" button in sidebar
+        // The schedule modal is for VIEWING appointments only
         function saveAppointment() {
-            const patientName = document.getElementById('patientName').value.trim();
-            const time = document.getElementById('appointmentTime').value;
-            const type = document.getElementById('appointmentType').value;
-            const notes = document.getElementById('appointmentNotes').value.trim();
-            
-            if (!patientName || !time) {
-                alert('Please fill in patient name and time');
-                return;
-            }
-            
-            if (!appointments[selectedDateStr]) {
-                appointments[selectedDateStr] = [];
-            }
-            
-            appointments[selectedDateStr].push({
-                patient: patientName,
-                time: time,
-                type: type.charAt(0).toUpperCase() + type.slice(1),
-                notes: notes
-            });
-            
-            // Sort by time
-            appointments[selectedDateStr].sort((a, b) => a.time.localeCompare(b.time));
-            
-            // Refresh calendar and appointment list
-            renderCalendar();
-            displayAppointments(selectedDateStr);
-            
-            // Clear form
-            document.getElementById('patientName').value = '';
-            document.getElementById('appointmentTime').value = '';
-            document.getElementById('appointmentNotes').value = '';
-            
-            alert('Appointment scheduled successfully!');
-        }
-
-        function deleteAppointment(dateStr, index) {
-            if (confirm('Are you sure you want to delete this appointment?')) {
-                appointments[dateStr].splice(index, 1);
-                if (appointments[dateStr].length === 0) {
-                    delete appointments[dateStr];
-                }
-                renderCalendar();
-                displayAppointments(dateStr);
-            }
+            alert('Please use the "Book Appointment" button in the sidebar to schedule appointments. This will save to the database.');
+            cancelAppointmentForm();
         }
 
         function cancelAppointmentForm() {

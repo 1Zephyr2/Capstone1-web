@@ -28,7 +28,6 @@ class Appointment extends Model
 
     protected $casts = [
         'appointment_date' => 'date',
-        'appointment_time' => 'datetime:H:i',
     ];
 
     /**
@@ -44,7 +43,7 @@ class Appointment extends Model
      */
     public function getFormattedDateTimeAttribute(): string
     {
-        return $this->appointment_date->format('Y-m-d') . ' ' . $this->appointment_time->format('H:i');
+        return $this->appointment_date->format('Y-m-d') . ' ' . $this->appointment_time;
     }
 
     /**
@@ -52,6 +51,6 @@ class Appointment extends Model
      */
     public function getFormattedTimeAttribute(): string
     {
-        return $this->appointment_time->format('g:i A');
+        return \Carbon\Carbon::parse($this->appointment_time)->format('g:i A');
     }
 }

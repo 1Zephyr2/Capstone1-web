@@ -1,9 +1,189 @@
-@extends('layouts.app')
-
-@section('title', 'Appointments')
-
-@section('content')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointments - CareSync</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f5f5 0%, #f0f9ff 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #333;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        .back-button:hover {
+            background: #f8f9fa;
+            border-color: #007bff;
+            color: #007bff;
+        }
+        .header {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+        .header h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+        .filters-form {
+            margin-top: 20px;
+        }
+        .filters-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr auto;
+            gap: 12px;
+        }
+        .form-control {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .btn-search {
+            background: #28a745;
+            color: white;
+            padding: 10px 24px;
+        }
+        .btn-search:hover {
+            background: #218838;
+        }
+        .alert {
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .appointments-table {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            background: #f8f9fa;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            color: #495057;
+            border-bottom: 2px solid #dee2e6;
+        }
+        td {
+            padding: 16px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .badge-scheduled { background: #cce5ff; color: #004085; }
+        .badge-confirmed { background: #d4edda; color: #155724; }
+        .badge-completed { background: #d6d8db; color: #383d41; }
+        .badge-cancelled { background: #f8d7da; color: #721c24; }
+        .badge-no-show { background: #fff3cd; color: #856404; }
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        .btn-action {
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: none;
+        }
+        .btn-view { color: #007bff; }
+        .btn-view:hover { background: #e7f1ff; }
+        .btn-edit { color: #28a745; }
+        .btn-edit:hover { background: #d4edda; }
+        .btn-delete { color: #dc3545; }
+        .btn-delete:hover { background: #f8d7da; }
+        .pagination-wrapper {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
 <div class="container">
+    <a href="{{ route('dashboard') }}" class="back-button">
+        <i class="bi bi-arrow-left"></i> Back to Dashboard
+    </a>
     <div class="header">
         <div class="header-top">
             <h1><i class="bi bi-calendar-check"></i> Appointments</h1>
@@ -116,148 +296,5 @@
         {{ $appointments->links() }}
     </div>
 </div>
-
-<style>
-    .container {
-        max-width: 1400px;
-        margin: 0 auto;
-        padding: 20px;
-    }
-    .header {
-        background: white;
-        padding: 24px;
-        border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        margin-bottom: 24px;
-    }
-    .header h1 {
-        color: #333;
-        font-size: 28px;
-        margin-bottom: 20px;
-    }
-    .header-actions {
-        display: flex;
-        gap: 12px;
-        margin-bottom: 20px;
-    }
-    .btn {
-        padding: 10px 20px;
-        border-radius: 8px;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        border: none;
-        cursor: pointer;
-        font-size: 14px;
-        transition: all 0.3s;
-    }
-    .btn-primary {
-        background: #007bff;
-        color: white;
-    }
-    .btn-primary:hover {
-        background: #0056b3;
-    }
-    .btn-secondary {
-        background: #6c757d;
-        color: white;
-    }
-    .btn-secondary:hover {
-        background: #545b62;
-    }
-    .filters-form {
-        margin-top: 20px;
-    }
-    .filters-row {
-        display: grid;
-        grid-template-columns: 2fr 1fr 1fr auto;
-        gap: 12px;
-    }
-    .form-control {
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        font-size: 14px;
-    }
-    .btn-search {
-        background: #28a745;
-        color: white;
-        padding: 10px 24px;
-    }
-    .btn-search:hover {
-        background: #218838;
-    }
-    .alert {
-        padding: 12px 20px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-    }
-    .alert-success {
-        background: #d4edda;
-        color: #155724;
-        border: 1px solid #c3e6cb;
-    }
-    .alert-error {
-        background: #f8d7da;
-        color: #721c24;
-        border: 1px solid #f5c6cb;
-    }
-    .appointments-table {
-        background: white;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    th {
-        background: #f8f9fa;
-        padding: 16px;
-        text-align: left;
-        font-weight: 600;
-        color: #495057;
-        border-bottom: 2px solid #dee2e6;
-    }
-    td {
-        padding: 16px;
-        border-bottom: 1px solid #dee2e6;
-    }
-    .badge {
-        padding: 4px 12px;
-        border-radius: 12px;
-        font-size: 12px;
-        font-weight: 600;
-    }
-    .badge-scheduled { background: #cce5ff; color: #004085; }
-    .badge-confirmed { background: #d4edda; color: #155724; }
-    .badge-completed { background: #d6d8db; color: #383d41; }
-    .badge-cancelled { background: #f8d7da; color: #721c24; }
-    .badge-no-show { background: #fff3cd; color: #856404; }
-    .action-buttons {
-        display: flex;
-        gap: 8px;
-    }
-    .btn-action {
-        padding: 6px 10px;
-        border-radius: 6px;
-        border: none;
-        cursor: pointer;
-        transition: all 0.3s;
-        background: none;
-    }
-    .btn-view { color: #007bff; }
-    .btn-view:hover { background: #e7f1ff; }
-    .btn-edit { color: #28a745; }
-    .btn-edit:hover { background: #d4edda; }
-    .btn-delete { color: #dc3545; }
-    .btn-delete:hover { background: #f8d7da; }
-    .pagination-wrapper {
-        margin-top: 20px;
-        display: flex;
-        justify-content: center;
-    }
-</style>
-@endsection
+</body>
+</html>

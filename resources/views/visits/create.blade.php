@@ -508,8 +508,8 @@
         const familyPlanningSection = document.getElementById('familyPlanningSection');
         const referralSection = document.getElementById('referralSection');
         
-        serviceTypeSelect.addEventListener('change', function() {
-            const selectedService = this.value;
+        function updateServiceSection() {
+            const selectedService = serviceTypeSelect.value;
             
             // Hide all sections first
             immunizationSection.classList.remove('active');
@@ -538,7 +538,12 @@
                 document.querySelector('[name="referred_to"]').setAttribute('required', 'required');
                 document.querySelector('[name="referral_reason"]').setAttribute('required', 'required');
             }
-        });
+        }
+        
+        serviceTypeSelect.addEventListener('change', updateServiceSection);
+        
+        // Trigger on page load to show section if service type is pre-selected
+        window.addEventListener('DOMContentLoaded', updateServiceSection);
 
         function goBack() {
             const referrer = document.referrer;

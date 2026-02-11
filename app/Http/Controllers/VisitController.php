@@ -35,7 +35,27 @@ class VisitController extends Controller
                 ];
             });
 
-        return view('visits.index', compact('visits', 'todayAppointments'));
+        // Get ALL appointments grouped by date for calendar synchronization
+        $appointments = Appointment::with('patient')
+            ->where('status', '!=', 'cancelled')
+            ->get()
+            ->groupBy(function($appointment) {
+                return $appointment->appointment_date->format('Y-m-d');
+            })
+            ->map(function($dayAppointments) {
+                return $dayAppointments->map(function($appointment) {
+                    return [
+                        'id' => $appointment->id,
+                        'time' => $appointment->formatted_time,
+                        'patient' => $appointment->patient->full_name,
+                        'type' => $appointment->service_type,
+                        'status' => $appointment->status,
+                        'notes' => $appointment->notes,
+                    ];
+                })->values()->all();
+            });
+
+        return view('visits.index', compact('visits', 'todayAppointments', 'appointments'));
     }
 
     /**

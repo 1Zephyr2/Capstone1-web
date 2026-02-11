@@ -340,6 +340,39 @@
     </style>
 </head>
 <body>
+    <!-- CALENDAR MODAL - SYNCHRONIZED WITH DASHBOARD -->
+    <div id="visitsCalendarModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 10000; align-items: center; justify-content: center;" onclick="closeCalendarModal(event)">
+        <div style="background: white; border-radius: 12px; max-width: 750px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);" onclick="event.stopPropagation()">
+            <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 20px; border-radius: 12px 12px 0 0; display: flex; justify-content: space-between; align-items: center;">
+                <h2 style="margin: 0; color: white; font-size: 20px;"><i class="bi bi-calendar-week"></i> Appointments Calendar</h2>
+                <button onclick="closeCalendarModal()" style="background: rgba(255,255,255,0.2); border: none; color: white; font-size: 24px; cursor: pointer; width: 36px; height: 36px; border-radius: 50%; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">×</button>
+            </div>
+            <div style="padding: 20px;">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <button onclick="visitsChangeMonth(-1)" style="padding: 8px 16px; background: #10b981; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">← Previous</button>
+                        <h3 id="visitsCurrentMonth" style="margin: 0;">February 2026</h3>
+                        <button onclick="visitsChangeMonth(1)" style="padding: 8px 16px; background: #10b981; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">Next →</button>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 8px;">
+                        <div style="font-weight: 600; color: #6b7280; padding: 8px; font-size: 13px;">Sun</div>
+                        <div style="font-weight: 600; color: #6b7280; padding: 8px; font-size: 13px;">Mon</div>
+                        <div style="font-weight: 600; color: #6b7280; padding: 8px; font-size: 13px;">Tue</div>
+                        <div style="font-weight: 600; color: #6b7280; padding: 8px; font-size: 13px;">Wed</div>
+                        <div style="font-weight: 600; color: #6b7280; padding: 8px; font-size: 13px;">Thu</div>
+                        <div style="font-weight: 600; color: #6b7280; padding: 8px; font-size: 13px;">Fri</div>
+                        <div style="font-weight: 600; color: #6b7280; padding: 8px; font-size: 13px;">Sat</div>
+                    </div>
+                    <div id="visitsCalendarDays" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px;"></div>
+                </div>
+                <div id="visitsSelectedDateInfo" style="display: none; padding: 20px; background: #f9fafb; border-radius: 8px; border: 2px solid #10b981;">
+                    <h3 id="visitsSelectedDateTitle" style="margin: 0 0 16px 0; color: #111827;"></h3>
+                    <div id="visitsAppointmentsList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <div class="header">
             <div class="header-top">
@@ -1022,5 +1055,178 @@
             </div>
         </div>
     </div>
+    
+    <!-- CALENDAR SYNCHRONIZATION SCRIPT - UNIFIED WITH DASHBOARD -->
+    <script>
+    (function() {
+        // Get appointments from backend (same structure as dashboard)
+        const VISITS_APPOINTMENTS = @json($appointments ?? []);
+        let visitsCurrentDate = new Date();
+        
+        console.log('VISITS PAGE: Appointments loaded:', VISITS_APPOINTMENTS);
+        
+        // Open calendar modal
+        window.openAppointmentsCalendar = function() {
+            document.getElementById('visitsCalendarModal').style.display = 'flex';
+            renderVisitsCalendar();
+        };
+        
+        // Close calendar modal
+        window.closeCalendarModal = function(event) {
+            if (!event || event.target.id === 'visitsCalendarModal') {
+                document.getElementById('visitsCalendarModal').style.display = 'none';
+                document.getElementById('visitsSelectedDateInfo').style.display = 'none';
+            }
+        };
+        
+        // Change month
+        window.visitsChangeMonth = function(delta) {
+            visitsCurrentDate.setMonth(visitsCurrentDate.getMonth() + delta);
+            renderVisitsCalendar();
+        };
+        
+        // Select a date
+        window.visitsSelectDate = function(dateStr) {
+            const appointments = VISITS_APPOINTMENTS[dateStr] || [];
+            const dateObj = new Date(dateStr + 'T00:00:00');
+            const formatted = dateObj.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+            
+            document.getElementById('visitsSelectedDateInfo').style.display = 'block';
+            document.getElementById('visitsSelectedDateTitle').textContent = formatted;
+            
+            const list = document.getElementById('visitsAppointmentsList');
+            
+            if (appointments.length === 0) {
+                list.innerHTML = '<div style="text-align: center; padding: 32px; color: #9ca3af;"><i class="bi bi-calendar-x" style="font-size: 48px; margin-bottom: 12px;"></i><div style="font-size: 16px; font-weight: 600;">No appointments scheduled</div></div>';
+            } else {
+                list.innerHTML = '<div style="padding: 12px; background: #10b981; color: white; border-radius: 6px; margin-bottom: 16px; font-weight: 600;"><i class="bi bi-check-circle"></i> ' + appointments.length + ' appointment(s) scheduled</div>';
+                
+                appointments.forEach(function(apt) {
+                    // Check localStorage for attendance status
+                    const statusKey = 'apt-status-' + apt.id;
+                    const status = localStorage.getItem(statusKey);
+                    
+                    const div = document.createElement('div');
+                    div.style.cssText = 'padding: 16px; background: white; border-radius: 8px; margin-bottom: 12px; border-left: 4px solid ' + (status === 'attended' ? '#10b981' : status === 'rescheduled' ? '#f59e0b' : '#3b82f6') + '; box-shadow: 0 1px 3px rgba(0,0,0,0.1);';
+                    
+                    let statusBadge = '';
+                    if (status === 'attended') {
+                        statusBadge = '<div style="background: #d1fae5; color: #065f46; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase;">✓ Attended</div>';
+                    } else if (status === 'rescheduled') {
+                        statusBadge = '<div style="background: #fef3c7; color: #92400e; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase;">🔄 Rescheduled</div>';
+                    }
+                    
+                    div.innerHTML = '' +
+                        '<div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">' +
+                        '<div style="font-size: 16px; font-weight: 700; color: #111827;"><i class="bi bi-person-circle" style="color: #10b981; margin-right: 6px;"></i>' + apt.patient + '</div>' +
+                        '<div style="display: flex; gap: 8px;">' +
+                        statusBadge +
+                        '<div style="background: #dbeafe; color: #1d4ed8; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase;">' + apt.type + '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '<div style="font-size: 14px; color: #6b7280; margin-bottom: 4px;"><i class="bi bi-clock" style="margin-right: 6px;"></i><strong>' + apt.time + '</strong></div>' +
+                        (apt.status ? '<div style="font-size: 13px; color: #6b7280; margin-bottom: 4px;"><i class="bi bi-info-circle" style="margin-right: 6px;"></i>Status: <span style="text-transform: capitalize; font-weight: 600;">' + apt.status + '</span></div>' : '') +
+                        (apt.notes ? '<div style="margin-top: 12px; padding: 12px; background: #fef3c7; border-radius: 6px; font-size: 13px; color: #78350f;"><i class="bi bi-chat-left-text" style="margin-right: 6px;"></i>' + apt.notes + '</div>' : '');
+                    list.appendChild(div);
+                });
+            }
+        };
+        
+        // Render calendar
+        function renderVisitsCalendar() {
+            const year = visitsCurrentDate.getFullYear();
+            const month = visitsCurrentDate.getMonth();
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            
+            document.getElementById('visitsCurrentMonth').textContent = months[month] + ' ' + year;
+            
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const daysInPrevMonth = new Date(year, month, 0).getDate();
+            const today = new Date();
+            
+            const container = document.getElementById('visitsCalendarDays');
+            container.innerHTML = '';
+            
+            // Previous month days
+            for (let i = firstDay - 1; i >= 0; i--) {
+                const day = daysInPrevMonth - i;
+                const div = document.createElement('div');
+                div.style.cssText = 'padding: 12px 8px; text-align: center; border-radius: 6px; color: #d1d5db; cursor: default;';
+                div.textContent = day;
+                container.appendChild(div);
+            }
+            
+            // Current month days
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(day).padStart(2, '0');
+                const hasApts = VISITS_APPOINTMENTS[dateStr] && VISITS_APPOINTMENTS[dateStr].length > 0;
+                const isToday = today.getFullYear() === year && today.getMonth() === month && today.getDate() === day;
+                
+                const div = document.createElement('div');
+                div.style.cssText = 'padding: 12px 8px; text-align: center; border-radius: 6px; cursor: pointer; transition: all 0.2s; position: relative;' +
+                    (isToday ? 'background: #10b981; color: white; font-weight: 700;' : 'background: #f3f4f6; color: #111827;') +
+                    (hasApts && !isToday ? 'border: 2px solid #10b981; font-weight: 600;' : '');
+                
+                div.textContent = day;
+                
+                if (hasApts) {
+                    const dot = document.createElement('div');
+                    dot.style.cssText = 'position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); width: 6px; height: 6px; background: ' + (isToday ? 'white' : '#10b981') + '; border-radius: 50%;';
+                    div.appendChild(dot);
+                }
+                
+                div.onclick = (function(ds) {
+                    return function() {
+                        window.visitsSelectDate(ds);
+                    };
+                })(dateStr);
+                
+                div.onmouseover = function() {
+                    if (!isToday) this.style.background = '#e5e7eb';
+                };
+                div.onmouseout = function() {
+                    if (!isToday) this.style.background = hasApts ? '#f3f4f6' : '#f3f4f6';
+                };
+                
+                container.appendChild(div);
+            }
+            
+            // Next month days
+            const totalCells = firstDay + daysInMonth;
+            const remainingCells = Math.ceil(totalCells / 7) * 7 - totalCells;
+            for (let day = 1; day <= remainingCells; day++) {
+                const div = document.createElement('div');
+                div.style.cssText = 'padding: 12px 8px; text-align: center; border-radius: 6px; color: #d1d5db; cursor: default;';
+                div.textContent = day;
+                container.appendChild(div);
+            }
+            
+            document.getElementById('visitsSelectedDateInfo').style.display = 'none';
+        }
+        
+        // Listen for localStorage changes (sync with dashboard)
+        window.addEventListener('storage', function(e) {
+            if (e.key && e.key.startsWith('apt-status-')) {
+                console.log('VISITS PAGE: Detected attendance change from dashboard, refreshing...');
+                // Re-render if calendar is open
+                if (document.getElementById('visitsCalendarModal').style.display === 'flex') {
+                    const selectedDate = document.getElementById('visitsSelectedDateTitle').textContent;
+                    if (selectedDate) {
+                        renderVisitsCalendar();
+                    }
+                }
+                // Refresh today's appointments list
+                updateVisitStats();
+                renderAppointmentAttendance();
+            }
+        });
+        
+        // Notify dashboard of changes
+        window.addEventListener('beforeunload', function() {
+            localStorage.setItem('visits-page-updated', Date.now().toString());
+        });
+    })();
+    </script>
 </body>
 </html>

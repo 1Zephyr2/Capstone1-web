@@ -94,7 +94,7 @@ class AppointmentController extends Controller
 
         $appointment = Appointment::create($data);
 
-        return redirect()->route('appointments.index')
+        return redirect()->route('dashboard')
             ->with('success', 'Appointment created successfully.');
     }
 
@@ -183,7 +183,7 @@ class AppointmentController extends Controller
             return [
                 'id' => $appointment->id,
                 'title' => $appointment->patient->full_name . ' - ' . $appointment->service_type,
-                'start' => $appointment->appointment_date->format('Y-m-d') . 'T' . $appointment->appointment_time->format('H:i:s'),
+                'start' => $appointment->appointment_date->format('Y-m-d') . 'T' . $appointment->appointment_time,
                 'backgroundColor' => $this->getStatusColor($appointment->status),
                 'borderColor' => $this->getStatusColor($appointment->status),
                 'extendedProps' => [

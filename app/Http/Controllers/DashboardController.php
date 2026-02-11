@@ -106,6 +106,7 @@ class DashboardController extends Controller
                         'patient' => $appointment->patient->full_name,
                         'type' => $appointment->service_type,
                         'status' => $appointment->status,
+                        'notes' => $appointment->chief_complaint,
                     ];
                 })->sortBy('time')->values();
             });

@@ -1167,11 +1167,13 @@
             document.getElementById('modalPatientAge').textContent = age;
             document.getElementById('modalPatientSex').textContent = sex;
             document.getElementById('visitPatientId').value = patientId;
+            updateServiceSection(); // Update service section visibility
         }
 
         function closeVisitModal() {
             document.getElementById('visitModal').classList.remove('active');
             document.getElementById('visitForm').reset();
+            updateServiceSection(); // Reset service section visibility
         }
 
         // Auto-calculate BMI
@@ -1186,6 +1188,63 @@
                 document.getElementById('modalBMI').textContent = '-';
             }
         }
+
+        // Handle service type changes to show/hide relevant sections
+        function updateServiceSection() {
+            const serviceTypeSelect = document.getElementById('modalServiceType');
+            const immunizationSection = document.getElementById('modalImmunizationSection');
+            const prenatalSection = document.getElementById('modalPrenatalSection');
+            const familyPlanningSection = document.getElementById('modalFamilyPlanningSection');
+            const referralSection = document.getElementById('modalReferralSection');
+            
+            // Get all field elements
+            const vaccineName = document.getElementById('modalVaccineName');
+            const doseNumber = document.getElementById('modalDoseNumber');
+            const gestationalAge = document.getElementById('modalGestationalAge');
+            const fpMethod = document.getElementById('modalFpMethod');
+            const referredTo = document.getElementById('modalReferredTo');
+            const referralReason = document.getElementById('modalReferralReason');
+            
+            if (!serviceTypeSelect) {
+                console.log('Service type select not found');
+                return;
+            }
+            
+            const serviceType = serviceTypeSelect.value;
+            console.log('Service type changed to:', serviceType);
+            
+            // Hide all sections and remove required attributes
+            [immunizationSection, prenatalSection, familyPlanningSection, referralSection].forEach(function(section) {
+                if (section) section.style.display = 'none';
+            });
+            
+            [vaccineName, doseNumber, gestationalAge, fpMethod, referredTo, referralReason].forEach(function(field) {
+                if (field) field.removeAttribute('required');
+            });
+            
+            // Show relevant section and add required attributes
+            if (serviceType === 'Immunization' && immunizationSection) {
+                console.log('Showing immunization section');
+                immunizationSection.style.display = 'block';
+                if (vaccineName) vaccineName.setAttribute('required', 'required');
+                if (doseNumber) doseNumber.setAttribute('required', 'required');
+            } else if (serviceType === 'Prenatal' && prenatalSection) {
+                console.log('Showing prenatal section');
+                prenatalSection.style.display = 'block';
+                if (gestationalAge) gestationalAge.setAttribute('required', 'required');
+            } else if (serviceType === 'Family Planning' && familyPlanningSection) {
+                console.log('Showing family planning section');
+                familyPlanningSection.style.display = 'block';
+                if (fpMethod) fpMethod.setAttribute('required', 'required');
+            } else if (serviceType === 'Referral' && referralSection) {
+                console.log('Showing referral section');
+                referralSection.style.display = 'block';
+                if (referredTo) referredTo.setAttribute('required', 'required');
+                if (referralReason) referralReason.setAttribute('required', 'required');
+            }
+        }
+        
+        // No need for DOMContentLoaded since we're using inline onchange
 
         // Close modal when clicking outside
         document.getElementById('visitModal')?.addEventListener('click', function(e) {
@@ -1435,7 +1494,7 @@
                     <div class="modal-form-row">
                         <div class="modal-form-group">
                             <label>Service Type <span style="color: #ef4444;">*</span></label>
-                            <select name="service_type" required>
+                            <select name="service_type" id="modalServiceType" required onchange="updateServiceSection()">
                                 <option value="">Select service</option>
                                 <option value="General Checkup">General Checkup</option>
                                 <option value="Immunization">Immunization</option>
@@ -1449,6 +1508,151 @@
                         <div class="modal-form-group">
                             <label>Health Worker</label>
                             <input type="text" name="health_worker" placeholder="Name of health worker">
+                        </div>
+                    </div>
+
+                    <!-- Immunization Section -->
+                    <div id="modalImmunizationSection" class="modal-service-section" style="display: none;">
+                        <div class="modal-section-title" style="background: #dbeafe; color: #1e40af; padding: 12px; border-radius: 6px; margin-bottom: 16px;">
+                            <i class="bi bi-shield-fill-check"></i> Immunization Details
+                        </div>
+                        <div class="modal-form-row">
+                            <div class="modal-form-group">
+                                <label>Vaccine Name <span style="color: #ef4444;">*</span></label>
+                                <select name="vaccine_name" id="modalVaccineName">
+                                    <option value="">Select vaccine</option>
+                                    <option value="BCG">BCG (Bacillus Calmette-Guérin)</option>
+                                    <option value="Hepatitis B">Hepatitis B</option>
+                                    <option value="Pentavalent">Pentavalent (DPT-HepB-Hib)</option>
+                                    <option value="OPV">OPV (Oral Polio Vaccine)</option>
+                                    <option value="IPV">IPV (Inactivated Polio Vaccine)</option>
+                                    <option value="PCV">PCV (Pneumococcal Conjugate Vaccine)</option>
+                                    <option value="MMR">MMR (Measles, Mumps, Rubella)</option>
+                                    <option value="MR">MR (Measles, Rubella)</option>
+                                    <option value="Tetanus Toxoid">Tetanus Toxoid</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="modal-form-group">
+                                <label>Dose Number <span style="color: #ef4444;">*</span></label>
+                                <select name="dose_number" id="modalDoseNumber">
+                                    <option value="">Select dose</option>
+                                    <option value="1st Dose">1st Dose</option>
+                                    <option value="2nd Dose">2nd Dose</option>
+                                    <option value="3rd Dose">3rd Dose</option>
+                                    <option value="4th Dose">4th Dose</option>
+                                    <option value="Booster">Booster</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-form-row">
+                            <div class="modal-form-group">
+                                <label>Batch/Lot Number</label>
+                                <input type="text" name="batch_number" placeholder="e.g., LOT123456">
+                            </div>
+                            <div class="modal-form-group">
+                                <label>Next Dose Due Date</label>
+                                <input type="date" name="next_dose_date" min="{{ date('Y-m-d') }}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Prenatal Section -->
+                    <div id="modalPrenatalSection" class="modal-service-section" style="display: none;">
+                        <div class="modal-section-title" style="background: #fce7f3; color: #9f1239; padding: 12px; border-radius: 6px; margin-bottom: 16px;">
+                            <i class="bi bi-heart-pulse-fill"></i> Prenatal Care Details
+                        </div>
+                        <div class="modal-form-row">
+                            <div class="modal-form-group">
+                                <label>Gestational Age (weeks) <span style="color: #ef4444;">*</span></label>
+                                <input type="number" name="gestational_age" id="modalGestationalAge" min="1" max="42" placeholder="e.g., 28">
+                            </div>
+                            <div class="modal-form-group">
+                                <label>Fundal Height (cm)</label>
+                                <input type="number" name="fundal_height" step="0.1" min="0" placeholder="e.g., 26.5">
+                            </div>
+                        </div>
+                        <div class="modal-form-row">
+                            <div class="modal-form-group">
+                                <label>Fetal Heart Rate (bpm)</label>
+                                <input type="number" name="fetal_heart_rate" min="0" max="200" placeholder="120-160">
+                            </div>
+                            <div class="modal-form-group">
+                                <label>Presentation</label>
+                                <select name="presentation">
+                                    <option value="">Select</option>
+                                    <option value="Cephalic">Cephalic (Head down)</option>
+                                    <option value="Breech">Breech (Bottom down)</option>
+                                    <option value="Transverse">Transverse (Sideways)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-form-row full">
+                            <div class="modal-form-group">
+                                <label>Prenatal Complications/Concerns</label>
+                                <textarea name="prenatal_notes" placeholder="Any concerns, edema, bleeding, etc."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Family Planning Section -->
+                    <div id="modalFamilyPlanningSection" class="modal-service-section" style="display: none;">
+                        <div class="modal-section-title" style="background: #fef3c7; color: #78350f; padding: 12px; border-radius: 6px; margin-bottom: 16px;">
+                            👨‍👩‍👧 Family Planning Details
+                        </div>
+                        <div class="modal-form-row">
+                            <div class="modal-form-group">
+                                <label>Method Provided <span style="color: #ef4444;">*</span></label>
+                                <select name="fp_method" id="modalFpMethod">
+                                    <option value="">Select method</option>
+                                    <option value="Pills">Pills (Oral Contraceptives)</option>
+                                    <option value="Condoms">Condoms</option>
+                                    <option value="Injectable">Injectable (Depo)</option>
+                                    <option value="IUD">IUD (Intrauterine Device)</option>
+                                    <option value="Implant">Implant</option>
+                                    <option value="BTL">BTL (Bilateral Tubal Ligation)</option>
+                                    <option value="Vasectomy">Vasectomy</option>
+                                    <option value="Natural">Natural Family Planning</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="modal-form-group">
+                                <label>Quantity/Cycles Given</label>
+                                <input type="text" name="fp_quantity" placeholder="e.g., 3 months supply">
+                            </div>
+                        </div>
+                        <div class="modal-form-row full">
+                            <div class="modal-form-group">
+                                <label>Follow-up Date</label>
+                                <input type="date" name="fp_followup_date" min="{{ date('Y-m-d') }}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Referral Section -->
+                    <div id="modalReferralSection" class="modal-service-section" style="display: none;">
+                        <div class="modal-section-title" style="background: #fecaca; color: #7f1d1d; padding: 12px; border-radius: 6px; margin-bottom: 16px;">
+                            <i class="bi bi-hospital"></i> Referral Details
+                        </div>
+                        <div class="modal-form-row">
+                            <div class="modal-form-group">
+                                <label>Referred To <span style="color: #ef4444;">*</span></label>
+                                <input type="text" name="referred_to" id="modalReferredTo" placeholder="Hospital/Clinic name">
+                            </div>
+                            <div class="modal-form-group">
+                                <label>Reason for Referral <span style="color: #ef4444;">*</span></label>
+                                <input type="text" name="referral_reason" id="modalReferralReason" placeholder="e.g., High blood pressure">
+                            </div>
+                        </div>
+                        <div class="modal-form-row full">
+                            <div class="modal-form-group">
+                                <label>Urgency Level</label>
+                                <select name="referral_urgency">
+                                    <option value="Routine">Routine</option>
+                                    <option value="Urgent">Urgent</option>
+                                    <option value="Emergency">Emergency</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
 
