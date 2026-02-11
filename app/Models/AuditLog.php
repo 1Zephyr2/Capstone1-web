@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class AuditLog extends Model
 {
@@ -34,7 +35,7 @@ class AuditLog extends Model
     public static function log($action, $modelType, $modelId = null, $changes = null)
     {
         return self::create([
-            'user_id' => auth()->id(),
+            'user_id' => Auth::id(),
             'action' => $action,
             'model_type' => $modelType,
             'model_id' => $modelId,

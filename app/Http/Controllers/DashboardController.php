@@ -8,11 +8,18 @@ use App\Models\Immunization;
 use App\Models\PrenatalRecord;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
     public function index()
     {
+        // Redirect admins to admin dashboard
+        $user = Auth::user();
+        if ($user && $user->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
+        
         // Get total patients count
         $totalPatients = Patient::count();
         

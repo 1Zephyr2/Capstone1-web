@@ -32,6 +32,12 @@ class LoginController extends Controller
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
 
+            // Redirect admins to admin dashboard, others to regular dashboard
+            $user = Auth::user();
+            if ($user && $user->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            }
+
             return redirect()->intended('/dashboard');
         }
 

@@ -79,6 +79,19 @@ class User extends Authenticatable
      */
     public function hasStaffAccess(): bool
     {
-        return in_array($this->role, ['admin', 'staff']);
+        return in_array($this->role, ['admin', 'staff', 'healthcare_provider']);
+    }
+
+    /**
+     * Get formatted role name for display
+     */
+    public function getRoleNameAttribute(): string
+    {
+        return match($this->role) {
+            'admin' => 'Administrator',
+            'healthcare_provider' => 'Healthcare Provider',
+            'staff' => 'Staff Member',
+            default => ucfirst(str_replace('_', ' ', $this->role))
+        };
     }
 }

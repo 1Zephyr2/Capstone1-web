@@ -2169,7 +2169,7 @@
                 </a>
             </div>
 
-            @if(Auth::user()->isAdmin())
+            @if(Auth::user()->hasStaffAccess())
             <div class="menu-section">
                 <div class="menu-label">Reports & Tools</div>
                 <a href="{{ route('reports.index') }}" class="menu-item">
@@ -2201,7 +2201,7 @@
                 @endif
                 <div class="user-details-sidebar">
                     <div class="user-name-sidebar">{{ Auth::user()->name }}</div>
-                    <div class="user-role-sidebar">Healthcare Provider</div>
+                    <div class="user-role-sidebar">{{ Auth::user()->role_name }}</div>
                 </div>
             </div>
             <a href="{{ route('profile.show') }}" class="logout-btn-sidebar" style="text-decoration: none; margin-bottom: 8px;">
@@ -2256,7 +2256,7 @@
             </div>
 
             <!-- AI Alerts Summary (only show if there are alerts and user is admin) -->
-            @if(Auth::user()->isAdmin() && isset($totalAlerts) && $totalAlerts > 0)
+            @if(Auth::user()->hasStaffAccess() && isset($totalAlerts) && $totalAlerts > 0)
             <div class="alerts-summary-section">
                 <div class="alerts-summary-card">
                     <div class="alerts-summary-header">

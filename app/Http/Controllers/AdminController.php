@@ -8,6 +8,7 @@ use App\Models\Patient;
 use App\Models\Visit;
 use App\Models\Appointment;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules;
 
 class AdminController extends Controller
@@ -127,7 +128,7 @@ class AdminController extends Controller
     public function destroyUser(User $user)
     {
         // Prevent deleting yourself
-        if ($user->id === auth()->id()) {
+        if ($user->id === Auth::id()) {
             return redirect()->route('admin.users.index')
                 ->with('error', 'You cannot delete your own account.');
         }
