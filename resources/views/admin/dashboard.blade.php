@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/favicon.ico?v={{ time() }}">
     <title>Admin Dashboard - CareSync</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
@@ -641,10 +640,6 @@
                     <span class="menu-icon"><i class="bi bi-gear"></i></span>
                     <span class="menu-text">Settings</span>
                 </a>
-                <a href="{{ route('reports.index') }}" class="menu-item">
-                    <span class="menu-icon"><i class="bi bi-file-earmark-bar-graph"></i></span>
-                    <span class="menu-text">Reports</span>
-                </a>
             </div>
         </div>
 
@@ -656,7 +651,7 @@
                     </div>
                 @else
                     <div class="user-avatar-sidebar">
-                        {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                        <i class="bi bi-person-fill" style="font-size: 24px;"></i>
                     </div>
                 @endif
                 <div class="user-details-sidebar">
@@ -788,16 +783,6 @@
                             <div class="action-btn-text">
                                 <div class="action-btn-title">Manage Users</div>
                                 <div class="action-btn-desc">View and edit user accounts</div>
-                            </div>
-                        </a>
-
-                        <a href="{{ route('reports.index') }}" class="action-btn">
-                            <div class="action-btn-icon">
-                                <i class="bi bi-file-earmark-bar-graph"></i>
-                            </div>
-                            <div class="action-btn-text">
-                                <div class="action-btn-title">View Reports</div>
-                                <div class="action-btn-desc">Access anonymized system reports</div>
                             </div>
                         </a>
 

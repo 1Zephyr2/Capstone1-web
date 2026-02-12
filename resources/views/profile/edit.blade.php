@@ -122,7 +122,8 @@
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #059669 0%, #f59e0b 100%);
+            background: linear-gradient(135deg, 
+                {{ Auth::user()->role === 'admin' ? '#1e40af 0%, #3b82f6' : '#059669 0%, #f59e0b' }} 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -161,7 +162,7 @@
 
         .form-group input:focus {
             outline: none;
-            border-color: #059669;
+            border-color: {{ Auth::user()->role === 'admin' ? '#1e40af' : '#059669' }};
         }
 
         .form-group .help-text {
@@ -189,12 +190,12 @@
         }
 
         .btn-primary {
-            background: #059669;
+            background: {{ Auth::user()->role === 'admin' ? '#1e40af' : '#059669' }};
             color: white;
         }
 
         .btn-primary:hover {
-            background: #047857;
+            background: {{ Auth::user()->role === 'admin' ? '#1e3a8a' : '#047857' }};
         }
 
         .btn-secondary {
@@ -261,7 +262,7 @@
 
         .file-input-label {
             padding: 8px 16px;
-            background: #059669;
+            background: {{ Auth::user()->role === 'admin' ? '#1e40af' : '#059669' }};
             color: white;
             border-radius: 8px;
             font-size: 13px;
@@ -272,7 +273,7 @@
         }
 
         .file-input-label:hover {
-            background: #047857;
+            background: {{ Auth::user()->role === 'admin' ? '#1e3a8a' : '#047857' }};
         }
 
         .file-name {
@@ -309,7 +310,7 @@
                                 <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="{{ $user->name }}" class="profile-picture" id="profilePreview">
                             @else
                                 <div class="profile-picture-placeholder" id="profilePreview">
-                                    {{ substr($user->name, 0, 1) }}
+                                    <i class="bi bi-person-fill" style="font-size: 48px;"></i>
                                 </div>
                             @endif
                         </div>

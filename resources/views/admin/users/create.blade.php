@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/favicon.ico?v={{ time() }}">
+
     <title>Create User - CareSync Admin</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
@@ -214,6 +214,9 @@
             flex: 1;
             margin-left: 260px;
             padding: 32px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
         }
 
         .form-container {
@@ -229,35 +232,41 @@
         .form-header {
             background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
             color: white;
-            padding: 32px;
+            padding: 20px 24px;
             text-align: center;
         }
 
         .form-header h1 {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .form-header p {
             opacity: 0.9;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .form-body {
-            padding: 32px;
+            padding: 24px;
         }
 
         .form-group {
-            margin-bottom: 24px;
+            margin-bottom: 16px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
         }
 
         .form-label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-weight: 500;
             color: #1e293b;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .form-label .required {
@@ -266,7 +275,7 @@
 
         .form-input {
             width: 100%;
-            padding: 12px 16px;
+            padding: 10px 14px;
             border: 1px solid #e2e8f0;
             border-radius: 8px;
             font-size: 14px;
@@ -281,7 +290,7 @@
 
         .form-select {
             width: 100%;
-            padding: 12px 16px;
+            padding: 10px 14px;
             border: 1px solid #e2e8f0;
             border-radius: 8px;
             font-size: 14px;
@@ -304,12 +313,12 @@
         .form-actions {
             display: flex;
             gap: 12px;
-            margin-top: 32px;
+            margin-top: 20px;
         }
 
         .btn {
             flex: 1;
-            padding: 12px 24px;
+            padding: 10px 20px;
             border-radius: 8px;
             font-size: 14px;
             font-weight: 500;
@@ -342,9 +351,9 @@
         }
 
         .alert {
-            padding: 16px;
+            padding: 12px 16px;
             border-radius: 8px;
-            margin-bottom: 24px;
+            margin-bottom: 16px;
         }
 
         .alert.error {
@@ -354,9 +363,15 @@
         }
 
         .help-text {
-            font-size: 12px;
+            font-size: 11px;
             color: #64748b;
             margin-top: 4px;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -392,10 +407,6 @@
                     <span class="menu-icon"><i class="bi bi-gear"></i></span>
                     <span class="menu-text">Settings</span>
                 </a>
-                <a href="{{ route('reports.index') }}" class="menu-item">
-                    <span class="menu-icon"><i class="bi bi-file-earmark-bar-graph"></i></span>
-                    <span class="menu-text">Reports</span>
-                </a>
             </div>
         </div>
 
@@ -407,7 +418,7 @@
                     </div>
                 @else
                     <div class="user-avatar-sidebar">
-                        {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                        <i class="bi bi-person-fill" style="font-size: 24px;"></i>
                     </div>
                 @endif
                 <div class="user-details-sidebar">
@@ -450,72 +461,76 @@
             <form action="{{ route('admin.users.store') }}" method="POST">
                 @csrf
 
-                <div class="form-group">
-                    <label class="form-label">
-                        Full Name <span class="required">*</span>
-                    </label>
-                    <input 
-                        type="text" 
-                        name="name" 
-                        class="form-input" 
-                        value="{{ old('name') }}" 
-                        required
-                        placeholder="Enter full name"
-                    >
-                    @error('name')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">
+                            Full Name <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            name="name" 
+                            class="form-input" 
+                            value="{{ old('name') }}" 
+                            required
+                            placeholder="Enter full name"
+                        >
+                        @error('name')
+                            <div class="error-message">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Username <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            name="username" 
+                            class="form-input" 
+                            value="{{ old('username') }}" 
+                            required
+                            placeholder="Enter username"
+                        >
+                        <div class="help-text">Used for logging in to the system</div>
+                        @error('username')
+                            <div class="error-message">{{ $message }}</div>
+                        @enderror
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">
-                        Username <span class="required">*</span>
-                    </label>
-                    <input 
-                        type="text" 
-                        name="username" 
-                        class="form-input" 
-                        value="{{ old('username') }}" 
-                        required
-                        placeholder="Enter username"
-                    >
-                    <div class="help-text">Used for logging in to the system</div>
-                    @error('username')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">
+                            Email <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="email" 
+                            name="email" 
+                            class="form-input" 
+                            value="{{ old('email') }}" 
+                            required
+                            placeholder="Enter email address"
+                        >
+                        @error('email')
+                            <div class="error-message">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-                <div class="form-group">
-                    <label class="form-label">
-                        Email <span class="required">*</span>
-                    </label>
-                    <input 
-                        type="email" 
-                        name="email" 
-                        class="form-input" 
-                        value="{{ old('email') }}" 
-                        required
-                        placeholder="Enter email address"
-                    >
-                    @error('email')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">
-                        Phone Number
-                    </label>
-                    <input 
-                        type="text" 
-                        name="phone" 
-                        class="form-input" 
-                        value="{{ old('phone') }}" 
-                        placeholder="Enter phone number"
-                    >
-                    @error('phone')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
+                    <div class="form-group">
+                        <label class="form-label">
+                            Phone Number
+                        </label>
+                        <input 
+                            type="text" 
+                            name="phone" 
+                            class="form-input" 
+                            value="{{ old('phone') }}" 
+                            placeholder="Enter phone number"
+                        >
+                        @error('phone')
+                            <div class="error-message">{{ $message }}</div>
+                        @enderror
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -540,34 +555,36 @@
                     @enderror
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">
-                        Password <span class="required">*</span>
-                    </label>
-                    <input 
-                        type="password" 
-                        name="password" 
-                        class="form-input" 
-                        required
-                        placeholder="Enter password"
-                    >
-                    <div class="help-text">Must be at least 8 characters</div>
-                    @error('password')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">
+                            Password <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="password" 
+                            name="password" 
+                            class="form-input" 
+                            required
+                            placeholder="Enter password"
+                        >
+                        <div class="help-text">Must be at least 8 characters</div>
+                        @error('password')
+                            <div class="error-message">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-                <div class="form-group">
-                    <label class="form-label">
-                        Confirm Password <span class="required">*</span>
-                    </label>
-                    <input 
-                        type="password" 
-                        name="password_confirmation" 
-                        class="form-input" 
-                        required
-                        placeholder="Confirm password"
-                    >
+                    <div class="form-group">
+                        <label class="form-label">
+                            Confirm Password <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="password" 
+                            name="password_confirmation" 
+                            class="form-input" 
+                            required
+                            placeholder="Confirm password"
+                        >
+                    </div>
                 </div>
 
                 <div class="form-actions">

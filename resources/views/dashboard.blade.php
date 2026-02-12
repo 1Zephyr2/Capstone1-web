@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/favicon.ico?v={{ time() }}">
     <title>Dashboard - CareSync</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
@@ -1407,47 +1406,53 @@
             background: white;
             width: 90%;
             max-width: 600px;
-            max-height: 80vh;
-            border-radius: 16px;
+            max-height: 85vh;
+            border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             overflow: hidden;
             animation: slideUp 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
         .ai-modal-header {
-            background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
             color: white;
-            padding: 24px;
+            padding: 28px 32px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.2);
         }
 
         .ai-modal-header h2 {
-            font-size: 24px;
+            font-size: 26px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
         }
 
         .ai-modal-close {
             background: rgba(255, 255, 255, 0.2);
-            border: none;
+            border: 2px solid rgba(255, 255, 255, 0.3);
             color: white;
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 20px;
+            font-size: 22px;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.2s;
+            font-weight: 600;
         }
 
         .ai-modal-close:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: rotate(90deg);
+            background: rgba(255, 255, 255, 0.35);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: rotate(90deg) scale(1.1);
         }
 
         .ai-modal-body {
@@ -1476,7 +1481,7 @@
 
         /* Calendar Styles */
         .calendar-container {
-            padding: 15px;
+            padding: 20px;
             max-width: 700px;
             margin: 0 auto;
         }
@@ -1594,90 +1599,121 @@
 
         .appointment-form {
             margin-top: 20px;
-            padding: 16px;
-            background: #f9fafb;
+            padding: 24px;
+            background: linear-gradient(135deg, #ffffff 0%, #fef3c7 100%);
             border-radius: 12px;
+            border: 1px solid #fbbf24;
         }
 
         .appointment-form h4 {
-            font-size: 15px;
-            color: #111827;
-            margin-bottom: 12px;
+            font-size: 16px;
+            color: #92400e;
+            margin-bottom: 20px;
+            font-weight: 700;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #fbbf24;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .appointment-form h4::before {
+            content: '👤';
+            font-size: 18px;
         }
 
         .form-group {
-            margin-bottom: 10px;
+            margin-bottom: 14px;
         }
 
         .form-group label {
             display: block;
             font-size: 13px;
-            color: #374151;
-            margin-bottom: 4px;
-            font-weight: 500;
+            color: #1f2937;
+            margin-bottom: 6px;
+            font-weight: 600;
+            letter-spacing: 0.01em;
         }
 
         .form-group input,
         .form-group select,
         .form-group textarea {
             width: 100%;
-            padding: 8px 10px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            font-size: 13px;
+            padding: 11px 14px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
             transition: all 0.2s;
+            background: #ffffff;
+            color: #111827;
         }
 
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: #10b981;
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+            border-color: #f59e0b;
+            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1);
+            background: #fffbeb;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #9ca3af;
         }
 
         .form-group textarea {
             resize: vertical;
-            min-height: 60px;
+            min-height: 70px;
+            line-height: 1.5;
         }
 
         .form-actions {
             display: flex;
-            gap: 10px;
-            margin-top: 20px;
+            gap: 12px;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 2px solid #fbbf24;
         }
 
         .btn-primary {
-            background: #10b981;
+            background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
+            padding: 12px 28px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 600;
             transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+            letter-spacing: 0.02em;
+            flex: 1;
         }
 
         .btn-primary:hover {
-            background: #059669;
-            transform: translateY(-1px);
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
         }
 
         .btn-secondary {
-            background: #e5e7eb;
+            background: #ffffff;
             color: #374151;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
+            border: 2px solid #d1d5db;
+            padding: 12px 28px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 600;
             transition: all 0.2s;
+            flex: 1;
         }
 
         .btn-secondary:hover {
-            background: #d1d5db;
+            background: #f9fafb;
+            border-color: #9ca3af;
+            transform: translateY(-1px);
         }
 
         .appointment-list {
@@ -2184,7 +2220,7 @@
                     </div>
                 @else
                     <div class="user-avatar-sidebar">
-                        {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                        <i class="bi bi-person-fill" style="font-size: 24px;"></i>
                     </div>
                 @endif
                 <div class="user-details-sidebar">
@@ -2356,14 +2392,14 @@
                     <div class="appointment-form" style="margin-top: 0;">
                         <h4>Patient Information</h4>
                         
-                        <div style="display: grid; grid-template-columns: 2fr 2fr 1fr 1fr; gap: 10px;">
+                        <div style="display: grid; grid-template-columns: 2fr 2fr 1fr 1fr; gap: 14px;">
                             <div class="form-group">
-                                <label for="patientLastName">Last Name <span style="color: red;">*</span></label>
+                                <label for="patientLastName">Last Name <span style="color: #dc2626;">*</span></label>
                                 <input type="text" id="patientLastName" placeholder="Enter last name" required>
                             </div>
                             
                             <div class="form-group">
-                                <label for="patientFirstName">First Name <span style="color: red;">*</span></label>
+                                <label for="patientFirstName">First Name <span style="color: #dc2626;">*</span></label>
                                 <input type="text" id="patientFirstName" placeholder="Enter first name" required>
                             </div>
                             
@@ -2387,14 +2423,14 @@
                             </div>
                         </div>
                         
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
                             <div class="form-group">
-                                <label for="patientDOB">Date of Birth <span style="color: red;">*</span></label>
+                                <label for="patientDOB">Date of Birth <span style="color: #dc2626;">*</span></label>
                                 <input type="date" id="patientDOB" required>
                             </div>
                             
                             <div class="form-group">
-                                <label for="patientGender">Gender <span style="color: red;">*</span></label>
+                                <label for="patientGender">Gender <span style="color: #dc2626;">*</span></label>
                                 <select id="patientGender" required>
                                     <option value="">Select gender</option>
                                     <option value="male">Male</option>
@@ -2404,13 +2440,13 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="patientAddress">Address <span style="color: red;">*</span></label>
-                            <textarea id="patientAddress" placeholder="Enter complete address" required style="min-height: 50px;"></textarea>
+                            <label for="patientAddress">Address <span style="color: #dc2626;">*</span></label>
+                            <textarea id="patientAddress" placeholder="Enter complete address" required style="min-height: 60px;"></textarea>
                         </div>
                         
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
                             <div class="form-group">
-                                <label for="patientPhone">Phone Number <span style="color: red;">*</span></label>
+                                <label for="patientPhone">Phone Number <span style="color: #dc2626;">*</span></label>
                                 <input type="tel" id="patientPhone" placeholder="09XX XXX XXXX" required oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="11">
                             </div>
                             
@@ -2431,7 +2467,7 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="patientMedicalHistory">Complaint</label>
+                            <label for="patientMedicalHistory">Chief Complaint</label>
                             <textarea id="patientMedicalHistory" placeholder="Enter chief complaint or reason for visit..."></textarea>
                         </div>
                         
@@ -2441,10 +2477,10 @@
                         </div>
                         
                         <!-- Data Privacy Consent -->
-                        <div style="display: flex; gap: 12px; padding: 16px; background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px; margin: 16px 0;">
-                            <input type="checkbox" id="patientDataPrivacyConsent" required style="margin-top: 2px; width: 18px; height: 18px; cursor: pointer; accent-color: #10b981; flex-shrink: 0;">
-                            <label for="patientDataPrivacyConsent" style="font-size: 13px; color: #166534; line-height: 1.5; cursor: pointer;">
-                                <span style="font-weight: 600;">Data Privacy Consent:</span> I consent to the collection, processing, and storage of my personal and medical information for healthcare purposes only. I understand that my data will be protected and will not be shared with unauthorized parties or leaked. <span style="color: #dc2626; font-weight: 700;">*</span>
+                        <div style="display: flex; gap: 12px; padding: 18px; background: linear-gradient(135deg, #fef3c7 0%, #fef3c7 100%); border: 2px solid #fbbf24; border-radius: 10px; margin: 20px 0; box-shadow: 0 2px 8px rgba(251, 191, 36, 0.15);">
+                            <input type="checkbox" id="patientDataPrivacyConsent" required style="margin-top: 2px; width: 20px; height: 20px; cursor: pointer; accent-color: #f59e0b; flex-shrink: 0;">
+                            <label for="patientDataPrivacyConsent" style="font-size: 13px; color: #92400e; line-height: 1.6; cursor: pointer;">
+                                <span style="font-weight: 700; font-size: 14px;">🔒 Data Privacy Consent:</span> I consent to the collection, processing, and storage of my personal and medical information for healthcare purposes only. I understand that my data will be protected and will not be shared with unauthorized parties or leaked. <span style="color: #dc2626; font-weight: 700;">*</span>
                             </label>
                         </div>
                         
@@ -2460,70 +2496,74 @@
 
     <!-- Book Appointment Modal -->
     <div id="bookAppointmentModal" class="ai-modal" onclick="closeModalOnBackdrop(event, 'bookAppointment')">
-        <div class="ai-modal-content" style="max-width: 600px;">
-            <div class="ai-modal-header" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
-                <h2><i class="bi bi-calendar-event"></i> Book Appointment</h2>
+        <div class="ai-modal-content" style="max-width: 650px;">
+            <div class="ai-modal-header" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 24px 32px;">
+                <h2 style="font-size: 24px;"><i class="bi bi-calendar-event"></i> Book Appointment</h2>
                 <button class="ai-modal-close" onclick="closeModal('bookAppointment')">✕</button>
             </div>
-            <div class="ai-modal-body" style="padding: 24px;">
+            <div class="ai-modal-body" style="padding: 28px; max-height: calc(85vh - 80px);">
                 <form id="appointmentForm" action="{{ route('appointments.store') }}" method="POST" style="display: flex; flex-direction: column; gap: 20px;">
                     @csrf
                     
                     <!-- Patient Selection -->
                     <div style="display: flex; flex-direction: column; gap: 8px; position: relative;">
-                        <label style="font-weight: 600; color: #374151; font-size: 14px;">
+                        <label style="font-weight: 600; color: #1f2937; font-size: 13px; display: flex; align-items: center; gap: 6px;">
+                            <i class="bi bi-person-fill" style="color: #10b981;"></i>
                             Patient <span style="color: #dc2626;">*</span>
                         </label>
-                        <input type="text" id="appointmentPatientSearch" placeholder="Search patient by name or ID..." autocomplete="off" style="padding: 10px 12px; border: 2px solid #d1d5db; border-radius: 6px; font-size: 14px;">
+                        <input type="text" id="appointmentPatientSearch" placeholder="Search patient by name or ID..." autocomplete="off" style="padding: 12px 14px 12px 40px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 14px; transition: all 0.2s; background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2216%22 height=%2216%22 fill=%22%236b7280%22 viewBox=%220 0 16 16%22><path d=%22M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z%22/></svg>'); background-repeat: no-repeat; background-position: 14px center; background-size: 16px;">
                         <input type="hidden" name="patient_id" id="appointmentPatientId" required>
-                        <div id="appointmentSearchResults" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #d1d5db; border-radius: 6px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-height: 200px; overflow-y: auto; z-index: 1000; margin-top: 4px;">
+                        <div id="appointmentSearchResults" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; border: 2px solid #e5e7eb; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.12); max-height: 200px; overflow-y: auto; z-index: 1000; margin-top: 4px;">
                         </div>
-                        <div id="selectedPatientDisplay" style="display: none; padding: 10px; background: #f0fdf4; border: 1px solid #10b981; border-radius: 6px; font-size: 13px;">
-                            <strong id="selectedPatientName" style="color: #047857;"></strong>
-                            <button type="button" onclick="clearAppointmentPatient()" style="float: right; background: #dc2626; color: white; border: none; padding: 2px 8px; border-radius: 4px; font-size: 11px; cursor: pointer;">Change</button>
+                        <div id="selectedPatientDisplay" style="display: none; padding: 12px 14px; background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 2px solid #10b981; border-radius: 10px; font-size: 13px; position: relative; box-shadow: 0 2px 4px rgba(16, 185, 129, 0.1);">
+                            <strong id="selectedPatientName" style="color: #047857; display: flex; align-items: center; gap: 6px;"><i class="bi bi-check-circle-fill"></i> <span></span></strong>
+                            <button type="button" onclick="clearAppointmentPatient()" style="position: absolute; top: 50%; right: 12px; transform: translateY(-50%); background: #dc2626; color: white; border: none; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.2s;">Change</button>
                         </div>
                     </div>
 
                     <!-- Date and Time -->
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
                         <div style="display: flex; flex-direction: column; gap: 8px;">
-                            <label style="font-weight: 600; color: #374151; font-size: 14px;">
+                            <label style="font-weight: 600; color: #1f2937; font-size: 13px; display: flex; align-items: center; gap: 6px;">
+                                <i class="bi bi-calendar3" style="color: #10b981;"></i>
                                 Date <span style="color: #dc2626;">*</span>
                             </label>
-                            <input type="date" name="appointment_date" required min="{{ date('Y-m-d') }}" value="{{ date('Y-m-d') }}" style="padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px;">
+                            <input type="date" name="appointment_date" required min="{{ date('Y-m-d') }}" value="{{ date('Y-m-d') }}" style="padding: 12px 14px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 14px; transition: all 0.2s; cursor: pointer;">
                         </div>
                         <div style="display: flex; flex-direction: column; gap: 8px;">
-                            <label style="font-weight: 600; color: #374151; font-size: 14px;">
+                            <label style="font-weight: 600; color: #1f2937; font-size: 13px; display: flex; align-items: center; gap: 6px;">
+                                <i class="bi bi-clock" style="color: #10b981;"></i>
                                 Time <span style="color: #dc2626;">*</span>
                             </label>
-                            <input type="time" name="appointment_time" required value="08:00" style="padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px;">
+                            <input type="time" name="appointment_time" required value="08:00" style="padding: 12px 14px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 14px; transition: all 0.2s; cursor: pointer;">
                         </div>
                     </div>
 
                     <!-- Service Type -->
                     <div style="display: flex; flex-direction: column; gap: 8px;">
-                        <label style="font-weight: 600; color: #374151; font-size: 14px;">
+                        <label style="font-weight: 600; color: #1f2937; font-size: 13px; display: flex; align-items: center; gap: 6px;">
+                            <i class="bi bi-briefcase-fill" style="color: #10b981;"></i>
                             Service Type <span style="color: #dc2626;">*</span>
                         </label>
-                        <select name="service_type" id="appointmentServiceType" required style="padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px;">
+                        <select name="service_type" id="appointmentServiceType" required style="padding: 12px 14px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 14px; transition: all 0.2s; cursor: pointer; background-color: white;">
                             <option value="">Select service</option>
-                            <option value="General Checkup">General Checkup</option>
-                            <option value="Immunization">Immunization</option>
-                            <option value="Prenatal">Prenatal Care</option>
-                            <option value="Family Planning">Family Planning</option>
-                            <option value="Referral">Referral</option>
-                            <option value="Health Education">Health Education</option>
-                            <option value="Other">Other</option>
+                            <option value="General Checkup">🩺 General Checkup</option>
+                            <option value="Immunization">💉 Immunization</option>
+                            <option value="Prenatal">🤰 Prenatal Care</option>
+                            <option value="Family Planning">👪 Family Planning</option>
+                            <option value="Referral">🏥 Referral</option>
+                            <option value="Health Education">📚 Health Education</option>
+                            <option value="Other">📋 Other</option>
                         </select>
                     </div>
 
                     <!-- Immunization Section -->
-                    <div id="appointmentImmunization" style="display: none; background: #f0f9ff; padding: 16px; border-radius: 8px; gap: 12px; flex-direction: column;">
-                        <h4 style="margin: 0 0 12px 0; color: #1e40af; font-size: 14px;">Immunization Details</h4>
+                    <div id="appointmentImmunization" style="display: none; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 18px; border-radius: 12px; gap: 12px; flex-direction: column; border: 2px solid #93c5fd; box-shadow: 0 2px 4px rgba(59, 130, 246, 0.1);">
+                        <h4 style="margin: 0 0 12px 0; color: #1e40af; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px;"><i class="bi bi-shield-fill-plus"></i> Immunization Details</h4>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                             <div style="display: flex; flex-direction: column; gap: 6px;">
-                                <label style="font-weight: 500; color: #374151; font-size: 13px;">Vaccine</label>
-                                <select name="vaccine_name" style="padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px;">
+                                <label style="font-weight: 600; color: #374151; font-size: 12px;">Vaccine</label>
+                                <select name="vaccine_name" style="padding: 10px 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 13px; transition: all 0.2s;">
                                     <option value="">Select vaccine</option>
                                     <option value="BCG">BCG</option>
                                     <option value="Hepatitis B">Hepatitis B</option>
@@ -2534,8 +2574,8 @@
                                 </select>
                             </div>
                             <div style="display: flex; flex-direction: column; gap: 6px;">
-                                <label style="font-weight: 500; color: #374151; font-size: 13px;">Dose</label>
-                                <select name="dose_number" style="padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px;">
+                                <label style="font-weight: 600; color: #374151; font-size: 12px;">Dose</label>
+                                <select name="dose_number" style="padding: 10px 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 13px; transition: all 0.2s;">
                                     <option value="">Select dose</option>
                                     <option value="1st Dose">1st Dose</option>
                                     <option value="2nd Dose">2nd Dose</option>
@@ -2546,16 +2586,16 @@
                     </div>
 
                     <!-- Prenatal Section -->
-                    <div id="appointmentPrenatal" style="display: none; background: #fef3c7; padding: 16px; border-radius: 8px; gap: 12px; flex-direction: column;">
-                        <h4 style="margin: 0 0 12px 0; color: #92400e; font-size: 14px;">Prenatal Care Details</h4>
+                    <div id="appointmentPrenatal" style="display: none; background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); padding: 18px; border-radius: 12px; gap: 12px; flex-direction: column; border: 2px solid #fbbf24; box-shadow: 0 2px 4px rgba(245, 158, 11, 0.1);">
+                        <h4 style="margin: 0 0 12px 0; color: #92400e; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px;"><i class="bi bi-heart-fill"></i> Prenatal Care Details</h4>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                             <div style="display: flex; flex-direction: column; gap: 6px;">
-                                <label style="font-weight: 500; color: #374151; font-size: 13px;">Gestational Age (weeks)</label>
-                                <input type="number" name="gestational_age" min="1" max="42" placeholder="e.g., 28" style="padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px;">
+                                <label style="font-weight: 600; color: #374151; font-size: 12px;">Gestational Age (weeks)</label>
+                                <input type="number" name="gestational_age" min="1" max="42" placeholder="e.g., 28" style="padding: 10px 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 13px; transition: all 0.2s;">
                             </div>
                             <div style="display: flex; flex-direction: column; gap: 6px;">
-                                <label style="font-weight: 500; color: #374151; font-size: 13px;">Presentation</label>
-                                <select name="presentation" style="padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px;">
+                                <label style="font-weight: 600; color: #374151; font-size: 12px;">Presentation</label>
+                                <select name="presentation" style="padding: 10px 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 13px; transition: all 0.2s;">
                                     <option value="">Select</option>
                                     <option value="Cephalic">Cephalic</option>
                                     <option value="Breech">Breech</option>
@@ -2566,11 +2606,11 @@
                     </div>
 
                     <!-- Family Planning Section -->
-                    <div id="appointmentFP" style="display: none; background: #f0fdf4; padding: 16px; border-radius: 8px; gap: 12px; flex-direction: column;">
-                        <h4 style="margin: 0 0 12px 0; color: #166534; font-size: 14px;">Family Planning Details</h4>
+                    <div id="appointmentFP" style="display: none; background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); padding: 18px; border-radius: 12px; gap: 12px; flex-direction: column; border: 2px solid #6ee7b7; box-shadow: 0 2px 4px rgba(16, 185, 129, 0.1);">
+                        <h4 style="margin: 0 0 12px 0; color: #166534; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px;"><i class="bi bi-heart-half"></i> Family Planning Details</h4>
                         <div style="display: flex; flex-direction: column; gap: 6px;">
-                            <label style="font-weight: 500; color: #374151; font-size: 13px;">Method</label>
-                            <select name="fp_method" style="padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px;">
+                            <label style="font-weight: 600; color: #374151; font-size: 12px;">Method</label>
+                            <select name="fp_method" style="padding: 10px 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 13px; transition: all 0.2s;">
                                 <option value="">Select method</option>
                                 <option value="Pills">Pills</option>
                                 <option value="Condoms">Condoms</option>
@@ -2582,15 +2622,15 @@
                     </div>
 
                     <!-- Referral Section -->
-                    <div id="appointmentReferral" style="display: none; background: #fef2f2; padding: 16px; border-radius: 8px; gap: 12px; flex-direction: column;">
-                        <h4 style="margin: 0 0 12px 0; color: #991b1b; font-size: 14px;">Referral Details</h4>
+                    <div id="appointmentReferral" style="display: none; background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); padding: 18px; border-radius: 12px; gap: 12px; flex-direction: column; border: 2px solid #fca5a5; box-shadow: 0 2px 4px rgba(239, 68, 68, 0.1);">
+                        <h4 style="margin: 0 0 12px 0; color: #991b1b; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px;"><i class="bi bi-hospital-fill"></i> Referral Details</h4>
                         <div style="display: flex; flex-direction: column; gap: 6px;">
-                            <label style="font-weight: 500; color: #374151; font-size: 13px;">Referred To</label>
-                            <input type="text" name="referred_to" placeholder="Hospital/Clinic name" style="padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px;">
+                            <label style="font-weight: 600; color: #374151; font-size: 12px;">Referred To</label>
+                            <input type="text" name="referred_to" placeholder="Hospital/Clinic name" style="padding: 10px 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 13px; transition: all 0.2s;">
                         </div>
                         <div style="display: flex; flex-direction: column; gap: 6px;">
-                            <label style="font-weight: 500; color: #374151; font-size: 13px;">Urgency</label>
-                            <select name="referral_urgency" style="padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px;">
+                            <label style="font-weight: 600; color: #374151; font-size: 12px;">Urgency</label>
+                            <select name="referral_urgency" style="padding: 10px 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 13px; transition: all 0.2s;">
                                 <option value="routine">Routine</option>
                                 <option value="urgent">Urgent</option>
                                 <option value="emergency">Emergency</option>
@@ -2600,41 +2640,102 @@
 
                     <!-- Remarks -->
                     <div style="display: flex; flex-direction: column; gap: 8px;">
-                        <label style="font-weight: 600; color: #374151; font-size: 14px;">
+                        <label style="font-weight: 600; color: #1f2937; font-size: 13px; display: flex; align-items: center; gap: 6px;">
+                            <i class="bi bi-chat-left-text-fill" style="color: #10b981;"></i>
                             Remarks
                         </label>
-                        <textarea name="chief_complaint" rows="3" placeholder="Enter remarks for this appointment..." style="padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; resize: vertical;"></textarea>
+                        <textarea name="chief_complaint" rows="3" placeholder="Enter remarks for this appointment..." style="padding: 12px 14px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 14px; resize: vertical; transition: all 0.2s; font-family: inherit;"></textarea>
                     </div>
 
                     <!-- Health Worker -->
                     <div style="display: flex; flex-direction: column; gap: 8px;">
-                        <label style="font-weight: 600; color: #374151; font-size: 14px;">
+                        <label style="font-weight: 600; color: #1f2937; font-size: 13px; display: flex; align-items: center; gap: 6px;">
+                            <i class="bi bi-person-badge-fill" style="color: #10b981;"></i>
                             Assigned Health Worker
                         </label>
-                        <input type="text" name="health_worker" placeholder="Enter health worker name" style="padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px;">
+                        <input type="text" name="health_worker" placeholder="Enter health worker name" style="padding: 12px 14px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 14px; transition: all 0.2s;">
                     </div>
 
                     <!-- Data Privacy Consent -->
-                    <div style="display: flex; gap: 12px; padding: 16px; background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px; margin-top: 8px;">
-                        <input type="checkbox" id="appointmentDataPrivacyConsent" name="data_privacy_consent" required style="margin-top: 2px; width: 18px; height: 18px; cursor: pointer; accent-color: #10b981; flex-shrink: 0;">
-                        <label for="appointmentDataPrivacyConsent" style="font-size: 13px; color: #166534; line-height: 1.5; cursor: pointer;">
-                            <span style="font-weight: 600;">Data Privacy Consent:</span> I consent to the collection, processing, and storage of my personal and medical information for healthcare purposes only. I understand that my data will be protected and will not be shared with unauthorized parties or leaked. <span style="color: #dc2626; font-weight: 700;">*</span>
+                    <div style="display: flex; gap: 12px; padding: 18px; background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 2px solid #10b981; border-radius: 12px; margin-top: 4px; box-shadow: 0 2px 4px rgba(16, 185, 129, 0.1);">
+                        <input type="checkbox" id="appointmentDataPrivacyConsent" name="data_privacy_consent" required style="margin-top: 2px; width: 20px; height: 20px; cursor: pointer; accent-color: #10b981; flex-shrink: 0;">
+                        <label for="appointmentDataPrivacyConsent" style="font-size: 13px; color: #047857; line-height: 1.6; cursor: pointer;">
+                            <span style="font-weight: 700; display: flex; align-items: center; gap: 6px; margin-bottom: 4px;"><i class="bi bi-shield-filllock"></i> Data Privacy Consent:</span> I consent to the collection, processing, and storage of my personal and medical information for healthcare purposes only. I understand that my data will be protected and will not be shared with unauthorized parties or leaked. <span style="color: #dc2626; font-weight: 700;">*</span>
                         </label>
                     </div>
 
                     <!-- Action Buttons -->
-                    <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 8px; padding-top: 16px; border-top: 1px solid #e5e7eb;">
-                        <button type="button" onclick="closeModal('bookAppointment')" style="padding: 10px 20px; border: 1px solid #d1d5db; background: white; color: #374151; border-radius: 6px; font-weight: 600; cursor: pointer;">
-                            Cancel
+                    <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 8px; padding-top: 20px; border-top: 2px solid #f3f4f6;">
+                        <button type="button" onclick="closeModal('bookAppointment')" style="padding: 12px 24px; border: 2px solid #e5e7eb; background: white; color: #6b7280; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-size: 14px;">
+                            <i class="bi bi-x-circle"></i> Cancel
                         </button>
-                        <button type="submit" style="padding: 10px 20px; border: none; background: #10b981; color: white; border-radius: 6px; font-weight: 600; cursor: pointer;">
-                            Book Appointment
+                        <button type="submit" style="padding: 12px 28px; border: none; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); font-size: 14px;">
+                            <i class="bi bi-check-circle-fill"></i> Book Appointment
                         </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+
+    <style>
+        /* Enhanced form field styles */
+        #appointmentForm input[type="text"]:focus,
+        #appointmentForm input[type="date"]:focus,
+        #appointmentForm input[type="time"]:focus,
+        #appointmentForm input[type="number"]:focus,
+        #appointmentForm select:focus,
+        #appointmentForm textarea:focus {
+            outline: none;
+            border-color: #10b981 !important;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
+        }
+
+        #appointmentForm input[type="text"]:hover,
+        #appointmentForm input[type="date"]:hover,
+        #appointmentForm input[type="time"]:hover,
+        #appointmentForm input[type="number"]:hover,
+        #appointmentForm select:hover,
+        #appointmentForm textarea:hover {
+            border-color: #10b981 !important;
+        }
+
+        #appointmentForm button[type="button"]:hover {
+            background: #f9fafb !important;
+            border-color: #d1d5db !important;
+            color: #374151 !important;
+            transform: translateY(-1px);
+        }
+
+        #appointmentForm button[type="submit"]:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4) !important;
+        }
+
+        #appointmentForm button[type="submit"]:active {
+            transform: translateY(0);
+        }
+
+        /* Smooth scrollbar for modal */
+        .ai-modal-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .ai-modal-body::-webkit-scrollbar-track {
+            background: #f3f4f6;
+            border-radius: 10px;
+        }
+
+        .ai-modal-body::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 10px;
+        }
+
+        .ai-modal-body::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+    </style>
 
     <!-- Patient Search Modal -->
     <div id="patientSearchModal" class="ai-modal" onclick="closeModalOnBackdrop(event, 'patientSearch')">
@@ -2764,7 +2865,7 @@
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                                 <div style="display: flex; align-items: center; gap: 12px;">
                                     <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 14px;">
-                                        {{ strtoupper(substr($patient->first_name, 0, 1) . substr($patient->last_name, 0, 1)) }}
+                                        <i class="bi bi-person-fill" style="font-size: 20px;"></i>
                                     </div>
                                     <div>
                                         <div style="font-weight: 600; font-size: 16px; color: #111827;">{{ $patient->first_name }} {{ $patient->last_name }}</div>

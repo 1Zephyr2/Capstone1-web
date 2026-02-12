@@ -61,7 +61,6 @@
         .header-logo:hover {
             opacity: 0.8;
         }
-
         .header-logo-text {
             font-size: 18px;
             font-weight: 600;
@@ -244,7 +243,7 @@
                 @csrf
                 
                 <div class="upload-area" id="uploadArea">
-                    <div class="upload-icon"><i class="bi bi-folder"></i></div>
+                    <div class="upload-icon">📁</div>
                     <h3>Drag and drop your file here</h3>
                     <p style="color: #6b7280; margin: 12px 0;">or</p>
                     <label for="fileInput" class="btn btn-primary">Choose File</label>

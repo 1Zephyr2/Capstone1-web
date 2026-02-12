@@ -23,7 +23,7 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
-            padding: 40px;
+            padding: 24px;
             min-height: 100vh;
         }
 
@@ -34,10 +34,10 @@
 
         .header {
             background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
-            padding: 28px 36px;
-            border-radius: 20px;
+            padding: 18px 24px;
+            border-radius: 16px;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
-            margin-bottom: 36px;
+            margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -50,7 +50,7 @@
         }
 
         .header h1 {
-            font-size: 32px;
+            font-size: 26px;
             font-weight: 800;
             color: #111827;
             letter-spacing: -0.02em;
@@ -60,11 +60,11 @@
             background: linear-gradient(135deg, #10B981 0%, #059669 100%);
             color: white;
             border: none;
-            padding: 12px 28px;
-            border-radius: 12px;
+            padding: 10px 20px;
+            border-radius: 10px;
             cursor: pointer;
             text-decoration: none;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
@@ -79,14 +79,14 @@
         .stats-row {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 32px;
+            gap: 16px;
+            margin-bottom: 20px;
         }
 
         .stat-card {
             background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
-            padding: 28px;
-            border-radius: 16px;
+            padding: 20px;
+            border-radius: 14px;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
             border-left: 4px solid #f59e0b;
             border-top: 1px solid rgba(0, 0, 0, 0.06);
@@ -101,15 +101,15 @@
         }
 
         .stat-card h3 {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             color: #6B7280;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             letter-spacing: -0.01em;
         }
 
         .stat-card .value {
-            font-size: 36px;
+            font-size: 30px;
             font-weight: 800;
             color: #111827;
             letter-spacing: -0.02em;
@@ -117,8 +117,8 @@
 
         .content-card {
             background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
-            padding: 36px;
-            border-radius: 20px;
+            padding: 24px;
+            border-radius: 16px;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
             border: 1px solid rgba(0, 0, 0, 0.06);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -129,22 +129,22 @@
         }
 
         .section-title {
-            font-size: 22px;
+            font-size: 19px;
             font-weight: 700;
             color: #111827;
-            margin-bottom: 24px;
+            margin-bottom: 16px;
             letter-spacing: -0.01em;
         }
 
         .immunization-list {
             display: grid;
-            gap: 16px;
+            gap: 12px;
         }
 
         .immunization-card {
             background: #fef3c7;
             border-radius: 10px;
-            padding: 20px;
+            padding: 16px;
             border-left: 4px solid #f59e0b;
             transition: transform 0.2s;
         }
@@ -157,7 +157,7 @@
             display: flex;
             justify-content: space-between;
             align-items: start;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .patient-info {
@@ -167,8 +167,8 @@
         }
 
         .patient-avatar {
-            width: 48px;
-            height: 48px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
             display: flex;
@@ -176,18 +176,18 @@
             justify-content: center;
             color: white;
             font-weight: 600;
-            font-size: 18px;
+            font-size: 16px;
         }
 
         .patient-details h4 {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             color: #111827;
             margin-bottom: 2px;
         }
 
         .patient-details p {
-            font-size: 13px;
+            font-size: 12px;
             color: #6b7280;
         }
 
@@ -202,23 +202,23 @@
 
         .vaccine-info {
             background: white;
-            padding: 16px;
+            padding: 12px;
             border-radius: 8px;
-            margin-top: 12px;
+            margin-top: 10px;
         }
 
         .vaccine-name {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             color: #92400e;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .info-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 13px;
+            font-size: 12px;
             color: #78716c;
             margin-top: 4px;
         }
@@ -229,13 +229,13 @@
 
         .empty-state {
             text-align: center;
-            padding: 60px 20px;
+            padding: 40px 20px;
             color: #6B7280;
         }
 
         .empty-state .icon {
-            font-size: 64px;
-            margin-bottom: 20px;
+            font-size: 48px;
+            margin-bottom: 16px;
         }
     </style>
 </head>
@@ -271,7 +271,7 @@
                         <div class="imm-header">
                             <div class="patient-info">
                                 <div class="patient-avatar">
-                                    {{ strtoupper(substr($imm->patient->first_name, 0, 1) . substr($imm->patient->last_name, 0, 1)) }}
+                                    <i class="bi bi-person-fill" style="font-size: 18px;"></i>
                                 </div>
                                 <div class="patient-details">
                                     <h4>{{ $imm->patient->first_name }} {{ $imm->patient->last_name }}</h4>

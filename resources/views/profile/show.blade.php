@@ -83,7 +83,8 @@
         }
 
         .profile-header {
-            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            background: linear-gradient(135deg, 
+                {{ Auth::user()->role === 'admin' ? '#1e40af 0%, #1e3a8a' : '#059669 0%, #047857' }} 100%);
             padding: 48px 32px;
             text-align: center;
             position: relative;
@@ -197,12 +198,12 @@
         }
 
         .btn-primary {
-            background: #059669;
+            background: {{ Auth::user()->role === 'admin' ? '#1e40af' : '#059669' }};
             color: white;
         }
 
         .btn-primary:hover {
-            background: #047857;
+            background: {{ Auth::user()->role === 'admin' ? '#1e3a8a' : '#047857' }};
         }
 
         .alert {
@@ -240,7 +241,7 @@
                         <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="{{ $user->name }}" class="profile-picture">
                     @else
                         <div class="profile-picture-placeholder">
-                            {{ substr($user->name, 0, 1) }}
+                            <i class="bi bi-person-fill" style="font-size: 48px;"></i>
                         </div>
                     @endif
                 </div>

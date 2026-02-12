@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/favicon.ico?v={{ time() }}">
     <title>System Settings - CareSync Admin</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
@@ -312,10 +311,6 @@
                     <span class="menu-icon"><i class="bi bi-gear"></i></span>
                     <span class="menu-text">Settings</span>
                 </a>
-                <a href="{{ route('reports.index') }}" class="menu-item">
-                    <span class="menu-icon"><i class="bi bi-file-earmark-bar-graph"></i></span>
-                    <span class="menu-text">Reports</span>
-                </a>
             </div>
         </div>
 
@@ -327,7 +322,7 @@
                     </div>
                 @else
                     <div class="user-avatar-sidebar">
-                        {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                        <i class="bi bi-person-fill" style="font-size: 24px;"></i>
                     </div>
                 @endif
                 <div class="user-details-sidebar">
@@ -409,9 +404,6 @@
             <div style="display: flex; flex-direction: column; gap: 12px;">
                 <a href="{{ route('admin.users.index') }}" style="color: #1e40af; text-decoration: none;">
                     <i class="bi bi-people"></i> Manage Users
-                </a>
-                <a href="{{ route('reports.index') }}" style="color: #1e40af; text-decoration: none;">
-                    <i class="bi bi-file-earmark-bar-graph"></i> View Reports
                 </a>
                 <a href="{{ route('dashboard') }}" style="color: #1e40af; text-decoration: none;">
                     <i class="bi bi-arrow-left-right"></i> Switch to Provider View
