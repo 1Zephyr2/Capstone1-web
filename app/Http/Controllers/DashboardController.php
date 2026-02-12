@@ -20,8 +20,45 @@ class DashboardController extends Controller
             return redirect()->route('admin.dashboard');
         }
         
+        // Get today's patients (distinct patients who had visits today)
+        $todayPatients = Visit::whereDate('visit_date', today())
+            ->distinct('patient_id')
+            ->count('patient_id');
+        
         // Get total patients count
         $totalPatients = Patient::count();
+        
+        // Get total immunizations count
+        $totalImmunizations = Immunization::count();
+        
+        // Get yesterday's patient count for comparison
+        $yesterdayPatients = Visit::whereDate('visit_date', today()->subDay())
+            ->distinct('patient_id')
+            ->count('patient_id');
+        
+        // Calculate percentage change
+        $patientChangePercent = $yesterdayPatients > 0 
+            ? round((($todayPatients - $yesterdayPatients) / $yesterdayPatients) * 100)
+            : 0;
+        
+        // Get current month's patient count for comparison
+        $monthStartDate = today()->startOfMonth();
+        $monthPatients = Patient::whereDate('created_at', '>=', $monthStartDate)->count();
+        $prevMonthEndDate = $monthStartDate->subDay();
+        $prevMonthPatients = Patient::whereDate('created_at', '<', $monthStartDate)->count();
+        
+        // Calculate month percentage change
+        $monthChangePercent = $prevMonthPatients > 0
+            ? round((($monthPatients - count(Patient::whereDateBetween('created_at', [$prevMonthEndDate->subMonth()->startOfMonth(), $prevMonthEndDate])) ?? 1) / (count(Patient::whereDateBetween('created_at', [$prevMonthEndDate->subMonth()->startOfMonth(), $prevMonthEndDate])) ?? 1)) * 100)
+            : ($monthPatients > 0 ? 100 : 0);
+        
+        // Simpler approach for month comparison
+        $thisMonthNew = Patient::whereDate('created_at', '>=', today()->startOfMonth())->count();
+        $lastMonthNew = Patient::whereDate('created_at', '>=', today()->subMonth()->startOfMonth())
+            ->whereDate('created_at', '<', today()->startOfMonth())->count();
+        $monthChangePercent = $lastMonthNew > 0 
+            ? round((($thisMonthNew - $lastMonthNew) / $lastMonthNew) * 100)
+            : ($thisMonthNew > 0 ? 100 : 0);
         
         // Get visits from this week
         $weeklyVisits = Visit::whereBetween('visit_date', [
@@ -81,7 +118,7 @@ class DashboardController extends Controller
         if ($highRiskPrenatal > 0) {
             $topAlerts[] = [
                 'type' => 'danger',
-                'icon' => '🚨',
+                'icon' => 'bi-exclamation-triangle-fill',
                 'title' => 'High-Risk Prenatal',
                 'count' => $highRiskPrenatal,
                 'message' => "$highRiskPrenatal prenatal case(s) with high blood pressure"
@@ -112,7 +149,11 @@ class DashboardController extends Controller
             });
         
         return view('dashboard', compact(
+            'todayPatients',
             'totalPatients',
+            'totalImmunizations',
+            'patientChangePercent',
+            'monthChangePercent',
             'weeklyVisits',
             'overdueImmunizations',
             'activePrenatal',

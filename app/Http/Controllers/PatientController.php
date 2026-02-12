@@ -225,7 +225,7 @@ class PatientController extends Controller
     public function import(Request $request)
     {
         $request->validate([
-            'file' => 'required|mimes:csv,txt,xlsx,xls|max:2048',
+            'file' => 'required|mimes:csv,txt|max:2048',
         ]);
 
         try {
@@ -251,7 +251,7 @@ class PatientController extends Controller
                     ->with('success', $result['message'])
                     ->with('import_errors', $result['errors']);
             } else {
-                $errorMsg = 'Please use CSV format. Excel support coming soon!';
+                $errorMsg = 'Please use CSV format.';
                 
                 if ($request->wantsJson() || $request->ajax()) {
                     return response()->json([

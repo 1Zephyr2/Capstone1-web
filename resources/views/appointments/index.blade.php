@@ -154,6 +154,40 @@
         .badge-completed { background: #d6d8db; color: #383d41; }
         .badge-cancelled { background: #f8d7da; color: #721c24; }
         .badge-no-show { background: #fff3cd; color: #856404; }
+        .row-today td {
+            background: #e6f0ff;
+        }
+        .row-upcoming td {
+            background: #ecfdf3;
+        }
+        .row-today td:first-child,
+        .row-upcoming td:first-child {
+            border-left: 4px solid #2563eb;
+        }
+        .row-upcoming td:first-child {
+            border-left-color: #16a34a;
+        }
+        .legend {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            font-size: 13px;
+            color: #4b5563;
+            margin-top: 16px;
+        }
+        .legend-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-swatch {
+            width: 16px;
+            height: 12px;
+            border-radius: 4px;
+            border: 1px solid #e5e7eb;
+        }
+        .legend-today { background: #e6f0ff; border-color: #2563eb; }
+        .legend-upcoming { background: #ecfdf3; border-color: #16a34a; }
         .action-buttons {
             display: flex;
             gap: 8px;
@@ -186,15 +220,12 @@
     </a>
     <div class="header">
         <div class="header-top">
-            <h1><i class="bi bi-calendar-check"></i> Appointments</h1>
+            <h1 style="display: flex; align-items: center; gap: 12px;"><i class="bi bi-calendar-check"></i> Scheduling</h1>
         </div>
         
         <div class="header-actions">
-            <a href="{{ route('appointments.create') }}" class="btn btn-primary">
+            <a href="{{ route('appointments.create') }}" class="btn btn-primary" style="background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);">
                 <i class="bi bi-plus-circle"></i> New Appointment
-            </a>
-            <a href="{{ route('appointments.today') }}" class="btn btn-secondary">
-                <i class="bi bi-calendar-day"></i> Today's Appointments
             </a>
         </div>
 
@@ -225,6 +256,10 @@
                 </button>
             </div>
         </form>
+        <div class="legend">
+            <span class="legend-item"><span class="legend-swatch legend-today"></span> Scheduled today</span>
+            <span class="legend-item"><span class="legend-swatch legend-upcoming"></span> Upcoming (next 7 days)</span>
+        </div>
     </div>
 
     @if(session('success'))
@@ -248,8 +283,16 @@
                 </tr>
             </thead>
             <tbody>
+                @php
+                    $today = \Carbon\Carbon::today();
+                @endphp
                 @forelse($appointments as $appointment)
-                    <tr>
+                    @php
+                        $isToday = $appointment->appointment_date->isSameDay($today);
+                        $isUpcoming = !$isToday && $appointment->appointment_date->isAfter($today)
+                            && $appointment->appointment_date->diffInDays($today) <= 7;
+                    @endphp
+                    <tr class="{{ $isToday ? 'row-today' : ($isUpcoming ? 'row-upcoming' : '') }}">
                         <td>
                             {{ $appointment->appointment_date->format('M d, Y') }}<br>
                             <small>{{ \Carbon\Carbon::parse($appointment->appointment_time)->format('h:i A') }}</small>

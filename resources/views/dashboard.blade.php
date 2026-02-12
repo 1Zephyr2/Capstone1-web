@@ -2151,21 +2151,13 @@
                     <span class="menu-icon"><i class="bi bi-people-fill"></i></span>
                     <span class="menu-text">Patient List</span>
                 </a>
+                <a href="{{ route('appointments.index') }}" class="menu-item">
+                    <span class="menu-icon"><i class="bi bi-calendar-check"></i></span>
+                    <span class="menu-text">Manage Appointments</span>
+                </a>
                 <a href="{{ route('visits.today') }}" class="menu-item">
-                    <span class="menu-icon"><i class="bi bi-clipboard2-check"></i></span>
-                    <span class="menu-text">Today's Visits</span>
-                </a>
-            </div>
-
-            <div class="menu-section">
-                <div class="menu-label">Services</div>
-                <a href="{{ route('immunizations.index') }}" class="menu-item">
-                    <span class="menu-icon"><i class="bi bi-shield-fill-check"></i></span>
-                    <span class="menu-text">Immunizations</span>
-                </a>
-                <a href="{{ route('prenatal.care') }}" class="menu-item">
-                    <span class="menu-icon"><i class="bi bi-heart-pulse-fill"></i></span>
-                    <span class="menu-text">Prenatal Care</span>
+                    <span class="menu-icon"><i class="bi bi-clock-history"></i></span>
+                    <span class="menu-text">Visit History</span>
                 </a>
             </div>
 
@@ -2287,8 +2279,8 @@
                             <span class="stat-title">Today's Patients</span>
                             <div class="stat-icon" style="background: #ECFDF5; color: #10B981;"><i class="bi bi-people-fill"></i></div>
                         </div>
-                        <div class="stat-value">6</div>
-                        <div class="stat-change">↑ 12% from yesterday</div>
+                        <div class="stat-value">{{ $todayPatients }}</div>
+                        <div class="stat-change">{{ $patientChangePercent > 0 ? '↑' : '↓' }} {{ abs($patientChangePercent) }}% from yesterday</div>
                     </div>
 
                     <div class="stat-card" onclick="openModal('totalPatients')" style="cursor: pointer;">
@@ -2296,8 +2288,8 @@
                             <span class="stat-title">Total Patients</span>
                             <div class="stat-icon" style="background: #FEF3C7; color: #F59E0B;"><i class="bi bi-bar-chart-fill"></i></div>
                         </div>
-                        <div class="stat-value">6</div>
-                        <div class="stat-change">↑ 8% this month</div>
+                        <div class="stat-value">{{ $totalPatients }}</div>
+                        <div class="stat-change">{{ $monthChangePercent > 0 ? '↑' : '↓' }} {{ abs($monthChangePercent) }}% this month</div>
                     </div>
 
                     <div class="stat-card" onclick="openModal('immunizations')" style="cursor: pointer;">
@@ -2305,11 +2297,7 @@
                             <span class="stat-title">Immunizations</span>
                             <div class="stat-icon" style="background: #FEF3C7; color: #F59E0B;"><i class="bi bi-shield-fill-check"></i></div>
                         </div>
-                        @php
-                            use App\Models\Immunization as ImmunizationModel;
-                            $totalImm = ImmunizationModel::count();
-                        @endphp
-                        <div class="stat-value">{{ $totalImm }}</div>
+                        <div class="stat-value">{{ $totalImmunizations }}</div>
                         <div class="stat-change">Total records</div>
                     </div>
                 </div>
@@ -2326,9 +2314,9 @@
                     <!-- Mini Calendar Widget -->
                     <div class="mini-calendar">
                         <div class="mini-calendar-header">
-                            <button class="mini-calendar-nav" onclick="changeCalendarMonth(-1)">◀</button>
+                            <button class="mini-calendar-nav" onclick="changeCalendarMonth(-1)"><i class="bi bi-chevron-left"></i></button>
                             <div class="mini-calendar-month" id="calendarMonthDisplay"></div>
-                            <button class="mini-calendar-nav" onclick="changeCalendarMonth(1)">▶</button>
+                            <button class="mini-calendar-nav" onclick="changeCalendarMonth(1)"><i class="bi bi-chevron-right"></i></button>
                         </div>
                         <div class="mini-calendar-grid" id="miniCalendarGrid"></div>
                     </div>
@@ -3425,7 +3413,7 @@
                 if (buttons) buttons.style.display = 'none';
             } else if (status === 'rescheduled') {
                 if (statusElement) {
-                    statusElement.innerHTML = '<span class="badge-rescheduled" style="display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 10px; background: #FEF3C7; color: #92400E;">🔄 Rescheduled</span>';
+                    statusElement.innerHTML = '<span class="badge-rescheduled" style="display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 10px; background: #FEF3C7; color: #92400E;"><i class="bi bi-arrow-clockwise"></i> Rescheduled</span>';
                 }
                 if (buttons) buttons.style.display = 'none';
             }
@@ -4669,7 +4657,7 @@ Registered: ${new Date(patient.registeredDate).toLocaleString()}
         <div style="background:white;border-radius:12px;max-width:500px;width:90%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 25px -5px rgba(0,0,0,0.3);">
             <div style="padding:24px;border-bottom:1px solid #e5e7eb;">
                 <div style="display:flex;justify-content:space-between;align-items:center;">
-                    <h2 style="margin:0;color:#047857;font-size:20px;">🔄 Reschedule Appointment</h2>
+                    <h2 style="margin:0;color:#047857;font-size:20px;"><i class="bi bi-arrow-clockwise"></i> Reschedule Appointment</h2>
                     <button onclick="closeDashboardRescheduleModal()" style="background:none;border:none;font-size:28px;color:#6b7280;cursor:pointer;padding:0;line-height:1;" onmouseover="this.style.color='#111827'" onmouseout="this.style.color='#6b7280'">&times;</button>
                 </div>
                 <p id="dashboardReschedulePatientName" style="margin:8px 0 0 0;color:#6b7280;font-size:14px;"></p>

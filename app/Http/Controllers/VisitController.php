@@ -12,50 +12,45 @@ use Illuminate\Support\Facades\DB;
 class VisitController extends Controller
 {
     /**
-     * Display today's visits
+     * Display visit history (all visits)
      */
     public function index()
     {
-        $visits = Visit::with(['patient', 'vitalSigns'])
-            ->today()
+        $query = Visit::with(['patient', 'vitalSigns']);
+
+        // Search by patient name or ID
+        if (request('search')) {
+            $search = request('search');
+            $query->whereHas('patient', function($q) use ($search) {
+                $q->where('full_name', 'like', "%{$search}%")
+                  ->orWhere('patient_id', 'like', "%{$search}%");
+            });
+        }
+
+        // Filter by service type
+        if (request('service_type') && request('service_type') !== 'all') {
+            $query->where('service_type', request('service_type'));
+        }
+
+        // Filter by date range
+        if (request('from_date')) {
+            $query->whereDate('visit_date', '>=', request('from_date'));
+        }
+        if (request('to_date')) {
+            $query->whereDate('visit_date', '<=', request('to_date'));
+        }
+
+        $visits = $query->orderBy('visit_date', 'desc')
             ->orderBy('visit_time', 'desc')
-            ->get();
+            ->paginate(20);
 
-        // Get today's appointments
-        $todayAppointments = Appointment::with('patient')
-            ->whereDate('appointment_date', now()->format('Y-m-d'))
-            ->orderBy('appointment_time')
-            ->get()
-            ->map(function($appointment) {
-                return [
-                    'id' => $appointment->id,
-                    'time' => $appointment->formatted_time,
-                    'patient' => $appointment->patient->full_name,
-                    'type' => $appointment->service_type,
-                ];
-            });
-
-        // Get ALL appointments grouped by date for calendar synchronization
-        $appointments = Appointment::with('patient')
-            ->where('status', '!=', 'cancelled')
-            ->get()
-            ->groupBy(function($appointment) {
-                return $appointment->appointment_date->format('Y-m-d');
-            })
-            ->map(function($dayAppointments) {
-                return $dayAppointments->map(function($appointment) {
-                    return [
-                        'id' => $appointment->id,
-                        'time' => $appointment->formatted_time,
-                        'patient' => $appointment->patient->full_name,
-                        'type' => $appointment->service_type,
-                        'status' => $appointment->status,
-                        'notes' => $appointment->notes,
-                    ];
-                })->values()->all();
-            });
-
-        return view('visits.index', compact('visits', 'todayAppointments', 'appointments'));
+        return view('visits.index', [
+            'visits' => $visits,
+            'search' => request('search'),
+            'service_type' => request('service_type'),
+            'from_date' => request('from_date'),
+            'to_date' => request('to_date'),
+        ]);
     }
 
     /**
@@ -89,23 +84,23 @@ class VisitController extends Controller
             'weight' => 'nullable|numeric|min:0|max:500',
             'height' => 'nullable|numeric|min:0|max:300',
             // Immunization fields
-            'vaccine_name' => 'required_if:service_type,Immunization|string|max:255',
-            'dose_number' => 'required_if:service_type,Immunization|string|max:50',
+            'vaccine_name' => 'required_if:service_type,Immunization|nullable|string|max:255',
+            'dose_number' => 'required_if:service_type,Immunization|nullable|string|max:50',
             'batch_number' => 'nullable|string|max:100',
             'next_dose_date' => 'nullable|date',
             // Prenatal fields
-            'gestational_age' => 'required_if:service_type,Prenatal|integer|min:1|max:42',
+            'gestational_age' => 'required_if:service_type,Prenatal|nullable|integer|min:1|max:42',
             'fundal_height' => 'nullable|numeric|min:0',
             'fetal_heart_rate' => 'nullable|integer|min:0|max:200',
             'presentation' => 'nullable|in:Cephalic,Breech,Transverse',
             'prenatal_notes' => 'nullable|string',
             // Family Planning fields
-            'fp_method' => 'required_if:service_type,Family Planning|string|max:255',
+            'fp_method' => 'required_if:service_type,Family Planning|nullable|string|max:255',
             'fp_quantity' => 'nullable|string|max:100',
             'fp_followup_date' => 'nullable|date',
             // Referral fields
-            'referred_to' => 'required_if:service_type,Referral|string|max:255',
-            'referral_reason' => 'required_if:service_type,Referral|string|max:255',
+            'referred_to' => 'required_if:service_type,Referral|nullable|string|max:255',
+            'referral_reason' => 'required_if:service_type,Referral|nullable|string|max:255',
             'referral_urgency' => 'nullable|in:Routine,Urgent,Emergency',
         ]);
 

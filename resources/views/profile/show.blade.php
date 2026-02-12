@@ -250,7 +250,7 @@
 
             <div class="profile-body">
                 <div class="info-section">
-                    <h2>📧 Account Information</h2>
+                    <h2><i class="bi bi-envelope"></i> Account Information</h2>
                     <div class="info-grid">
                         <div class="info-item">
                             <div class="info-label">Full Name</div>
@@ -268,7 +268,7 @@
                 </div>
 
                 <div class="info-section">
-                    <h2>🔐 Security</h2>
+                    <h2><i class="bi bi-lock"></i> Security</h2>
                     <div class="info-grid">
                         <div class="info-item">
                             <div class="info-label">Password</div>
@@ -282,7 +282,7 @@
                 </div>
 
                 <div class="actions">
-                    <a href="{{ route('profile.edit') }}" class="btn btn-primary">✏️ Edit Profile</a>
+                    <a href="{{ route('profile.edit') }}" class="btn btn-primary"><i class="bi bi-pencil"></i> Edit Profile</a>
                 </div>
             </div>
         </div>

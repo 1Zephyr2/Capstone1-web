@@ -19,94 +19,124 @@
             min-height: 100vh;
         }
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
+            padding: 20px;
+        }
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #333;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        .back-button:hover {
+            background: #f8f9fa;
+            border-color: #007bff;
+            color: #007bff;
         }
         .header {
-            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
-            padding: 28px;
-            border-radius: 20px;
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             margin-bottom: 24px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
-            border: 1px solid rgba(0, 0, 0, 0.06);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
-        .header:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
-        }
+
         .header-top {
             display: flex;
             align-items: center;
-            gap: 16px;
-            margin-bottom: 20px;
+            gap: 12px;
+            margin-bottom: 12px;
         }
+
         .header-actions {
             display: flex;
             gap: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 12px;
         }
-        .btn-new-patient {
-            padding: 14px 28px;
-            background: linear-gradient(135deg, #047857 0%, #059669 100%);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 15px;
-            font-weight: 700;
-            text-decoration: none;
-            display: inline-flex;
+
+        .search-bar {
+            display: flex;
             align-items: center;
-            gap: 10px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 8px rgba(4, 120, 87, 0.3);
+            gap: 12px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 12px;
         }
-        .btn-new-patient:hover {
-            background: linear-gradient(135deg, #065f46 0%, #047857 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(4, 120, 87, 0.4);
+
+        .search-wrapper {
+            position: relative;
+            flex: 1;
         }
+
+        .search-wrapper input {
+            width: 100%;
+            padding: 10px 12px 10px 36px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .search-wrapper input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+
+        .btn-new-patient,
         .btn-import {
-            padding: 14px 28px;
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 15px;
-            font-weight: 700;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
-        }
-        .btn-import:hover {
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
-        }
-        .btn-back {
             padding: 10px 20px;
-            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
-            color: white;
-            border: none;
             border-radius: 10px;
+            border: none;
             cursor: pointer;
             font-size: 14px;
             font-weight: 600;
-            text-decoration: none;
+            color: white;
             display: inline-flex;
             align-items: center;
             gap: 8px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .btn-back:hover {
-            background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
-            transform: translateY(-1px);
+
+        .btn-new-patient {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
         }
+
+        .btn-new-patient:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
+        }
+
+        .btn-import {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-import:hover {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+        }
+
         .header-logo {
             display: flex;
             align-items: center;
@@ -115,82 +145,56 @@
             color: inherit;
             transition: opacity 0.2s;
         }
+
         .header-logo:hover {
-            opacity: 0.8;
+            opacity: 0.85;
         }
-        .header-logo-icon {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, #047857 0%, #059669 100%);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            font-weight: bold;
-            color: white;
-            box-shadow: 0 2px 6px rgba(4, 120, 87, 0.3);
-        }
+
+
+
         .header-logo-text {
             font-size: 18px;
             font-weight: 600;
             color: #047857;
         }
+
         h1 {
-            color: #047857;
+            color: #333;
             margin: 0;
             flex: 1;
-            font-size: 32px;
-            font-weight: 800;
-            letter-spacing: -0.02em;
+            font-size: 28px;
+            font-weight: 700;
         }
-        .search-bar {
-            display: flex;
-            gap: 14px;
-            margin-bottom: 18px;
-        }
-        .search-wrapper {
-            flex: 1;
-            position: relative;
-        }
-        input[type="search"] {
-            width: 100%;
-            padding: 14px 44px 14px 18px;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            font-size: 15px;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            background: white;
-        }
-        input[type="search"]:focus {
-            outline: none;
-            border-color: #047857;
-            box-shadow: 0 0 0 3px rgba(4, 120, 87, 0.1);
-        }
-        .search-icon {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #9ca3af;
-        }
+
         .btn {
-            padding: 12px 20px;
-            border: none;
+            padding: 10px 16px;
             border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            background: #f9fafb;
+            color: #374151;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
         }
+
+        .btn:hover {
+            background: #f3f4f6;
+        }
+
         .btn-primary {
-            background: #047857;
+            background: #10b981;
             color: white;
+            border: none;
         }
+
         .btn-primary:hover {
             background: #059669;
         }
+
         .btn-sm {
             padding: 6px 12px;
             font-size: 13px;
@@ -214,27 +218,27 @@
             border: 1px solid #a7f3d0;
         }
         .patients-table {
-            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
-            border-radius: 16px;
+            background: white;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
-            border: 1px solid rgba(0, 0, 0, 0.06);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         table {
             width: 100%;
             border-collapse: collapse;
         }
         thead {
-            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+            background: #f8f9fa;
         }
         th {
             padding: 16px 18px;
             text-align: left;
             font-size: 13px;
             font-weight: 700;
-            color: #374151;
+            color: #495057;
             text-transform: uppercase;
             letter-spacing: 0.8px;
+            border-bottom: 2px solid #dee2e6;
         }
         td {
             padding: 18px;
@@ -916,22 +920,21 @@
 </head>
 <body>
     <div class="container">
+        <a href="{{ route('dashboard') }}" class="back-button">← Back</a>
         <div class="header">
             <div class="header-top">
                 <a href="{{ route('dashboard') }}" class="header-logo">
-                    <div class="header-logo-icon">V</div>
                     <img src="/images/systemlogo.png" alt="CareSync" style="height: 35px; object-fit: contain;">
                 </a>
-                <button onclick="goBack()" class="btn-back">← Back</button>
                 <h1>Patient List</h1>
             </div>
             
             <div class="header-actions">
-                <button onclick="openRegistrationModal()" class="btn-new-patient">
-                    ➕ Register New Patient
+                <button type="button" onclick="openRegistrationModal()" class="btn-new-patient">
+                    <i class="bi bi-plus-circle"></i> Register New Patient
                 </button>
-                <button onclick="openImportModal()" class="btn-import">
-                    📥 Import from CSV
+                <button type="button" onclick="openImportModal()" class="btn-import">
+                    <i class="bi bi-download"></i> Import from CSV
                 </button>
             </div>
             
@@ -951,10 +954,6 @@
                     >
                     <span class="search-icon"><i class="bi bi-search"></i></span>
                     <div id="autocompleteResults" class="autocomplete-results"></div>
-                </div>
-                <div style="display: flex; gap: 8px;">
-                    <button onclick="openImportModal()" class="btn" style="background: #3b82f6; color: white; border: none; cursor: pointer;">📥 Import</button>
-                    <button onclick="openRegistrationModal()" class="btn btn-primary">+ New Patient</button>
                 </div>
             </div>
         </div>
@@ -1046,17 +1045,32 @@
                     <div class="patient-quick-field">
                         <label>Contact Number</label>
                         <div class="value" id="quickPatientContact"></div>
-                    </div>showPatientQuickModal(${JSON.stringify(patient).replace(/"/g, '&quot;')})">
-                                <div class="name">${patient.name} <span style="color: #047857; font-size: 12px; font-weight: 500;">(${patient.patient_id})</span></div>
-                                <div class="details">${patient.age} yrs • ${patient.sex} ${patient.contact ? '• ' + patient.contact : ''}</div>
-                            </div>
-                        `).join('');
-                    }
-                    autocompleteResults.classList.add('show');
-                })
-                .catch(error => console.error('Search error:', error));
-            }, 300);
-        });
+                    </div>
+                    <div class="patient-quick-field">
+                        <label>Address</label>
+                        <div class="value" id="quickPatientAddress"></div>
+                    </div>
+                </div>
+                <div class="patient-quick-actions">
+                    <a id="quickViewFullBtn" href="#" class="patient-quick-btn patient-quick-btn-primary">
+                        <i class="bi bi-clipboard2-check"></i> View Full Record
+                    </a>
+                    <a id="quickAddVisitBtn" href="#" class="patient-quick-btn patient-quick-btn-secondary">
+                        <i class="bi bi-hospital"></i> Add Visit
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let searchInput = null;
+        let autocompleteResults = null;
+        let importFileInput = null;
+        let uploadArea = null;
+        let fileInfo = null;
+        let fileName = null;
+        let importBtn = null;
 
         // Patient Quick View Modal Functions
         function showPatientQuickModal(patient) {
@@ -1066,10 +1080,10 @@
             document.getElementById('quickPatientSex').textContent = patient.sex;
             document.getElementById('quickPatientContact').textContent = patient.contact || 'Not provided';
             document.getElementById('quickPatientAddress').textContent = patient.address || 'Not provided';
-            
+
             document.getElementById('quickViewFullBtn').href = `/patients/${patient.id}`;
             document.getElementById('quickAddVisitBtn').href = `/visits/create?patient_id=${patient.id}`;
-            
+
             document.getElementById('patientQuickModal').classList.add('active');
             autocompleteResults.classList.remove('show');
             document.body.style.overflow = 'hidden';
@@ -1081,7 +1095,7 @@
         }
 
         // Close modal on outside click
-        document.getElementById('patientQuickModal').addEventListener('click', function(e) {
+        document.getElementById('patientQuickModal')?.addEventListener('click', function(e) {
             if (e.target === this) {
                 closePatientQuickModal();
             }
@@ -1091,60 +1105,98 @@
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closePatientQuickModal();
-            }<i class="bi bi-clipboard2-check"></i> View Full Record
-                </a>
-                <a id="quickAddVisitBtn" href="#" class="patient-quick-btn patient-quick-btn-secondary">
-                    <i class="bi bi-hospital"></i> Add Visit
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Type-ahead search functionality
-        const searchInput = document.getElementById('patientSearch');
-        const autocompleteResults = document.getElementById('autocompleteResults');
-        let searchTimeout;
-
-        searchInput.addEventListener('input', function() {
-            clearTimeout(searchTimeout);
-            const term = this.value.trim();
-
-            if (term.length < 2) {
-                autocompleteResults.classList.remove('show');
-                return;
             }
-
-            searchTimeout = setTimeout(() => {
-                fetch(`/api/patients/search?term=${encodeURIComponent(term)}`, {
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                        'Accept': 'application/json'
-                    }
-                })
-                .then(response => response.json())
-                .then(patients => {
-                    if (patients.length === 0) {
-                        autocompleteResults.innerHTML = '<div class="autocomplete-item">No patients found</div>';
-                    } else {
-                        autocompleteResults.innerHTML = patients.map(patient => `
-                            <div class="autocomplete-item" onclick="window.location.href='/patients/${patient.id}'">
-                                <div class="name">${patient.name}</div>
-                                <div class="details">${patient.patient_id} • ${patient.age} yrs • ${patient.sex} ${patient.contact ? '• ' + patient.contact : ''}</div>
-                            </div>
-                        `).join('');
-                    }
-                    autocompleteResults.classList.add('show');
-                })
-                .catch(error => console.error('Search error:', error));
-            }, 300);
         });
+        document.addEventListener('DOMContentLoaded', function() {
+            // Type-ahead search functionality
+            searchInput = document.getElementById('patientSearch');
+            autocompleteResults = document.getElementById('autocompleteResults');
+            let searchTimeout;
 
-        // Close autocomplete when clicking outside
-        document.addEventListener('click', function(e) {
-            if (!searchInput.contains(e.target) && !autocompleteResults.contains(e.target)) {
-                autocompleteResults.classList.remove('show');
+            if (searchInput && autocompleteResults) {
+                searchInput.addEventListener('input', function() {
+                    clearTimeout(searchTimeout);
+                    const term = this.value.trim();
+
+                    if (term.length < 2) {
+                        autocompleteResults.classList.remove('show');
+                        return;
+                    }
+
+                    searchTimeout = setTimeout(() => {
+                        fetch(`/api/patients/search?term=${encodeURIComponent(term)}`, {
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                'Accept': 'application/json'
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(patients => {
+                            if (patients.length === 0) {
+                                autocompleteResults.innerHTML = '<div class="autocomplete-item">No patients found</div>';
+                            } else {
+                                autocompleteResults.innerHTML = patients.map(patient => `
+                                    <div class="autocomplete-item" onclick="window.location.href='/patients/${patient.id}'">
+                                        <div class="name">${patient.name}</div>
+                                        <div class="details">${patient.patient_id} • ${patient.age} yrs • ${patient.sex} ${patient.contact ? '• ' + patient.contact : ''}</div>
+                                    </div>
+                                `).join('');
+                            }
+                            autocompleteResults.classList.add('show');
+                        })
+                        .catch(error => console.error('Search error:', error));
+                    }, 300);
+                });
+
+                // Close autocomplete when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!searchInput.contains(e.target) && !autocompleteResults.contains(e.target)) {
+                        autocompleteResults.classList.remove('show');
+                    }
+                });
             }
+
+            // File upload handling
+            importFileInput = document.getElementById('importFileInput');
+            uploadArea = document.getElementById('uploadArea');
+            fileInfo = document.getElementById('importFileInfo');
+            fileName = document.getElementById('importFileName');
+            importBtn = document.getElementById('importBtn');
+
+            importFileInput?.addEventListener('change', function() {
+                if (this.files.length > 0) {
+                    fileName.textContent = this.files[0].name;
+                    fileInfo.classList.add('show');
+                    importBtn.disabled = false;
+                    document.getElementById('importForm')?.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+                }
+            });
+
+            uploadArea?.addEventListener('click', function() {
+                importFileInput.click();
+            });
+
+            uploadArea?.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.classList.add('dragover');
+            });
+
+            uploadArea?.addEventListener('dragleave', function() {
+                this.classList.remove('dragover');
+            });
+
+            uploadArea?.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('dragover');
+
+                if (e.dataTransfer.files.length > 0) {
+                    importFileInput.files = e.dataTransfer.files;
+                    fileName.textContent = e.dataTransfer.files[0].name;
+                    fileInfo.classList.add('show');
+                    importBtn.disabled = false;
+                    document.getElementById('importForm')?.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+                }
+            });
         });
 
         function goBack() {
@@ -1336,7 +1388,12 @@
         
         // Import Modal Functions
         function openImportModal() {
-            document.getElementById('importModal').classList.add('active');
+            const modal = document.getElementById('importModal');
+            const input = document.getElementById('importFileInput');
+            modal.classList.add('active');
+            if (input) {
+                input.click();
+            }
         }
 
         function closeImportModal() {
@@ -1347,46 +1404,7 @@
             document.getElementById('importAlert').style.display = 'none';
         }
 
-        // File upload handling
-        const importFileInput = document.getElementById('importFileInput');
-        const uploadArea = document.getElementById('uploadArea');
-        const fileInfo = document.getElementById('importFileInfo');
-        const fileName = document.getElementById('importFileName');
-        const importBtn = document.getElementById('importBtn');
-
-        importFileInput?.addEventListener('change', function(e) {
-            if (this.files.length > 0) {
-                fileName.textContent = this.files[0].name;
-                fileInfo.classList.add('show');
-                importBtn.disabled = false;
-            }
-        });
-
-        // Drag and drop
-        uploadArea?.addEventListener('click', function() {
-            importFileInput.click();
-        });
-
-        uploadArea?.addEventListener('dragover', function(e) {
-            e.preventDefault();
-            this.classList.add('dragover');
-        });
-
-        uploadArea?.addEventListener('dragleave', function() {
-            this.classList.remove('dragover');
-        });
-
-        uploadArea?.addEventListener('drop', function(e) {
-            e.preventDefault();
-            this.classList.remove('dragover');
-            
-            if (e.dataTransfer.files.length > 0) {
-                importFileInput.files = e.dataTransfer.files;
-                fileName.textContent = e.dataTransfer.files[0].name;
-                fileInfo.classList.add('show');
-                importBtn.disabled = false;
-            }
-        });
+        // File upload handling is registered on DOMContentLoaded
 
         // Handle import form submission
         document.getElementById('importForm')?.addEventListener('submit', function(e) {
@@ -1395,6 +1413,14 @@
             const formData = new FormData(this);
             const submitBtn = importBtn;
             const alertDiv = document.getElementById('importAlert');
+            const hasFile = importFileInput && importFileInput.files && importFileInput.files.length > 0;
+
+            if (!hasFile) {
+                alertDiv.className = 'alert-modal error';
+                alertDiv.textContent = 'Please choose a CSV file to import.';
+                alertDiv.style.display = 'block';
+                return;
+            }
             
             // Disable submit button
             submitBtn.disabled = true;
@@ -1403,14 +1429,30 @@
             fetch('{{ route("patients.import") }}', {
                 method: 'POST',
                 body: formData,
+                credentials: 'same-origin',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                     'Accept': 'application/json'
                 }
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
+            .then(response => response.text().then(text => ({
+                ok: response.ok,
+                status: response.status,
+                text
+            })))
+            .then(({ ok, status, text }) => {
+                let data = null;
+                try {
+                    data = JSON.parse(text);
+                } catch (error) {
+                    data = null;
+                }
+
+                if (!ok) {
+                    throw { status, data, text };
+                }
+
+                if (data && data.success) {
                     // Show success message
                     alertDiv.className = 'alert-modal success';
                     let message = data.message;
@@ -1435,11 +1477,13 @@
                 } else {
                     // Show error message
                     alertDiv.className = 'alert-modal error';
-                    if (data.errors) {
+                    if (data && data.errors) {
                         const errorList = Object.values(data.errors).flat().map(err => `<li>${err}</li>`).join('');
                         alertDiv.innerHTML = '<strong>Please fix the following errors:</strong><ul style="margin-top: 8px; margin-left: 20px;">' + errorList + '</ul>';
+                    } else if (data && data.message) {
+                        alertDiv.textContent = data.message;
                     } else {
-                        alertDiv.textContent = data.message || 'Import failed. Please check your file and try again.';
+                        alertDiv.textContent = 'Import failed. Please check your file and try again.';
                     }
                     alertDiv.style.display = 'block';
                     
@@ -1449,9 +1493,15 @@
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
+                console.error('Import error:', error);
                 alertDiv.className = 'alert-modal error';
-                alertDiv.textContent = 'An error occurred during import. Please try again.';
+                if (error && error.data && error.data.message) {
+                    alertDiv.textContent = error.data.message;
+                } else if (error && error.text) {
+                    alertDiv.textContent = error.text;
+                } else {
+                    alertDiv.textContent = 'An error occurred during import. Please try again.';
+                }
                 alertDiv.style.display = 'block';
                 
                 // Re-enable submit button
@@ -1718,7 +1768,7 @@
     <div id="importModal" class="import-modal">
         <div class="import-modal-content">
             <div class="import-modal-header">
-                <h2>📥 Import Patient Records</h2>
+                <h2><i class="bi bi-download"></i> Import Patient Records</h2>
                 <button class="modal-close" onclick="closeImportModal()" style="background: none; border: none; font-size: 28px; color: #6b7280; cursor: pointer; padding: 0; line-height: 1;">×</button>
             </div>
             <div class="import-modal-body">
@@ -1737,15 +1787,15 @@
                     </ul>
                 </div>
 
-                <form id="importForm" enctype="multipart/form-data">
+                <form id="importForm" action="{{ route('patients.import') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     
                     <div class="upload-area" id="uploadArea">
-                        <div class="upload-icon">📁</div>
+                        <div class="upload-icon"><i class="bi bi-folder"></i></div>
                         <h3>Drag and drop your file here</h3>
                         <p style="color: #6b7280; margin: 12px 0;">or</p>
                         <label for="importFileInput" class="btn btn-primary" style="cursor: pointer;">Choose File</label>
-                        <input type="file" id="importFileInput" name="file" accept=".csv,.xlsx,.xls" style="display: none;" required>
+                        <input type="file" id="importFileInput" name="file" accept=".csv,.txt" style="display: none;" required>
                     </div>
 
                     <div class="file-info" id="importFileInfo">
@@ -1759,7 +1809,7 @@
                 </form>
 
                 <div class="template-section">
-                    <h3 style="margin-bottom: 16px; color: #374151;">📥 Download Sample Template</h3>
+                    <h3 style="margin-bottom: 16px; color: #374151;"><i class="bi bi-download"></i> Download Sample Template</h3>
                     <p style="color: #6b7280; margin-bottom: 16px;">
                         Download this template, fill in your patient data, and upload it above.
                     </p>
@@ -1810,7 +1860,7 @@
     <div id="registrationModal" class="registration-modal">
         <div class="registration-modal-content">
             <div class="registration-modal-header">
-                <h2>➕ Register New Patient</h2>
+                <h2><i class="bi bi-plus-circle"></i> Register New Patient</h2>
                 <button class="modal-close" onclick="closeRegistrationModal()" style="background: none; border: none; font-size: 28px; color: #6b7280; cursor: pointer; padding: 0; line-height: 1;">×</button>
             </div>
             <div class="registration-modal-body">

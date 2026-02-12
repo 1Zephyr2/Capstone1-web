@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -13,26 +13,39 @@
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
+            background: linear-gradient(135deg, #f5f5f5 0%, #f0f9ff 100%);
             padding: 20px;
             min-height: 100vh;
         }
         .container {
             max-width: 1400px;
             margin: 0 auto;
+            padding: 20px;
+        }
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #333;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        .back-button:hover {
+            background: #f8f9fa;
+            border-color: #007bff;
+            color: #007bff;
         }
         .header {
-            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
-            padding: 28px;
-            border-radius: 16px;
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             margin-bottom: 24px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
-            border: 1px solid rgba(0, 0, 0, 0.06);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .header:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
         }
         .header-top {
             display: flex;
@@ -52,53 +65,18 @@
         .header-logo:hover {
             opacity: 0.8;
         }
-        .header-logo-icon {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, #047857 0%, #059669 100%);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            font-weight: bold;
-            color: white;
-            box-shadow: 0 2px 6px rgba(4, 120, 87, 0.3);
-        }
+
         .header-logo-text {
             font-size: 18px;
             font-weight: 600;
             color: #047857;
         }
-        .btn-back {
-            padding: 10px 20px;
-            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 700;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 8px rgba(107, 114, 128, 0.3);
-        }
-        
-        .btn-back:hover {
-            background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(107, 114, 128, 0.4);
-        }
         h1 {
-            color: #047857;
+            color: #333;
             margin: 0;
             flex: 1;
-            font-size: 32px;
-            font-weight: 800;
-            letter-spacing: -0.02em;
+            font-size: 28px;
+            font-weight: 700;
         }
         .stats {
             display: grid;
@@ -345,14 +323,14 @@
         <div style="background: white; border-radius: 12px; max-width: 750px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);" onclick="event.stopPropagation()">
             <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 20px; border-radius: 12px 12px 0 0; display: flex; justify-content: space-between; align-items: center;">
                 <h2 style="margin: 0; color: white; font-size: 20px;"><i class="bi bi-calendar-week"></i> Appointments Calendar</h2>
-                <button onclick="closeCalendarModal()" style="background: rgba(255,255,255,0.2); border: none; color: white; font-size: 24px; cursor: pointer; width: 36px; height: 36px; border-radius: 50%; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">×</button>
+                <button onclick="closeCalendarModal()" style="background: rgba(255,255,255,0.2); border: none; color: white; font-size: 24px; cursor: pointer; width: 36px; height: 36px; border-radius: 50%; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">Ã—</button>
             </div>
             <div style="padding: 20px;">
                 <div style="text-align: center; margin-bottom: 20px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                        <button onclick="visitsChangeMonth(-1)" style="padding: 8px 16px; background: #10b981; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">← Previous</button>
+                        <button onclick="visitsChangeMonth(-1)" style="padding: 8px 16px; background: #10b981; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">â† Previous</button>
                         <h3 id="visitsCurrentMonth" style="margin: 0;">February 2026</h3>
-                        <button onclick="visitsChangeMonth(1)" style="padding: 8px 16px; background: #10b981; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">Next →</button>
+                        <button onclick="visitsChangeMonth(1)" style="padding: 8px 16px; background: #10b981; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">Next â†’</button>
                     </div>
                     <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 8px;">
                         <div style="font-weight: 600; color: #6b7280; padding: 8px; font-size: 13px;">Sun</div>
@@ -374,99 +352,107 @@
     </div>
 
     <div class="container">
+        <a href="{{ route('dashboard') }}" class="back-button"><i class="bi bi-arrow-left"></i> Back</a>
         <div class="header">
             <div class="header-top">
                 <a href="{{ route('dashboard') }}" class="header-logo">
-                    <div class="header-logo-icon">V</div>
                     <img src="/images/systemlogo.png" alt="CareSync" style="height: 35px; object-fit: contain;">
                 </a>
-                <div style="display: flex; gap: 10px;">
-                    <a href="{{ route('dashboard') }}" class="btn-back">← Back</a>
-                    <button onclick="openAppointmentsCalendar()" class="btn-calendar" style="padding: 8px 16px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3); transition: all 0.2s; display: flex; align-items: center; gap: 6px;" onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 6px rgba(16, 185, 129, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(16, 185, 129, 0.3)'">
-                        <i class="bi bi-calendar3"></i> View Calendar
-                    </button>
-                </div>
-                <h1><i class="bi bi-clipboard2-check"></i> Today's Visits</h1>
-            </div>
-            <p style="color: #6b7280; font-size: 14px;">{{ now()->format('l, F j, Y') }}</p>
-        </div>
-
-        <div class="stats">
-            <div class="stat-card">
-                <div class="stat-value" id="totalVisitsToday">0</div>
-                <div class="stat-label">Total Visits Today</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="totalAbsentToday">0</div>
-                <div class="stat-label">Rescheduled Today</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="generalCheckupsToday">0</div>
-                <div class="stat-label">General Checkups</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="immunizationsToday">0</div>
-                <div class="stat-label">Immunizations</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="prenatalCareToday">0</div>
-                <div class="stat-label">Prenatal Care</div>
-            </div>
-        </div>
-
-        <!-- Appointment Attendance Section -->
-        <div style="background: white; padding: 24px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #e5e7eb; padding-bottom: 12px;">
-                <h2 style="color: #047857; font-size: 20px; margin: 0;"><i class="bi bi-calendar2-check"></i> Today's Appointments Attendance</h2>
-                <div style="display: flex; gap: 12px; align-items: center;">
-                    <button onclick="resetAllAttendance()" style="padding: 8px 16px; background: #6b7280; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.2s;" onmouseover="this.style.background='#4b5563'" onmouseout="this.style.background='#6b7280'">
-                        🔄 Reset All
-                    </button>
-                    <div id="currentDateDisplay" style="font-size: 14px; color: #6b7280;"></div>
-                </div>
+                <h1 style="display: flex; align-items: center; gap: 12px;"><i class="bi bi-clock-history"></i> Visit History</h1>
             </div>
             
-            <div id="appointmentAttendanceList">
-                <div style="text-align: center; padding: 40px; color: #9ca3af;">
-                    <div style="font-size: 48px; margin-bottom: 16px;">⏳</div>
-                    <div style="font-size: 16px; font-weight: 600; color: #6b7280;">Loading appointments...</div>
+            <!-- Search & Filters -->
+            <div style="margin-top: 20px; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 12px; align-items: end;">
+                <div>
+                    <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px;">Search Patient</label>
+                    <input type="text" id="patientSearch" placeholder="Name or Patient ID..." style="width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px;" value="{{ request('search') }}">
                 </div>
+                <div>
+                    <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px;">Service Type</label>
+                    <select id="serviceType" style="width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px;">
+                        <option value="all">All Services</option>
+                        <option value="General Checkup" {{ request('service_type') == 'General Checkup' ? 'selected' : '' }}>General Checkup</option>
+                        <option value="Immunization" {{ request('service_type') == 'Immunization' ? 'selected' : '' }}>Immunization</option>
+                        <option value="Prenatal Care" {{ request('service_type') == 'Prenatal Care' ? 'selected' : '' }}>Prenatal Care</option>
+                        <option value="Family Planning" {{ request('service_type') == 'Family Planning' ? 'selected' : '' }}>Family Planning</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px;">From Date</label>
+                    <input type="date" id="fromDate" style="width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px;" value="{{ request('from_date') }}">
+                </div>
+                <div>
+                    <label style="display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px;">To Date</label>
+                    <input type="date" id="toDate" style="width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px;" value="{{ request('to_date') }}">
+                </div>
+                <button onclick="applyFilters()" style="padding: 10px 24px; background: #007bff; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600;">Search</button>
             </div>
         </div>
 
-        <div class="visits-container">
-            @if($visits->count() > 0)
-                @foreach($visits as $visit)
-                <div class="visit-card" onclick="openVisitModal({{ $visit->id }})">
-                    <div class="visit-summary">
-                        <div class="visit-summary-left">
-                            <div class="patient-name">{{ $visit->patient->full_name }}</div>
-                            <div class="patient-info">
-                                <span><strong>ID:</strong> {{ $visit->patient->patient_id }}</span>
-                                <span><strong>Age:</strong> {{ $visit->patient->age }} years</span>
-                                <span><strong>Sex:</strong> {{ $visit->patient->sex }}</span>
-                            </div>
-                            <div class="click-hint">Click to view full details</div>
-                        </div>
-                        <div class="visit-summary-right">
-                            <span class="service-badge service-{{ strtolower(str_replace(' ', '-', $visit->service_type)) }}">
+
+        <!-- Visit History Table -->
+        <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-top: 24px;">
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead style="background: #f8f9fa; border-bottom: 2px solid #dee2e6;">
+                    <tr>
+                        <th style="padding: 16px 18px; text-align: left; font-size: 13px; font-weight: 700; color: #495057; text-transform: uppercase; letter-spacing: 0.5px;">Date & Time</th>
+                        <th style="padding: 16px 18px; text-align: left; font-size: 13px; font-weight: 700; color: #495057; text-transform: uppercase; letter-spacing: 0.5px;">Patient</th>
+                        <th style="padding: 16px 18px; text-align: left; font-size: 13px; font-weight: 700; color: #495057; text-transform: uppercase; letter-spacing: 0.5px;">Service Type</th>
+                        <th style="padding: 16px 18px; text-align: left; font-size: 13px; font-weight: 700; color: #495057; text-transform: uppercase; letter-spacing: 0.5px;">Chief Complaint</th>
+                        <th style="padding: 16px 18px; text-align: left; font-size: 13px; font-weight: 700; color: #495057; text-transform: uppercase; letter-spacing: 0.5px;">Health Worker</th>
+                        <th style="padding: 16px 18px; text-align: left; font-size: 13px; font-weight: 700; color: #495057; text-transform: uppercase; letter-spacing: 0.5px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($visits as $visit)
+                    <tr style="border-bottom: 1px solid #dee2e6; transition: background 0.2s ease;" onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='white'">
+                        <td style="padding: 16px 18px; font-size: 14px;">
+                            {{ $visit->visit_date->format('M d, Y') }}<br>
+                            <small style="color: #6b7280;">{{ \Carbon\Carbon::parse($visit->visit_time)->format('h:i A') }}</small>
+                        </td>
+                        <td style="padding: 16px 18px; font-size: 14px;">
+                            <strong>{{ $visit->patient->full_name }}</strong><br>
+                            <small style="color: #6b7280;">{{ $visit->patient->patient_id }}</small>
+                        </td>
+                        <td style="padding: 16px 18px; font-size: 14px;">
+                            <span style="display: inline-block; padding: 4px 12px; background: #dbeafe; color: #1e40af; border-radius: 12px; font-size: 12px; font-weight: 600;">
                                 {{ $visit->service_type }}
                             </span>
-                            <div class="visit-time">
-                                <i class="bi bi-clock"></i> {{ \Carbon\Carbon::parse($visit->visit_time)->format('h:i A') }}
-                            </div>
-                        </div>
-                    </div>
+                        </td>
+                        <td style="padding: 16px 18px; font-size: 14px; color: #6b7280;">
+                            {{ $visit->chief_complaint ?? '-' }}
+                        </td>
+                        <td style="padding: 16px 18px; font-size: 14px;">
+                            {{ $visit->health_worker ?? '-' }}
+                        </td>
+                        <td style="padding: 16px 18px;">
+                            <button onclick="openVisitModal({{ $visit->id }})" style="padding: 6px 12px; background: #007bff; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s;" onmouseover="this.style.background='#0056b3'" onmouseout="this.style.background='#007bff'">
+                                <i class="bi bi-eye"></i> View
+                            </button>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 60px 20px; color: #9ca3af;">
+                            <div style="font-size: 48px; margin-bottom: 16px;"><i class="bi bi-inbox" style="color: #d1d5db;"></i></div>
+                            <p style="font-size: 16px; margin: 0;">No visit records found</p>
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div style="margin-top: 24px;">
+            {{ $visits->links() }}
+        </div>
+            @if($visits->count() > 0)
+                @foreach($visits as $visit)
+                <div style="display: none;">
+                    <div data-visit-id="{{ $visit->id }}" data-visit-json="{{ json_encode($visit) }}"></div>
                 </div>
                 @endforeach
-            @else
-            <div class="empty-state">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                </svg>
-                <h3>No visits recorded today</h3>
-                <p>Visit records will appear here as patients are seen</p>
-            </div>
             @endif
         </div>
     </div>
@@ -479,7 +465,7 @@
                     <h2 id="modalPatientName" style="margin: 0; color: #047857; font-size: 24px;"></h2>
                     <p id="modalPatientInfo" style="color: #6b7280; margin-top: 4px; font-size: 14px;"></p>
                 </div>
-                <button class="modal-close" onclick="closeVisitModal()">×</button>
+                <button class="modal-close" onclick="closeVisitModal()">Ã—</button>
             </div>
             <div class="visit-modal-body">
                 <div class="modal-patient-header">
@@ -514,7 +500,7 @@
         <div style="background:white;border-radius:12px;max-width:500px;width:90%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 25px -5px rgba(0,0,0,0.3);">
             <div style="padding:24px;border-bottom:1px solid #e5e7eb;">
                 <div style="display:flex;justify-content:space-between;align-items:center;">
-                    <h2 style="margin:0;color:#047857;font-size:20px;">🔄 Reschedule Appointment</h2>
+                    <h2 style="margin:0;color:#047857;font-size:20px;"><i class="bi bi-arrow-repeat"></i> Reschedule Appointment</h2>
                     <button onclick="closeRescheduleModal()" style="background:none;border:none;font-size:28px;color:#6b7280;cursor:pointer;padding:0;line-height:1;" onmouseover="this.style.color='#111827'" onmouseout="this.style.color='#6b7280'">&times;</button>
                 </div>
                 <p id="reschedulePatientName" style="margin:8px 0 0 0;color:#6b7280;font-size:14px;"></p>
@@ -550,7 +536,27 @@
     </div>
 
     <script>
-        const visits = @json($visits);
+        const visits = @json($visits->items());
+
+        function applyFilters() {
+            const search = document.getElementById('patientSearch').value;
+            const serviceType = document.getElementById('serviceType').value;
+            const fromDate = document.getElementById('fromDate').value;
+            const toDate = document.getElementById('toDate').value;
+
+            const params = new URLSearchParams();
+            if (search) params.append('search', search);
+            if (serviceType && serviceType !== 'all') params.append('service_type', serviceType);
+            if (fromDate) params.append('from_date', fromDate);
+            if (toDate) params.append('to_date', toDate);
+
+            window.location.href = '{{ route('visits.index') }}' + (params.toString() ? '?' + params.toString() : '');
+        }
+
+        // Allow Enter key in search field
+        document.getElementById('patientSearch')?.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') applyFilters();
+        });
 
         function openVisitModal(visitId) {
             const visit = visits.find(v => v.id === visitId);
@@ -559,7 +565,7 @@
             // Set patient name and info
             document.getElementById('modalPatientName').textContent = visit.patient.full_name;
             document.getElementById('modalPatientInfo').textContent = 
-                `ID: ${visit.patient.patient_id} • Age: ${visit.patient.age} years • Sex: ${visit.patient.sex}`;
+                `ID: ${visit.patient.patient_id} â€¢ Age: ${visit.patient.age} years â€¢ Sex: ${visit.patient.sex}`;
 
             // Set service badge and time
             const serviceBadge = document.getElementById('modalServiceBadge');
@@ -572,22 +578,23 @@
 
             // Set vital signs
             const vitalSignsDiv = document.getElementById('modalVitalSigns');
-            if (visit.vital_signs) {
+            if (visit.vital_signs && visit.vital_signs.length > 0) {
+                const vs = visit.vital_signs[0];
                 let vitalHTML = '';
-                if (visit.vital_signs.blood_pressure) {
-                    vitalHTML += `<div class="vital-item"><div class="vital-label">Blood Pressure</div><div class="vital-value">${visit.vital_signs.blood_pressure}</div></div>`;
+                if (vs.blood_pressure) {
+                    vitalHTML += `<div class="vital-item"><div class="vital-label">Blood Pressure</div><div class="vital-value">${vs.blood_pressure}</div></div>`;
                 }
-                if (visit.vital_signs.temperature) {
-                    vitalHTML += `<div class="vital-item"><div class="vital-label">Temperature</div><div class="vital-value">${visit.vital_signs.temperature}°C</div></div>`;
+                if (vs.temperature) {
+                    vitalHTML += `<div class="vital-item"><div class="vital-label">Temperature</div><div class="vital-value">${vs.temperature}Â°C</div></div>`;
                 }
-                if (visit.vital_signs.pulse_rate) {
-                    vitalHTML += `<div class="vital-item"><div class="vital-label">Pulse Rate</div><div class="vital-value">${visit.vital_signs.pulse_rate} bpm</div></div>`;
+                if (vs.pulse_rate) {
+                    vitalHTML += `<div class="vital-item"><div class="vital-label">Pulse Rate</div><div class="vital-value">${vs.pulse_rate} bpm</div></div>`;
                 }
-                if (visit.vital_signs.weight) {
-                    vitalHTML += `<div class="vital-item"><div class="vital-label">Weight</div><div class="vital-value">${visit.vital_signs.weight} kg</div></div>`;
+                if (vs.weight) {
+                    vitalHTML += `<div class="vital-item"><div class="vital-label">Weight</div><div class="vital-value">${vs.weight} kg</div></div>`;
                 }
-                if (visit.vital_signs.height) {
-                    vitalHTML += `<div class="vital-item"><div class="vital-label">Height</div><div class="vital-value">${visit.vital_signs.height} cm</div></div>`;
+                if (vs.height) {
+                    vitalHTML += `<div class="vital-item"><div class="vital-label">Height</div><div class="vital-value">${vs.height} cm</div></div>`;
                 }
                 vitalSignsDiv.innerHTML = vitalHTML;
                 vitalSignsDiv.style.display = vitalHTML ? 'grid' : 'none';
@@ -627,606 +634,13 @@
             document.getElementById('visitModal').classList.remove('active');
         }
 
-        // Close modal when clicking outside
-        document.getElementById('visitModal').addEventListener('click', function(e) {
-            if (e.target === this) {
+        // Close modal on background click
+        window.onclick = function(event) {
+            const modal = document.getElementById('visitModal');
+            if (event.target === modal) {
                 closeVisitModal();
             }
-        });
-
-        // Appointment Attendance System - Real data from backend
-        const todayAppointments = @json($todayAppointments ?? []);
-
-        function loadTodayAppointments() {
-            const appointments = todayAppointments;
-            
-            const container = document.getElementById('appointmentAttendanceList');
-            
-            if (appointments.length === 0) {
-                container.innerHTML = '<div style="text-align:center;padding:40px;color:#9ca3af;"><div style="font-size:48px;margin-bottom:16px;"><i class="bi bi-calendar-x" style="font-size:48px;"></i></div><div style="font-size:16px;font-weight:600;color:#6b7280;">No appointments scheduled for today</div></div>';
-            } else {
-                container.innerHTML = '<div style="display:grid;gap:12px;">' + appointments.map(apt => 
-                    '<div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:16px;display:flex;justify-content:space-between;align-items:center;" id="apt-' + apt.id + '">' +
-                        '<div style="flex:1;">' +
-                            '<div style="font-weight:600;color:#111827;font-size:15px;margin-bottom:4px;">' + apt.patient + '</div>' +
-                            '<div style="display:flex;gap:12px;font-size:13px;color:#6b7280;"><span>' + apt.time + '</span><span>• ' + apt.type + '</span></div>' +
-                        '</div>' +
-                        '<div style="display:flex;gap:8px;align-items:center;">' +
-                            '<div id="status-' + apt.id + '" style="min-width:100px;text-align:center;"></div>' +
-                            '<div id="buttons-' + apt.id + '" style="display:flex;gap:8px;">' +
-                                '<button onclick="markAppointmentAttendance(' + apt.id + ',\'attended\')" style="padding:8px 16px;background:#10b981;color:white;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;transition:all 0.2s;" onmouseover="this.style.background=\'#059669\'" onmouseout="this.style.background=\'#10b981\'">✓ Attended</button>' +
-                                '<button onclick="openRescheduleModal(' + apt.id + ',\'' + apt.patient + '\',\'' + apt.date + '\',\'' + apt.time + '\')" style="padding:8px 16px;background:#f59e0b;color:white;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;transition:all 0.2s;" onmouseover="this.style.background=\'#d97706\'" onmouseout="this.style.background=\'#f59e0b\'">🔄 Re-schedule</button>' +
-                            '</div>' +
-                        '</div>' +
-                    '</div>'
-                ).join('') + '</div>';
-                
-                appointments.forEach(apt => {
-                    const savedStatus = localStorage.getItem('apt-status-' + apt.id);
-                    if (savedStatus) updateAppointmentStatus(apt.id, savedStatus);
-                });
-            }
         }
-
-        function markAppointmentAttendance(aptId, status) {
-            localStorage.setItem('apt-status-' + aptId, status);
-            updateAppointmentStatus(aptId, status);
-            updateVisitStats(); // Update stats when attendance is marked
-        }
-
-        function updateAppointmentStatus(aptId, status) {
-            const statusDiv = document.getElementById('status-' + aptId);
-            const buttonsDiv = document.getElementById('buttons-' + aptId);
-            if (status === 'attended') {
-                statusDiv.innerHTML = '<span style="display:inline-block;padding:6px 12px;background:#d1fae5;color:#065f46;border-radius:6px;font-size:13px;font-weight:600;">✓ Attended</span>';
-                buttonsDiv.style.display = 'none';
-            } else if (status === 'rescheduled') {
-                statusDiv.innerHTML = '<span style="display:inline-block;padding:6px 12px;background:#fef3c7;color:#92400e;border-radius:6px;font-size:13px;font-weight:600;">🔄 Rescheduled</span>';
-                buttonsDiv.style.display = 'none';
-            }
-        }
-
-        function updateVisitStats() {
-            console.log('=== Updating Visit Stats ===');
-            const appointments = todayAppointments;
-            console.log('Today\'s Appointments:', appointments.length);
-            
-            let totalAttended = 0;
-            let totalRescheduled = 0;
-            let generalCheckups = 0;
-            let immunizations = 0;
-            let prenatalCare = 0;
-            
-            appointments.forEach(apt => {
-                const storageKey = 'apt-status-' + apt.id;
-                const status = localStorage.getItem(storageKey);
-                console.log('Checking appointment', apt.id, ':', storageKey, '=', status);
-                
-                if (status === 'attended') {
-                    totalAttended++;
-                    
-                    // Count by type
-                    if (apt.type.includes('General Checkup') || apt.type.includes('Checkup')) {
-                        generalCheckups++;
-                    } else if (apt.type.includes('Immunization') || apt.type.includes('Vaccination')) {
-                        immunizations++;
-                    } else if (apt.type.includes('Prenatal')) {
-                        prenatalCare++;
-                    }
-                } else if (status === 'rescheduled') {
-                    totalRescheduled++;
-                }
-            });
-            
-            console.log('Stats - Attended:', totalAttended, 'Rescheduled:', totalRescheduled, 'General:', generalCheckups, 'Immunizations:', immunizations, 'Prenatal:', prenatalCare);
-            
-            document.getElementById('totalVisitsToday').textContent = totalAttended;
-            document.getElementById('totalAbsentToday').textContent = totalRescheduled;
-            document.getElementById('generalCheckupsToday').textContent = generalCheckups;
-            document.getElementById('immunizationsToday').textContent = immunizations;
-            document.getElementById('prenatalCareToday').textContent = prenatalCare;
-        }
-
-        function resetAllAttendance() {
-            if (confirm('Reset all attendance records? This will clear all attendance data and refresh both pages.')) {
-                // Clear all localStorage items starting with 'apt-status-'
-                Object.keys(localStorage).forEach(key => {
-                    if (key.startsWith('apt-status-')) {
-                        localStorage.removeItem(key);
-                    }
-                });
-                // Reload the entire page to show cleared state
-                window.location.reload();
-            }
-        }
-
-        function openRescheduleModal(aptId, patientName, currentDate, currentTime) {
-            document.getElementById('rescheduleAppointmentId').value = aptId;
-            document.getElementById('reschedulePatientName').textContent = 'Patient: ' + patientName;
-            document.getElementById('currentAppointmentInfo').innerHTML = 
-                '<strong>' + currentDate + '</strong><br>' + currentTime;
-            
-            // Show modal
-            const modal = document.getElementById('rescheduleModal');
-            modal.style.display = 'flex';
-        }
-
-        function closeRescheduleModal() {
-            document.getElementById('rescheduleModal').style.display = 'none';
-            document.getElementById('rescheduleForm').reset();
-        }
-
-        // Handle reschedule form submission
-        document.addEventListener('DOMContentLoaded', function() {
-            const rescheduleForm = document.getElementById('rescheduleForm');
-            if (rescheduleForm) {
-                rescheduleForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    
-                    const aptId = document.getElementById('rescheduleAppointmentId').value;
-                    const newDate = document.getElementById('newAppointmentDate').value;
-                    const newTime = document.getElementById('newAppointmentTime').value;
-                    
-                    // Format the time for display
-                    const timeObj = new Date('2000-01-01 ' + newTime);
-                    const formattedTime = timeObj.toLocaleTimeString('en-US', { 
-                        hour: 'numeric', 
-                        minute: '2-digit', 
-                        hour12: true 
-                    });
-                    
-                    // Format the date for display
-                    const dateObj = new Date(newDate);
-                    const formattedDate = dateObj.toLocaleDateString('en-US', { 
-                        year: 'numeric', 
-                        month: 'long', 
-                        day: 'numeric' 
-                    });
-                    
-                    // Send reschedule request to backend
-                    fetch(`/appointments/${aptId}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            appointment_date: newDate,
-                            appointment_time: newTime,
-                            status: 'scheduled'
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success || data.message) {
-                            // Mark as rescheduled in local storage
-                            localStorage.setItem('apt-status-' + aptId, 'rescheduled');
-                            updateAppointmentStatus(aptId, 'rescheduled');
-                            updateVisitStats();
-                            
-                            alert(`Appointment rescheduled successfully!\n\nNew Date: ${formattedDate}\nNew Time: ${formattedTime}`);
-                            closeRescheduleModal();
-                        } else {
-                            alert('Failed to reschedule appointment. Please try again.');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('An error occurred while rescheduling. Please try again.');
-                    });
-                });
-            }
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            // Update current date display
-            const today = new Date();
-            const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            document.getElementById('currentDateDisplay').textContent = today.toLocaleDateString('en-US', options);
-            
-            loadTodayAppointments();
-            updateVisitStats(); // Count and update the stats!
-        });
-
-        // Appointments Calendar Modal Functions
-        let appointmentsCalendarData = {};
-        let currentCalendarMonth = new Date();
-
-        function openAppointmentsCalendar() {
-            document.getElementById('appointmentsCalendarModal').style.display = 'flex';
-            document.getElementById('selectedDateAppointments').style.display = 'none';
-            loadAppointmentsCalendar();
-        }
-
-        function closeAppointmentsCalendar() {
-            document.getElementById('appointmentsCalendarModal').style.display = 'none';
-        }
-
-        function loadAppointmentsCalendar() {
-            fetch('{{ route("appointments.calendar.data") }}')
-                .then(response => response.json())
-                .then(data => {
-                    appointmentsCalendarData = data;
-                    renderAppointmentsCalendar();
-                })
-                .catch(error => {
-                    console.error('Error loading appointments:', error);
-                });
-        }
-
-        function renderAppointmentsCalendar() {
-            const year = currentCalendarMonth.getFullYear();
-            const month = currentCalendarMonth.getMonth();
-            const firstDay = new Date(year, month, 1);
-            const lastDay = new Date(year, month + 1, 0);
-            const startingDayOfWeek = firstDay.getDay();
-            const monthDays = lastDay.getDate();
-
-            // Update header
-            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
-                'July', 'August', 'September', 'October', 'November', 'December'];
-            document.getElementById('calendarMonthYear').textContent = `${monthNames[month]} ${year}`;
-
-            // Generate calendar grid
-            let html = '<div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-top: 20px;">';
-            
-            // Day headers
-            const dayHeaders = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-            dayHeaders.forEach(day => {
-                html += `<div style="text-align: center; font-weight: 600; color: #6b7280; padding: 8px; font-size: 12px;">${day}</div>`;
-            });
-
-            // Empty cells before first day
-            for (let i = 0; i < startingDayOfWeek; i++) {
-                html += '<div style="padding: 12px;"></div>';
-            }
-
-            // Days of month
-            for (let day = 1; day <= monthDays; day++) {
-                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-                const hasAppointments = appointmentsCalendarData[dateStr] && appointmentsCalendarData[dateStr].length > 0;
-                const appointmentCount = hasAppointments ? appointmentsCalendarData[dateStr].length : 0;
-                const isToday = dateStr === new Date().toISOString().split('T')[0];
-                
-                const style = `
-                    padding: 12px;
-                    text-align: center;
-                    border-radius: 8px;
-                    cursor: pointer;
-                    background: ${hasAppointments ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)' : (isToday ? '#f3f4f6' : 'white')};
-                    color: ${hasAppointments ? 'white' : '#374151'};
-                    font-weight: ${hasAppointments ? '700' : (isToday ? '600' : '400')};
-                    border: ${isToday && !hasAppointments ? '2px solid #10b981' : 'none'};
-                    transition: all 0.2s;
-                    position: relative;
-                `;
-                
-                html += `<div style="${style}" onclick="showDateAppointments('${dateStr}')" 
-                    onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                    <div>${day}</div>
-                    ${hasAppointments ? `<div style="font-size: 10px; margin-top: 2px;">${appointmentCount} apt${appointmentCount > 1 ? 's' : ''}</div>` : ''}
-                </div>`;
-            }
-
-            html += '</div>';
-            document.getElementById('calendarGrid').innerHTML = html;
-        }
-
-        function showDateAppointments(dateStr) {
-            const appointments = appointmentsCalendarData[dateStr] || [];
-            const displaySection = document.getElementById('selectedDateAppointments');
-            const contentDiv = document.getElementById('selectedDateAppointmentsContent');
-
-            const date = new Date(dateStr + 'T00:00:00');
-            const formattedDate = date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-            
-            let html = `
-                <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 16px; border-radius: 8px; margin-bottom: 16px;">
-                    <h3 style="margin: 0; font-size: 18px;">${formattedDate}</h3>
-                    <p style="margin: 4px 0 0 0; font-size: 14px; opacity: 0.9;">${appointments.length} appointment${appointments.length > 1 ? 's' : ''}</p>
-                </div>
-            `;
-            
-            if (appointments.length === 0) {
-                html += `
-                    <div style="text-align: center; padding: 40px 20px; color: #6b7280; background: #f9fafb; border-radius: 8px;">
-                        <i class="bi bi-calendar-x" style="font-size: 48px; color: #d1d5db; margin-bottom: 16px;"></i>
-                        <p style="font-size: 16px; margin: 0;">No appointments scheduled for this date</p>
-                    </div>
-                `;
-            } else {
-                html += '<div style="max-height: 400px; overflow-y: auto;">';
-            
-            appointments.forEach(apt => {
-                const statusColors = {
-                    'scheduled': '#10b981',
-                    'completed': '#3b82f6',
-                    'cancelled': '#ef4444',
-                    'no-show': '#f59e0b'
-                };
-                const statusColor = statusColors[apt.status] || '#6b7280';
-                
-                html += `
-                    <div style="background: #f9fafb; padding: 16px; border-radius: 8px; margin-bottom: 12px; border-left: 4px solid ${statusColor};">
-                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
-                            <div style="font-weight: 600; font-size: 16px; color: #111827;">${apt.patient}</div>
-                            <div style="background: ${statusColor}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase;">
-                                ${apt.status}
-                            </div>
-                        </div>
-                        <div style="display: flex; gap: 16px; font-size: 14px; color: #6b7280;">
-                            <div><i class="bi bi-clock"></i> ${apt.time}</div>
-                            <div><i class="bi bi-heart-pulse"></i> ${apt.type}</div>
-                        </div>
-                    </div>
-                `;
-            });
-            
-                html += '</div>';
-            }
-            
-            contentDiv.innerHTML = html;
-            displaySection.style.display = 'block';
-            
-            // Scroll to appointments section smoothly
-            setTimeout(() => {
-                displaySection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }, 100);
-        }
-
-        function changeCalendarMonth(direction) {
-            currentCalendarMonth.setMonth(currentCalendarMonth.getMonth() + direction);
-            renderAppointmentsCalendar();
-            // Hide appointments section when changing months
-            document.getElementById('selectedDateAppointments').style.display = 'none';
-        }
-
-        function closeDateAppointments() {
-            document.getElementById('dateAppointmentsModal').style.display = 'none';
-        }
-
-        // Close modals when clicking outside
-        window.onclick = function(event) {
-            const calModal = document.getElementById('appointmentsCalendarModal');
-            const dateModal = document.getElementById('dateAppointmentsModal');
-            if (event.target === calModal) {
-                closeAppointmentsCalendar();
-            }
-            if (event.target === dateModal) {
-                closeDateAppointments();
-            }
-        }
-    </script>
-
-    <!-- Appointments Calendar Modal -->
-    <div id="appointmentsCalendarModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10000; align-items: center; justify-content: center; padding: 20px;">
-        <div style="background: white; border-radius: 16px; max-width: 800px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);">
-            <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 24px; border-radius: 16px 16px 0 0; display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                    <h2 style="margin: 0; font-size: 24px; font-weight: 700;">📅 Appointments Calendar</h2>
-                    <p style="margin: 4px 0 0 0; font-size: 14px; opacity: 0.9;">View appointments by date</p>
-                </div>
-                <button onclick="closeAppointmentsCalendar()" style="background: rgba(255,255,255,0.2); border: none; color: white; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">×</button>
-            </div>
-            <div style="padding: 24px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                    <button onclick="changeCalendarMonth(-1)" style="background: #f3f4f6; border: none; color: #374151; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.2s;" onmouseover="this.style.background='#e5e7eb'" onmouseout="this.style.background='#f3f4f6'">
-                        ← Previous
-                    </button>
-                    <h3 id="calendarMonthYear" style="margin: 0; font-size: 18px; font-weight: 700; color: #111827;"></h3>
-                    <button onclick="changeCalendarMonth(1)" style="background: #f3f4f6; border: none; color: #374151; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.2s;" onmouseover="this.style.background='#e5e7eb'" onmouseout="this.style.background='#f3f4f6'">
-                        Next →
-                    </button>
-                </div>
-                <div id="calendarGrid"></div>
-                <div style="margin-top: 20px; padding: 16px; background: #f9fafb; border-radius: 8px; display: flex; gap: 16px; align-items: center; font-size: 13px; color: #6b7280;">
-                    <div style="display: flex; align-items: center; gap: 6px;">
-                        <div style="width: 16px; height: 16px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 4px;"></div>
-                        <span>Has Appointments</span>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 6px;">
-                        <div style="width: 16px; height: 16px; background: white; border: 2px solid #10b981; border-radius: 4px;"></div>
-                        <span>Today</span>
-                    </div>
-                </div>
-                
-                <!-- Appointments Display Section -->
-                <div id="selectedDateAppointments" style="margin-top: 24px; display: none;">
-                    <div style="border-top: 2px solid #e5e7eb; padding-top: 20px;">
-                        <div id="selectedDateAppointmentsContent"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Date Appointments Details Modal -->
-    <div id="dateAppointmentsModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10001; align-items: center; justify-content: center; padding: 20px;">
-        <div style="background: white; border-radius: 16px; max-width: 600px; width: 100%; max-height: 90vh; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);">
-            <div style="padding: 24px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <button onclick="closeDateAppointments(); openAppointmentsCalendar();" style="background: #f3f4f6; border: none; color: #374151; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.2s;" onmouseover="this.style.background='#e5e7eb'" onmouseout="this.style.background='#f3f4f6'">
-                        ← Back to Calendar
-                    </button>
-                    <button onclick="closeDateAppointments()" style="background: transparent; border: none; color: #6b7280; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 24px; transition: all 0.2s;" onmouseover="this.style.background='#f3f4f6'; this.style.color='#111827'" onmouseout="this.style.background='transparent'; this.style.color='#6b7280'">×</button>
-                </div>
-                <div id="dateAppointmentsContent"></div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- CALENDAR SYNCHRONIZATION SCRIPT - UNIFIED WITH DASHBOARD -->
-    <script>
-    (function() {
-        // Get appointments from backend (same structure as dashboard)
-        const VISITS_APPOINTMENTS = @json($appointments ?? []);
-        let visitsCurrentDate = new Date();
-        
-        console.log('VISITS PAGE: Appointments loaded:', VISITS_APPOINTMENTS);
-        
-        // Open calendar modal
-        window.openAppointmentsCalendar = function() {
-            document.getElementById('visitsCalendarModal').style.display = 'flex';
-            renderVisitsCalendar();
-        };
-        
-        // Close calendar modal
-        window.closeCalendarModal = function(event) {
-            if (!event || event.target.id === 'visitsCalendarModal') {
-                document.getElementById('visitsCalendarModal').style.display = 'none';
-                document.getElementById('visitsSelectedDateInfo').style.display = 'none';
-            }
-        };
-        
-        // Change month
-        window.visitsChangeMonth = function(delta) {
-            visitsCurrentDate.setMonth(visitsCurrentDate.getMonth() + delta);
-            renderVisitsCalendar();
-        };
-        
-        // Select a date
-        window.visitsSelectDate = function(dateStr) {
-            const appointments = VISITS_APPOINTMENTS[dateStr] || [];
-            const dateObj = new Date(dateStr + 'T00:00:00');
-            const formatted = dateObj.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
-            
-            document.getElementById('visitsSelectedDateInfo').style.display = 'block';
-            document.getElementById('visitsSelectedDateTitle').textContent = formatted;
-            
-            const list = document.getElementById('visitsAppointmentsList');
-            
-            if (appointments.length === 0) {
-                list.innerHTML = '<div style="text-align: center; padding: 32px; color: #9ca3af;"><i class="bi bi-calendar-x" style="font-size: 48px; margin-bottom: 12px;"></i><div style="font-size: 16px; font-weight: 600;">No appointments scheduled</div></div>';
-            } else {
-                list.innerHTML = '<div style="padding: 12px; background: #10b981; color: white; border-radius: 6px; margin-bottom: 16px; font-weight: 600;"><i class="bi bi-check-circle"></i> ' + appointments.length + ' appointment(s) scheduled</div>';
-                
-                appointments.forEach(function(apt) {
-                    // Check localStorage for attendance status
-                    const statusKey = 'apt-status-' + apt.id;
-                    const status = localStorage.getItem(statusKey);
-                    
-                    const div = document.createElement('div');
-                    div.style.cssText = 'padding: 16px; background: white; border-radius: 8px; margin-bottom: 12px; border-left: 4px solid ' + (status === 'attended' ? '#10b981' : status === 'rescheduled' ? '#f59e0b' : '#3b82f6') + '; box-shadow: 0 1px 3px rgba(0,0,0,0.1);';
-                    
-                    let statusBadge = '';
-                    if (status === 'attended') {
-                        statusBadge = '<div style="background: #d1fae5; color: #065f46; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase;">✓ Attended</div>';
-                    } else if (status === 'rescheduled') {
-                        statusBadge = '<div style="background: #fef3c7; color: #92400e; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase;">🔄 Rescheduled</div>';
-                    }
-                    
-                    div.innerHTML = '' +
-                        '<div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">' +
-                        '<div style="font-size: 16px; font-weight: 700; color: #111827;"><i class="bi bi-person-circle" style="color: #10b981; margin-right: 6px;"></i>' + apt.patient + '</div>' +
-                        '<div style="display: flex; gap: 8px;">' +
-                        statusBadge +
-                        '<div style="background: #dbeafe; color: #1d4ed8; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase;">' + apt.type + '</div>' +
-                        '</div>' +
-                        '</div>' +
-                        '<div style="font-size: 14px; color: #6b7280; margin-bottom: 4px;"><i class="bi bi-clock" style="margin-right: 6px;"></i><strong>' + apt.time + '</strong></div>' +
-                        (apt.status ? '<div style="font-size: 13px; color: #6b7280; margin-bottom: 4px;"><i class="bi bi-info-circle" style="margin-right: 6px;"></i>Status: <span style="text-transform: capitalize; font-weight: 600;">' + apt.status + '</span></div>' : '') +
-                        (apt.notes ? '<div style="margin-top: 12px; padding: 12px; background: #fef3c7; border-radius: 6px; font-size: 13px; color: #78350f;"><i class="bi bi-chat-left-text" style="margin-right: 6px;"></i>' + apt.notes + '</div>' : '');
-                    list.appendChild(div);
-                });
-            }
-        };
-        
-        // Render calendar
-        function renderVisitsCalendar() {
-            const year = visitsCurrentDate.getFullYear();
-            const month = visitsCurrentDate.getMonth();
-            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-            
-            document.getElementById('visitsCurrentMonth').textContent = months[month] + ' ' + year;
-            
-            const firstDay = new Date(year, month, 1).getDay();
-            const daysInMonth = new Date(year, month + 1, 0).getDate();
-            const daysInPrevMonth = new Date(year, month, 0).getDate();
-            const today = new Date();
-            
-            const container = document.getElementById('visitsCalendarDays');
-            container.innerHTML = '';
-            
-            // Previous month days
-            for (let i = firstDay - 1; i >= 0; i--) {
-                const day = daysInPrevMonth - i;
-                const div = document.createElement('div');
-                div.style.cssText = 'padding: 12px 8px; text-align: center; border-radius: 6px; color: #d1d5db; cursor: default;';
-                div.textContent = day;
-                container.appendChild(div);
-            }
-            
-            // Current month days
-            for (let day = 1; day <= daysInMonth; day++) {
-                const dateStr = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(day).padStart(2, '0');
-                const hasApts = VISITS_APPOINTMENTS[dateStr] && VISITS_APPOINTMENTS[dateStr].length > 0;
-                const isToday = today.getFullYear() === year && today.getMonth() === month && today.getDate() === day;
-                
-                const div = document.createElement('div');
-                div.style.cssText = 'padding: 12px 8px; text-align: center; border-radius: 6px; cursor: pointer; transition: all 0.2s; position: relative;' +
-                    (isToday ? 'background: #10b981; color: white; font-weight: 700;' : 'background: #f3f4f6; color: #111827;') +
-                    (hasApts && !isToday ? 'border: 2px solid #10b981; font-weight: 600;' : '');
-                
-                div.textContent = day;
-                
-                if (hasApts) {
-                    const dot = document.createElement('div');
-                    dot.style.cssText = 'position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); width: 6px; height: 6px; background: ' + (isToday ? 'white' : '#10b981') + '; border-radius: 50%;';
-                    div.appendChild(dot);
-                }
-                
-                div.onclick = (function(ds) {
-                    return function() {
-                        window.visitsSelectDate(ds);
-                    };
-                })(dateStr);
-                
-                div.onmouseover = function() {
-                    if (!isToday) this.style.background = '#e5e7eb';
-                };
-                div.onmouseout = function() {
-                    if (!isToday) this.style.background = hasApts ? '#f3f4f6' : '#f3f4f6';
-                };
-                
-                container.appendChild(div);
-            }
-            
-            // Next month days
-            const totalCells = firstDay + daysInMonth;
-            const remainingCells = Math.ceil(totalCells / 7) * 7 - totalCells;
-            for (let day = 1; day <= remainingCells; day++) {
-                const div = document.createElement('div');
-                div.style.cssText = 'padding: 12px 8px; text-align: center; border-radius: 6px; color: #d1d5db; cursor: default;';
-                div.textContent = day;
-                container.appendChild(div);
-            }
-            
-            document.getElementById('visitsSelectedDateInfo').style.display = 'none';
-        }
-        
-        // Listen for localStorage changes (sync with dashboard)
-        window.addEventListener('storage', function(e) {
-            if (e.key && e.key.startsWith('apt-status-')) {
-                console.log('VISITS PAGE: Detected attendance change from dashboard, refreshing...');
-                // Re-render if calendar is open
-                if (document.getElementById('visitsCalendarModal').style.display === 'flex') {
-                    const selectedDate = document.getElementById('visitsSelectedDateTitle').textContent;
-                    if (selectedDate) {
-                        renderVisitsCalendar();
-                    }
-                }
-                // Refresh today's appointments list
-                updateVisitStats();
-                renderAppointmentAttendance();
-            }
-        });
-        
-        // Notify dashboard of changes
-        window.addEventListener('beforeunload', function() {
-            localStorage.setItem('visits-page-updated', Date.now().toString());
-        });
-    })();
     </script>
 </body>
 </html>

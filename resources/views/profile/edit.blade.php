@@ -285,7 +285,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>✏️ Edit Profile</h1>
+            <h1><i class="bi bi-pencil"></i> Edit Profile</h1>
             <a href="{{ route('profile.show') }}" class="back-btn">← Back to Profile</a>
         </div>
 
@@ -316,7 +316,7 @@
                         <div class="profile-picture-actions">
                             <div class="file-input-wrapper">
                                 <input type="file" name="profile_picture" id="profilePicture" accept="image/*" onchange="previewImage(event)">
-                                <label for="profilePicture" class="file-input-label">📁 Choose Picture</label>
+                                <label for="profilePicture" class="file-input-label"><i class="bi bi-folder"></i> Choose Picture</label>
                             </div>
                             <div class="file-name" id="fileName">No file chosen</div>
                             @if($user->profile_picture)
@@ -360,7 +360,7 @@
 
                 <!-- Password Section -->
                 <div class="section">
-                    <h2>🔐 Change Password</h2>
+                    <h2><i class="bi bi-lock"></i> Change Password</h2>
                     <p style="color: #6b7280; font-size: 14px; margin-bottom: 20px;">Leave blank if you don't want to change your password</p>
                     <div class="form-grid">
                         <div class="form-group">
@@ -390,7 +390,7 @@
                 <!-- Action Buttons -->
                 <div class="actions">
                     <a href="{{ route('profile.show') }}" class="btn btn-secondary">Cancel</a>
-                    <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Save Changes</button>
                 </div>
             </form>
         </div>

@@ -106,6 +106,11 @@ class AdminController extends Controller
             'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        // Prevent users from changing their own role
+        if ($user->id === Auth::id()) {
+            $validated['role'] = $user->role;
+        }
+
         $user->update([
             'name' => $validated['name'],
             'username' => $validated['username'],

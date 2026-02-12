@@ -293,15 +293,6 @@
                 </div>
             </div>
 
-            <div class="form-row full">
-                <div class="form-group">
-                    <label>Chief Complaint</label>
-                    <textarea name="chief_complaint">{{ old('chief_complaint') }}</textarea>
-                </div>
-            </div>
-
-            <!-- Service-Specific Sections -->
-            
             <!-- Immunization Section -->
             <div id="immunizationSection" class="service-section">
                 <h3><i class="bi bi-shield-fill-check"></i> Immunization Details</h3>
@@ -386,7 +377,7 @@
 
             <!-- Family Planning Section -->
             <div id="familyPlanningSection" class="service-section">
-                <h3>👨‍👩‍👧 Family Planning Details</h3>
+                <h3><i class="bi bi-people"></i> Family Planning Details</h3>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Method Provided <span class="required">*</span></label>
@@ -438,6 +429,13 @@
                             <option value="Emergency">Emergency</option>
                         </select>
                     </div>
+                </div>
+            </div>
+
+            <div class="form-row full">
+                <div class="form-group">
+                    <label>Chief Complaint</label>
+                    <textarea name="chief_complaint">{{ old('chief_complaint') }}</textarea>
                 </div>
             </div>
 

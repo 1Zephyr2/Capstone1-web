@@ -67,19 +67,7 @@
         .header-logo:hover {
             opacity: 0.8;
         }
-        .header-logo-icon {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, #047857 0%, #059669 100%);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            font-weight: bold;
-            color: white;
-            box-shadow: 0 2px 6px rgba(4, 120, 87, 0.3);
-        }
+
         .header-logo-text {
             font-size: 18px;
             font-weight: 600;
@@ -276,7 +264,6 @@
     <div class="container">
         <div class="header-top">
             <a href="{{ route('dashboard') }}" class="header-logo">
-                <div class="header-logo-icon">V</div>
                 <img src="/images/systemlogo.png" alt="CareSync" style="height: 35px; object-fit: contain;">
             </a>
             <button onclick="goBack()" class="btn-back">← Back</button>

@@ -22,6 +22,15 @@ class DatabaseSeeder extends Seeder
             'username' => 'admin',
             'email' => 'admin@caresync.local',
             'password' => bcrypt('password123'),
+            'role' => 'admin',
+        ]);
+
+        User::create([
+            'name' => 'Staff User',
+            'username' => 'staff',
+            'email' => 'staff@caresync.local',
+            'password' => bcrypt('password123'),
+            'role' => 'staff',
         ]);
 
         // Seed demo patient data

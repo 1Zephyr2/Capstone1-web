@@ -56,8 +56,40 @@ class AppointmentController extends Controller
     {
         $patientId = $request->get('patient_id');
         $patient = $patientId ? Patient::find($patientId) : null;
+        $patients = Patient::orderBy('last_name')
+            ->orderBy('first_name')
+            ->get(['id', 'patient_id', 'first_name', 'middle_name', 'last_name', 'birthdate', 'sex', 'contact_number']);
 
-        return view('appointments.book', compact('patient'));
+        return view('appointments.book', compact('patient', 'patients'));
+    }
+
+    /**
+     * Check for appointment conflicts for a patient on a given date
+     */
+    public function conflicts(Request $request)
+    {
+        $validated = $request->validate([
+            'patient_id' => 'required|exists:patients,id',
+            'date' => 'required|date',
+        ]);
+
+        $appointments = Appointment::where('patient_id', $validated['patient_id'])
+            ->where('appointment_date', $validated['date'])
+            ->whereNotIn('status', ['cancelled', 'no-show'])
+            ->orderBy('appointment_time')
+            ->get(['appointment_time', 'status']);
+
+        $conflicts = $appointments->map(function ($appointment) {
+            return [
+                'time' => \Carbon\Carbon::parse($appointment->appointment_time)->format('h:i A'),
+                'status' => $appointment->status,
+            ];
+        });
+
+        return response()->json([
+            'count' => $conflicts->count(),
+            'appointments' => $conflicts,
+        ]);
     }
 
     /**

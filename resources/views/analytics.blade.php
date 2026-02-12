@@ -381,7 +381,7 @@
                 <div class="metric-card">
                     <div class="metric-label">Active Patients (30 days)</div>
                     <div class="metric-value">{{ number_format($patientActivityMetrics['patients_with_recent_visits']) }}</div>
-                    <span class="metric-trend trend-up">{{ round(($patientActivityMetrics['patients_with_recent_visits'] / $metrics['total_patients']) * 100, 1) }}% of total</span>
+                    <span class="metric-trend trend-up">{{ $metrics['total_patients'] > 0 ? round(($patientActivityMetrics['patients_with_recent_visits'] / $metrics['total_patients']) * 100, 1) : 0 }}% of total</span>
                 </div>
 
                 <div class="metric-card">
@@ -407,7 +407,7 @@
 
             <div class="insight-item">
                 <h4><i class="bi bi-people-fill"></i> Patient Visit Patterns</h4>
-                <p>Out of <strong>{{ number_format($metrics['total_patients']) }} total patients</strong>, <strong>{{ number_format($patientActivityMetrics['patients_with_recent_visits']) }} patients ({{ round(($patientActivityMetrics['patients_with_recent_visits'] / $metrics['total_patients']) * 100, 1) }}%) have visited in the last 30 days</strong>. Meanwhile, <strong>{{ number_format($patientActivityMetrics['inactive_patients']) }} patients</strong> haven't visited in over 90 days and may need follow-up contact.</p>
+                <p>Out of <strong>{{ number_format($metrics['total_patients']) }} total patients</strong>, <strong>{{ number_format($patientActivityMetrics['patients_with_recent_visits']) }} patients ({{ $metrics['total_patients'] > 0 ? round(($patientActivityMetrics['patients_with_recent_visits'] / $metrics['total_patients']) * 100, 1) : 0 }}%) have visited in the last 30 days</strong>. Meanwhile, <strong>{{ number_format($patientActivityMetrics['inactive_patients']) }} patients</strong> haven't visited in over 90 days and may need follow-up contact.</p>
             </div>
 
             @if($patientActivityMetrics['at_risk_patients'] > 0)
@@ -420,7 +420,7 @@
             @if($patientActivityMetrics['never_visited'] > 0)
             <div class="insight-item">
                 <h4><i class="bi bi-clipboard-data"></i> Never Visited Patients</h4>
-                <p><strong>{{ number_format($patientActivityMetrics['never_visited']) }} patients ({{ round(($patientActivityMetrics['never_visited'] / $metrics['total_patients']) * 100, 1) }}%)</strong> are registered but have never visited the health center. These may be pre-registered patients or those who registered but didn't complete their first visit. Follow up to confirm their records and encourage first visit.</p>
+                <p><strong>{{ number_format($patientActivityMetrics['never_visited']) }} patients ({{ $metrics['total_patients'] > 0 ? round(($patientActivityMetrics['never_visited'] / $metrics['total_patients']) * 100, 1) : 0 }}%)</strong> are registered but have never visited the health center. These may be pre-registered patients or those who registered but didn't complete their first visit. Follow up to confirm their records and encourage first visit.</p>
             </div>
             @endif
 
@@ -476,7 +476,7 @@
 
                 <!-- Gender Distribution -->
                 <div class="chart-card">
-                    <h3>⚧ Gender Distribution</h3>
+                    <h3><i class="bi bi-person-badge"></i> Gender Distribution</h3>
                     <div class="chart-container">
                         <canvas id="genderDistributionChart"></canvas>
                     </div>

@@ -213,7 +213,7 @@
         .main-content {
             flex: 1;
             margin-left: 260px;
-            padding: 32px;
+            padding: 20px;
         }
 
         .form-container {
@@ -222,34 +222,35 @@
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             border: 1px solid #e2e8f0;
             width: 100%;
-            max-width: 800px;
+            max-width: 1200px;
+            margin: 0 auto;
             overflow: hidden;
         }
 
         .form-header {
             background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
             color: white;
-            padding: 32px;
+            padding: 20px;
             text-align: center;
         }
 
         .form-header h1 {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .form-header p {
             opacity: 0.9;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .form-body {
-            padding: 32px;
+            padding: 24px;
         }
 
         .form-group {
-            margin-bottom: 24px;
+            margin-bottom: 16px;
         }
 
         .form-label {
@@ -266,7 +267,7 @@
 
         .form-input {
             width: 100%;
-            padding: 12px 16px;
+            padding: 10px 14px;
             border: 1px solid #e2e8f0;
             border-radius: 8px;
             font-size: 14px;
@@ -281,7 +282,7 @@
 
         .form-select {
             width: 100%;
-            padding: 12px 16px;
+            padding: 10px 14px;
             border: 1px solid #e2e8f0;
             border-radius: 8px;
             font-size: 14px;
@@ -295,6 +296,12 @@
             box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
         }
 
+        .form-select:disabled {
+            background: #f1f5f9;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
         .error-message {
             color: #dc2626;
             font-size: 12px;
@@ -304,7 +311,7 @@
         .form-actions {
             display: flex;
             gap: 12px;
-            margin-top: 32px;
+            margin-top: 20px;
         }
 
         .btn {
@@ -342,9 +349,9 @@
         }
 
         .alert {
-            padding: 16px;
+            padding: 12px;
             border-radius: 8px;
-            margin-bottom: 24px;
+            margin-bottom: 16px;
         }
 
         .alert.error {
@@ -361,7 +368,7 @@
 
         .divider {
             border-top: 1px solid #e2e8f0;
-            margin: 32px 0;
+            margin: 20px 0;
         }
 
         .section-title {
@@ -370,10 +377,88 @@
             color: #1e293b;
             margin-bottom: 16px;
         }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-grid-full {
+            grid-column: 1 / -1;
+        }
     </style>
 </head>
 <body>
-    <div class="form-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <a href="{{ route('admin.dashboard') }}" class="logo-container">
+                <div class="logo-icon">
+                    <i class="bi bi-shield-lock"></i>
+                </div>
+                <div class="logo-text">CareSync</div>
+            </a>
+            <div class="sidebar-subtitle">ADMIN PANEL</div>
+        </div>
+
+        <nav class="sidebar-menu">
+            <div class="menu-section">
+                <div class="menu-label">MAIN</div>
+                <a href="{{ route('admin.dashboard') }}" class="menu-item">
+                    <span class="menu-icon"><i class="bi bi-speedometer2"></i></span>
+                    <span class="menu-text">Dashboard</span>
+                </a>
+                <a href="{{ route('admin.users.index') }}" class="menu-item active">
+                    <span class="menu-icon"><i class="bi bi-people"></i></span>
+                    <span class="menu-text">User Management</span>
+                </a>
+            </div>
+
+            <div class="menu-section">
+                <div class="menu-label">SYSTEM</div>
+                <a href="{{ route('admin.settings') }}" class="menu-item">
+                    <span class="menu-icon"><i class="bi bi-gear"></i></span>
+                    <span class="menu-text">Settings</span>
+                </a>
+                <a href="{{ route('reports.index') }}" class="menu-item">
+                    <span class="menu-icon"><i class="bi bi-file-earmark-bar-graph"></i></span>
+                    <span class="menu-text">Reports</span>
+                </a>
+            </div>
+        </nav>
+
+        <div class="user-section">
+            <div class="user-info-sidebar">
+                @if(auth()->user()->profile_picture)
+                    <div class="user-avatar-sidebar">
+                        <img src="{{ asset('storage/' . auth()->user()->profile_picture) }}" alt="{{ auth()->user()->name }}">
+                    </div>
+                @else
+                    <div class="user-avatar-sidebar">
+                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                    </div>
+                @endif
+                <div class="user-details-sidebar">
+                    <div class="user-name-sidebar">{{ auth()->user()->name }}</div>
+                    <div class="user-role-sidebar">Administrator</div>
+                </div>
+            </div>
+            <a href="{{ route('profile.show') }}" class="logout-btn-sidebar" style="text-decoration: none; margin-bottom: 8px;">
+                <i class="bi bi-person-circle"></i> My Profile
+            </a>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="logout-btn-sidebar">
+                    <i class="bi bi-box-arrow-right"></i> Logout
+                </button>
+            </form>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="form-container">
         <div class="form-header">
             <h1><i class="bi bi-pencil-square"></i> Edit User</h1>
             <p>Update user information and settings</p>
@@ -397,93 +482,102 @@
 
                 <div class="section-title">Basic Information</div>
 
-                <div class="form-group">
-                    <label class="form-label">
-                        Full Name <span class="required">*</span>
-                    </label>
-                    <input 
-                        type="text" 
-                        name="name" 
-                        class="form-input" 
-                        value="{{ old('name', $user->name) }}" 
-                        required
-                        placeholder="Enter full name"
-                    >
-                    @error('name')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">
-                        Username <span class="required">*</span>
-                    </label>
-                    <input 
-                        type="text" 
-                        name="username" 
-                        class="form-input" 
-                        value="{{ old('username', $user->username) }}" 
-                        required
-                        placeholder="Enter username"
-                    >
-                    <div class="help-text">Used for logging in to the system</div>
-                    @error('username')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">
-                        Email <span class="required">*</span>
-                    </label>
-                    <input 
-                        type="email" 
-                        name="email" 
-                        class="form-input" 
-                        value="{{ old('email', $user->email) }}" 
-                        required
-                        placeholder="Enter email address"
-                    >
-                    @error('email')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">
-                        Phone Number
-                    </label>
-                    <input 
-                        type="text" 
-                        name="phone" 
-                        class="form-input" 
-                        value="{{ old('phone', $user->phone) }}" 
-                        placeholder="Enter phone number"
-                    >
-                    @error('phone')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">
-                        Role <span class="required">*</span>
-                    </label>
-                    <select name="role" class="form-select" required>
-                        <option value="staff" {{ old('role', $user->role) === 'staff' ? 'selected' : '' }}>
-                            Staff Member
-                        </option>
-                        <option value="admin" {{ old('role', $user->role) === 'admin' ? 'selected' : '' }}>
-                            Administrator
-                        </option>
-                    </select>
-                    <div class="help-text">
-                        <strong>Staff Member:</strong> Can manage patients and medical records<br>
-                        <strong>Administrator:</strong> Can manage users and system settings
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">
+                            Full Name <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            name="name" 
+                            class="form-input" 
+                            value="{{ old('name', $user->name) }}" 
+                            required
+                            placeholder="Enter full name"
+                        >
+                        @error('name')
+                            <div class="error-message">{{ $message }}</div>
+                        @enderror
                     </div>
-                    @error('role')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Username <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            name="username" 
+                            class="form-input" 
+                            value="{{ old('username', $user->username) }}" 
+                            required
+                            placeholder="Enter username"
+                        >
+                        <div class="help-text">Used for logging in to the system</div>
+                        @error('username')
+                            <div class="error-message">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Email <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="email" 
+                            name="email" 
+                            class="form-input" 
+                            value="{{ old('email', $user->email) }}" 
+                            required
+                            placeholder="Enter email address"
+                        >
+                        @error('email')
+                            <div class="error-message">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Phone Number
+                        </label>
+                        <input 
+                            type="text" 
+                            name="phone" 
+                            class="form-input" 
+                            value="{{ old('phone', $user->phone) }}" 
+                            placeholder="Enter phone number"
+                        >
+                        @error('phone')
+                            <div class="error-message">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group form-grid-full">
+                        <label class="form-label">
+                            Role <span class="required">*</span>
+                        </label>
+                        <select name="role" class="form-select" required {{ $user->id === auth()->id() ? 'disabled' : '' }}>
+                            <option value="staff" {{ old('role', $user->role) === 'staff' ? 'selected' : '' }}>
+                                Staff Member
+                            </option>
+                            <option value="admin" {{ old('role', $user->role) === 'admin' ? 'selected' : '' }}>
+                                Administrator
+                            </option>
+                        </select>
+                        @if($user->id === auth()->id())
+                            <input type="hidden" name="role" value="{{ $user->role }}">
+                            <div class="help-text">
+                                <strong>Note:</strong> You cannot change your own role. This prevents accidental loss of admin access.
+                            </div>
+                        @else
+                            <div class="help-text">
+                                <strong>Staff Member:</strong> Can manage patients and medical records | 
+                                <strong>Administrator:</strong> Can manage users and system settings
+                            </div>
+                        @endif
+                        @error('role')
+                            <div class="error-message">{{ $message }}</div>
+                        @enderror
+                    </div>
                 </div>
 
                 <div class="divider"></div>
@@ -491,32 +585,34 @@
                 <div class="section-title">Change Password (Optional)</div>
                 <div class="help-text" style="margin-bottom: 16px;">Leave blank to keep current password</div>
 
-                <div class="form-group">
-                    <label class="form-label">
-                        New Password
-                    </label>
-                    <input 
-                        type="password" 
-                        name="password" 
-                        class="form-input" 
-                        placeholder="Enter new password"
-                    >
-                    <div class="help-text">Must be at least 8 characters</div>
-                    @error('password')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">
+                            New Password
+                        </label>
+                        <input 
+                            type="password" 
+                            name="password" 
+                            class="form-input" 
+                            placeholder="Enter new password"
+                        >
+                        <div class="help-text">Must be at least 8 characters</div>
+                        @error('password')
+                            <div class="error-message">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-                <div class="form-group">
-                    <label class="form-label">
-                        Confirm New Password
-                    </label>
-                    <input 
-                        type="password" 
-                        name="password_confirmation" 
-                        class="form-input" 
-                        placeholder="Confirm new password"
-                    >
+                    <div class="form-group">
+                        <label class="form-label">
+                            Confirm New Password
+                        </label>
+                        <input 
+                            type="password" 
+                            name="password_confirmation" 
+                            class="form-input" 
+                            placeholder="Confirm new password"
+                        >
+                    </div>
                 </div>
 
                 <div class="form-actions">
@@ -529,6 +625,7 @@
                 </div>
             </form>
         </div>
+    </div>
     </div>
 </body>
 </html>

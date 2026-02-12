@@ -74,12 +74,12 @@ Route::middleware('auth')->group(function () {
         
         // Automation Support (Admin only)
         Route::get('/automation-support', [\App\Http\Controllers\AutomationController::class, 'index'])->name('automation.support');
-        
-        // Patient Import (Admin only)
-        Route::get('/patients/import/form', [PatientController::class, 'showImportForm'])->name('patients.import.form');
-        Route::post('/patients/import', [PatientController::class, 'import'])->name('patients.import');
-        Route::get('/patients/import/template', [PatientController::class, 'downloadTemplate'])->name('patients.download-template');
     });
+
+    // Patient Import (available to all authenticated users)
+    Route::get('/patients/import/form', [PatientController::class, 'showImportForm'])->name('patients.import.form');
+    Route::post('/patients/import', [PatientController::class, 'import'])->name('patients.import');
+    Route::get('/patients/import/template', [PatientController::class, 'downloadTemplate'])->name('patients.download-template');
     
     // Legacy routes (keeping for compatibility)
     Route::get('/patients/new', function () {
@@ -108,6 +108,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('appointments', AppointmentController::class);
     Route::get('/appointments/calendar/data', [AppointmentController::class, 'calendar'])->name('appointments.calendar.data');
     Route::get('/appointments-today', [AppointmentController::class, 'today'])->name('appointments.today');
+    Route::get('/appointments/conflicts', [AppointmentController::class, 'conflicts'])->name('appointments.conflicts');
     
     // Legacy appointment routes for backward compatibility
     Route::get('/appointments/book', [AppointmentController::class, 'create'])->name('appointments.book');
