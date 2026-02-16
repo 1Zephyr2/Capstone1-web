@@ -268,11 +268,11 @@
             @endif
         </div>
 
-        <!-- Immunizations -->
-        @if($patient->immunizations->count() > 0)
+        <!-- Vaccinations -->
+        @if($patient->vaccinations->count() > 0)
         <div class="section">
             <div class="section-header">
-                <h2>Immunization Records</h2>
+                <h2>Vaccination Records</h2>
             </div>
             <table>
                 <thead>
@@ -285,7 +285,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($patient->immunizations as $imm)
+                    @foreach($patient->vaccinations as $imm)
                     <tr>
                         <td>{{ $imm->vaccine_name }}</td>
                         <td>{{ $imm->dose_number ? '#' . $imm->dose_number : '-' }}</td>
@@ -305,11 +305,11 @@
         </div>
         @endif
 
-        <!-- Prenatal Records (for female patients) -->
-        @if($patient->prenatalRecords->count() > 0)
+        <!-- Breeding Records -->
+        @if($patient->breedingRecords->count() > 0)
         <div class="section">
             <div class="section-header">
-                <h2>Prenatal Care Records</h2>
+                <h2>Breeding Records</h2>
             </div>
             <table>
                 <thead>
@@ -323,7 +323,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($patient->prenatalRecords as $prenatal)
+                    @foreach($patient->breedingRecords as $prenatal)
                     <tr>
                         <td>{{ $prenatal->visit_date->format('M d, Y') }}</td>
                         <td>{{ $prenatal->gestational_age_weeks }} weeks</td>

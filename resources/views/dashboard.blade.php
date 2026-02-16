@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - CareSync</title>
+    <title>Dashboard - VetCare</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
@@ -2166,10 +2166,10 @@
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <a href="{{ route('dashboard') }}" class="logo-container">
-                <img src="/images/systemlogo.png" alt="CareSync" style="height: 55px; object-fit: contain; display: block; margin: 0;">
+                <img src="/images/systemlogo.png" alt="VetCare" style="height: 55px; object-fit: contain; display: block; margin: 0;">
             </a>
-            <div style="font-size: 18px; font-weight: 600; color: white; margin: 0; line-height: 1.2;">CareSync</div>
-            <div class="sidebar-subtitle" style="margin: 0; line-height: 1.2;">Health Center System</div>
+            <div style="font-size: 18px; font-weight: 600; color: white; margin: 0; line-height: 1.2;">VetCare</div>
+            <div class="sidebar-subtitle" style="margin: 0; line-height: 1.2;">Veterinary Clinic System</div>
         </div>
 
         <nav class="sidebar-menu">
@@ -2182,10 +2182,10 @@
             </div>
 
             <div class="menu-section">
-                <div class="menu-label">Patient Management</div>
+                <div class="menu-label">Pet Management</div>
                 <a href="{{ route('patients.index') }}" class="menu-item">
-                    <span class="menu-icon"><i class="bi bi-people-fill"></i></span>
-                    <span class="menu-text">Patient List</span>
+                    <span class="menu-icon"><i class="bi bi-heart-fill"></i></span>
+                    <span class="menu-text">Pet List</span>
                 </a>
                 <a href="{{ route('appointments.index') }}" class="menu-item">
                     <span class="menu-icon"><i class="bi bi-calendar-check"></i></span>
@@ -2257,8 +2257,8 @@
                 <div class="action-card" onclick="openModal('newPatient')" style="cursor: pointer;">
                     <div class="action-icon blue"><i class="bi bi-clipboard2-check"></i></div>
                     <div class="action-details">
-                        <h3>New Patient Record</h3>
-                        <p>Create medical record</p>
+                        <h3>New Pet Record</h3>
+                        <p>Create veterinary record</p>
                     </div>
                 </div>
 
@@ -2271,10 +2271,10 @@
                 </div>
 
                 <div class="action-card" onclick="openModal('patientSearch')" style="cursor: pointer;">
-                    <div class="action-icon purple"><i class="bi bi-people-fill"></i></div>
+                    <div class="action-icon purple"><i class="bi bi-heart-fill"></i></div>
                     <div class="action-details">
-                        <h3>Patient Search</h3>
-                        <p>Find patient records</p>
+                        <h3>Pet Search</h3>
+                        <p>Find pet records</p>
                     </div>
                 </div>
             </div>
@@ -2312,8 +2312,8 @@
                 <div class="stats-left-column">
                     <div class="stat-card" onclick="openModal('todayPatients')" style="cursor: pointer;">
                         <div class="stat-header">
-                            <span class="stat-title">Today's Patients</span>
-                            <div class="stat-icon" style="background: #ECFDF5; color: #10B981;"><i class="bi bi-people-fill"></i></div>
+                            <span class="stat-title">Today's Pets</span>
+                            <div class="stat-icon" style="background: #ECFDF5; color: #10B981;"><i class="bi bi-heart-fill"></i></div>
                         </div>
                         <div class="stat-value">{{ $todayPatients }}</div>
                         <div class="stat-change">{{ $patientChangePercent > 0 ? '↑' : '↓' }} {{ abs($patientChangePercent) }}% from yesterday</div>
@@ -2384,42 +2384,45 @@
     <div id="newPatientModal" class="ai-modal" onclick="closeModalOnBackdrop(event, 'newPatient')">
         <div class="ai-modal-content" style="max-width: 700px;">
             <div class="ai-modal-header">
-                <h2><i class="bi bi-clipboard2-check"></i> New Patient Record</h2>
+                <h2><i class="bi bi-clipboard2-check"></i> New Pet Record</h2>
                 <button class="ai-modal-close" onclick="closeModal('newPatient')">✕</button>
             </div>
             <div class="ai-modal-body" style="padding: 0;">
                 <div class="calendar-container">
                     <div class="appointment-form" style="margin-top: 0;">
-                        <h4>Patient Information</h4>
+                        <h4>Pet Information</h4>
                         
-                        <div style="display: grid; grid-template-columns: 2fr 2fr 1fr 1fr; gap: 14px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
                             <div class="form-group">
-                                <label for="patientLastName">Last Name <span style="color: #dc2626;">*</span></label>
-                                <input type="text" id="patientLastName" placeholder="Enter last name" required>
+                                <label for="patientLastName">Pet Name <span style="color: #dc2626;">*</span></label>
+                                <input type="text" id="patientLastName" placeholder="Enter pet name" required>
                             </div>
                             
                             <div class="form-group">
-                                <label for="patientFirstName">First Name <span style="color: #dc2626;">*</span></label>
-                                <input type="text" id="patientFirstName" placeholder="Enter first name" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="patientMiddleInitial">Middle Initial</label>
-                                <input type="text" id="patientMiddleInitial" placeholder="M.I." maxlength="2" style="text-transform: uppercase;">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="patientSuffix">Suffix</label>
-                                <select id="patientSuffix">
-                                    <option value="">Select suffix</option>
-                                    <option value="Jr.">Jr.</option>
-                                    <option value="Sr.">Sr.</option>
-                                    <option value="I">I</option>
-                                    <option value="II">II</option>
-                                    <option value="III">III</option>
-                                    <option value="IV">IV</option>
-                                    <option value="V">V</option>
+                                <label for="patientFirstName">Species <span style="color: #dc2626;">*</span></label>
+                                <select id="patientFirstName" required>
+                                    <option value="">Select species</option>
+                                    <option value="Dog">Dog</option>
+                                    <option value="Cat">Cat</option>
+                                    <option value="Bird">Bird</option>
+                                    <option value="Rabbit">Rabbit</option>
+                                    <option value="Hamster">Hamster</option>
+                                    <option value="Guinea Pig">Guinea Pig</option>
+                                    <option value="Reptile">Reptile</option>
+                                    <option value="Other">Other</option>
                                 </select>
+                            </div>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                            <div class="form-group">
+                                <label for="patientMiddleInitial">Breed</label>
+                                <input type="text" id="patientMiddleInitial" placeholder="Enter breed">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="patientSuffix">Color</label>
+                                <input type="text" id="patientSuffix" placeholder="Enter color">
                             </div>
                         </div>
                         
@@ -2430,13 +2433,22 @@
                             </div>
                             
                             <div class="form-group">
-                                <label for="patientGender">Gender <span style="color: #dc2626;">*</span></label>
+                                <label for="patientGender">Sex <span style="color: #dc2626;">*</span></label>
                                 <select id="patientGender" required>
-                                    <option value="">Select gender</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
+                                    <option value="">Select sex</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Neutered Male">Neutered Male</option>
+                                    <option value="Spayed Female">Spayed Female</option>
                                 </select>
                             </div>
+                        </div>
+                        
+                        <h4 style="margin-top: 20px;">Owner Information</h4>
+                        
+                        <div class="form-group">
+                            <label for="ownerName">Owner Name <span style="color: #dc2626;">*</span></label>
+                            <input type="text" id="ownerName" placeholder="Enter owner name" required>
                         </div>
                         
                         <div class="form-group">
@@ -2446,13 +2458,13 @@
                         
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
                             <div class="form-group">
-                                <label for="patientPhone">Phone Number <span style="color: #dc2626;">*</span></label>
+                                <label for="patientPhone">Owner Contact <span style="color: #dc2626;">*</span></label>
                                 <input type="tel" id="patientPhone" placeholder="09XX XXX XXXX" required oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="11">
                             </div>
                             
                             <div class="form-group">
-                                <label for="patientSecondaryPhone">Secondary Contact Number</label>
-                                <input type="tel" id="patientSecondaryPhone" placeholder="09XX XXX XXXX" oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="11">
+                                <label for="patientSecondaryPhone">Microchip Number</label>
+                                <input type="text" id="patientSecondaryPhone" placeholder="Enter microchip number">
                             </div>
                         </div>
                         
@@ -2467,12 +2479,12 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="patientMedicalHistory">Chief Complaint</label>
-                            <textarea id="patientMedicalHistory" placeholder="Enter chief complaint or reason for visit..."></textarea>
+                            <label for="patientMedicalHistory">Chief Complaint / Reason for Visit</label>
+                            <textarea id="patientMedicalHistory" placeholder="Enter reason for veterinary visit..."></textarea>
                         </div>
                         
                         <div class="form-group">
-                            <label for="patientEmail">Email Address</label>
+                            <label for="patientEmail">Owner Email Address</label>
                             <input type="email" id="patientEmail" placeholder="email@example.com">
                         </div>
                         
@@ -2480,12 +2492,12 @@
                         <div style="display: flex; gap: 12px; padding: 18px; background: linear-gradient(135deg, #fef3c7 0%, #fef3c7 100%); border: 2px solid #fbbf24; border-radius: 10px; margin: 20px 0; box-shadow: 0 2px 8px rgba(251, 191, 36, 0.15);">
                             <input type="checkbox" id="patientDataPrivacyConsent" required style="margin-top: 2px; width: 20px; height: 20px; cursor: pointer; accent-color: #f59e0b; flex-shrink: 0;">
                             <label for="patientDataPrivacyConsent" style="font-size: 13px; color: #92400e; line-height: 1.6; cursor: pointer;">
-                                <span style="font-weight: 700; font-size: 14px;">🔒 Data Privacy Consent:</span> I consent to the collection, processing, and storage of my personal and medical information for healthcare purposes only. I understand that my data will be protected and will not be shared with unauthorized parties or leaked. <span style="color: #dc2626; font-weight: 700;">*</span>
+                                <span style="font-weight: 700; font-size: 14px;">🔒 Data Privacy Consent:</span> I consent to the collection, processing, and storage of my pet's and personal information for veterinary care purposes only. I understand that this data will be protected and will not be shared with unauthorized parties. <span style="color: #dc2626; font-weight: 700;">*</span>
                             </label>
                         </div>
                         
                         <div class="form-actions">
-                            <button class="btn-primary" onclick="saveNewPatient()">Register Patient</button>
+                            <button class="btn-primary" onclick="saveNewPatient()">Register Pet</button>
                             <button class="btn-secondary" onclick="closeModal('newPatient')">Cancel</button>
                         </div>
                     </div>

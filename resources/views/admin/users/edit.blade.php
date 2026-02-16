@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit User - CareSync Admin</title>
+    <title>Edit User - VetCare Admin</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
@@ -301,7 +301,7 @@
                         </option>
                     </select>
                     <div class="help-text">
-                        <strong>Staff Member:</strong> Can manage patients and medical records<br>
+                        <strong>Staff Member:</strong> Can manage pets and veterinary records<br>
                         <strong>Administrator:</strong> Can manage users and system settings
                     </div>
                     @error('role')

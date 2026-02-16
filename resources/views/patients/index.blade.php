@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patients - Health Center</title>
+    <title>Pets - Veterinary Clinic</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
@@ -906,15 +906,15 @@
         <div class="header">
             <div class="header-top">
                 <a href="{{ route('dashboard') }}" class="header-logo">
-                    <img src="/images/systemlogo.png" alt="CareSync" style="height: 35px; object-fit: contain;">
+                    <img src="/images/systemlogo.png" alt="VetCare" style="height: 35px; object-fit: contain;">
                 </a>
                 <button onclick="goBack()" class="btn-back">← Back</button>
-                <h1>Patient List</h1>
+                <h1>Pet List</h1>
             </div>
             
             <div class="header-actions">
                 <button onclick="openRegistrationModal()" class="btn-new-patient">
-                    ➕ Register New Patient
+                    ➕ Register New Pet
                 </button>
                 <button onclick="openImportModal()" class="btn-import">
                     📥 Import from CSV
@@ -932,7 +932,7 @@
                     <input 
                         type="search" 
                         id="patientSearch" 
-                        placeholder="Search by name, patient ID, or contact number..."
+                        placeholder="Search by pet name, owner, ID, or contact..."
                         autocomplete="off"
                     >
                     <span class="search-icon"><i class="bi bi-search"></i></span>
@@ -940,7 +940,7 @@
                 </div>
                 <div style="display: flex; gap: 8px;">
                     <button onclick="openImportModal()" class="btn" style="background: #3b82f6; color: white; border: none; cursor: pointer;">📥 Import</button>
-                    <button onclick="openRegistrationModal()" class="btn btn-primary">+ New Patient</button>
+                    <button onclick="openRegistrationModal()" class="btn btn-primary">+ New Pet</button>
                 </div>
             </div>
         </div>

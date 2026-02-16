@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Today's Visits - CareSync</title>
+    <title>Today's Visits - VetCare</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
@@ -364,7 +364,7 @@
         <div class="header">
             <div class="header-top">
                 <a href="{{ route('dashboard') }}" class="header-logo">
-                    <img src="/images/systemlogo.png" alt="CareSync" style="height: 35px; object-fit: contain;">
+                    <img src="/images/systemlogo.png" alt="VetCare" style="height: 35px; object-fit: contain;">
                 </a>
                 <div style="display: flex; gap: 10px;">
                     <a href="{{ route('dashboard') }}" class="btn-back">← Back</a>

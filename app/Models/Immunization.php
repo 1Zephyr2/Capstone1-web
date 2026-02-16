@@ -51,24 +51,25 @@ class Immunization extends Model
         });
     }
 
-    // Vaccine schedule based on DOH guidelines
+    // Vaccine schedule based on veterinary guidelines
     private static function calculateNextDose($vaccine, $dose, $dateGiven)
     {
         $date = Carbon::parse($dateGiven);
         
         $schedules = [
-            'BCG' => [1 => null], // Single dose
-            'Hepatitis B' => [1 => 4, 2 => 8], // weeks
-            'Pentavalent' => [1 => 4, 2 => 4, 3 => null], // 4 weeks apart
-            'OPV' => [1 => 4, 2 => 4, 3 => null],
-            'PCV' => [1 => 4, 2 => 4, 3 => null],
-            'MMR' => [1 => 52, 2 => null], // 1 year later
+            'Rabies' => [1 => 52, 2 => null], // Annual booster
+            'DHPP' => [1 => 3, 2 => 3, 3 => 52], // Distemper, Hepatitis, Parvovirus, Parainfluenza
+            'Bordetella' => [1 => 26, 2 => 52], // Kennel cough - 6 months then annual
+            'Leptospirosis' => [1 => 4, 2 => 52], // 4 weeks then annual
+            'Feline Leukemia' => [1 => 3, 2 => 52], // 3-4 weeks then annual
+            'FVRCP' => [1 => 3, 2 => 3, 3 => 52], // Feline viral rhinotracheitis, calicivirus, panleukopenia
+            'Canine Influenza' => [1 => 3, 2 => 52], // 3-4 weeks then annual
         ];
 
         $vaccineKey = strtoupper(str_replace(' ', '', $vaccine));
         
         foreach ($schedules as $key => $schedule) {
-            if (stripos($vaccineKey, $key) !== false) {
+            if (stripos($vaccineKey, strtoupper(str_replace(' ', '', $key))) !== false) {
                 if (isset($schedule[$dose]) && $schedule[$dose]) {
                     return $date->addWeeks($schedule[$dose]);
                 }

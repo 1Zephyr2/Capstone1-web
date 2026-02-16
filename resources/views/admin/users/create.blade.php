@@ -383,7 +383,7 @@
                 <div class="logo-icon">
                     <i class="bi bi-shield-lock"></i>
                 </div>
-                <div class="logo-text">CareSync</div>
+                <div class="logo-text">VetCare</div>
             </a>
             <div class="sidebar-subtitle">ADMIN PANEL</div>
         </div>
@@ -443,7 +443,7 @@
     <div class="form-container">
         <div class="form-header">
             <h1><i class="bi bi-person-plus"></i> Create New User</h1>
-            <p>Add a new administrator or healthcare provider</p>
+            <p>Add a new administrator or veterinary provider</p>
         </div>
 
         <div class="form-body">
@@ -547,7 +547,7 @@
                         </option>
                     </select>
                     <div class="help-text">
-                        <strong>Staff Member:</strong> Can manage patients and medical records<br>
+                        <strong>Staff Member:</strong> Can manage pets and veterinary records<br>
                         <strong>Administrator:</strong> Can manage users and system settings
                     </div>
                     @error('role')

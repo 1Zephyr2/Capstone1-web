@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CareSync - Login</title>
+    <title>VetCare - Login</title>
     <style>
         * {
             margin: 0;
@@ -264,9 +264,9 @@
         <div class="login-left">
             <div class="login-container">
                 <div class="login-header">
-                    <div class="logo"><img src="/images/systemlogo.png" alt="CareSync Logo"></div>
-                    <h1>CareSync</h1>
-                    <p>Health Center Management System</p>
+                    <div class="logo"><img src="/images/systemlogo.png" alt="VetCare Logo"></div>
+                    <h1>VetCare</h1>
+                    <p>Veterinary Clinic Management System</p>
                 </div>
 
                 @if ($errors->any())
@@ -324,7 +324,7 @@
                 </form>
 
                 <div class="footer-text">
-                    &copy; {{ date('Y') }} CareSync. Designed for Health Center Staff.
+                    &copy; {{ date('Y') }} VetCare. Designed for Veterinary Clinic Staff.
                 </div>
             </div>
         </div>
@@ -332,9 +332,9 @@
         <!-- Right Side - Background -->
         <div class="login-right">
             <div class="background-content">
-                <h2>Welcome to CareSync</h2>
-                <p>Streamlining health center operations<br>
-                for better patient care and efficient record management.</p>
+                <h2>Welcome to VetCare</h2>
+                <p>Streamlining veterinary clinic operations<br>
+                for better pet care and efficient medical record management.</p>
             </div>
         </div>
     </div>

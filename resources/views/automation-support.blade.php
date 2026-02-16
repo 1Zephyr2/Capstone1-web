@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Automation Support - CareSync</title>
+    <title>Automation Support - VetCare</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
@@ -430,7 +430,7 @@
         <!-- Quick Stats -->
         <div class="stats-grid">
             <div class="stat-card">
-                <h3>Total Patients</h3>
+                <h3>Total Pets</h3>
                 <div class="number">{{ $stats['total_patients'] }}</div>
             </div>
             <div class="stat-card">

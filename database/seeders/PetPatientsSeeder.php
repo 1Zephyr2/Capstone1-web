@@ -1,0 +1,193 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use App\Models\Patient;
+use Carbon\Carbon;
+
+class PetPatientsSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        $pets = [
+            [
+                'pet_name' => 'Max',
+                'species' => 'Dog',
+                'breed' => 'Golden Retriever',
+                'color' => 'Golden',
+                'birthdate' => Carbon::now()->subYears(3)->subMonths(5),
+                'sex' => 'Male',
+                'owner_name' => 'Maria Santos',
+                'owner_contact' => '09171234567',
+                'address' => '123 Mango St., Brgy. San Antonio, Quezon City',
+                'microchip_number' => 'PH-GR-2022-001234',
+                'emergency_contact_name' => 'Juan Santos',
+                'emergency_contact_number' => '09181234567',
+            ],
+            [
+                'pet_name' => 'Luna',
+                'species' => 'Cat',
+                'breed' => 'Persian',
+                'color' => 'White',
+                'birthdate' => Carbon::now()->subYears(2)->subMonths(8),
+                'sex' => 'Spayed Female',
+                'owner_name' => 'Anna Cruz',
+                'owner_contact' => '09221234567',
+                'address' => '456 Sampaguita Ave., Brgy. Poblacion, Makati City',
+                'microchip_number' => 'PH-PS-2023-005678',
+                'emergency_contact_name' => 'Carlos Cruz',
+                'emergency_contact_number' => '09231234567',
+            ],
+            [
+                'pet_name' => 'Buddy',
+                'species' => 'Dog',
+                'breed' => 'Labrador Retriever',
+                'color' => 'Black',
+                'birthdate' => Carbon::now()->subYears(5)->subMonths(2),
+                'sex' => 'Neutered Male',
+                'owner_name' => 'Roberto Garcia',
+                'owner_contact' => '09331234567',
+                'address' => '789 Narra St., Brgy. Bagong Silang, Manila',
+                'microchip_number' => 'PH-LR-2021-009876',
+                'emergency_contact_name' => 'Elena Garcia',
+                'emergency_contact_number' => '09341234567',
+            ],
+            [
+                'pet_name' => 'Whiskers',
+                'species' => 'Cat',
+                'breed' => 'Siamese',
+                'color' => 'Cream and Brown',
+                'birthdate' => Carbon::now()->subYears(1)->subMonths(10),
+                'sex' => 'Female',
+                'owner_name' => 'Sofia Reyes',
+                'owner_contact' => '09451234567',
+                'address' => '321 Acacia St., Brgy. Greenhills, San Juan City',
+                'microchip_number' => 'PH-SM-2024-002345',
+                'emergency_contact_name' => 'Miguel Reyes',
+                'emergency_contact_number' => '09461234567',
+            ],
+            [
+                'pet_name' => 'Charlie',
+                'species' => 'Dog',
+                'breed' => 'Beagle',
+                'color' => 'Tricolor',
+                'birthdate' => Carbon::now()->subYears(4)->subMonths(7),
+                'sex' => 'Male',
+                'owner_name' => 'David Tan',
+                'owner_contact' => '09551234567',
+                'address' => '654 Bamboo St., Brgy. Maginhawa, Quezon City',
+                'microchip_number' => 'PH-BG-2022-007890',
+                'emergency_contact_name' => 'Linda Tan',
+                'emergency_contact_number' => '09561234567',
+            ],
+            [
+                'pet_name' => 'Bella',
+                'species' => 'Dog',
+                'breed' => 'Shih Tzu',
+                'color' => 'Brown and White',
+                'birthdate' => Carbon::now()->subYears(2)->subMonths(3),
+                'sex' => 'Spayed Female',
+                'owner_name' => 'Grace Lim',
+                'owner_contact' => '09661234567',
+                'address' => '987 Rose St., Brgy. Marikina Heights, Marikina City',
+                'microchip_number' => 'PH-ST-2023-003456',
+                'emergency_contact_name' => 'Richard Lim',
+                'emergency_contact_number' => '09671234567',
+            ],
+            [
+                'pet_name' => 'Mittens',
+                'species' => 'Cat',
+                'breed' => 'Domestic Shorthair',
+                'color' => 'Orange Tabby',
+                'birthdate' => Carbon::now()->subYears(3)->subMonths(1),
+                'sex' => 'Neutered Male',
+                'owner_name' => 'Patricia Mendoza',
+                'owner_contact' => '09771234567',
+                'address' => '147 Jasmine St., Brgy. Sta. Cruz, Pasig City',
+                'microchip_number' => null,
+                'emergency_contact_name' => 'Jose Mendoza',
+                'emergency_contact_number' => '09781234567',
+            ],
+            [
+                'pet_name' => 'Rocky',
+                'species' => 'Dog',
+                'breed' => 'German Shepherd',
+                'color' => 'Black and Tan',
+                'birthdate' => Carbon::now()->subYears(6)->subMonths(4),
+                'sex' => 'Male',
+                'owner_name' => 'Michael Fernandez',
+                'owner_contact' => '09881234567',
+                'address' => '258 Orchid St., Brgy. Kapitolyo, Pasig City',
+                'microchip_number' => 'PH-GS-2020-004567',
+                'emergency_contact_name' => 'Carla Fernandez',
+                'emergency_contact_number' => '09891234567',
+            ],
+            [
+                'pet_name' => 'Coco',
+                'species' => 'Bird',
+                'breed' => 'Cockatiel',
+                'color' => 'Grey and Yellow',
+                'birthdate' => Carbon::now()->subYears(1)->subMonths(6),
+                'sex' => 'Male',
+                'owner_name' => 'Jenny Aquino',
+                'owner_contact' => '09991234567',
+                'address' => '369 Lily St., Brgy. San Lorenzo, Makati City',
+                'microchip_number' => null,
+                'emergency_contact_name' => 'Peter Aquino',
+                'emergency_contact_number' => '09991234568',
+            ],
+            [
+                'pet_name' => 'Shadow',
+                'species' => 'Cat',
+                'breed' => 'Maine Coon',
+                'color' => 'Grey',
+                'birthdate' => Carbon::now()->subYears(4)->subMonths(9),
+                'sex' => 'Male',
+                'owner_name' => 'Isabella Ramos',
+                'owner_contact' => '09101234567',
+                'address' => '741 Sunflower St., Brgy. Bel-Air, Makati City',
+                'microchip_number' => 'PH-MC-2021-008901',
+                'emergency_contact_name' => 'Antonio Ramos',
+                'emergency_contact_number' => '09111234567',
+            ],
+            [
+                'pet_name' => 'Daisy',
+                'species' => 'Rabbit',
+                'breed' => 'Holland Lop',
+                'color' => 'White and Brown',
+                'birthdate' => Carbon::now()->subYears(1)->subMonths(2),
+                'sex' => 'Female',
+                'owner_name' => 'Catherine Villanueva',
+                'owner_contact' => '09121234567',
+                'address' => '852 Dahlia St., Brgy. Mandaluyong West, Mandaluyong City',
+                'microchip_number' => null,
+                'emergency_contact_name' => 'Mark Villanueva',
+                'emergency_contact_number' => '09131234567',
+            ],
+            [
+                'pet_name' => 'Duke',
+                'species' => 'Dog',
+                'breed' => 'Rottweiler',
+                'color' => 'Black and Brown',
+                'birthdate' => Carbon::now()->subYears(5)->subMonths(8),
+                'sex' => 'Neutered Male',
+                'owner_name' => 'Anthony Sy',
+                'owner_contact' => '09141234567',
+                'address' => '963 Hibiscus St., Brgy. Plainview, Mandaluyong City',
+                'microchip_number' => 'PH-RT-2020-006789',
+                'emergency_contact_name' => 'Maria Sy',
+                'emergency_contact_number' => '09151234567',
+            ],
+        ];
+
+        foreach ($pets as $petData) {
+            Patient::create($petData);
+        }
+
+        $this->command->info('✓ Successfully created ' . count($pets) . ' pet patient records!');
+    }
+}

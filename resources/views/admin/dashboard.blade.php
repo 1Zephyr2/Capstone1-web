@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - CareSync</title>
+    <title>Admin Dashboard - VetCare</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
@@ -616,7 +616,7 @@
                 <div class="logo-icon">
                     <i class="bi bi-shield-lock"></i>
                 </div>
-                <div class="logo-text">CareSync</div>
+                <div class="logo-text">VetCare</div>
             </a>
             <div class="sidebar-subtitle">ADMIN PANEL</div>
         </div>
@@ -682,7 +682,7 @@
         <div class="alert info">
             <i class="bi bi-shield-check"></i>
             <div>
-                <strong>Data Privacy Compliant:</strong> This dashboard shows only anonymized statistics. Patient identifiable information is restricted to authorized healthcare providers.
+                <strong>Data Privacy Compliant:</strong> This dashboard shows only anonymized statistics. Pet identifiable information is restricted to authorized veterinary providers.
             </div>
         </div>
 
@@ -748,7 +748,7 @@
                                     {{ \Carbon\Carbon::parse($visit->date)->format('M j') }}
                                 </div>
                                 <div class="activity-content">
-                                    <div class="activity-title">Patient Visits</div>
+                                    <div class="activity-title">Pet Visits</div>
                                     <div class="activity-count">{{ $visit->count }}</div>
                                 </div>
                             </div>

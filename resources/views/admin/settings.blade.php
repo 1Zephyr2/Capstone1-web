@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Settings - CareSync Admin</title>
+    <title>System Settings - VetCare Admin</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
@@ -287,7 +287,7 @@
                 <div class="logo-icon">
                     <i class="bi bi-shield-lock"></i>
                 </div>
-                <div class="logo-text">CareSync</div>
+                <div class="logo-text">VetCare</div>
             </a>
             <div class="sidebar-subtitle">ADMIN PANEL</div>
         </div>
@@ -363,7 +363,7 @@
             <h2 class="card-title">System Information</h2>
             <div class="info-grid">
                 <div class="info-label">Application Name:</div>
-                <div class="info-value">CareSync - Healthcare Management System</div>
+                <div class="info-value">VetCare - Veterinary Management System</div>
 
                 <div class="info-label">Version:</div>
                 <div class="info-value">1.0.0</div>
@@ -386,10 +386,10 @@
             </p>
             <div class="info-grid">
                 <div class="info-label">Access Logging:</div>
-                <div class="info-value">✓ Enabled (All patient record access is logged)</div>
+                <div class="info-value">✓ Enabled (All pet record access is logged)</div>
 
                 <div class="info-label">Role-Based Access:</div>
-                <div class="info-value">✓ Enabled (Admin & Healthcare Provider roles)</div>
+                <div class="info-value">✓ Enabled (Admin & Veterinary Provider roles)</div>
 
                 <div class="info-label">Data Encryption:</div>
                 <div class="info-value">✓ Enabled (Passwords hashed with bcrypt)</div>

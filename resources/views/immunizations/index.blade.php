@@ -7,11 +7,11 @@
 @endphp
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en ">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Immunizations - CareSync</title>
+    <title>Vaccinations - VetCare</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
@@ -142,10 +142,10 @@
         }
 
         .immunization-card {
-            background: #fef3c7;
+            background: #dcfce7;
             border-radius: 10px;
             padding: 16px;
-            border-left: 4px solid #f59e0b;
+            border-left: 4px solid #10B981;
             transition: transform 0.2s;
         }
 
@@ -242,13 +242,13 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Immunization Records</h1>
+            <h1>Vaccination Records</h1>
             <a href="{{ route('dashboard') }}" class="back-btn">← Back to Dashboard</a>
         </div>
 
         <div class="stats-row">
             <div class="stat-card">
-                <h3>Total Immunizations</h3>
+                <h3>Total Vaccinations</h3>
                 <div class="value">{{ $immunizations->count() }}</div>
             </div>
             <div class="stat-card" style="border-left-color: #10b981;">
@@ -256,13 +256,13 @@
                 <div class="value">{{ $thisMonth->count() }}</div>
             </div>
             <div class="stat-card" style="border-left-color: #3b82f6;">
-                <h3>Patients Immunized</h3>
+                <h3>Pets Vaccinated</h3>
                 <div class="value">{{ $immunizations->pluck('patient_id')->unique()->count() }}</div>
             </div>
         </div>
 
         <div class="content-card">
-            <h2 class="section-title">All Immunization Records</h2>
+            <h2 class="section-title">All Vaccination Records</h2>
             
             @if($immunizations->count() > 0)
                 <div class="immunization-list">
@@ -271,11 +271,11 @@
                         <div class="imm-header">
                             <div class="patient-info">
                                 <div class="patient-avatar">
-                                    <i class="bi bi-person-fill" style="font-size: 18px;"></i>
+                                    <i class="bi bi-heart-fill" style="font-size: 18px;"></i>
                                 </div>
                                 <div class="patient-details">
-                                    <h4>{{ $imm->patient->first_name }} {{ $imm->patient->last_name }}</h4>
-                                    <p>{{ $imm->patient->age }} years old • {{ $imm->patient->bhc_id }}</p>
+                                    <h4>{{ $imm->patient->pet_name ?? $imm->patient->full_name }}</h4>
+                                    <p>{{ $imm->patient->age }} years old • {{ $imm->patient->patient_id }}</p>
                                 </div>
                             </div>
                             <span class="dose-badge">Dose {{ $imm->dose_number }}</span>

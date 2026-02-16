@@ -57,13 +57,16 @@ class PatientController extends Controller
                     'name' => $patient->full_name,
                     'age' => $patient->age,
                     'sex' => $patient->sex,
-                    'contact' => $patient->contact_number,
+                    'contact' => $patient->owner_contact ?? '',
                     'address' => $patient->address,
                     'birthdate' => $patient->birthdate ? $patient->birthdate->format('Y-m-d') : null,
-                    'first_name' => $patient->first_name,
-                    'last_name' => $patient->last_name,
-                    'middle_name' => $patient->middle_name,
-                    'philhealth_number' => $patient->philhealth_number,
+                    'pet_name' => $patient->pet_name ?? '',
+                    'species' => $patient->species ?? '',
+                    'breed' => $patient->breed ?? '',
+                    'color' => $patient->color ?? '',
+                    'owner_name' => $patient->owner_name ?? '',
+                    'owner_contact' => $patient->owner_contact ?? '',
+                    'microchip_number' => $patient->microchip_number ?? '',
                     'emergency_contact_name' => $patient->emergency_contact_name,
                     'emergency_contact_number' => $patient->emergency_contact_number,
                 ];
@@ -86,14 +89,16 @@ class PatientController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'middle_name' => 'nullable|string|max:255',
+            'pet_name' => 'required|string|max:255',
+            'species' => 'required|string|max:255',
+            'breed' => 'nullable|string|max:255',
+            'color' => 'nullable|string|max:255',
             'birthdate' => 'required|date|before:today',
-            'sex' => 'required|in:Male,Female',
-            'contact_number' => 'nullable|string|max:20',
+            'sex' => 'required|in:Male,Female,Neutered Male,Spayed Female',
+            'owner_name' => 'required|string|max:255',
+            'owner_contact' => 'nullable|string|max:20',
             'address' => 'required|string',
-            'philhealth_number' => 'nullable|string|max:50',
+            'microchip_number' => 'nullable|string|max:50',
             'emergency_contact_name' => 'nullable|string|max:255',
             'emergency_contact_number' => 'nullable|string|max:20',
         ]);
@@ -131,7 +136,7 @@ class PatientController extends Controller
      */
     public function show(Patient $patient)
     {
-        $patient->load(['visits.vitalSigns', 'immunizations', 'prenatalRecords', 'referrals']);
+        $patient->load(['visits.vitalSigns', 'vaccinations', 'breedingRecords', 'referrals']);
         
         return view('patients.show', compact('patient'));
     }

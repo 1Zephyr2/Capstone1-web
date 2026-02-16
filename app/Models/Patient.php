@@ -12,14 +12,16 @@ class Patient extends Model
 
     protected $fillable = [
         'patient_id',
-        'first_name',
-        'middle_name',
-        'last_name',
+        'pet_name',
+        'species',
+        'breed',
+        'color',
         'birthdate',
         'sex',
-        'contact_number',
+        'owner_name',
+        'owner_contact',
         'address',
-        'philhealth_number',
+        'microchip_number',
         'emergency_contact_name',
         'emergency_contact_number',
     ];
@@ -34,12 +36,12 @@ class Patient extends Model
         return $this->hasMany(Visit::class);
     }
 
-    public function immunizations()
+    public function vaccinations()
     {
         return $this->hasMany(Immunization::class);
     }
 
-    public function prenatalRecords()
+    public function breedingRecords()
     {
         return $this->hasMany(PrenatalRecord::class);
     }
@@ -58,8 +60,7 @@ class Patient extends Model
     // Full name for easy display
     public function getFullNameAttribute()
     {
-        $middle = $this->middle_name ? ' ' . substr($this->middle_name, 0, 1) . '.' : '';
-        return $this->first_name . $middle . ' ' . $this->last_name;
+        return $this->pet_name . ' (' . $this->species . ')';
     }
 
     // Get last visit for "copy from last visit" feature
@@ -79,11 +80,13 @@ class Patient extends Model
     public function scopeSearch($query, $term)
     {
         return $query->where(function ($q) use ($term) {
-            $q->where('first_name', 'like', "%{$term}%")
-              ->orWhere('last_name', 'like', "%{$term}%")
+            $q->where('pet_name', 'like', "%{$term}%")
+              ->orWhere('species', 'like', "%{$term}%")
+              ->orWhere('breed', 'like', "%{$term}%")
+              ->orWhere('owner_name', 'like', "%{$term}%")
               ->orWhere('patient_id', 'like', "%{$term}%")
-              ->orWhere('contact_number', 'like', "%{$term}%")
-              ->orWhere('birthdate', 'like', "%{$term}%");
+              ->orWhere('owner_contact', 'like', "%{$term}%")
+              ->orWhere('microchip_number', 'like', "%{$term}%");
         });
     }
 
@@ -100,7 +103,7 @@ class Patient extends Model
                     ->first();
                 
                 $number = $lastPatient ? intval(substr($lastPatient->patient_id, -4)) + 1 : 1;
-                $patient->patient_id = 'BHC-' . $year . '-' . str_pad($number, 4, '0', STR_PAD_LEFT);
+                $patient->patient_id = 'VET-' . $year . '-' . str_pad($number, 4, '0', STR_PAD_LEFT);
             }
         });
     }

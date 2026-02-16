@@ -13,25 +13,27 @@ return new class extends Migration
     {
         Schema::create('patients', function (Blueprint $table) {
             $table->id();
-            $table->string('patient_id')->unique(); // Auto-generated ID like BHC-2026-0001
-            $table->string('first_name');
-            $table->string('middle_name')->nullable();
-            $table->string('last_name');
+            $table->string('patient_id')->unique(); // Auto-generated ID like VET-2026-0001
+            $table->string('pet_name');
+            $table->string('species'); // Dog, Cat, Bird, Rabbit, etc.
+            $table->string('breed')->nullable();
+            $table->string('color')->nullable();
             $table->date('birthdate');
-            $table->enum('sex', ['Male', 'Female']);
-            $table->string('contact_number')->nullable();
+            $table->enum('sex', ['Male', 'Female', 'Neutered Male', 'Spayed Female']);
+            $table->string('owner_name');
+            $table->string('owner_contact')->nullable();
             $table->text('address');
-            $table->string('philhealth_number')->nullable();
+            $table->string('microchip_number')->nullable();
             $table->string('emergency_contact_name')->nullable();
             $table->string('emergency_contact_number')->nullable();
-            $table->string('secondary_contact_name')->nullable();
-            $table->string('secondary_contact_number')->nullable();
             $table->timestamps();
             $table->softDeletes();
             
             // Indexes for fast searching
-            $table->index(['last_name', 'first_name']);
-            $table->index('contact_number');
+            $table->index(['pet_name', 'species']);
+            $table->index('owner_name');
+            $table->index('owner_contact');
+            $table->index('microchip_number');
         });
     }
 
