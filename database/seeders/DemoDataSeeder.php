@@ -7,7 +7,7 @@ use App\Models\Patient;
 use App\Models\Visit;
 use App\Models\VitalSign;
 use App\Models\Immunization;
-use App\Models\PrenatalRecord;
+use App\Models\BreedingRecord;
 use Carbon\Carbon;
 
 class DemoDataSeeder extends Seeder
@@ -19,208 +19,218 @@ class DemoDataSeeder extends Seeder
         Visit::truncate();
         VitalSign::truncate();
         Immunization::truncate();
-        PrenatalRecord::truncate();
+        BreedingRecord::truncate();
 
-        // Create sample patients
+        // Create sample animal patients for veterinary clinic
         $patients = [
             [
-                'patient_id' => 'BHC-2026-0001',
-                'first_name' => 'Maria',
-                'last_name' => 'Santos',
-                'middle_name' => 'Cruz',
-                'birthdate' => '1990-05-15',
-                'sex' => 'Female',
-                'contact_number' => '09171234567',
+                'patient_id' => 'VET-2026-0001',
+                'pet_name' => 'Max',
+                'species' => 'Dog',
+                'breed' => 'Golden Retriever',
+                'color' => 'Golden',
+                'birthdate' => '2023-03-15',
+                'sex' => 'Neutered Male',
+                'owner_name' => 'Maria Santos',
+                'owner_contact' => '09171234567',
                 'address' => '123 Main Street, Scout Barrio, Baguio City',
-                'philhealth_number' => '12-345678901-2',
+                'microchip_number' => '982000123456789',
+                'emergency_contact_name' => 'Juan Santos',
+                'emergency_contact_number' => '09181234567',
             ],
             [
-                'patient_id' => 'BHC-2026-0002',
-                'first_name' => 'Juan',
-                'last_name' => 'Dela Cruz',
-                'middle_name' => 'Garcia',
-                'birthdate' => '1985-08-20',
-                'sex' => 'Male',
-                'contact_number' => '09181234567',
+                'patient_id' => 'VET-2026-0002',
+                'pet_name' => 'Bella',
+                'species' => 'Cat',
+                'breed' => 'Siamese',
+                'color' => 'Cream and Brown',
+                'birthdate' => '2024-06-20',
+                'sex' => 'Female',
+                'owner_name' => 'Juan Dela Cruz',
+                'owner_contact' => '09187654321',
                 'address' => '456 Secondary Road, Scout Barrio, Baguio City',
+                'microchip_number' => '982000987654321',
             ],
             [
-                'patient_id' => 'BHC-2026-0003',
-                'first_name' => 'Baby',
-                'last_name' => 'Reyes',
-                'middle_name' => null,
-                'birthdate' => '2025-12-01',
-                'sex' => 'Female',
-                'contact_number' => '09191234567',
-                'address' => '789 Third Avenue, Scout Barrio, Baguio City',
-            ],
-            [
-                'patient_id' => 'BHC-2026-0004',
-                'first_name' => 'Ana',
-                'last_name' => 'Lopez',
-                'middle_name' => 'Mendoza',
-                'birthdate' => '1995-03-10',
-                'sex' => 'Female',
-                'contact_number' => '09201234567',
-                'address' => '321 Upper Road, Scout Barrio, Baguio City',
-                'philhealth_number' => '12-345678902-3',
-            ],
-            [
-                'patient_id' => 'BHC-2026-0005',
-                'first_name' => 'Pedro',
-                'last_name' => 'Martinez',
-                'middle_name' => 'Ramos',
-                'birthdate' => '1980-11-25',
+                'patient_id' => 'VET-2026-0003',
+                'pet_name' => 'Charlie',
+                'species' => 'Dog',
+                'breed' => 'Labrador Retriever',
+                'color' => 'Black',
+                'birthdate' => '2022-11-10',
                 'sex' => 'Male',
-                'contact_number' => '09211234567',
-                'address' => '654 Lower Road, Scout Barrio, Baguio City',
+                'owner_name' => 'Ana Lopez',
+                'owner_contact' => '09191234567',
+                'address' => '789 Third Avenue, Scout Barrio, Baguio City',
+                'microchip_number' => '982000555666777',
+                'emergency_contact_name' => 'Pedro Lopez',
+                'emergency_contact_number' => '09201234567',
             ],
             [
-                'patient_id' => 'BHC-2026-0006',
-                'first_name' => 'Rosa',
-                'last_name' => 'Garcia',
-                'middle_name' => 'Torres',
-                'birthdate' => '1988-07-18',
+                'patient_id' => 'VET-2026-0004',
+                'pet_name' => 'Luna',
+                'species' => 'Cat',
+                'breed' => 'Persian',
+                'color' => 'White',
+                'birthdate' => '2025-01-05',
+                'sex' => 'Spayed Female',
+                'owner_name' => 'Rosa Garcia',
+                'owner_contact' => '09221234567',
+                'address' => '321 Upper Road, Scout Barrio, Baguio City',
+            ],
+            [
+                'patient_id' => 'VET-2026-0005',
+                'pet_name' => 'Rocky',
+                'species' => 'Dog',
+                'breed' => 'German Shepherd',
+                'color' => 'Black and Tan',
+                'birthdate' => '2021-08-15',
+                'sex' => 'Male',
+                'owner_name' => 'Pedro Martinez',
+                'owner_contact' => '09211234567',
+                'address' => '654 Lower Road, Scout Barrio, Baguio City',
+                'microchip_number' => '982000111222333',
+            ],
+            [
+                'patient_id' => 'VET-2026-0006',
+                'pet_name' => 'Daisy',
+                'species' => 'Rabbit',
+                'breed' => 'Holland Lop',
+                'color' => 'Brown and White',
+                'birthdate' => '2025-10-20',
                 'sex' => 'Female',
-                'contact_number' => '09221234567',
+                'owner_name' => 'Carmen Reyes',
+                'owner_contact' => '09231234567',
                 'address' => '987 Hill Street, Scout Barrio, Baguio City',
-                'philhealth_number' => '12-345678903-4',
             ],
         ];
 
         foreach ($patients as $patientData) {
             $patient = Patient::create($patientData);
 
-            // Create a recent visit for each patient
+            // Create a recent wellness visit for each patient
             $visit = Visit::create([
                 'patient_id' => $patient->id,
-                'service_type' => 'General Checkup',
-                'chief_complaint' => 'Routine checkup',
-                'health_worker' => 'Nurse Anna',
+                'service_type' => 'Wellness Exam',
+                'chief_complaint' => 'Annual checkup',
+                'health_worker' => 'Dr. Veterinarian Anna',
                 'visit_date' => Carbon::now()->subDays(rand(1, 30)),
             ]);
 
-            // Add vital signs
-            VitalSign::create([
-                'visit_id' => $visit->id,
-                'blood_pressure' => '120/80',
-                'temperature' => 36.5,
-                'pulse_rate' => 75,
-                'weight' => 65.5,
-                'height' => 165,
-            ]);
-
-            // Add immunizations for all patients
-            if ($patient->age < 2) {
-                // Baby immunizations
-                Immunization::create([
-                    'patient_id' => $patient->id,
-                    'vaccine_name' => 'BCG',
-                    'dose_number' => 1,
-                    'date_given' => $patient->birthdate,
-                    'administered_by' => 'Nurse Anna',
+            // Add vital signs appropriate for the species
+            if ($patient->species === 'Dog') {
+                VitalSign::create([
+                    'visit_id' => $visit->id,
+                    'temperature' => rand(380, 392) / 10, // 38.0-39.2°C normal for dogs
+                    'pulse_rate' => rand(60, 140),
+                    'respiratory_rate' => rand(10, 30),
+                    'weight' => rand(25, 35),
                 ]);
-
-                Immunization::create([
-                    'patient_id' => $patient->id,
-                    'vaccine_name' => 'Hepatitis B',
-                    'dose_number' => 1,
-                    'date_given' => Carbon::parse($patient->birthdate)->addWeeks(1),
-                    'administered_by' => 'Nurse Anna',
+            } elseif ($patient->species === 'Cat') {
+                VitalSign::create([
+                    'visit_id' => $visit->id,
+                    'temperature' => rand(380, 392) / 10, // 38.0-39.2°C normal for cats
+                    'pulse_rate' => rand(140, 220),
+                    'respiratory_rate' => rand(20, 30),
+                    'weight' => rand(3, 6),
                 ]);
-
-                Immunization::create([
-                    'patient_id' => $patient->id,
-                    'vaccine_name' => 'Pentavalent (DPT-HepB-Hib)',
-                    'dose_number' => 1,
-                    'date_given' => Carbon::parse($patient->birthdate)->addWeeks(6),
-                    'administered_by' => 'Nurse Anna',
-                ]);
-            } elseif ($patient->age >= 2 && $patient->age <= 12) {
-                // Child immunizations
-                Immunization::create([
-                    'patient_id' => $patient->id,
-                    'vaccine_name' => 'MMR (Measles, Mumps, Rubella)',
-                    'dose_number' => 1,
-                    'date_given' => Carbon::now()->subYears(rand(1, 3)),
-                    'administered_by' => 'Nurse Anna',
-                ]);
-
-                Immunization::create([
-                    'patient_id' => $patient->id,
-                    'vaccine_name' => 'OPV (Oral Polio Vaccine)',
-                    'dose_number' => 3,
-                    'date_given' => Carbon::now()->subYears(rand(1, 4)),
-                    'administered_by' => 'Nurse Maria',
-                ]);
-            } elseif ($patient->age >= 13 && $patient->age <= 18) {
-                // Teen immunizations
-                Immunization::create([
-                    'patient_id' => $patient->id,
-                    'vaccine_name' => 'HPV (Human Papillomavirus)',
-                    'dose_number' => 2,
-                    'date_given' => Carbon::now()->subMonths(rand(6, 12)),
-                    'administered_by' => 'Nurse Anna',
-                ]);
-
-                Immunization::create([
-                    'patient_id' => $patient->id,
-                    'vaccine_name' => 'Td (Tetanus-Diphtheria)',
-                    'dose_number' => 1,
-                    'date_given' => Carbon::now()->subMonths(rand(3, 24)),
-                    'administered_by' => 'Nurse Maria',
-                ]);
-            } else {
-                // Adult immunizations
-                Immunization::create([
-                    'patient_id' => $patient->id,
-                    'vaccine_name' => 'Influenza',
-                    'dose_number' => 1,
-                    'date_given' => Carbon::now()->subMonths(rand(1, 6)),
-                    'administered_by' => 'Nurse Anna',
-                ]);
-
-                if ($patient->age >= 50) {
-                    Immunization::create([
-                        'patient_id' => $patient->id,
-                        'vaccine_name' => 'Pneumococcal',
-                        'dose_number' => 1,
-                        'date_given' => Carbon::now()->subMonths(rand(3, 12)),
-                        'administered_by' => 'Nurse Maria',
-                    ]);
-                }
-
-                Immunization::create([
-                    'patient_id' => $patient->id,
-                    'vaccine_name' => 'COVID-19',
-                    'dose_number' => 2,
-                    'date_given' => Carbon::now()->subMonths(rand(2, 8)),
-                    'administered_by' => 'Nurse Anna',
+            } else { // Rabbit
+                VitalSign::create([
+                    'visit_id' => $visit->id,
+                    'temperature' => rand(385, 400) / 10, // 38.5-40.0°C normal for rabbits
+                    'pulse_rate' => rand(130, 325),
+                    'respiratory_rate' => rand(30, 60),
+                    'weight' => rand(1, 3),
                 ]);
             }
 
-            // Add prenatal record for female of childbearing age
-            if ($patient->sex === 'Female' && $patient->age >= 18 && $patient->age <= 45) {
-                PrenatalRecord::create([
+            // Add species-appropriate vaccinations
+            if ($patient->species === 'Dog') {
+                // Core dog vaccines
+                Immunization::create([
                     'patient_id' => $patient->id,
-                    'lmp' => Carbon::now()->subWeeks(20),
-                    'visit_date' => Carbon::now()->subDays(rand(1, 14)),
-                    'weight' => 62.0,
-                    'blood_pressure' => '110/70',
-                    'fundal_height' => 20.5,
-                    'fetal_heart_tone' => '140 bpm',
+                    'vaccine_name' => 'Rabies',
+                    'dose_number' => 1,
+                    'date_given' => Carbon::parse($patient->birthdate)->addMonths(4),
+                    'next_dose_due' => Carbon::parse($patient->birthdate)->addMonths(16),
+                    'administered_by' => 'Dr. Veterinarian Anna',
+                ]);
+
+                Immunization::create([
+                    'patient_id' => $patient->id,
+                    'vaccine_name' => 'DHPP (Distemper, Hepatitis, Parvovirus, Parainfluenza)',
+                    'dose_number' => 3,
+                    'date_given' => Carbon::parse($patient->birthdate)->addMonths(4),
+                    'next_dose_due' => Carbon::parse($patient->birthdate)->addYears(1),
+                    'administered_by' => 'Dr. Veterinarian Anna',
+                ]);
+
+                Immunization::create([
+                    'patient_id' => $patient->id,
+                    'vaccine_name' => 'Bordetella',
+                    'dose_number' => 1,
+                    'date_given' => Carbon::parse($patient->birthdate)->addMonths(6),
+                    'administered_by' => 'Dr. Veterinarian Maria',
+                ]);
+            } elseif ($patient->species === 'Cat') {
+                // Core cat vaccines
+                Immunization::create([
+                    'patient_id' => $patient->id,
+                    'vaccine_name' => 'Rabies',
+                    'dose_number' => 1,
+                    'date_given' => Carbon::parse($patient->birthdate)->addMonths(4),
+                    'next_dose_due' => Carbon::parse($patient->birthdate)->addMonths(16),
+                    'administered_by' => 'Dr. Veterinarian Anna',
+                ]);
+
+                Immunization::create([
+                    'patient_id' => $patient->id,
+                    'vaccine_name' => 'FVRCP (Feline Viral Rhinotracheitis, Calicivirus, Panleukopenia)',
+                    'dose_number' => 3,
+                    'date_given' => Carbon::parse($patient->birthdate)->addMonths(4),
+                    'next_dose_due' => Carbon::parse($patient->birthdate)->addYears(1),
+                    'administered_by' => 'Dr. Veterinarian Anna',
+                ]);
+
+                Immunization::create([
+                    'patient_id' => $patient->id,
+                    'vaccine_name' => 'FeLV (Feline Leukemia)',
+                    'dose_number' => 2,
+                    'date_given' => Carbon::parse($patient->birthdate)->addMonths(5),
+                    'administered_by' => 'Dr. Veterinarian Maria',
+                ]);
+            }
+
+            // Add breeding record for intact female animals
+            if (($patient->species === 'Dog' || $patient->species === 'Cat') && 
+                $patient->sex === 'Female' && 
+                $patient->age >= 1 && 
+                $patient->age <= 7) {
+                BreedingRecord::create([
+                    'patient_id' => $patient->id,
+                    'breeding_date' => Carbon::now()->subDays(45),
+                    'sire' => ($patient->species === 'Dog' ? 'Duke (Golden Retriever)' : 'Oliver (Siamese)'),
+                    'dam' => $patient->pet_name,
+                    'heat_cycle_date' => Carbon::now()->subDays(50),
+                    'pregnancy_confirmed_date' => Carbon::now()->subDays(30),
+                    'expected_delivery_date' => Carbon::now()->addDays(18),
+                    'breeding_status' => 'Confirmed Pregnant',
+                    'checkup_date' => Carbon::now()->subDays(7),
+                    'weight' => ($patient->species === 'Dog' ? 28.5 : 4.2),
+                    'notes' => 'Regular checkup, pregnancy progressing normally.',
                 ]);
             }
         }
 
-        $this->command->info('Demo data created successfully!');
-        $this->command->info('Sample patients:');
-        $this->command->info('- Maria Santos (BHC-2026-0001)');
-        $this->command->info('- Juan Dela Cruz (BHC-2026-0002)');
-        $this->command->info('- Baby Reyes (BHC-2026-0003)');
-        $this->command->info('- Ana Lopez (BHC-2026-0004)');
-        $this->command->info('- Pedro Martinez (BHC-2026-0005)');
-        $this->command->info('- Rosa Garcia (BHC-2026-0006)');
+        $this->command->info('Veterinary demo data created successfully!');
+        $this->command->info('Sample pets:');
+        $this->command->info('- Max (Dog, Golden Retriever) - VET-2026-0001');
+        $this->command->info('- Bella (Cat, Siamese) - VET-2026-0002');
+        $this->command->info('- Charlie (Dog, Labrador) - VET-2026-0003');
+        $this->command->info('- Luna (Cat, Persian) - VET-2026-0004');
+        $this->command->info('- Rocky (Dog, German Shepherd) - VET-2026-0005');
+        $this->command->info('- Daisy (Rabbit, Holland Lop) - VET-2026-0006');
     }
 }
+
 

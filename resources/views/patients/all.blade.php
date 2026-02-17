@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Patients - CareSync</title>
+    <title>All Pets - VetCare</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
@@ -84,15 +84,15 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1><i class="bi bi-bar-chart-fill"></i> All Patients</h1>
+            <h1><i class="bi bi-bar-chart-fill"></i> All Pets</h1>
             <a href="{{ route('dashboard') }}" class="back-btn">← Back to Dashboard</a>
         </div>
 
         <div class="content-card">
             <div class="coming-soon">
                 <div class="icon"><i class="bi bi-people-fill" style="font-size: 48px;"></i></div>
-                <h2>Patient Database</h2>
-                <p>This feature is under development. View all registered patients here (1,247 total).</p>
+                <h2>Pet Database</h2>
+                <p>This feature is under development. View all registered pets here (1,247 total).</p>
             </div>
         </div>
     </div>

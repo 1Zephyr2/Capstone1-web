@@ -37,7 +37,7 @@ foreach ($patients as $patient) {
         'height' => 150 + rand(0, 30)
     ]);
 
-    echo "✓ Visit created for {$patient->full_name}\n";
+    echo "Visit created for {$patient->full_name}\n";
 }
 
 echo "\nSuccess! All sample visits for today have been created.\n";

@@ -34,11 +34,12 @@
         }
 
         .sidebar-header {
-            padding: 8px 16px;
+            padding: 12px 18px 16px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
             display: flex;
             flex-direction: column;
             justify-content: center;
+            gap: 6px;
         }
 
         .logo-container {
@@ -50,6 +51,27 @@
             text-decoration: none;
             color: inherit;
             transition: opacity 0.2s;
+        }
+
+        .sidebar-logo {
+            height: 56px;
+            width: 56px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .sidebar-brand {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            margin: 0;
+            line-height: 1.2;
         }
         
         .logo-container:hover {
@@ -80,6 +102,7 @@
             opacity: 0.9;
             padding-left: 0;
             text-align: left;
+            line-height: 1.2;
         }
 
         .sidebar-menu {
@@ -1617,10 +1640,6 @@
             gap: 8px;
         }
 
-        .appointment-form h4::before {
-            content: '👤';
-            font-size: 18px;
-        }
 
         .form-group {
             margin-bottom: 14px;
@@ -2166,10 +2185,12 @@
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <a href="{{ route('dashboard') }}" class="logo-container">
-                <img src="/images/systemlogo.png" alt="VetCare" style="height: 55px; object-fit: contain; display: block; margin: 0;">
+                <img src="/images/systemlogo.png" alt="VetCare" class="sidebar-logo">
             </a>
-            <div style="font-size: 18px; font-weight: 600; color: white; margin: 0; line-height: 1.2;">VetCare</div>
-            <div class="sidebar-subtitle" style="margin: 0; line-height: 1.2;">Veterinary Clinic System</div>
+            <div class="sidebar-brand">
+                <div class="sidebar-title">VetCare</div>
+                <div class="sidebar-subtitle">Veterinary Clinic System</div>
+            </div>
         </div>
 
         <nav class="sidebar-menu">
@@ -2321,7 +2342,7 @@
 
                     <div class="stat-card" onclick="openModal('totalPatients')" style="cursor: pointer;">
                         <div class="stat-header">
-                            <span class="stat-title">Total Patients</span>
+                            <span class="stat-title">Total Pets</span>
                             <div class="stat-icon" style="background: #FEF3C7; color: #F59E0B;"><i class="bi bi-bar-chart-fill"></i></div>
                         </div>
                         <div class="stat-value">{{ $totalPatients }}</div>
@@ -2385,7 +2406,7 @@
         <div class="ai-modal-content" style="max-width: 700px;">
             <div class="ai-modal-header">
                 <h2><i class="bi bi-clipboard2-check"></i> New Pet Record</h2>
-                <button class="ai-modal-close" onclick="closeModal('newPatient')">✕</button>
+                <button class="ai-modal-close" onclick="closeModal('newPatient')">x</button>
             </div>
             <div class="ai-modal-body" style="padding: 0;">
                 <div class="calendar-container">
@@ -2492,7 +2513,7 @@
                         <div style="display: flex; gap: 12px; padding: 18px; background: linear-gradient(135deg, #fef3c7 0%, #fef3c7 100%); border: 2px solid #fbbf24; border-radius: 10px; margin: 20px 0; box-shadow: 0 2px 8px rgba(251, 191, 36, 0.15);">
                             <input type="checkbox" id="patientDataPrivacyConsent" required style="margin-top: 2px; width: 20px; height: 20px; cursor: pointer; accent-color: #f59e0b; flex-shrink: 0;">
                             <label for="patientDataPrivacyConsent" style="font-size: 13px; color: #92400e; line-height: 1.6; cursor: pointer;">
-                                <span style="font-weight: 700; font-size: 14px;">🔒 Data Privacy Consent:</span> I consent to the collection, processing, and storage of my pet's and personal information for veterinary care purposes only. I understand that this data will be protected and will not be shared with unauthorized parties. <span style="color: #dc2626; font-weight: 700;">*</span>
+                                <span style="font-weight: 700; font-size: 14px;">Data Privacy Consent:</span> I consent to the collection, processing, and storage of my pet's and personal information for veterinary care purposes only. I understand that this data will be protected and will not be shared with unauthorized parties. <span style="color: #dc2626; font-weight: 700;">*</span>
                             </label>
                         </div>
                         
@@ -2511,7 +2532,7 @@
         <div class="ai-modal-content" style="max-width: 650px;">
             <div class="ai-modal-header" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 24px 32px;">
                 <h2 style="font-size: 24px;"><i class="bi bi-calendar-event"></i> Book Appointment</h2>
-                <button class="ai-modal-close" onclick="closeModal('bookAppointment')">✕</button>
+                <button class="ai-modal-close" onclick="closeModal('bookAppointment')">x</button>
             </div>
             <div class="ai-modal-body" style="padding: 28px; max-height: calc(85vh - 80px);">
                 <form id="appointmentForm" action="{{ route('appointments.store') }}" method="POST" style="display: flex; flex-direction: column; gap: 20px;">
@@ -2559,30 +2580,35 @@
                         </label>
                         <select name="service_type" id="appointmentServiceType" required style="padding: 12px 14px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 14px; transition: all 0.2s; cursor: pointer; background-color: white;">
                             <option value="">Select service</option>
-                            <option value="General Checkup">🩺 General Checkup</option>
-                            <option value="Immunization">💉 Immunization</option>
-                            <option value="Prenatal">🤰 Prenatal Care</option>
-                            <option value="Family Planning">👪 Family Planning</option>
-                            <option value="Referral">🏥 Referral</option>
-                            <option value="Health Education">📚 Health Education</option>
-                            <option value="Other">📋 Other</option>
+                            <option value="Wellness Exam">Wellness Exam</option>
+                            <option value="Vaccination">Vaccination</option>
+                            <option value="Surgery">Surgery</option>
+                            <option value="Dental Cleaning">Dental Cleaning</option>
+                            <option value="Emergency">Emergency</option>
+                            <option value="Grooming">Grooming</option>
+                            <option value="Spay/Neuter">Spay/Neuter</option>
+                            <option value="Breeding Consultation">Breeding Consultation</option>
+                            <option value="Boarding Checkup">Boarding Checkup</option>
+                            <option value="Follow-up">Follow-up</option>
+                            <option value="Diagnostics">Diagnostics</option>
+                            <option value="Other">Other</option>
                         </select>
                     </div>
 
-                    <!-- Immunization Section -->
-                    <div id="appointmentImmunization" style="display: none; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 18px; border-radius: 12px; gap: 12px; flex-direction: column; border: 2px solid #93c5fd; box-shadow: 0 2px 4px rgba(59, 130, 246, 0.1);">
-                        <h4 style="margin: 0 0 12px 0; color: #1e40af; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px;"><i class="bi bi-shield-fill-plus"></i> Immunization Details</h4>
+                    <!-- Vaccination Section -->
+                    <div id="appointmentVaccination" style="display: none; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 18px; border-radius: 12px; gap: 12px; flex-direction: column; border: 2px solid #93c5fd; box-shadow: 0 2px 4px rgba(59, 130, 246, 0.1);">
+                        <h4 style="margin: 0 0 12px 0; color: #1e40af; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px;"><i class="bi bi-shield-fill-plus"></i> Vaccination Details</h4>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                             <div style="display: flex; flex-direction: column; gap: 6px;">
                                 <label style="font-weight: 600; color: #374151; font-size: 12px;">Vaccine</label>
                                 <select name="vaccine_name" style="padding: 10px 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 13px; transition: all 0.2s;">
                                     <option value="">Select vaccine</option>
-                                    <option value="BCG">BCG</option>
-                                    <option value="Hepatitis B">Hepatitis B</option>
-                                    <option value="Pentavalent">Pentavalent</option>
-                                    <option value="OPV">OPV</option>
-                                    <option value="PCV">PCV</option>
-                                    <option value="MMR">MMR</option>
+                                    <option value="Rabies">Rabies</option>
+                                    <option value="DHPP">DHPP (Dogs)</option>
+                                    <option value="Bordetella">Bordetella</option>
+                                    <option value="FVRCP">FVRCP (Cats)</option>
+                                    <option value="FeLV">FeLV (Feline Leukemia)</option>
+                                    <option value="Leptospirosis">Leptospirosis</option>
                                 </select>
                             </div>
                             <div style="display: flex; flex-direction: column; gap: 6px;">
@@ -2592,42 +2618,43 @@
                                     <option value="1st Dose">1st Dose</option>
                                     <option value="2nd Dose">2nd Dose</option>
                                     <option value="3rd Dose">3rd Dose</option>
+                                    <option value="Booster">Booster</option>
                                 </select>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Prenatal Section -->
-                    <div id="appointmentPrenatal" style="display: none; background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); padding: 18px; border-radius: 12px; gap: 12px; flex-direction: column; border: 2px solid #fbbf24; box-shadow: 0 2px 4px rgba(245, 158, 11, 0.1);">
-                        <h4 style="margin: 0 0 12px 0; color: #92400e; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px;"><i class="bi bi-heart-fill"></i> Prenatal Care Details</h4>
+                    <!-- Breeding Consultation Section -->
+                    <div id="appointmentBreeding" style="display: none; background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); padding: 18px; border-radius: 12px; gap: 12px; flex-direction: column; border: 2px solid #fbbf24; box-shadow: 0 2px 4px rgba(245, 158, 11, 0.1);">
+                        <h4 style="margin: 0 0 12px 0; color: #92400e; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px;"><i class="bi bi-heart-fill"></i> Breeding Consultation Details</h4>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                             <div style="display: flex; flex-direction: column; gap: 6px;">
-                                <label style="font-weight: 600; color: #374151; font-size: 12px;">Gestational Age (weeks)</label>
-                                <input type="number" name="gestational_age" min="1" max="42" placeholder="e.g., 28" style="padding: 10px 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 13px; transition: all 0.2s;">
+                                <label style="font-weight: 600; color: #374151; font-size: 12px;">Breeding Status</label>
+                                <select name="breeding_status" style="padding: 10px 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 13px; transition: all 0.2s;">
+                                    <option value="">Select status</option>
+                                    <option value="Planned">Planned</option>
+                                    <option value="Bred">Bred</option>
+                                    <option value="Confirmed Pregnant">Confirmed Pregnant</option>
+                                    <option value="Not Pregnant">Not Pregnant</option>
+                                    <option value="Delivered">Delivered</option>
+                                </select>
                             </div>
                             <div style="display: flex; flex-direction: column; gap: 6px;">
-                                <label style="font-weight: 600; color: #374151; font-size: 12px;">Presentation</label>
-                                <select name="presentation" style="padding: 10px 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 13px; transition: all 0.2s;">
-                                    <option value="">Select</option>
-                                    <option value="Cephalic">Cephalic</option>
-                                    <option value="Breech">Breech</option>
-                                    <option value="Transverse">Transverse</option>
-                                </select>
+                                <label style="font-weight: 600; color: #374151; font-size: 12px;">Expected Delivery Date</label>
+                                <input type="date" name="expected_delivery" style="padding: 10px 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 13px; transition: all 0.2s;">
                             </div>
                         </div>
                     </div>
 
-                    <!-- Family Planning Section -->
+                    <!-- Spay/Neuter Section -->
                     <div id="appointmentFP" style="display: none; background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); padding: 18px; border-radius: 12px; gap: 12px; flex-direction: column; border: 2px solid #6ee7b7; box-shadow: 0 2px 4px rgba(16, 185, 129, 0.1);">
-                        <h4 style="margin: 0 0 12px 0; color: #166534; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px;"><i class="bi bi-heart-half"></i> Family Planning Details</h4>
+                        <h4 style="margin: 0 0 12px 0; color: #166534; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px;"><i class="bi bi-scissors"></i> Spay/Neuter Details</h4>
                         <div style="display: flex; flex-direction: column; gap: 6px;">
-                            <label style="font-weight: 600; color: #374151; font-size: 12px;">Method</label>
+                            <label style="font-weight: 600; color: #374151; font-size: 12px;">Procedure Type</label>
                             <select name="fp_method" style="padding: 10px 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 13px; transition: all 0.2s;">
-                                <option value="">Select method</option>
-                                <option value="Pills">Pills</option>
-                                <option value="Condoms">Condoms</option>
-                                <option value="Injectable">Injectable</option>
-                                <option value="IUD">IUD</option>
+                                <option value="">Select procedure</option>
+                                <option value="Spay (Female)">Spay (Female)</option>
+                                <option value="Neuter (Male)">Neuter (Male)</option>
                                 <option value="Implant">Implant</option>
                             </select>
                         </div>
@@ -2753,45 +2780,44 @@
     <div id="patientSearchModal" class="ai-modal" onclick="closeModalOnBackdrop(event, 'patientSearch')">
         <div class="ai-modal-content" style="max-width: 800px;">
             <div class="ai-modal-header" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);">
-                <h2><i class="bi bi-people-fill"></i> Patient Search</h2>
-                <button class="ai-modal-close" onclick="closeModal('patientSearch')">✕</button>
+                <h2><i class="bi bi-people-fill"></i> Pet Search</h2>
+                <button class="ai-modal-close" onclick="closeModal('patientSearch')">x</button>
             </div>
             <div class="ai-modal-body" style="padding: 0;">
                 <div class="search-container">
                     <div class="search-header">
                         <div class="search-box">
-                        <input type="text" id="quickSearchInput" placeholder="Search by name, ID, phone, email, or birthday..." oninput="performQuickSearch()">
+                        <input type="text" id="quickSearchInput" placeholder="Search by pet name, ID, owner, contact, or microchip..." oninput="performQuickSearch()">
                     </div>
                 </div>
                 
                 <div class="search-filters">
                     <input type="date" id="searchBirthdayFilter" placeholder="Birthday" onchange="performQuickSearch()" style="padding:8px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:14px;color:#374151;">
                     
-                        <select id="searchGenderFilter" onchange="performQuickSearch()">
-                            <option value="">Male / Female</option>
+                        <select id="searchSexFilter" onchange="performQuickSearch()">
+                            <option value="">Any Sex</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
+                            <option value="Neutered Male">Neutered Male</option>
+                            <option value="Spayed Female">Spayed Female</option>
                         </select>
                         
-                        <select id="searchBloodTypeFilter" onchange="performQuickSearch()">
-                            <option value="">All Blood Types</option>
-                            <option value="A+">A+</option>
-                            <option value="A-">A-</option>
-                            <option value="B+">B+</option>
-                            <option value="B-">B-</option>
-                            <option value="AB+">AB+</option>
-                            <option value="AB-">AB-</option>
-                            <option value="O+">O+</option>
-                            <option value="O-">O-</option>
+                        <select id="searchSpeciesFilter" onchange="performQuickSearch()">
+                            <option value="">All Species</option>
+                            <option value="Dog">Dog</option>
+                            <option value="Cat">Cat</option>
+                            <option value="Rabbit">Rabbit</option>
+                            <option value="Bird">Bird</option>
+                            <option value="Other">Other</option>
                         </select>
                         
                         <select id="searchAgeFilter" onchange="performQuickSearch()">
                             <option value="">All Ages</option>
-                            <option value="0-17">0-17 years</option>
-                            <option value="18-35">18-35 years</option>
-                            <option value="36-50">36-50 years</option>
-                            <option value="51-65">51-65 years</option>
-                            <option value="66+">66+ years</option>
+                            <option value="0-1">0-1 years</option>
+                            <option value="1-3">1-3 years</option>
+                            <option value="4-7">4-7 years</option>
+                            <option value="8-12">8-12 years</option>
+                            <option value="13+">13+ years</option>
                         </select>
                     </div>
                     
@@ -2800,7 +2826,7 @@
                     </div>
                     
                     <div id="noSearchResults" class="no-patients" style="display: none;">
-                        <p>No patients found matching your search criteria.</p>
+                        <p>No pets found matching your search criteria.</p>
                     </div>
                 </div>
             </div>
@@ -2812,7 +2838,7 @@
         <div class="ai-modal-content">
             <div class="ai-modal-header" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
                 <h2><i class="bi bi-people-fill"></i> Today's Patients</h2>
-                <button class="ai-modal-close" onclick="closeModal('todayPatients')">✕</button>
+                <button class="ai-modal-close" onclick="closeModal('todayPatients')">x</button>
             </div>
             <div class="ai-modal-body">
                 <div class="ai-icon"><i class="bi bi-people-fill"></i></div>
@@ -2827,7 +2853,7 @@
         <div class="ai-modal-content">
             <div class="ai-modal-header" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
                 <h2><i class="bi bi-calendar-event"></i> Appointments Today</h2>
-                <button class="ai-modal-close" onclick="closeModal('appointmentsToday')">✕</button>
+                <button class="ai-modal-close" onclick="closeModal('appointmentsToday')">x</button>
             </div>
             <div class="ai-modal-body">
                 <div class="ai-icon"><i class="bi bi-calendar-event"></i></div>
@@ -2842,7 +2868,7 @@
         <div class="ai-modal-content">
             <div class="ai-modal-header" style="background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);">
                 <h2><i class="bi bi-bar-chart-fill"></i> Total Patients</h2>
-                <button class="ai-modal-close" onclick="closeModal('totalPatients')">✕</button>
+                <button class="ai-modal-close" onclick="closeModal('totalPatients')">x</button>
             </div>
             <div class="ai-modal-body">
                 <div class="ai-icon"><i class="bi bi-bar-chart-fill"></i></div>
@@ -2857,7 +2883,7 @@
         <div class="ai-modal-content">
             <div class="ai-modal-header" style="background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);">
                 <h2><i class="bi bi-shield-fill-check"></i> Immunizations</h2>
-                <button class="ai-modal-close" onclick="closeModal('immunizations')">✕</button>
+                <button class="ai-modal-close" onclick="closeModal('immunizations')">x</button>
             </div>
             <div class="ai-modal-body">
                 <div class="ai-icon"><i class="bi bi-shield-fill-check"></i></div>
@@ -2913,11 +2939,11 @@
         <div class="ai-modal-content" style="max-width: 900px;">
             <div class="ai-modal-header">
                 <h2><i class="bi bi-clipboard2-check"></i> Medical Records</h2>
-                <button class="ai-modal-close" onclick="closeModal('medicalRecords')">✕</button>
+                <button class="ai-modal-close" onclick="closeModal('medicalRecords')">x</button>
             </div>
             <div class="ai-modal-body" style="padding: 0;">
                 <div class="medical-records-container">
-                    <button class="add-record-btn" onclick="showAddRecordForm()">➕ Add New Record</button>
+                    <button class="add-record-btn" onclick="showAddRecordForm()">Add New Record</button>
                     
                     <!-- Add Record Form -->
                     <div id="addRecordForm" style="display: none;">
@@ -2940,9 +2966,9 @@
                                     <label for="recordType">Visit Type <span style="color: red;">*</span></label>
                                     <select id="recordType" required>
                                         <option value="">Select type</option>
-                                        <option value="General Checkup">General Checkup</option>
-                                        <option value="Prenatal Care">Prenatal Care</option>
-                                        <option value="Immunization">Immunization</option>
+                                        <option value="Wellness Exam">Wellness Exam</option>
+                                        <option value="Breeding Consultation">Breeding Consultation</option>
+                                        <option value="Vaccination">Vaccination</option>
                                         <option value="Follow-up">Follow-up</option>
                                         <option value="Emergency">Emergency</option>
                                         <option value="Consultation">Consultation</option>
@@ -2967,8 +2993,8 @@
                                 </div>
                                 
                                 <div class="form-group">
-                                    <label for="recordBP">Blood Pressure</label>
-                                    <input type="text" id="recordBP" placeholder="e.g., 120/80">
+                                    <label for="recordBP">Heart Rate (bpm)</label>
+                                    <input type="number" id="recordBP" placeholder="e.g., 80" min="40" max="200">
                                 </div>
                             </div>
                             
@@ -3009,9 +3035,9 @@
                     <!-- Filter Tabs -->
                     <div class="filter-tabs">
                         <button class="filter-tab active" onclick="filterRecordsByType('all')">All Records</button>
-                        <button class="filter-tab" onclick="filterRecordsByType('General Checkup')">General Checkup</button>
-                        <button class="filter-tab" onclick="filterRecordsByType('Prenatal Care')">Prenatal Care</button>
-                        <button class="filter-tab" onclick="filterRecordsByType('Immunization')">Immunization</button>
+                        <button class="filter-tab" onclick="filterRecordsByType('Wellness Exam')">Wellness Exam</button>
+                        <button class="filter-tab" onclick="filterRecordsByType('Breeding Consultation')">Breeding Consultation</button>
+                        <button class="filter-tab" onclick="filterRecordsByType('Vaccination')">Vaccination</button>
                         <button class="filter-tab" onclick="filterRecordsByType('Follow-up')">Follow-up</button>
                     </div>
                     
@@ -3035,13 +3061,13 @@
     <div id="patientListModal" class="ai-modal" onclick="closeModalOnBackdrop(event, 'patientList')">
         <div class="ai-modal-content" style="max-width: 1000px;">
             <div class="ai-modal-header" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
-                <h2><i class="bi bi-people-fill"></i> Patient List</h2>
-                <button class="ai-modal-close" onclick="closeModal('patientList')">✕</button>
+                <h2><i class="bi bi-people-fill"></i> Pet List</h2>
+                <button class="ai-modal-close" onclick="closeModal('patientList')">x</button>
             </div>
             <div class="ai-modal-body" style="padding: 0;">
                 <div class="patient-list-container">
                     <div class="search-box">
-                        <input type="text" id="patientSearchInput" placeholder="Search by name, ID, or phone..." oninput="filterPatients()">
+                        <input type="text" id="patientSearchInput" placeholder="Search by pet name, ID, or owner contact..." oninput="filterPatients()">
                     </div>
                     
                     <div style="overflow-x: auto; max-height: 500px;">
@@ -3049,11 +3075,11 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Name</th>
+                                    <th>Pet</th>
                                     <th>Age</th>
-                                    <th>Gender</th>
-                                    <th>Phone</th>
-                                    <th>Blood Type</th>
+                                    <th>Sex</th>
+                                    <th>Owner Contact</th>
+                                    <th>Last Visit</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -3062,7 +3088,7 @@
                             </tbody>
                         </table>
                         <div id="noPatientsMessage" class="no-patients" style="display: none;">
-                            <p>No patients found.</p>
+                            <p>No pets found.</p>
                         </div>
                     </div>
                 </div>
@@ -3075,7 +3101,7 @@
         <div class="ai-modal-content" style="max-width: 750px;">
             <div class="ai-modal-header" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
                 <h2><i class="bi bi-calendar-week"></i> Appointments Calendar</h2>
-                <button class="ai-modal-close" onclick="closeModal('schedule')">✕</button>
+                <button class="ai-modal-close" onclick="closeModal('schedule')">x</button>
             </div>
             <div class="ai-modal-body" style="padding: 20px;">
                 <div style="text-align: center; margin-bottom: 20px;">
@@ -3255,7 +3281,7 @@
         <div class="ai-modal-content">
             <div class="ai-modal-header" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
                 <h2><i class="bi bi-clock-history"></i> Today's Queue</h2>
-                <button class="ai-modal-close" onclick="closeModal('todayQueue')">✕</button>
+                <button class="ai-modal-close" onclick="closeModal('todayQueue')">x</button>
             </div>
             <div class="ai-modal-body">
                 <div class="ai-icon"><i class="bi bi-clock-history"></i></div>
@@ -3271,7 +3297,7 @@
             <div class="ai-modal-header">
                 <h2><i class="bi bi-cpu-fill"></i> AI Decision Support</h2>
                 <button class="ai-modal-close" onclick="closeModal('ai')">
-                    ✕
+                    x
                 </button>
             </div>
             <div class="ai-modal-body">
@@ -3521,7 +3547,7 @@
             
             if (status === 'attended') {
                 if (statusElement) {
-                    statusElement.innerHTML = '<span class="badge-attended" style="display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 10px; background: #D1FAE5; color: #065F46;">✓ Attended</span>';
+                    statusElement.innerHTML = '<span class="badge-attended" style="display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 10px; background: #D1FAE5; color: #065F46;">Attended</span>';
                 }
                 if (buttons) buttons.style.display = 'none';
             } else if (status === 'rescheduled') {
@@ -3970,6 +3996,7 @@
                             const age = cells[2].textContent.trim();
                             const sex = cells[3].textContent.trim();
                             const contact = cells[4].textContent.trim();
+                            const lastVisit = cells[5] ? cells[5].textContent.trim() : '-';
                             const viewLink = cells[6].querySelector('a[href*="patients/"]');
                             const patientIdNum = viewLink ? viewLink.href.split('/').pop() : '';
                             
@@ -3980,7 +4007,7 @@
                                 <td>${age}</td>
                                 <td><span class="badge badge-${sex.toLowerCase()}">${sex}</span></td>
                                 <td>${contact}</td>
-                                <td>-</td>
+                                <td>${lastVisit}</td>
                                 <td>
                                     <div class="table-actions">
                                         <button class="btn-view" onclick="window.location.href='/patients/${patientIdNum}'">View</button>
@@ -4024,14 +4051,18 @@
                     noMessage.style.display = 'none';
                     
                     patients.forEach(patient => {
+                        const petName = patient.pet_name || patient.name || 'Unknown';
+                        const sex = patient.sex || 'N/A';
+                        const ownerContact = patient.owner_contact || patient.contact || '-';
+                        const lastVisit = patient.last_visit || '-';
                         const row = document.createElement('tr');
                         row.innerHTML = `
                             <td>${patient.patient_id}</td>
-                            <td>${patient.name}</td>
+                            <td>${petName}</td>
                             <td>${patient.age} yrs</td>
-                            <td><span class="badge badge-${patient.sex.toLowerCase()}">${patient.sex}</span></td>
-                            <td>${patient.contact || '-'}</td>
-                            <td>-</td>
+                            <td><span class="badge badge-${sex.toLowerCase().replace(/\s+/g, '-')}">${sex}</span></td>
+                            <td>${ownerContact}</td>
+                            <td>${lastVisit}</td>
                             <td>
                                 <div class="table-actions">
                                     <button class="btn-view" onclick="window.location.href='/patients/${patient.id}'">View</button>
@@ -4051,14 +4082,13 @@
         function viewPatient(index) {
             const patient = patientRecords[index];
             const details = `
-Patient ID: ${patient.id}
-Name: ${patient.fullName}
+Pet ID: ${patient.id}
+Pet Name: ${patient.fullName}
 Age: ${patient.age} years
-Gender: ${patient.gender}
+Sex: ${patient.gender}
 Date of Birth: ${patient.dob}
-Phone: ${patient.phone}
+Owner Contact: ${patient.phone}
 Email: ${patient.email || 'N/A'}
-Blood Type: ${patient.bloodType}
 Address: ${patient.address}
 
 Emergency Contact: ${patient.emergencyContact || 'N/A'}
@@ -4307,15 +4337,15 @@ PATIENT INFORMATION
 Patient ID: ${record.patientId}
 Name: ${record.patientName}
 Age: ${record.patientAge} years
-Gender: ${record.patientGender}
+Sex: ${record.patientGender}
 
 VITAL SIGNS
 Height: ${record.vitals.height} cm
 Weight: ${record.vitals.weight} kg
 BMI: ${record.vitals.bmi}
-Blood Pressure: ${record.vitals.bloodPressure}
+Heart Rate: ${record.vitals.bloodPressure} bpm
 Temperature: ${record.vitals.temperature}°C
-Heart Rate: ${record.vitals.heartRate} bpm
+Pulse Rate: ${record.vitals.heartRate} bpm
 
 CHIEF COMPLAINT
 ${record.chiefComplaint}
@@ -4347,8 +4377,8 @@ Created: ${new Date(record.createdAt).toLocaleString()}
         function performQuickSearch() {
             const searchTerm = document.getElementById('quickSearchInput').value;
             const birthdayFilter = document.getElementById('searchBirthdayFilter').value;
-            const genderFilter = document.getElementById('searchGenderFilter').value;
-            const bloodTypeFilter = document.getElementById('searchBloodTypeFilter').value;
+            const sexFilter = document.getElementById('searchSexFilter').value;
+            const speciesFilter = document.getElementById('searchSpeciesFilter').value;
             const ageFilter = document.getElementById('searchAgeFilter').value;
             
             const resultsContainer = document.getElementById('searchResults');
@@ -4371,24 +4401,24 @@ Created: ${new Date(record.createdAt).toLocaleString()}
                         // Birthday filter
                         const matchesBirthday = !birthdayFilter || patient.birthdate === birthdayFilter;
                         
-                        // Gender filter
-                        const matchesGender = !genderFilter || patient.sex === genderFilter;
+                        // Sex filter
+                        const matchesSex = !sexFilter || patient.sex === sexFilter;
                         
-                        // Blood type filter - skip for now as it's not in the base patient model
-                        const matchesBloodType = true;
+                        // Species filter
+                        const matchesSpecies = !speciesFilter || patient.species === speciesFilter;
                         
                         // Age filter
                         let matchesAge = true;
                         if (ageFilter) {
                             const age = patient.age;
-                            if (ageFilter === '0-17') matchesAge = age >= 0 && age <= 17;
-                            else if (ageFilter === '18-35') matchesAge = age >= 18 && age <= 35;
-                            else if (ageFilter === '36-50') matchesAge = age >= 36 && age <= 50;
-                            else if (ageFilter === '51-65') matchesAge = age >= 51 && age <= 65;
-                            else if (ageFilter === '66+') matchesAge = age >= 66;
+                            if (ageFilter === '0-1') matchesAge = age >= 0 && age <= 1;
+                            else if (ageFilter === '1-3') matchesAge = age >= 1 && age <= 3;
+                            else if (ageFilter === '4-7') matchesAge = age >= 4 && age <= 7;
+                            else if (ageFilter === '8-12') matchesAge = age >= 8 && age <= 12;
+                            else if (ageFilter === '13+') matchesAge = age >= 13;
                         }
                         
-                        return matchesBirthday && matchesGender && matchesBloodType && matchesAge;
+                        return matchesBirthday && matchesSex && matchesSpecies && matchesAge;
                     });
                     
                     if (filteredPatients.length === 0) {
@@ -4399,6 +4429,12 @@ Created: ${new Date(record.createdAt).toLocaleString()}
                     noResultsMessage.style.display = 'none';
                     
                     filteredPatients.forEach(patient => {
+                        const petName = patient.pet_name || patient.name || 'Unknown';
+                        const species = patient.species || 'Unknown';
+                        const breed = patient.breed || 'Unknown';
+                        const owner = patient.owner_name || 'Unknown';
+                        const ownerContact = patient.owner_contact || patient.contact || '';
+                        const badgeText = patient.sex || species;
                         const card = document.createElement('div');
                         card.className = 'patient-result-card';
                         card.style.cursor = 'pointer';
@@ -4410,11 +4446,12 @@ Created: ${new Date(record.createdAt).toLocaleString()}
                         card.innerHTML = `
                             <div class="patient-result-header">
                                 <div>
-                                    <div class="patient-result-name">${patient.name}</div>
+                                    <div class="patient-result-name">${petName}</div>
                                     <div class="patient-result-id">ID: ${patient.patient_id}</div>
-                                    <div class="patient-result-id" style="color:#10b981;margin-top:2px;">🎂 ${birthdate}</div>
+                                    <div class="patient-result-id" style="margin-top:2px;">${species} • ${breed}</div>
+                                    <div class="patient-result-id" style="color:#10b981;margin-top:2px;">Owner: ${owner}${ownerContact ? ' • ' + ownerContact : ''}</div>
                                 </div>
-                                <div class="patient-badge">${patient.sex}</div>
+                                <div class="patient-badge">${badgeText}</div>
                             </div>
                         `;
                         
@@ -4513,21 +4550,18 @@ Created: ${new Date(record.createdAt).toLocaleString()}
                 : '  No medical records found';
             
             const details = `
-PATIENT DETAILS
+PET DETAILS
 ═══════════════════════════════════════
-Patient ID: ${patient.id}
-Name: ${patient.fullName}
+Pet ID: ${patient.id}
+Pet Name: ${patient.fullName}
 Age: ${patient.age} years
-Gender: ${patient.gender}
+Sex: ${patient.gender}
 Date of Birth: ${patient.dob}
 
-CONTACT INFORMATION
-Phone: ${patient.phone}
+OWNER INFORMATION
+Owner Contact: ${patient.phone}
 Email: ${patient.email || 'N/A'}
 Address: ${patient.address}
-
-MEDICAL INFORMATION
-Blood Type: ${patient.bloodType || 'N/A'}
 
 Emergency Contact: ${patient.emergencyContact || 'N/A'}
 Emergency Phone: ${patient.emergencyPhone || 'N/A'}
@@ -4583,36 +4617,44 @@ Registered: ${new Date(patient.registeredDate).toLocaleString()}
             const appointmentServiceType = document.getElementById('appointmentServiceType');
             if (appointmentServiceType) {
                 appointmentServiceType.addEventListener('change', function() {
-                    const immunizationSection = document.getElementById('appointmentImmunization');
-                    const prenatalSection = document.getElementById('appointmentPrenatal');
-                    const fpSection = document.getElementById('appointmentFP');
+                    const vaccinationSection = document.getElementById('appointmentVaccination');
+                    const breedingSection = document.getElementById('appointmentBreeding');
+                    const spayNeuterSection = document.getElementById('appointmentFP');
                     const referralSection = document.getElementById('appointmentReferral');
                     
                     // Hide all sections
-                    immunizationSection.style.display = 'none';
-                    prenatalSection.style.display = 'none';
-                    fpSection.style.display = 'none';
-                    referralSection.style.display = 'none';
+                    if (vaccinationSection) vaccinationSection.style.display = 'none';
+                    if (breedingSection) breedingSection.style.display = 'none';
+                    if (spayNeuterSection) spayNeuterSection.style.display = 'none';
+                    if (referralSection) referralSection.style.display = 'none';
                     
                     // Remove required attributes
-                    document.querySelectorAll('#appointmentImmunization input, #appointmentImmunization select, #appointmentPrenatal input, #appointmentPrenatal select, #appointmentFP input, #appointmentFP select, #appointmentReferral input, #appointmentReferral select').forEach(field => {
+                    document.querySelectorAll('#appointmentVaccination input, #appointmentVaccination select, #appointmentBreeding input, #appointmentBreeding select, #appointmentFP input, #appointmentFP select, #appointmentReferral input, #appointmentReferral select').forEach(field => {
                         field.removeAttribute('required');
                     });
                     
                     // Show relevant section and set required
-                    if (this.value === 'Immunization') {
-                        immunizationSection.style.display = 'flex';
-                        immunizationSection.querySelector('[name="vaccine_name"]').setAttribute('required', 'required');
-                        immunizationSection.querySelector('[name="dose_number"]').setAttribute('required', 'required');
-                    } else if (this.value === 'Prenatal') {
-                        prenatalSection.style.display = 'flex';
-                        prenatalSection.querySelector('[name="gestational_age"]').setAttribute('required', 'required');
-                    } else if (this.value === 'Family Planning') {
-                        fpSection.style.display = 'flex';
-                        fpSection.querySelector('[name="fp_method"]').setAttribute('required', 'required');
+                    if (this.value === 'Vaccination') {
+                        if (vaccinationSection) {
+                            vaccinationSection.style.display = 'flex';
+                            vaccinationSection.querySelector('[name="vaccine_name"]').setAttribute('required', 'required');
+                            vaccinationSection.querySelector('[name="dose_number"]').setAttribute('required', 'required');
+                        }
+                    } else if (this.value === 'Breeding Consultation') {
+                        if (breedingSection) {
+                            breedingSection.style.display = 'flex';
+                            breedingSection.querySelector('[name="breeding_status"]').setAttribute('required', 'required');
+                        }
+                    } else if (this.value === 'Spay/Neuter') {
+                        if (spayNeuterSection) {
+                            spayNeuterSection.style.display = 'flex';
+                            spayNeuterSection.querySelector('[name="fp_method"]').setAttribute('required', 'required');
+                        }
                     } else if (this.value === 'Referral') {
-                        referralSection.style.display = 'flex';
-                        referralSection.querySelector('[name="referred_to"]').setAttribute('required', 'required');
+                        if (referralSection) {
+                            referralSection.style.display = 'flex';
+                            referralSection.querySelector('[name="referred_to"]').setAttribute('required', 'required');
+                        }
                     }
                 });
             }
@@ -4642,7 +4684,7 @@ Registered: ${new Date(patient.registeredDate).toLocaleString()}
                                 if (patients.length > 0) {
                                     displayAppointmentResults(patients);
                                 } else {
-                                    appointmentSearchResults.innerHTML = '<div style="padding: 12px; color: #6b7280; text-align: center;">No patients found</div>';
+                                    appointmentSearchResults.innerHTML = '<div style="padding: 12px; color: #6b7280; text-align: center;">No pets found</div>';
                                     appointmentSearchResults.style.display = 'block';
                                 }
                             })

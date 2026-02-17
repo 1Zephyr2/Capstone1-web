@@ -3,10 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Analytics - CareSync</title>
+    <title>Data Analytics - VetCare</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+        :root {
+            --bg: #f5f7fb;
+            --bg-alt: #eef2ff;
+            --card: #ffffff;
+            --text: #111827;
+            --muted: #6b7280;
+            --line: #e5e7eb;
+            --primary: #2563eb;
+            --primary-strong: #1d4ed8;
+            --accent: #16a34a;
+            --accent-strong: #15803d;
+            --shadow-sm: 0 4px 14px rgba(15, 23, 42, 0.08);
+            --shadow-lg: 0 20px 40px rgba(15, 23, 42, 0.12);
+            --radius: 14px;
+        }
         * {
             margin: 0;
             padding: 0;
@@ -14,10 +31,37 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
+            font-family: 'Manrope', sans-serif;
+            background: linear-gradient(135deg, var(--bg) 0%, var(--bg-alt) 100%);
             padding: 40px;
             min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            color: var(--text);
+        }
+
+        body::before,
+        body::after {
+            content: '';
+            position: fixed;
+            z-index: -1;
+            border-radius: 50%;
+        }
+
+        body::before {
+            width: 460px;
+            height: 460px;
+            top: -160px;
+            right: -140px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.18) 0%, rgba(37, 99, 235, 0) 70%);
+        }
+
+        body::after {
+            width: 380px;
+            height: 380px;
+            bottom: -160px;
+            left: -120px;
+            background: radial-gradient(circle, rgba(22, 163, 74, 0.16) 0%, rgba(22, 163, 74, 0) 70%);
         }
 
         .container {
@@ -26,36 +70,37 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
-            padding: 32px 40px;
-            border-radius: 20px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
-            margin-bottom: 40px;
+            background: var(--card);
+            padding: 28px 32px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 32px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 1px solid rgba(0, 0, 0, 0.06);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--line);
+            transition: all 0.3s ease;
+            animation: pageEnter 0.5s ease;
         }
         
         .header:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
+            box-shadow: var(--shadow-lg);
         }
 
         .header-left h1 {
-            font-size: 36px;
+            font-size: 32px;
             font-weight: 800;
-            color: #111827;
+            color: var(--text);
             display: flex;
             align-items: center;
-            gap: 14px;
-            margin-bottom: 10px;
+            gap: 12px;
+            margin-bottom: 8px;
             letter-spacing: -0.02em;
         }
 
         .header-left p {
-            font-size: 15px;
-            color: #6b7280;
+            font-size: 14px;
+            color: var(--muted);
             font-weight: 500;
         }
 
@@ -72,26 +117,25 @@
         }
 
         .back-btn {
-            background: linear-gradient(135deg, #059669 0%, #047857 100%);
-            color: white;
-            border: none;
-            padding: 14px 32px;
-            border-radius: 12px;
+            background: white;
+            color: var(--text);
+            border: 1px solid var(--line);
+            padding: 12px 20px;
+            border-radius: 10px;
             cursor: pointer;
             text-decoration: none;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.2s ease;
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            box-shadow: 0 2px 8px rgba(5, 150, 105, 0.3);
         }
 
         .back-btn:hover {
-            background: linear-gradient(135deg, #047857 0%, #065f46 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(5, 150, 105, 0.4);
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-1px);
         }
 
         .metrics-grid {
@@ -102,12 +146,12 @@
         }
 
         .metric-card {
-            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
-            padding: 32px;
-            border-radius: 20px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border-left: 5px solid #059669;
+            background: var(--card);
+            padding: 24px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--primary);
             position: relative;
             overflow: hidden;
         }
@@ -117,9 +161,9 @@
             position: absolute;
             top: 0;
             right: 0;
-            width: 100px;
-            height: 100px;
-            background: radial-gradient(circle, rgba(5, 150, 105, 0.1) 0%, transparent 70%);
+            width: 90px;
+            height: 90px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.12) 0%, transparent 70%);
             border-radius: 50%;
             transform: translate(30%, -30%);
         }
@@ -139,12 +183,12 @@
         }
 
         .metric-value {
-            font-size: 44px;
-            font-weight: 900;
-            color: #059669;
-            margin-bottom: 12px;
+            font-size: 38px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 10px;
             line-height: 1;
-            letter-spacing: -0.03em;
+            letter-spacing: -0.02em;
         }
 
         .metric-trend {
@@ -172,17 +216,17 @@
         }
 
         .insights-section {
-            background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
-            padding: 36px;
-            border-radius: 20px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
-            margin-bottom: 40px;
-            border: 1px solid rgba(5, 150, 105, 0.1);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--card);
+            padding: 28px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 32px;
+            border: 1px solid var(--line);
+            transition: all 0.3s ease;
         }
         
         .insights-section:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
+            box-shadow: var(--shadow-lg);
         }
 
         .insights-section h3 {
@@ -197,18 +241,18 @@
         }
 
         .insight-item {
-            padding: 24px;
+            padding: 20px;
             margin-bottom: 16px;
-            border-left: 5px solid #059669;
-            background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
-            border-radius: 14px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-left: 4px solid var(--accent);
+            background: #f8fafc;
+            border-radius: 12px;
+            transition: all 0.3s ease;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
         }
 
         .insight-item:hover {
-            background: linear-gradient(135deg, #ecfdf5 0%, #f9fafb 100%);
-            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.15);
+            background: #f1f5f9;
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.12);
             transform: translateX(4px);
         }
 
@@ -247,17 +291,28 @@
         }
 
         .chart-card {
-            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
-            padding: 36px;
-            border-radius: 20px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(0, 0, 0, 0.06);
+            background: var(--card);
+            padding: 28px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+            border: 1px solid var(--line);
         }
 
         .chart-card:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
+            box-shadow: var(--shadow-lg);
             transform: translateY(-2px);
+        }
+
+        @keyframes pageEnter {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .chart-card h3 {
@@ -293,24 +348,21 @@
 </head>
 <body>
     <div class="container">
+        <a href="{{ route('dashboard') }}" class="back-btn" style="margin-bottom: 16px;">← Back to Dashboard</a>
         <!-- Header -->
         <div class="header">
             <div class="header-left">
                 <h1>
                     <span>Data Analytics</span>
                 </h1>
-                <p>Advanced insights and predictive analytics for data-driven healthcare decisions</p>
+                <p>Advanced insights and predictive analytics for data-driven veterinary care decisions</p>
             </div>
-            <a href="{{ route('dashboard') }}" class="back-btn">
-                <span>←</span>
-                <span>Back to Dashboard</span>
-            </a>
         </div>
 
         <!-- Key Metrics -->
         <div class="metrics-grid">
             <div class="metric-card">
-                <div class="metric-label">Total Patients</div>
+                <div class="metric-label">Total Pets</div>
                 <div class="metric-value">{{ number_format($metrics['total_patients']) }}</div>
                 <span class="metric-trend trend-neutral">All time</span>
             </div>
@@ -324,7 +376,7 @@
             </div>
 
             <div class="metric-card">
-                <div class="metric-label">Immunization Completion</div>
+                <div class="metric-label">Vaccination Completion</div>
                 <div class="metric-value">{{ $metrics['completion_rate'] }}%</div>
                 <span class="metric-trend trend-neutral">{{ number_format($metrics['total_immunizations']) }} total records</span>
             </div>
@@ -348,43 +400,43 @@
             @if($metrics['visit_growth_rate'] > 15)
             <div class="insight-item">
                 <h4>High Growth Alert</h4>
-                <p>Patient visits are increasing significantly (+{{ $metrics['visit_growth_rate'] }}%). This indicates growing demand for services. Recommend expanding clinic hours or adding staff to maintain service quality.</p>
+                <p>Pet visits are increasing significantly (+{{ $metrics['visit_growth_rate'] }}%). This indicates growing demand for services. Recommend expanding clinic hours or adding staff to maintain service quality.</p>
             </div>
             @elseif($metrics['visit_growth_rate'] < -15)
             <div class="insight-item">
                 <h4>Declining Trend Alert</h4>
-                <p>Patient visits have decreased by {{ abs($metrics['visit_growth_rate']) }}%. Consider implementing community outreach programs or reviewing service accessibility to re-engage patients.</p>
+                <p>Pet visits have decreased by {{ abs($metrics['visit_growth_rate']) }}%. Consider implementing community outreach programs or reviewing service accessibility to re-engage pet owners.</p>
             </div>
             @endif
 
             @if($metrics['completion_rate'] < 50)
             <div class="insight-item">
-                <h4>Immunization Follow-up Needed</h4>
-                <p>Only {{ $metrics['completion_rate'] }}% of immunizations are completed. Many patients need follow-up doses. Implement automated reminder system to improve completion rates.</p>
+                <h4>Vaccination Follow-up Needed</h4>
+                <p>Only {{ $metrics['completion_rate'] }}% of vaccinations are completed. Many pets need follow-up doses. Implement automated reminder system to improve completion rates.</p>
             </div>
             @endif
 
-            @if($metrics['high_risk_prenatal'] > 5)
+            @if($metrics['high_risk_breeding'] > 5)
             <div class="insight-item">
-                <h4>High-Risk Prenatal Cases</h4>
-                <p>Currently tracking {{ $metrics['high_risk_prenatal'] }} high-risk prenatal cases. Ensure regular monitoring and consider specialized care coordination for these patients.</p>
+                <h4>High-Risk Breeding Cases</h4>
+                <p>Currently tracking {{ $metrics['high_risk_breeding'] }} high-risk breeding cases. Ensure regular monitoring and consider specialized care coordination for these animals.</p>
             </div>
             @endif
         </div>
 
-        <!-- Patient Activity & Retention Analytics -->
+        <!-- Pet Activity & Retention Analytics -->
         <div class="insights-section" style="margin-top: 32px;">
-            <h3><i class="bi bi-graph-up-arrow"></i> Patient Activity & Retention Predictive Analytics</h3>
+            <h3><i class="bi bi-graph-up-arrow"></i> Pet Activity & Retention Predictive Analytics</h3>
             
             <div class="metrics-grid" style="margin-bottom: 24px;">
                 <div class="metric-card">
-                    <div class="metric-label">Active Patients (30 days)</div>
+                    <div class="metric-label">Active Pets (30 days)</div>
                     <div class="metric-value">{{ number_format($patientActivityMetrics['patients_with_recent_visits']) }}</div>
                     <span class="metric-trend trend-up">{{ $metrics['total_patients'] > 0 ? round(($patientActivityMetrics['patients_with_recent_visits'] / $metrics['total_patients']) * 100, 1) : 0 }}% of total</span>
                 </div>
 
                 <div class="metric-card">
-                    <div class="metric-label">Inactive Patients (90+ days)</div>
+                    <div class="metric-label">Inactive Pets (90+ days)</div>
                     <div class="metric-value">{{ number_format($patientActivityMetrics['inactive_patients']) }}</div>
                     <span class="metric-trend trend-down">Need re-engagement</span>
                 </div>
@@ -396,7 +448,7 @@
                 </div>
 
                 <div class="metric-card">
-                    <div class="metric-label">Patient Retention Rate</div>
+                    <div class="metric-label">Pet Retention Rate</div>
                     <div class="metric-value">{{ $patientActivityMetrics['retention_rate'] }}%</div>
                     <span class="metric-trend {{ $patientActivityMetrics['retention_rate'] >= 70 ? 'trend-up' : 'trend-down' }}">
                         {{ $patientActivityMetrics['retention_rate'] >= 70 ? 'Good retention' : 'Needs improvement' }}
@@ -405,33 +457,33 @@
             </div>
 
             <div class="insight-item">
-                <h4><i class="bi bi-people-fill"></i> Patient Visit Patterns</h4>
-                <p>Out of <strong>{{ number_format($metrics['total_patients']) }} total patients</strong>, <strong>{{ number_format($patientActivityMetrics['patients_with_recent_visits']) }} patients ({{ $metrics['total_patients'] > 0 ? round(($patientActivityMetrics['patients_with_recent_visits'] / $metrics['total_patients']) * 100, 1) : 0 }}%) have visited in the last 30 days</strong>. Meanwhile, <strong>{{ number_format($patientActivityMetrics['inactive_patients']) }} patients</strong> haven't visited in over 90 days and may need follow-up contact.</p>
+                <h4><i class="bi bi-people-fill"></i> Pet Visit Patterns</h4>
+                <p>Out of <strong>{{ number_format($metrics['total_patients']) }} total pets</strong>, <strong>{{ number_format($patientActivityMetrics['patients_with_recent_visits']) }} pets ({{ $metrics['total_patients'] > 0 ? round(($patientActivityMetrics['patients_with_recent_visits'] / $metrics['total_patients']) * 100, 1) : 0 }}%) have visited in the last 30 days</strong>. Meanwhile, <strong>{{ number_format($patientActivityMetrics['inactive_patients']) }} pets</strong> haven't visited in over 90 days and may need follow-up contact.</p>
             </div>
 
             @if($patientActivityMetrics['at_risk_patients'] > 0)
             <div class="insight-item">
-                <h4><i class="bi bi-exclamation-circle-fill"></i> At-Risk Patient Alert</h4>
-                <p><strong>{{ number_format($patientActivityMetrics['at_risk_patients']) }} patients</strong> are at risk of becoming inactive. They last visited 60-90 days ago. Consider proactive outreach through SMS reminders or calls to re-engage these patients before they become fully inactive.</p>
+                <h4><i class="bi bi-exclamation-circle-fill"></i> At-Risk Pet Alert</h4>
+                <p><strong>{{ number_format($patientActivityMetrics['at_risk_patients']) }} pets</strong> are at risk of becoming inactive. They last visited 60-90 days ago. Consider proactive outreach through SMS reminders or calls to re-engage pet owners before they become fully inactive.</p>
             </div>
             @endif
 
             @if($patientActivityMetrics['never_visited'] > 0)
             <div class="insight-item">
-                <h4><i class="bi bi-clipboard-data"></i> Never Visited Patients</h4>
-                <p><strong>{{ number_format($patientActivityMetrics['never_visited']) }} patients ({{ $metrics['total_patients'] > 0 ? round(($patientActivityMetrics['never_visited'] / $metrics['total_patients']) * 100, 1) : 0 }}%)</strong> are registered but have never visited the health center. These may be pre-registered patients or those who registered but didn't complete their first visit. Follow up to confirm their records and encourage first visit.</p>
+                <h4><i class="bi bi-clipboard-data"></i> Never Visited Pets</h4>
+                <p><strong>{{ number_format($patientActivityMetrics['never_visited']) }} pets ({{ $metrics['total_patients'] > 0 ? round(($patientActivityMetrics['never_visited'] / $metrics['total_patients']) * 100, 1) : 0 }}%)</strong> are registered but have never visited the clinic. These may be pre-registered pets or those who registered but didn't complete their first visit. Follow up to confirm their records and encourage a first visit.</p>
             </div>
             @endif
 
             @if($patientActivityMetrics['retention_rate'] < 70)
             <div class="insight-item">
                 <h4><i class="bi bi-arrow-down-circle-fill"></i> Low Retention Warning</h4>
-                <p>Current patient retention rate is <strong>{{ $patientActivityMetrics['retention_rate'] }}%</strong>, which is below the recommended 70% threshold. This indicates that many patients are not returning for follow-up care. Recommended actions: implement automated appointment reminders, conduct patient satisfaction surveys, and improve follow-up protocols.</p>
+                <p>Current pet retention rate is <strong>{{ $patientActivityMetrics['retention_rate'] }}%</strong>, which is below the recommended 70% threshold. This indicates that many pets are not returning for follow-up care. Recommended actions: implement automated appointment reminders, conduct client satisfaction surveys, and improve follow-up protocols.</p>
             </div>
             @elseif($patientActivityMetrics['retention_rate'] >= 80)
             <div class="insight-item">
                 <h4><i class="bi bi-check-circle-fill"></i> Excellent Retention</h4>
-                <p>Patient retention rate of <strong>{{ $patientActivityMetrics['retention_rate'] }}%</strong> is excellent! Patients are regularly returning for care, indicating good service quality and effective follow-up systems. Continue current practices and consider documenting successful strategies.</p>
+                <p>Pet retention rate of <strong>{{ $patientActivityMetrics['retention_rate'] }}%</strong> is excellent! Pets are regularly returning for care, indicating good service quality and effective follow-up systems. Continue current practices and consider documenting successful strategies.</p>
             </div>
             @endif
         </div>
@@ -443,7 +495,7 @@
             <div class="charts-grid">
                 <!-- Patient Growth -->
                 <div class="chart-card">
-                    <h3><i class="bi bi-graph-up"></i> Patient Registration Trend (6 Months)</h3>
+                    <h3><i class="bi bi-graph-up"></i> Pet Registration Trend (6 Months)</h3>
                     <div class="chart-container">
                         <canvas id="patientGrowthChart"></canvas>
                     </div>
@@ -467,7 +519,7 @@
 
                 <!-- Age Demographics -->
                 <div class="chart-card">
-                    <h3><i class="bi bi-people-fill"></i> Age Demographics</h3>
+                    <h3><i class="bi bi-people-fill"></i> Age Distribution</h3>
                     <div class="chart-container">
                         <canvas id="ageDemographicsChart"></canvas>
                     </div>
@@ -475,25 +527,25 @@
 
                 <!-- Gender Distribution -->
                 <div class="chart-card">
-                    <h3><i class="bi bi-person-badge"></i> Gender Distribution</h3>
+                    <h3><i class="bi bi-person-badge"></i> Sex Distribution</h3>
                     <div class="chart-container">
                         <canvas id="genderDistributionChart"></canvas>
                     </div>
                 </div>
 
-                <!-- Immunization Coverage -->
+                <!-- Vaccination Coverage -->
                 <div class="chart-card">
-                    <h3><i class="bi bi-shield-fill-check"></i> Top 10 Vaccines Administered</h3>
+                    <h3><i class="bi bi-shield-check-fill"></i> Vaccination Coverage</h3>
                     <div class="chart-container">
-                        <canvas id="immunizationCoverageChart"></canvas>
+                        <canvas id="vaccinationCoverageChart"></canvas>
                     </div>
                 </div>
 
-                <!-- High-Risk Prenatal Trend -->
+                <!-- High-Risk Breeding Trend -->
                 <div class="chart-card">
-                    <h3><i class="bi bi-exclamation-triangle-fill"></i> High-Risk Prenatal Cases Trend</h3>
+                    <h3><i class="bi bi-exclamation-triangle-fill"></i> High-Risk Breeding Cases Trend</h3>
                     <div class="chart-container">
-                        <canvas id="highRiskPrenatalChart"></canvas>
+                        <canvas id="highRiskBreedingChart"></canvas>
                     </div>
                 </div>
 
@@ -519,7 +571,7 @@
             data: {
                 labels: {!! json_encode($patientGrowth->pluck('month')) !!},
                 datasets: [{
-                    label: 'New Patients',
+                    label: 'New Pets',
                     data: {!! json_encode($patientGrowth->pluck('count')) !!},
                     borderColor: '#059669',
                     backgroundColor: 'rgba(5, 150, 105, 0.1)',
@@ -613,7 +665,7 @@
             data: {
                 labels: {!! json_encode($ageDemographics->pluck('age_group')) !!},
                 datasets: [{
-                    label: 'Patients',
+                    label: 'Pets',
                     data: {!! json_encode($ageDemographics->pluck('count')) !!},
                     backgroundColor: 'rgba(5, 150, 105, 0.8)',
                     borderColor: '#059669',
@@ -664,8 +716,8 @@
             }
         });
 
-        // Immunization Coverage Chart
-        new Chart(document.getElementById('immunizationCoverageChart'), {
+        // Vaccination Coverage Chart
+        new Chart(document.getElementById('vaccinationCoverageChart'), {
             type: 'bar',
             data: {
                 labels: {!! json_encode($immunizationCoverage->pluck('vaccine_name')) !!},
@@ -697,14 +749,14 @@
             }
         });
 
-        // High-Risk Prenatal Trend Chart
-        new Chart(document.getElementById('highRiskPrenatalChart'), {
+        // High-Risk Breeding Trend Chart
+        new Chart(document.getElementById('highRiskBreedingChart'), {
             type: 'line',
             data: {
-                labels: {!! json_encode($highRiskPrenatalTrend->pluck('month')) !!},
+                labels: {!! json_encode($highRiskBreedingTrend->pluck('month')) !!},
                 datasets: [{
                     label: 'High-Risk Cases',
-                    data: {!! json_encode($highRiskPrenatalTrend->pluck('count')) !!},
+                    data: {!! json_encode($highRiskBreedingTrend->pluck('count')) !!},
                     borderColor: '#dc2626',
                     backgroundColor: 'rgba(220, 38, 38, 0.1)',
                     fill: true,

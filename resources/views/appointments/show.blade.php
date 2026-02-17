@@ -50,20 +50,20 @@
                     <span class="badge badge-{{ $appointment->status }}">{{ ucfirst($appointment->status) }}</span>
                 </div>
                 <div class="info-row">
-                    <label>Health Worker:</label>
+                    <label>Veterinary Staff:</label>
                     <span>{{ $appointment->health_worker ?? 'Not assigned' }}</span>
                 </div>
             </div>
         </div>
 
-        <!-- Patient Information -->
+        <!-- Pet Information -->
         <div class="card">
             <div class="card-header">
-                <h2><i class="bi bi-person"></i> Patient Information</h2>
+                <h2><i class="bi bi-person"></i> Pet Information</h2>
             </div>
             <div class="card-body">
                 <div class="info-row">
-                    <label>Patient ID:</label>
+                    <label>Pet ID:</label>
                     <span>{{ $appointment->patient->patient_id }}</span>
                 </div>
                 <div class="info-row">
@@ -83,8 +83,8 @@
                     <span>{{ $appointment->patient->sex }}</span>
                 </div>
                 <div class="info-row">
-                    <label>Contact:</label>
-                    <span>{{ $appointment->patient->contact_number ?? 'N/A' }}</span>
+                    <label>Owner Contact:</label>
+                    <span>{{ $appointment->patient->owner_contact ?? 'N/A' }}</span>
                 </div>
             </div>
         </div>

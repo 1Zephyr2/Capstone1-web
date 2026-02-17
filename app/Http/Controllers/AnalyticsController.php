@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Patient;
 use App\Models\Visit;
 use App\Models\Immunization;
-use App\Models\PrenatalRecord;
+use App\Models\BreedingRecord;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -47,10 +47,9 @@ class AnalyticsController extends Controller
             ? round(($completedImmunizations / $totalImmunizations) * 100, 1)
             : 0;
         
-        // High risk prenatal cases (example: high blood pressure or other conditions)
-        $highRiskPrenatal = PrenatalRecord::where('blood_pressure', 'like', '14%')
-            ->orWhere('blood_pressure', 'like', '15%')
-            ->orWhere('blood_pressure', 'like', '16%')
+        // High risk breeding cases (animals with breeding complications or concerns)
+        $highRiskBreeding = BreedingRecord::whereNotNull('risk_factors')
+            ->orWhere('referred', true)
             ->distinct('patient_id')
             ->count();
         
@@ -62,7 +61,7 @@ class AnalyticsController extends Controller
             'total_immunizations' => $totalImmunizations,
             'predicted_next_month' => $predictedNextMonth,
             'avg_monthly_visits' => $avgMonthlyVisits,
-            'high_risk_prenatal' => $highRiskPrenatal,
+            'high_risk_breeding' => $highRiskBreeding,
         ];
         
         // Patient growth (last 6 months)
@@ -131,16 +130,15 @@ class AnalyticsController extends Controller
             ->limit(10)
             ->get();
         
-        // High risk prenatal trend (last 6 months)
-        $highRiskPrenatalTrend = PrenatalRecord::select(
-                DB::raw("strftime('%Y-%m', visit_date) as month"),
+        // High risk breeding trend (last 6 months)
+        $highRiskBreedingTrend = BreedingRecord::select(
+                DB::raw("strftime('%Y-%m', checkup_date) as month"),
                 DB::raw('COUNT(*) as count')
             )
-            ->where('visit_date', '>=', Carbon::now()->subMonths(6))
+            ->where('checkup_date', '>=', Carbon::now()->subMonths(6))
             ->where(function($query) {
-                $query->where('blood_pressure', 'like', '14%')
-                      ->orWhere('blood_pressure', 'like', '15%')
-                      ->orWhere('blood_pressure', 'like', '16%');
+                $query->whereNotNull('risk_factors')
+                      ->orWhere('referred', true);
             })
             ->groupBy('month')
             ->orderBy('month', 'asc')
@@ -209,7 +207,7 @@ class AnalyticsController extends Controller
             'ageDemographics',
             'genderDistribution',
             'immunizationCoverage',
-            'highRiskPrenatalTrend',
+            'highRiskBreedingTrend',
             'topComplaints',
             'patientActivityMetrics'
         ));

@@ -310,13 +310,13 @@
             </div>
             <div class="stat-card">
                 <span class="stat-icon"><i class="bi bi-shield-fill-check"></i></span>
-                <div class="stat-label">Immunizations</div>
+                <div class="stat-label">Vaccinations</div>
                 <div class="stat-value">{{ $stats['immunizations'] }}</div>
             </div>
             <div class="stat-card">
                 <span class="stat-icon"><i class="bi bi-heart-pulse-fill"></i></span>
-                <div class="stat-label">Prenatal Visits</div>
-                <div class="stat-value">{{ $stats['prenatal_visits'] }}</div>
+                <div class="stat-label">Breeding Checkups</div>
+                <div class="stat-value">{{ $stats['breeding_checkups'] }}</div>
             </div>
             <div class="stat-card">
                 <span class="stat-icon"><i class="bi bi-clipboard2-check"></i></span>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Import Patients - Health Center</title>
+    <title>Import Pets - VetCare</title>
     <style>
         * {
             margin: 0;
@@ -233,7 +233,7 @@
                 <ul>
                     <li><strong>Format:</strong> CSV (Comma-separated values) or Excel (.xlsx, .xls)</li>
                     <li><strong>Required Columns:</strong> first_name, last_name, birthdate, sex, address</li>
-                    <li><strong>Optional Columns:</strong> middle_name, contact_number, philhealth_number</li>
+                    <li><strong>Optional Columns:</strong> middle_name, contact_number, microchip_number</li>
                     <li><strong>Date Format:</strong> YYYY-MM-DD (e.g., 1990-05-15)</li>
                     <li><strong>Sex Values:</strong> Male or Female</li>
                 </ul>
@@ -243,7 +243,7 @@
                 @csrf
                 
                 <div class="upload-area" id="uploadArea">
-                    <div class="upload-icon">📁</div>
+                    <div class="upload-icon">File</div>
                     <h3>Drag and drop your file here</h3>
                     <p style="color: #6b7280; margin: 12px 0;">or</p>
                     <label for="fileInput" class="btn btn-primary">Choose File</label>
@@ -256,15 +256,15 @@
 
                 <div class="actions">
                     <a href="{{ route('patients.index') }}" class="btn btn-secondary">Cancel</a>
-                    <button type="submit" class="btn btn-primary" id="uploadBtn" disabled>Import Patients</button>
+                    <button type="submit" class="btn btn-primary" id="uploadBtn" disabled>Import Pets</button>
                 </div>
             </form>
         </div>
 
         <div class="card">
-            <h3 style="margin-bottom: 16px; color: #374151;">📥 Download Sample Template</h3>
+            <h3 style="margin-bottom: 16px; color: #374151;">Download Sample Template</h3>
             <p style="color: #6b7280; margin-bottom: 16px;">
-                Download this template, fill in your patient data, and upload it above.
+                Download this template, fill in your pet data, and upload it above.
             </p>
             <a href="{{ route('patients.download-template') }}" class="btn btn-download">Download CSV Template</a>
 
@@ -280,7 +280,7 @@
                             <th>sex</th>
                             <th>contact_number</th>
                             <th>address</th>
-                            <th>philhealth_number</th>
+                            <th>microchip_number</th>
                         </tr>
                     </thead>
                     <tbody>

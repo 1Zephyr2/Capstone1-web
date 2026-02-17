@@ -386,16 +386,16 @@
             </p>
             <div class="info-grid">
                 <div class="info-label">Access Logging:</div>
-                <div class="info-value">✓ Enabled (All pet record access is logged)</div>
+                <div class="info-value">Enabled (All pet record access is logged)</div>
 
                 <div class="info-label">Role-Based Access:</div>
-                <div class="info-value">✓ Enabled (Admin & Veterinary Provider roles)</div>
+                <div class="info-value">Enabled (Admin & Veterinary Provider roles)</div>
 
                 <div class="info-label">Data Encryption:</div>
-                <div class="info-value">✓ Enabled (Passwords hashed with bcrypt)</div>
+                <div class="info-value">Enabled (Passwords hashed with bcrypt)</div>
 
                 <div class="info-label">Audit Trail:</div>
-                <div class="info-value">✓ Available (User activity tracking)</div>
+                <div class="info-value">Available (User activity tracking)</div>
             </div>
         </div>
 

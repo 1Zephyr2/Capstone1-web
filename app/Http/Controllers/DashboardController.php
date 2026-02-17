@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Patient;
 use App\Models\Visit;
 use App\Models\Immunization;
-use App\Models\PrenatalRecord;
+use App\Models\BreedingRecord;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -71,26 +71,25 @@ class DashboardController extends Controller
             ->where('status', '!=', 'completed')
             ->count();
         
-        // Get active prenatal records count
-        $activePrenatal = PrenatalRecord::whereHas('patient', function ($query) {
+        // Get active breeding records count
+        $activeBreeding = BreedingRecord::whereHas('patient', function ($query) {
             $query->whereNotNull('id');
         })->count();
         
         // Get incomplete patient records
         $incompleteRecords = Patient::where(function ($query) {
-            $query->whereNull('philhealth_number')
-                  ->orWhereNull('contact_number');
+            $query->whereNull('microchip_number')
+                  ->orWhereNull('owner_contact');
         })->count();
         
-        // Get high-risk prenatal cases
-        $highRiskPrenatal = PrenatalRecord::where(function ($query) {
-            $query->where('blood_pressure', 'like', '%140%')
-                  ->orWhere('blood_pressure', 'like', '%150%')
-                  ->orWhere('blood_pressure', 'like', '%160%');
+        // Get high-risk breeding cases
+        $highRiskBreeding = BreedingRecord::where(function ($query) {
+            $query->whereNotNull('risk_factors')
+                  ->orWhere('referred', true);
         })->count();
         
         // Total alerts count
-        $totalAlerts = $incompleteRecords + $overdueImmunizations + $highRiskPrenatal;
+        $totalAlerts = $incompleteRecords + $overdueImmunizations + $highRiskBreeding;
         
         // Get top alerts with details (limit to 3-5)
         $topAlerts = [];
@@ -115,13 +114,13 @@ class DashboardController extends Controller
             ];
         }
         
-        if ($highRiskPrenatal > 0) {
+        if ($highRiskBreeding > 0) {
             $topAlerts[] = [
                 'type' => 'danger',
                 'icon' => 'bi-exclamation-triangle-fill',
-                'title' => 'High-Risk Prenatal',
-                'count' => $highRiskPrenatal,
-                'message' => "$highRiskPrenatal prenatal case(s) with high blood pressure"
+                'title' => 'High-Risk Breeding',
+                'count' => $highRiskBreeding,
+                'message' => "$highRiskBreeding breeding case(s) require attention"
             ];
         }
         
@@ -156,7 +155,7 @@ class DashboardController extends Controller
             'monthChangePercent',
             'weeklyVisits',
             'overdueImmunizations',
-            'activePrenatal',
+            'activeBreeding',
             'totalAlerts',
             'topAlerts',
             'appointments'

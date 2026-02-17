@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register New Patient - Health Center</title>
+    <title>Register New Pet - VetCare</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
@@ -266,16 +266,16 @@
                 <img src="/images/systemlogo.png" alt="CareSync" style="height: 35px; object-fit: contain;">
             </a>
             <button onclick="goBack()" class="btn-back">← Back</button>
-            <h1>Register New Patient</h1>
+            <h1>Register New Pet</h1>
         </div>
-        <p class="subtitle">Fill in essential patient information. Patient ID will be auto-generated.</p>
+        <p class="subtitle">Fill in essential pet information. Pet ID will be auto-generated.</p>
 
         <!-- Patient Search Autocomplete -->
         <div class="autocomplete-container">
             <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">
-                <i class="bi bi-search"></i> Search Existing Patient (Auto-fill)
+                <i class="bi bi-search"></i> Search Existing Pet (Auto-fill)
             </label>
-            <input type="text" id="patientSearch" placeholder="Type patient name to check if already exists..." 
+            <input type="text" id="patientSearch" placeholder="Type pet name to check if already exists..." 
                    style="width: 100%; padding: 12px; border: 2px solid #d1d5db; border-radius: 6px; font-size: 14px;">
             <div id="autocompleteResults" class="autocomplete-results"></div>
             <p style="font-size: 12px; color: #6b7280; margin-top: 6px;">
@@ -306,35 +306,47 @@
         <form action="{{ route('patients.store') }}" method="POST">
             @csrf
 
-            <!-- Basic Information -->
+            <!-- Pet Information -->
             <div class="form-section">
-                <div class="section-title">Basic Information</div>
+                <div class="section-title">Pet Information</div>
                 
                 <div class="form-row">
                     <div class="form-group">
-                        <label>First Name <span class="required">*</span></label>
-                        <input type="text" name="first_name" value="{{ old('first_name') }}" required>
+                        <label>Pet Name <span class="required">*</span></label>
+                        <input type="text" name="pet_name" value="{{ old('pet_name') }}" required>
                     </div>
                     <div class="form-group">
-                        <label>Last Name <span class="required">*</span></label>
-                        <input type="text" name="last_name" value="{{ old('last_name') }}" required>
+                        <label>Species <span class="required">*</span></label>
+                        <select name="species" required>
+                            <option value="">Select Species</option>
+                            <option value="Dog" {{ old('species') == 'Dog' ? 'selected' : '' }}>Dog</option>
+                            <option value="Cat" {{ old('species') == 'Cat' ? 'selected' : '' }}>Cat</option>
+                            <option value="Rabbit" {{ old('species') == 'Rabbit' ? 'selected' : '' }}>Rabbit</option>
+                            <option value="Bird" {{ old('species') == 'Bird' ? 'selected' : '' }}>Bird</option>
+                            <option value="Hamster" {{ old('species') == 'Hamster' ? 'selected' : '' }}>Hamster</option>
+                            <option value="Guinea Pig" {{ old('species') == 'Guinea Pig' ? 'selected' : '' }}>Guinea Pig</option>
+                            <option value="Other" {{ old('species') == 'Other' ? 'selected' : '' }}>Other</option>
+                        </select>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Middle Name</label>
-                        <input type="text" name="middle_name" value="{{ old('middle_name') }}">
-                        <span class="hint">Optional</span>
+                        <label>Breed <span class="required">*</span></label>
+                        <input type="text" name="breed" value="{{ old('breed') }}" required placeholder="e.g., Golden Retriever, Persian">
                     </div>
+                    <div class="form-group">
+                        <label>Color</label>
+                        <input type="text" name="color" value="{{ old('color') }}" placeholder="e.g., Brown, White">
+                    </div>
+                </div>
+
+                <div class="form-row">
                     <div class="form-group">
                         <label>Birthdate <span class="required">*</span></label>
                         <input type="date" id="birthdate" name="birthdate" value="{{ old('birthdate') }}" required max="{{ date('Y-m-d') }}">
                         <span class="hint">Age will be auto-calculated<span id="ageDisplay" class="age-display" style="display: none;"></span></span>
                     </div>
-                </div>
-
-                <div class="form-row">
                     <div class="form-group">
                         <label>Sex <span class="required">*</span></label>
                         <select name="sex" required>
@@ -343,9 +355,21 @@
                             <option value="Female" {{ old('sex') == 'Female' ? 'selected' : '' }}>Female</option>
                         </select>
                     </div>
+                </div>
+            </div>
+
+            <!-- Owner Information -->
+            <div class="form-section">
+                <div class="section-title">Owner Information</div>
+                
+                <div class="form-row">
                     <div class="form-group">
-                        <label>Contact Number</label>
-                        <input type="tel" name="contact_number" value="{{ old('contact_number') }}" placeholder="09XX-XXX-XXXX">
+                        <label>Owner Name <span class="required">*</span></label>
+                        <input type="text" name="owner_name" value="{{ old('owner_name') }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Owner Contact <span class="required">*</span></label>
+                        <input type="tel" name="owner_contact" value="{{ old('owner_contact') }}" required placeholder="09XX-XXX-XXXX">
                     </div>
                 </div>
 
@@ -364,18 +388,9 @@
                 <div class="optional-section">
                     <div class="form-row">
                         <div class="form-group">
-                            <label>PhilHealth Number</label>
-                            <input type="text" name="philhealth_number" value="{{ old('philhealth_number') }}">
-                        </div>
-                        <div class="form-group">
-                            <label>Emergency Contact Name</label>
-                            <input type="text" name="emergency_contact_name" value="{{ old('emergency_contact_name') }}">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Emergency Contact Number</label>
-                            <input type="tel" name="emergency_contact_number" value="{{ old('emergency_contact_number') }}">
+                            <label>Microchip Number</label>
+                            <input type="text" name="microchip_number" value="{{ old('microchip_number') }}" placeholder="15-digit microchip ID">
+                            <span class="hint">Optional - if pet is microchipped</span>
                         </div>
                     </div>
                 </div>
@@ -384,7 +399,7 @@
             <!-- Actions -->
             <div class="actions">
                 <button type="button" class="btn-secondary" onclick="window.history.back()">Cancel</button>
-                <button type="submit" class="btn-primary">Register Patient</button>
+                <button type="submit" class="btn-primary">Register Pet</button>
             </div>
         </form>
     </div>
@@ -443,8 +458,8 @@
         function displayResults(patients) {
             resultsContainer.innerHTML = patients.map(patient => `
                 <div class="autocomplete-item" onclick='fillPatientData(${JSON.stringify(patient)})'>
-                    <strong>${patient.full_name}</strong>
-                    <small>ID: ${patient.patient_id} | Birthdate: ${patient.birthdate} | ${patient.address}</small>
+                    <strong>${patient.pet_name} (${patient.species})</strong>
+                    <small>ID: ${patient.patient_id} | Owner: ${patient.owner_name} | Birthdate: ${patient.birthdate}</small>
                 </div>
             `).join('');
             resultsContainer.classList.add('active');
@@ -452,16 +467,16 @@
         
         function fillPatientData(patient) {
             // Fill form fields
-            document.querySelector('[name="first_name"]').value = patient.first_name || '';
-            document.querySelector('[name="last_name"]').value = patient.last_name || '';
-            document.querySelector('[name="middle_name"]').value = patient.middle_name || '';
+            document.querySelector('[name="pet_name"]').value = patient.pet_name || '';
+            document.querySelector('[name="species"]').value = patient.species || '';
+            document.querySelector('[name="breed"]').value = patient.breed || '';
+            document.querySelector('[name="color"]').value = patient.color || '';
             document.getElementById('birthdate').value = patient.birthdate || '';
             document.querySelector('[name="sex"]').value = patient.sex || '';
-            document.querySelector('[name="contact_number"]').value = patient.contact_number || '';
+            document.querySelector('[name="owner_name"]').value = patient.owner_name || '';
+            document.querySelector('[name="owner_contact"]').value = patient.owner_contact || '';
             document.querySelector('[name="address"]').value = patient.address || '';
-            document.querySelector('[name="philhealth_number"]').value = patient.philhealth_number || '';
-            document.querySelector('[name="emergency_contact_name"]').value = patient.emergency_contact_name || '';
-            document.querySelector('[name="emergency_contact_number"]').value = patient.emergency_contact_number || '';
+            document.querySelector('[name="microchip_number"]').value = patient.microchip_number || '';
             
             // Trigger age calculation
             birthdateInput.dispatchEvent(new Event('change'));
@@ -472,42 +487,40 @@
             
             // Show duplicate warning
             duplicateWarning.style.display = 'flex';
-            duplicateMessage.innerHTML = `This patient already exists: <strong>${patient.full_name}</strong> (${patient.patient_id}). Data has been auto-filled. You can edit or cancel if this is a duplicate.`;
+            duplicateMessage.innerHTML = `This pet already exists: <strong>${patient.pet_name}</strong> (${patient.patient_id}). Data has been auto-filled. You can edit or cancel if this is a duplicate.`;
         }
         
-        // Check for duplicate names on typing
-        const firstNameInput = document.querySelector('[name="first_name"]');
-        const lastNameInput = document.querySelector('[name="last_name"]');
+        // Check for duplicate pet names on typing
+        const petNameInput = document.querySelector('[name="pet_name"]');
+        const ownerNameInput = document.querySelector('[name="owner_name"]');
         let duplicateTimeout;
         
         function checkDuplicate() {
             clearTimeout(duplicateTimeout);
-            const firstName = firstNameInput.value.trim();
-            const lastName = lastNameInput.value.trim();
+            const petName = petNameInput.value.trim();
+            const ownerName = ownerNameInput.value.trim();
             
-            if (firstName.length < 2 || lastName.length < 2) {
+            if (petName.length < 2) {
                 return;
             }
             
             duplicateTimeout = setTimeout(() => {
-                fetch(`/api/patients/search?q=${encodeURIComponent(firstName + ' ' + lastName)}`)
+                fetch(`/api/patients/search?q=${encodeURIComponent(petName)}`)
                     .then(res => res.json())
                     .then(patients => {
                         const exactMatch = patients.find(p => 
-                            p.first_name.toLowerCase() === firstName.toLowerCase() && 
-                            p.last_name.toLowerCase() === lastName.toLowerCase()
+                            p.pet_name.toLowerCase() === petName.toLowerCase()
                         );
                         
                         if (exactMatch && duplicateWarning.style.display === 'none') {
                             duplicateWarning.style.display = 'flex';
-                            duplicateMessage.innerHTML = `A patient with this name may already exist: <strong>${exactMatch.full_name}</strong> (${exactMatch.patient_id}). Please verify before submitting.`;
+                            duplicateMessage.innerHTML = `A pet with this name may already exist: <strong>${exactMatch.pet_name}</strong> (${exactMatch.patient_id}). Please verify before submitting.`;
                         }
                     });
             }, 500);
         }
         
-        firstNameInput.addEventListener('input', checkDuplicate);
-        lastNameInput.addEventListener('input', checkDuplicate);
+        petNameInput.addEventListener('input', checkDuplicate);
         
         // Hide autocomplete when clicking outside
         document.addEventListener('click', function(e) {

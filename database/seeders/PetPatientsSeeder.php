@@ -188,6 +188,6 @@ class PetPatientsSeeder extends Seeder
             Patient::create($petData);
         }
 
-        $this->command->info('✓ Successfully created ' . count($pets) . ' pet patient records!');
+        $this->command->info('Successfully created ' . count($pets) . ' pet patient records.');
     }
 }

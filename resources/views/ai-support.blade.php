@@ -203,7 +203,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🤖 Automation Support</h1>
+            <h1>Automation Support</h1>
             <a href="{{ route('dashboard') }}" class="back-btn">← Back to Dashboard</a>
         </div>
 
@@ -237,12 +237,12 @@
                         <strong>{{ $patient->full_name }} ({{ $patient->patient_id }})</strong>
                         <small>
                             Missing: 
-                            @if(!$patient->philhealth_number) PhilHealth Number @endif
-                            @if(!$patient->contact_number) Contact Number @endif
+                            @if(!$patient->philhealth_number) Microchip Number @endif
+                            @if(!$patient->contact_number) Owner Contact Number @endif
                         </small>
                     </div>
                 @empty
-                    <div class="empty-state">✓ All patient records are complete!</div>
+                    <div class="empty-state">All patient records are complete.</div>
                 @endforelse
             </div>
 
@@ -255,7 +255,7 @@
                         <small>{{ $immunization->vaccine_name }} - Due: {{ Carbon\Carbon::parse($immunization->next_dose_date)->format('M d, Y') }}</small>
                     </div>
                 @empty
-                    <div class="empty-state">✓ No overdue immunizations!</div>
+                    <div class="empty-state">No overdue immunizations.</div>
                 @endforelse
             </div>
 
@@ -274,7 +274,7 @@
                         </small>
                     </div>
                 @empty
-                    <div class="empty-state">✓ All patients are active!</div>
+                    <div class="empty-state">All patients are active.</div>
                 @endforelse
             </div>
 
@@ -287,7 +287,7 @@
                         <small>BP: {{ $record->blood_pressure }} - Requires immediate attention</small>
                     </div>
                 @empty
-                    <div class="empty-state">✓ No high-risk prenatal cases!</div>
+                    <div class="empty-state">No high-risk prenatal cases.</div>
                 @endforelse
             </div>
 

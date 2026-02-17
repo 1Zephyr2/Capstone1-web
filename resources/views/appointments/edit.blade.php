@@ -30,12 +30,12 @@
         
         <div class="form-card">
             <div class="card-header">
-                <h2><i class="bi bi-person"></i> Patient Information</h2>
+                <h2><i class="bi bi-person"></i> Pet Information</h2>
             </div>
             <div class="card-body">
                 <div class="form-row">
                     <div class="form-group full-width">
-                        <label for="patient_id">Patient <span class="required">*</span></label>
+                        <label for="patient_id">Pet <span class="required">*</span></label>
                         <select name="patient_id" id="patient_id" class="form-control" required>
                             <option value="{{ $appointment->patient->id }}">
                                 {{ $appointment->patient->full_name }} ({{ $appointment->patient->patient_id }})
@@ -69,11 +69,17 @@
                         <label for="service_type">Service Type <span class="required">*</span></label>
                         <select name="service_type" id="service_type" class="form-control" required>
                             <option value="">Select Service</option>
-                            <option value="Immunization" {{ old('service_type', $appointment->service_type) == 'Immunization' ? 'selected' : '' }}>Immunization</option>
-                            <option value="Prenatal Care" {{ old('service_type', $appointment->service_type) == 'Prenatal Care' ? 'selected' : '' }}>Prenatal Care</option>
-                            <option value="General Checkup" {{ old('service_type', $appointment->service_type) == 'General Checkup' ? 'selected' : '' }}>General Checkup</option>
-                            <option value="Family Planning" {{ old('service_type', $appointment->service_type) == 'Family Planning' ? 'selected' : '' }}>Family Planning</option>
-                            <option value="Referral" {{ old('service_type', $appointment->service_type) == 'Referral' ? 'selected' : '' }}>Referral</option>
+                            <option value="Wellness Exam" {{ old('service_type', $appointment->service_type) == 'Wellness Exam' ? 'selected' : '' }}>Wellness Exam</option>
+                            <option value="Vaccination" {{ old('service_type', $appointment->service_type) == 'Vaccination' ? 'selected' : '' }}>Vaccination</option>
+                            <option value="Surgery" {{ old('service_type', $appointment->service_type) == 'Surgery' ? 'selected' : '' }}>Surgery</option>
+                            <option value="Dental Cleaning" {{ old('service_type', $appointment->service_type) == 'Dental Cleaning' ? 'selected' : '' }}>Dental Cleaning</option>
+                            <option value="Emergency" {{ old('service_type', $appointment->service_type) == 'Emergency' ? 'selected' : '' }}>Emergency</option>
+                            <option value="Grooming" {{ old('service_type', $appointment->service_type) == 'Grooming' ? 'selected' : '' }}>Grooming</option>
+                            <option value="Spay/Neuter" {{ old('service_type', $appointment->service_type) == 'Spay/Neuter' ? 'selected' : '' }}>Spay/Neuter</option>
+                            <option value="Breeding Consultation" {{ old('service_type', $appointment->service_type) == 'Breeding Consultation' ? 'selected' : '' }}>Breeding Consultation</option>
+                            <option value="Boarding Checkup" {{ old('service_type', $appointment->service_type) == 'Boarding Checkup' ? 'selected' : '' }}>Boarding Checkup</option>
+                            <option value="Follow-up" {{ old('service_type', $appointment->service_type) == 'Follow-up' ? 'selected' : '' }}>Follow-up</option>
+                            <option value="Diagnostics" {{ old('service_type', $appointment->service_type) == 'Diagnostics' ? 'selected' : '' }}>Diagnostics</option>
                             <option value="Other" {{ old('service_type', $appointment->service_type) == 'Other' ? 'selected' : '' }}>Other</option>
                         </select>
                     </div>
@@ -114,9 +120,9 @@
         </div>
 
         <!-- Service-Specific Fields -->
-        <div id="immunization-fields" class="form-card" style="display: none;">
+        <div id="vaccination-fields" class="form-card" style="display: none;">
             <div class="card-header">
-                <h2><i class="bi bi-shield-check"></i> Immunization Details</h2>
+                <h2><i class="bi bi-shield-check"></i> Vaccination Details</h2>
             </div>
             <div class="card-body">
                 <div class="form-row">
@@ -134,36 +140,36 @@
             </div>
         </div>
 
-        <div id="prenatal-fields" class="form-card" style="display: none;">
+        <div id="breeding-fields" class="form-card" style="display: none;">
             <div class="card-header">
-                <h2><i class="bi bi-heart-pulse"></i> Prenatal Care Details</h2>
+                <h2><i class="bi bi-heart-pulse"></i> Breeding Consultation Details</h2>
             </div>
             <div class="card-body">
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="gestational_age">Gestational Age (weeks)</label>
-                        <input type="number" name="gestational_age" id="gestational_age" class="form-control" min="0" 
-                               value="{{ old('gestational_age', $appointment->gestational_age) }}">
+                        <label for="breeding_status">Breeding Status</label>
+                        <input type="text" name="breeding_status" id="breeding_status" class="form-control" 
+                               value="{{ old('breeding_status', $appointment->breeding_status) }}">
                     </div>
                     <div class="form-group">
-                        <label for="presentation">Presentation</label>
-                        <input type="text" name="presentation" id="presentation" class="form-control" 
-                               value="{{ old('presentation', $appointment->presentation) }}">
+                        <label for="expected_delivery">Expected Delivery Date</label>
+                        <input type="date" name="expected_delivery" id="expected_delivery" class="form-control" 
+                               value="{{ old('expected_delivery', $appointment->expected_delivery) }}">
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="familyplanning-fields" class="form-card" style="display: none;">
+        <div id="spayneuter-fields" class="form-card" style="display: none;">
             <div class="card-header">
-                <h2><i class="bi bi-people"></i> Family Planning Details</h2>
+                <h2><i class="bi bi-scissors"></i> Spay/Neuter Details</h2>
             </div>
             <div class="card-body">
                 <div class="form-row">
                     <div class="form-group full-width">
-                        <label for="fp_method">FP Method</label>
-                        <input type="text" name="fp_method" id="fp_method" class="form-control" 
-                               value="{{ old('fp_method', $appointment->fp_method) }}">
+                        <label for="procedure_type">Procedure Type</label>
+                        <input type="text" name="procedure_type" id="procedure_type" class="form-control" 
+                               value="{{ old('procedure_type', $appointment->procedure_type) }}">
                     </div>
                 </div>
             </div>
@@ -349,29 +355,29 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const serviceTypeSelect = document.getElementById('service_type');
-        const immunizationFields = document.getElementById('immunization-fields');
-        const prenatalFields = document.getElementById('prenatal-fields');
-        const familyPlanningFields = document.getElementById('familyplanning-fields');
+        const vaccinationFields = document.getElementById('vaccination-fields');
+        const breedingFields = document.getElementById('breeding-fields');
+        const spayNeuterFields = document.getElementById('spayneuter-fields');
         const referralFields = document.getElementById('referral-fields');
 
         function toggleServiceFields() {
             const serviceType = serviceTypeSelect.value;
             
             // Hide all service-specific fields
-            immunizationFields.style.display = 'none';
-            prenatalFields.style.display = 'none';
-            familyPlanningFields.style.display = 'none';
-            referralFields.style.display = 'none';
+            if (vaccinationFields) vaccinationFields.style.display = 'none';
+            if (breedingFields) breedingFields.style.display = 'none';
+            if (spayNeuterFields) spayNeuterFields.style.display = 'none';
+            if (referralFields) referralFields.style.display = 'none';
 
             // Show relevant fields
-            if (serviceType === 'Immunization') {
-                immunizationFields.style.display = 'block';
-            } else if (serviceType === 'Prenatal Care') {
-                prenatalFields.style.display = 'block';
-            } else if (serviceType === 'Family Planning') {
-                familyPlanningFields.style.display = 'block';
+            if (serviceType === 'Vaccination') {
+                if (vaccinationFields) vaccinationFields.style.display = 'block';
+            } else if (serviceType === 'Breeding Consultation') {
+                if (breedingFields) breedingFields.style.display = 'block';
+            } else if (serviceType === 'Spay/Neuter') {
+                if (spayNeuterFields) spayNeuterFields.style.display = 'block';
             } else if (serviceType === 'Referral') {
-                referralFields.style.display = 'block';
+                if (referralFields) referralFields.style.display = 'block';
             }
         }
 

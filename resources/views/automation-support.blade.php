@@ -6,6 +6,23 @@
     <title>Automation Support - VetCare</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+        :root {
+            --bg: #f5f7fb;
+            --bg-alt: #eef2ff;
+            --card: #ffffff;
+            --text: #111827;
+            --muted: #6b7280;
+            --line: #e5e7eb;
+            --primary: #2563eb;
+            --primary-strong: #1d4ed8;
+            --accent: #16a34a;
+            --accent-strong: #15803d;
+            --shadow-sm: 0 4px 14px rgba(15, 23, 42, 0.08);
+            --shadow-lg: 0 20px 40px rgba(15, 23, 42, 0.12);
+            --radius: 14px;
+        }
         * {
             margin: 0;
             padding: 0;
@@ -13,10 +30,37 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
+            font-family: 'Manrope', sans-serif;
+            background: linear-gradient(135deg, var(--bg) 0%, var(--bg-alt) 100%);
             padding: 40px;
             min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            color: var(--text);
+        }
+
+        body::before,
+        body::after {
+            content: '';
+            position: fixed;
+            z-index: -1;
+            border-radius: 50%;
+        }
+
+        body::before {
+            width: 440px;
+            height: 440px;
+            top: -160px;
+            right: -140px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.18) 0%, rgba(37, 99, 235, 0) 70%);
+        }
+
+        body::after {
+            width: 360px;
+            height: 360px;
+            bottom: -160px;
+            left: -120px;
+            background: radial-gradient(circle, rgba(22, 163, 74, 0.16) 0%, rgba(22, 163, 74, 0) 70%);
         }
 
         .container {
@@ -25,34 +69,39 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
-            padding: 28px 36px;
-            border-radius: 20px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
-            margin-bottom: 36px;
+            background: var(--card);
+            padding: 24px 28px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 28px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            border: 1px solid rgba(0, 0, 0, 0.06);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            align-items: flex-start;
+            border: 1px solid var(--line);
+            transition: all 0.3s ease;
+            animation: pageEnter 0.5s ease;
         }
         
         .header:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
+            box-shadow: var(--shadow-lg);
         }
 
         .header h1 {
-            font-size: 32px;
+            font-size: 30px;
             font-weight: 800;
-            color: #047857;
+            color: var(--text);
             display: flex;
-            align-items: center;
-            gap: 12px;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+            line-height: 1.1;
+            row-gap: 8px;
             letter-spacing: -0.02em;
+            max-width: 100%;
         }
 
         .refresh-indicator {
-            font-size: 14px;
+            font-size: 12px;
             color: #10B981;
             font-weight: normal;
             padding: 4px 12px;
@@ -61,6 +110,8 @@
             display: flex;
             align-items: center;
             gap: 6px;
+            white-space: nowrap;
+            margin-top: 6px;
         }
 
         .refresh-dot {
@@ -77,23 +128,28 @@
         }
 
         .back-btn {
-            background: linear-gradient(135deg, #047857 0%, #059669 100%);
-            color: white;
-            border: none;
-            padding: 12px 28px;
-            border-radius: 12px;
+            background: white;
+            color: var(--text);
+            border: 1px solid var(--line);
+            padding: 12px 20px;
+            border-radius: 10px;
             cursor: pointer;
             text-decoration: none;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 8px rgba(4, 120, 87, 0.3);
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .page-actions {
+            margin-bottom: 24px;
         }
 
         .back-btn:hover {
-            background: linear-gradient(135deg, #059669 0%, #047857 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(4, 120, 87, 0.4);
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-1px);
         }
 
         .stats-grid {
@@ -104,27 +160,18 @@
         }
 
         .stat-card {
-            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
-            padding: 28px;
-            border-radius: 16px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
-            border-top: 4px solid #047857;
-            border-left: 1px solid rgba(0, 0, 0, 0.06);
-            border-right: 1px solid rgba(0, 0, 0, 0.06);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--card);
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--line);
+            border-top: 3px solid var(--primary);
+            transition: all 0.3s ease;
         }
         
         .stat-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
-        }
-            transition: all 0.2s ease;
-        }
-
-        .stat-card:hover {
-            box-shadow: 0 4px 12px rgba(4, 120, 87, 0.15);
-            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
         }
 
         .stat-card h3 {
@@ -135,9 +182,9 @@
         }
 
         .stat-card .number {
-            font-size: 32px;
-            font-weight: 700;
-            color: #047857;
+            font-size: 30px;
+            font-weight: 800;
+            color: var(--primary);
         }
 
         .alerts-grid {
@@ -147,16 +194,28 @@
         }
 
         .alert-card {
-            background: white;
+            background: var(--card);
             padding: 24px;
             border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-            border-left: 4px solid #047857;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--line);
+            border-left: 4px solid var(--primary);
             transition: all 0.2s ease;
         }
 
         .alert-card:hover {
-            box-shadow: 0 4px 12px rgba(4, 120, 87, 0.1);
+            box-shadow: var(--shadow-lg);
+        }
+
+        @keyframes pageEnter {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .alert-card h2 {
@@ -416,6 +475,9 @@
 </head>
 <body>
     <div class="container">
+        <div class="page-actions">
+            <a href="{{ route('dashboard') }}" class="back-btn">← Back to Dashboard</a>
+        </div>
         <div class="header">
             <h1>
                 Automation Support
@@ -424,7 +486,6 @@
                     <span id="refresh-text">Live Updates</span>
                 </span>
             </h1>
-            <a href="{{ route('dashboard') }}" class="back-btn">← Back to Dashboard</a>
         </div>
 
         <!-- Quick Stats -->
@@ -438,12 +499,12 @@
                 <div class="number">{{ $stats['visits_this_week'] }}</div>
             </div>
             <div class="stat-card">
-                <h3>Pending Immunizations</h3>
+                <h3>Pending Vaccinations</h3>
                 <div class="number">{{ $stats['pending_immunizations'] }}</div>
             </div>
             <div class="stat-card">
-                <h3>Active Prenatal Cases</h3>
-                <div class="number">{{ $stats['active_prenatal'] }}</div>
+                <h3>Active Breeding Cases</h3>
+                <div class="number">{{ $stats['active_breeding'] }}</div>
             </div>
         </div>
 
@@ -451,44 +512,52 @@
         <div class="alerts-grid">
             <!-- Incomplete Records -->
             <div class="alert-card">
-                <h2><i class="bi bi-exclamation-triangle-fill"></i> Incomplete Patient Records<span class="badge warning">{{ $incompleteRecords->count() }}</span></h2>
+                <h2><i class="bi bi-exclamation-triangle-fill"></i> Incomplete Pet Records<span class="badge warning">{{ $incompleteRecords->count() }}</span></h2>
                 @forelse($incompleteRecords as $patient)
                     <div class="alert-item" onclick="showPatientModal({{ json_encode($patient) }}, 'incomplete')">
                         <strong>{{ $patient->full_name }} ({{ $patient->patient_id }})</strong>
                         <small>
                             Missing: 
-                            @if(!$patient->philhealth_number) PhilHealth Number @endif
-                            @if(!$patient->contact_number) Contact Number @endif
+                            @if(!$patient->microchip_number) Microchip Number @endif
+                            @if(!$patient->owner_contact) Owner Contact Number @endif
                         </small>
                     </div>
                 @empty
-                    <div class="empty-state">✓ All patient records are complete!</div>
+                    <div class="empty-state">All pet records are complete.</div>
                 @endforelse
             </div>
 
             <!-- Due for Follow Up -->
             <div class="alert-card">
-                <h2><i class="bi bi-shield-fill-check"></i> Due for Follow Up<span class="badge danger">{{ $overdueImmunizations->count() }}</span></h2>
+                <h2><i class="bi bi-shield-fill-check"></i> Overdue Vaccinations<span class="badge danger">{{ $overdueImmunizations->count() }}</span></h2>
                 @forelse($overdueImmunizations as $immunization)
-                    <div class="alert-item danger" onclick="showPatientModal({{ json_encode($immunization->patient) }}, 'immunization', '{{ $immunization->vaccine_name }}', '{{ Carbon\Carbon::parse($immunization->next_dose_date)->format('M d, Y') }}')">
+                    <div class="alert-item danger" onclick="showPatientModal({{ json_encode($immunization->patient) }}, 'vaccination', '{{ $immunization->vaccine_name }}', '{{ Carbon\Carbon::parse($immunization->next_dose_date)->format('M d, Y') }}')">
                         <strong>{{ $immunization->patient->full_name }}</strong>
                         <small>{{ $immunization->vaccine_name }} - Due: {{ Carbon\Carbon::parse($immunization->next_dose_date)->format('M d, Y') }}</small>
                     </div>
                 @empty
-                    <div class="empty-state">✓ No overdue immunizations!</div>
+                    <div class="empty-state">No overdue vaccinations.</div>
                 @endforelse
             </div>
 
             <!-- High Risk Prenatal -->
             <div class="alert-card">
-                <h2><i class="bi bi-heart-pulse-fill"></i> High-Risk Prenatal Cases<span class="badge danger">{{ $highRiskPrenatal->count() }}</span></h2>
-                @forelse($highRiskPrenatal as $record)
-                    <div class="alert-item danger" onclick="showPatientModal({{ json_encode($record->patient) }}, 'prenatal', null, null, '{{ $record->blood_pressure }}')">
+                <h2><i class="bi bi-heart-pulse-fill"></i> High-Risk Breeding Cases<span class="badge danger">{{ $highRiskBreeding->count() }}</span></h2>
+                @forelse($highRiskBreeding as $record)
+                    <div class="alert-item danger" onclick="showPatientModal({{ json_encode($record->patient) }}, 'breeding', null, null, {{ json_encode(['risk_factors' => $record->risk_factors, 'referred' => $record->referred, 'checkup_date' => optional($record->checkup_date)->format('M d, Y')]) }})">
                         <strong>{{ $record->patient->full_name }}</strong>
-                        <small>BP: {{ $record->blood_pressure }} - Requires immediate attention</small>
+                        <small>
+                            @if($record->risk_factors)
+                                Risk: {{ $record->risk_factors }}
+                            @elseif($record->referred)
+                                Referred for evaluation
+                            @else
+                                Monitoring required
+                            @endif
+                        </small>
                     </div>
                 @empty
-                    <div class="empty-state">✓ No high-risk prenatal cases!</div>
+                    <div class="empty-state">No high-risk breeding cases.</div>
                 @endforelse
             </div>
 
@@ -500,7 +569,7 @@
                         <strong>{{ $visit->patient->full_name }}</strong>
                         <small>{{ $visit->service_type }} - {{ $visit->visit_date->format('M d, Y g:i A') }}
                         @if($visit->health_worker)
-                            <br><i class="bi bi-person-badge"></i> Doctor: {{ $visit->health_worker }}
+                            <br><i class="bi bi-person-badge"></i> Veterinarian: {{ $visit->health_worker }}
                         @endif
                         </small>
                     </div>
@@ -515,7 +584,7 @@
     <div id="patientModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 id="modalTitle">Patient Details</h2>
+                <h2 id="modalTitle">Pet Details</h2>
                 <button class="modal-close" onclick="closeModal()">&times;</button>
             </div>
             <div class="modal-body" id="modalBody">
@@ -530,17 +599,21 @@
 
     <script>
         // Modal Functions
-        function showPatientModal(patient, type, vaccine = null, dueDate = null, bp = null, serviceType = null, visitDate = null, healthWorker = null) {
+        function showPatientModal(patient, type, vaccine = null, dueDate = null, extraDetails = null, serviceType = null, visitDate = null, healthWorker = null) {
             const modal = document.getElementById('patientModal');
             const modalBody = document.getElementById('modalBody');
             const modalTitle = document.getElementById('modalTitle');
             const viewBtn = document.getElementById('viewProfileBtn');
+            const breedingDetails = extraDetails && typeof extraDetails === 'object' ? extraDetails : null;
+            const petDisplayName = patient.pet_name
+                ? `${patient.pet_name}${patient.species ? ' (' + patient.species + ')' : ''}`
+                : (patient.full_name || 'Unknown');
             
             // Set title based on type
-            let title = '<i class="bi bi-person-circle"></i> Patient Information';
-            if (type === 'incomplete') title = '<i class="bi bi-exclamation-triangle-fill"></i> Incomplete Patient Record';
-            if (type === 'immunization') title = '<i class="bi bi-shield-fill-check"></i> Overdue Immunization';
-            if (type === 'prenatal') title = '<i class="bi bi-heart-pulse-fill"></i> High-Risk Prenatal Case';
+            let title = '<i class="bi bi-person-circle"></i> Pet Information';
+            if (type === 'incomplete') title = '<i class="bi bi-exclamation-triangle-fill"></i> Incomplete Pet Record';
+            if (type === 'vaccination') title = '<i class="bi bi-shield-fill-check"></i> Overdue Vaccination';
+            if (type === 'breeding') title = '<i class="bi bi-heart-pulse-fill"></i> High-Risk Breeding Case';
             if (type === 'visit') title = '<i class="bi bi-hospital"></i> Recent Visit';
             
             modalTitle.innerHTML = title;
@@ -548,8 +621,8 @@
             // Build modal content
             let content = `
                 <div class="patient-detail-row">
-                    <label>Full Name</label>
-                    <div class="value">${patient.full_name}</div>
+                    <label>Pet Name</label>
+                    <div class="value">${petDisplayName}</div>
                 </div>
                 <div class="patient-detail-row">
                     <label>Patient ID</label>
@@ -564,17 +637,17 @@
                     <div class="value">${patient.sex || 'N/A'}</div>
                 </div>
                 <div class="patient-detail-row">
-                    <label>Contact Number</label>
-                    <div class="value">${patient.contact_number || 'Not provided'}</div>
+                    <label>Owner Contact</label>
+                    <div class="value">${patient.owner_contact || 'Not provided'}</div>
                 </div>
                 <div class="patient-detail-row">
-                    <label>Address</label>
+                    <label>Owner Address</label>
                     <div class="value">${patient.address || 'N/A'}</div>
                 </div>
             `;
             
             // Add type-specific information
-            if (type === 'immunization' && vaccine) {
+            if (type === 'vaccination' && vaccine) {
                 content += `
                     <div class="patient-detail-row" style="border-left-color: #ef4444; background: #fef2f2;">
                         <label>Vaccine Due</label>
@@ -587,11 +660,22 @@
                 `;
             }
             
-            if (type === 'prenatal' && bp) {
+            if (type === 'breeding' && breedingDetails) {
+                const riskFactors = breedingDetails.risk_factors || 'Not specified';
+                const referredText = breedingDetails.referred ? 'Yes' : 'No';
+                const checkupDate = breedingDetails.checkup_date || 'N/A';
                 content += `
                     <div class="patient-detail-row" style="border-left-color: #ef4444; background: #fef2f2;">
-                        <label>Blood Pressure</label>
-                        <div class="value">${bp} <span style="color: #ef4444; font-weight: 600;"><i class="bi bi-exclamation-triangle-fill"></i> HIGH</span></div>
+                        <label>Risk Factors</label>
+                        <div class="value">${riskFactors}</div>
+                    </div>
+                    <div class="patient-detail-row" style="border-left-color: #ef4444; background: #fef2f2;">
+                        <label>Referred</label>
+                        <div class="value">${referredText}</div>
+                    </div>
+                    <div class="patient-detail-row" style="border-left-color: #ef4444; background: #fef2f2;">
+                        <label>Last Checkup</label>
+                        <div class="value">${checkupDate}</div>
                     </div>
                 `;
             }
@@ -610,7 +694,7 @@
                 if (healthWorker && healthWorker !== 'N/A') {
                     content += `
                         <div class="patient-detail-row" style="border-left-color: #10b981; background: #ecfdf5;">
-                            <label><i class="bi bi-person-badge"></i> Doctor/Health Worker</label>
+                            <label><i class="bi bi-person-badge"></i> Veterinarian</label>
                             <div class="value">${healthWorker}</div>
                         </div>
                     `;
@@ -619,8 +703,8 @@
             
             if (type === 'incomplete') {
                 let missing = [];
-                if (!patient.philhealth_number) missing.push('PhilHealth Number');
-                if (!patient.contact_number) missing.push('Contact Number');
+                if (!patient.microchip_number) missing.push('Microchip Number');
+                if (!patient.owner_contact) missing.push('Owner Contact Number');
                 
                 content += `
                     <div class="patient-detail-row" style="border-left-color: #f59e0b; background: #fef3c7;">
@@ -676,7 +760,7 @@
         
         // Start auto-refresh
         startAutoRefresh();
-        console.log('✓ Auto-refresh enabled: Page updates every 30 seconds');
+        console.log('Auto-refresh enabled: Page updates every 30 seconds');
     </script>
 </body>
 </html>

@@ -43,7 +43,7 @@ class Patient extends Model
 
     public function breedingRecords()
     {
-        return $this->hasMany(PrenatalRecord::class);
+        return $this->hasMany(BreedingRecord::class);
     }
 
     public function referrals()

@@ -232,7 +232,7 @@
         <!-- Filters -->
         <form method="GET" action="{{ route('appointments.index') }}" class="filters-form">
             <div class="filters-row">
-                <input type="text" name="search" placeholder="Search patient..." value="{{ request('search') }}" class="form-control">
+                <input type="text" name="search" placeholder="Search pet..." value="{{ request('search') }}" class="form-control">
                 
                 <select name="status" class="form-control">
                     <option value="all">All Status</option>
@@ -245,10 +245,13 @@
 
                 <select name="service_type" class="form-control">
                     <option value="all">All Services</option>
-                    <option value="Immunization" {{ request('service_type') == 'Immunization' ? 'selected' : '' }}>Immunization</option>
-                    <option value="Prenatal Care" {{ request('service_type') == 'Prenatal Care' ? 'selected' : '' }}>Prenatal Care</option>
-                    <option value="General Checkup" {{ request('service_type') == 'General Checkup' ? 'selected' : '' }}>General Checkup</option>
-                    <option value="Family Planning" {{ request('service_type') == 'Family Planning' ? 'selected' : '' }}>Family Planning</option>
+                    <option value="Vaccination" {{ request('service_type') == 'Vaccination' ? 'selected' : '' }}>Vaccination</option>
+                    <option value="Wellness Exam" {{ request('service_type') == 'Wellness Exam' ? 'selected' : '' }}>Wellness Exam</option>
+                    <option value="Surgery" {{ request('service_type') == 'Surgery' ? 'selected' : '' }}>Surgery</option>
+                    <option value="Dental Cleaning" {{ request('service_type') == 'Dental Cleaning' ? 'selected' : '' }}>Dental Cleaning</option>
+                    <option value="Grooming" {{ request('service_type') == 'Grooming' ? 'selected' : '' }}>Grooming</option>
+                    <option value="Spay/Neuter" {{ request('service_type') == 'Spay/Neuter' ? 'selected' : '' }}>Spay/Neuter</option>
+                    <option value="Breeding Consultation" {{ request('service_type') == 'Breeding Consultation' ? 'selected' : '' }}>Breeding Consultation</option>
                 </select>
 
                 <button type="submit" class="btn btn-search">
@@ -275,7 +278,7 @@
             <thead>
                 <tr>
                     <th>Date & Time</th>
-                    <th>Patient</th>
+                    <th>Pet</th>
                     <th>Service Type</th>
                     <th>Status</th>
                     <th>Chief Complaint</th>

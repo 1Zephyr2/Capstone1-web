@@ -38,7 +38,11 @@ class AppointmentController extends Controller
         // Search by patient name
         if ($request->has('search') && !empty($request->search)) {
             $query->whereHas('patient', function($q) use ($request) {
-                $q->where(DB::raw("CONCAT(first_name, ' ', last_name)"), 'like', '%' . $request->search . '%');
+                $q->where('pet_name', 'like', '%' . $request->search . '%')
+                  ->orWhere('species', 'like', '%' . $request->search . '%')
+                  ->orWhere('breed', 'like', '%' . $request->search . '%')
+                  ->orWhere('owner_name', 'like', '%' . $request->search . '%')
+                  ->orWhere('patient_id', 'like', '%' . $request->search . '%');
             });
         }
 
@@ -56,9 +60,8 @@ class AppointmentController extends Controller
     {
         $patientId = $request->get('patient_id');
         $patient = $patientId ? Patient::find($patientId) : null;
-        $patients = Patient::orderBy('last_name')
-            ->orderBy('first_name')
-            ->get(['id', 'patient_id', 'first_name', 'middle_name', 'last_name', 'birthdate', 'sex', 'contact_number']);
+        $patients = Patient::orderBy('pet_name')
+            ->get(['id', 'patient_id', 'pet_name', 'species', 'breed', 'color', 'birthdate', 'sex', 'owner_name', 'owner_contact']);
 
         return view('appointments.book', compact('patient', 'patients'));
     }

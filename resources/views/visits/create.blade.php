@@ -277,39 +277,56 @@
                     <label>Service Type <span class="required">*</span></label>
                     <select name="service_type" id="serviceType" required>
                         <option value="">Select service</option>
-                        <option value="General Checkup">General Checkup</option>
-                        <option value="Immunization">Immunization</option>
-                        <option value="Prenatal">Prenatal Care</option>
-                        <option value="Family Planning">Family Planning</option>
-                        <option value="Referral">Referral</option>
-                        <option value="Health Education">Health Education</option>
+                        <option value="Wellness Exam">Wellness Exam</option>
+                        <option value="Vaccination">Vaccination</option>
+                        <option value="Surgery">Surgery</option>
+                        <option value="Dental Cleaning">Dental Cleaning</option>
+                        <option value="Emergency">Emergency</option>
+                        <option value="Grooming">Grooming</option>
+                        <option value="Boarding Checkup">Boarding Checkup</option>
+                        <option value="Follow-up">Follow-up</option>
+                        <option value="Diagnostics">Diagnostics</option>
+                        <option value="Spay/Neuter">Spay/Neuter</option>
+                        <option value="Breeding Consultation">Breeding Consultation</option>
                         <option value="Other">Other</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Health Worker</label>
+                    <label>Veterinarian/Staff</label>
                     <input type="text" name="health_worker" value="{{ old('health_worker', session('last_health_worker', '')) }}">
                     <span class="hint">Auto-remembered from last entry</span>
                 </div>
             </div>
 
-            <!-- Immunization Section -->
-            <div id="immunizationSection" class="service-section">
-                <h3><i class="bi bi-shield-fill-check"></i> Immunization Details</h3>
+            <!-- Vaccination Section -->
+            <div id="vaccinationSection" class="service-section">
+                <h3><i class="bi bi-shield-fill-check"></i> Vaccination Details</h3>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Vaccine Name <span class="required">*</span></label>
                         <select name="vaccine_name" id="vaccineName">
                             <option value="">Select vaccine</option>
-                            <option value="BCG">BCG (Bacillus Calmette-Guérin)</option>
-                            <option value="Hepatitis B">Hepatitis B</option>
-                            <option value="Pentavalent">Pentavalent (DPT-HepB-Hib)</option>
-                            <option value="OPV">OPV (Oral Polio Vaccine)</option>
-                            <option value="IPV">IPV (Inactivated Polio Vaccine)</option>
-                            <option value="PCV">PCV (Pneumococcal Conjugate Vaccine)</option>
-                            <option value="MMR">MMR (Measles, Mumps, Rubella)</option>
-                            <option value="MR">MR (Measles, Rubella)</option>
-                            <option value="Tetanus Toxoid">Tetanus Toxoid</option>
+                            <optgroup label="Core Dog Vaccines">
+                                <option value="Rabies">Rabies</option>
+                                <option value="DHPP">DHPP (Distemper, Hepatitis, Parvovirus, Parainfluenza)</option>
+                                <option value="Distemper">Distemper</option>
+                                <option value="Parvovirus">Parvovirus</option>
+                            </optgroup>
+                            <optgroup label="Non-Core Dog Vaccines">
+                                <option value="Bordetella">Bordetella (Kennel Cough)</option>
+                                <option value="Leptospirosis">Leptospirosis</option>
+                                <option value="Lyme">Lyme Disease</option>
+                                <option value="Canine Influenza">Canine Influenza</option>
+                            </optgroup>
+                            <optgroup label="Core Cat Vaccines">
+                                <option value="FVRCP">FVRCP (Feline Viral Rhinotracheitis, Calicivirus, Panleukopenia)</option>
+                                <option value="Feline Rabies">Feline Rabies</option>
+                            </optgroup>
+                            <optgroup label="Non-Core Cat Vaccines">
+                                <option value="FeLV">FeLV (Feline Leukemia)</option>
+                                <option value="FIV">FIV (Feline Immunodeficiency Virus)</option>
+                                <option value="Chlamydia">Chlamydia</option>
+                            </optgroup>
                             <option value="Other">Other</option>
                         </select>
                     </div>
@@ -317,11 +334,11 @@
                         <label>Dose Number <span class="required">*</span></label>
                         <select name="dose_number" id="doseNumber">
                             <option value="">Select dose</option>
-                            <option value="1st Dose">1st Dose</option>
-                            <option value="2nd Dose">2nd Dose</option>
-                            <option value="3rd Dose">3rd Dose</option>
-                            <option value="4th Dose">4th Dose</option>
-                            <option value="Booster">Booster</option>
+                            <option value="1">1st Dose</option>
+                            <option value="2">2nd Dose</option>
+                            <option value="3">3rd Dose</option>
+                            <option value="4">4th Dose</option>
+                            <option value="Booster">Annual Booster</option>
                         </select>
                     </div>
                 </div>
@@ -338,71 +355,91 @@
                 </div>
             </div>
 
-            <!-- Prenatal Section -->
-            <div id="prenatalSection" class="service-section">
-                <h3><i class="bi bi-heart-pulse-fill"></i> Prenatal Care Details</h3>
+            <!-- Breeding Consultation Section -->
+            <div id="breedingSection" class="service-section">
+                <h3><i class="bi bi-heart-pulse-fill"></i> Breeding Consultation Details</h3>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Gestational Age (weeks) <span class="required">*</span></label>
-                        <input type="number" name="gestational_age" min="1" max="42" placeholder="e.g., 28">
+                        <label>Breeding Date</label>
+                        <input type="date" name="breeding_date" max="{{ date('Y-m-d') }}">
                     </div>
                     <div class="form-group">
-                        <label>Fundal Height (cm)</label>
-                        <input type="number" name="fundal_height" step="0.1" min="0" placeholder="e.g., 26.5">
+                        <label>Breeding Status <span class="required">*</span></label>
+                        <select name="breeding_status">
+                            <option value="Planned">Planned</option>
+                            <option value="Bred">Bred</option>
+                            <option value="Confirmed Pregnant">Confirmed Pregnant</option>
+                            <option value="Not Pregnant">Not Pregnant</option>
+                            <option value="Delivered">Delivered</option>
+                        </select>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Fetal Heart Rate (bpm)</label>
-                        <input type="number" name="fetal_heart_rate" min="0" max="200" placeholder="120-160">
-                        <span class="hint">Normal: 120-160 bpm</span>
+                        <label>Sire (Male Parent)</label>
+                        <input type="text" name="sire" placeholder="e.g., Max (Golden Retriever)">
                     </div>
                     <div class="form-group">
-                        <label>Presentation</label>
-                        <select name="presentation">
-                            <option value="">Select</option>
-                            <option value="Cephalic">Cephalic (Head down)</option>
-                            <option value="Breech">Breech (Bottom down)</option>
-                            <option value="Transverse">Transverse (Sideways)</option>
-                        </select>
+                        <label>Dam (Female Parent)</label>
+                        <input type="text" name="dam" placeholder="Usually the patient">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Heat Cycle Date</label>
+                        <input type="date" name="heat_cycle_date" max="{{ date('Y-m-d') }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Pregnancy Confirmed Date</label>
+                        <input type="date" name="pregnancy_confirmed_date" max="{{ date('Y-m-d') }}">
                     </div>
                 </div>
                 <div class="form-row full">
                     <div class="form-group">
-                        <label>Prenatal Complications/Concerns</label>
-                        <textarea name="prenatal_notes" placeholder="Any concerns, edema, bleeding, etc."></textarea>
+                        <label>Breeding Notes/Concerns</label>
+                        <textarea name="breeding_notes" placeholder="Any complications, concerns, or special notes about the breeding..."></textarea>
+                    </div>
+                </div>
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label>Risk Factors</label>
+                        <textarea name="risk_factors" placeholder="Any known complications or risk factors..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Spay/Neuter Section -->
+            <div id="spayNeuterSection" class="service-section">
+                <h3><i class="bi bi-heart-fill"></i> Spay/Neuter Procedure Details</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Procedure Type <span class="required">*</span></label>
+                        <select name="procedure_type">
+                            <option value="">Select procedure</option>
+                            <option value="Spay">Spay (Ovariohysterectomy)</option>
+                            <option value="Neuter">Neuter (Castration)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Procedure Date</label>
+                        <input type="date" name="procedure_date" value="{{ date('Y-m-d') }}">
+                    </div>
+                </div>
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label>Post-Op Instructions</label>
+                        <textarea name="postop_instructions" placeholder="Recovery instructions, medication schedule, follow-up date..."></textarea>
                     </div>
                 </div>
             </div>
 
             <!-- Family Planning Section -->
-            <div id="familyPlanningSection" class="service-section">
-                <h3><i class="bi bi-people"></i> Family Planning Details</h3>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Method Provided <span class="required">*</span></label>
-                        <select name="fp_method">
-                            <option value="">Select method</option>
-                            <option value="Pills">Pills (Oral Contraceptives)</option>
-                            <option value="Condoms">Condoms</option>
-                            <option value="Injectable">Injectable (Depo)</option>
-                            <option value="IUD">IUD (Intrauterine Device)</option>
-                            <option value="Implant">Implant</option>
-                            <option value="BTL">BTL (Bilateral Tubal Ligation)</option>
-                            <option value="Vasectomy">Vasectomy</option>
-                            <option value="Natural">Natural Family Planning</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Quantity/Cycles Given</label>
-                        <input type="text" name="fp_quantity" placeholder="e.g., 3 months supply">
-                    </div>
-                </div>
+            <div id="familyPlanningSection" class="service-section" style="display: none;">
+                <h3><i class="bi bi-people"></i> Reproductive Health Details</h3>
                 <div class="form-row full">
                     <div class="form-group">
-                        <label>Follow-up Date</label>
-                        <input type="date" name="fp_followup_date" min="{{ date('Y-m-d') }}">
+                        <label>Notes</label>
+                        <textarea name="fp_notes" placeholder="Reproductive health notes..."></textarea>
                     </div>
                 </div>
             </div>
@@ -452,9 +489,9 @@
             <div class="vital-signs-card">
                 <div class="vital-grid">
                     <div class="form-group">
-                        <label>Blood Pressure</label>
-                        <input type="text" name="blood_pressure" id="bp" placeholder="120/80" pattern="\d{2,3}/\d{2,3}">
-                        <span class="hint">e.g., 120/80</span>
+                        <label>Heart Rate (bpm)</label>
+                        <input type="number" name="blood_pressure" id="bp" placeholder="80" min="40" max="200">
+                        <span class="hint">Normal: 60-140 bpm (varies by species)</span>
                     </div>
                     <div class="form-group">
                         <label>Temperature (°C)</label>
@@ -521,20 +558,16 @@
             });
             
             // Show relevant section and set required fields
-            if (selectedService === 'Immunization') {
-                immunizationSection.classList.add('active');
+            if (selectedService === 'Vaccination') {
+                vaccinationSection.classList.add('active');
                 document.getElementById('vaccineName').setAttribute('required', 'required');
                 document.getElementById('doseNumber').setAttribute('required', 'required');
-            } else if (selectedService === 'Prenatal') {
-                prenatalSection.classList.add('active');
-                document.querySelector('[name="gestational_age"]').setAttribute('required', 'required');
-            } else if (selectedService === 'Family Planning') {
-                familyPlanningSection.classList.add('active');
-                document.querySelector('[name="fp_method"]').setAttribute('required', 'required');
-            } else if (selectedService === 'Referral') {
+            } else if (selectedService === 'Breeding Consultation') {
+                breedingSection.classList.add('active');
+            } else if (selectedService === 'Spay/Neuter') {
+                spayNeuterSection.classList.add('active');
+            } else if (selectedService === 'Follow-up') {
                 referralSection.classList.add('active');
-                document.querySelector('[name="referred_to"]').setAttribute('required', 'required');
-                document.querySelector('[name="referral_reason"]').setAttribute('required', 'required');
             }
         }
         
@@ -573,7 +606,7 @@
                     document.getElementById('weight').value = result.data.weight || '';
                     document.getElementById('height').value = result.data.height || '';
                     calculateBMI();
-                    alert('✓ Last vital signs copied successfully!');
+                    alert('Last vital signs copied successfully.');
                 } else {
                     alert('No previous vital signs found.');
                 }

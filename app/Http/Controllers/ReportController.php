@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Patient;
 use App\Models\Visit;
 use App\Models\Immunization;
-use App\Models\PrenatalRecord;
+use App\Models\BreedingRecord;
 use App\Models\Referral;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -32,8 +32,8 @@ class ReportController extends Controller
             'immunizations' => Immunization::whereYear('date_given', $date->year)
                 ->whereMonth('date_given', $date->month)
                 ->count(),
-            'prenatal_visits' => PrenatalRecord::whereYear('visit_date', $date->year)
-                ->whereMonth('visit_date', $date->month)
+            'breeding_checkups' => BreedingRecord::whereYear('checkup_date', $date->year)
+                ->whereMonth('checkup_date', $date->month)
                 ->count(),
             'referrals' => Referral::whereYear('referral_date', $date->year)
                 ->whereMonth('referral_date', $date->month)
@@ -97,19 +97,19 @@ class ReportController extends Controller
     }
 
     /**
-     * Get high-risk prenatal cases
+     * Get high-risk breeding cases
      */
-    public function highRiskPrenatal()
+    public function highRiskBreeding()
     {
-        $highRiskCases = PrenatalRecord::with('patient')
+        $highRiskCases = BreedingRecord::with('patient')
             ->where(function($q) {
                 $q->whereNotNull('risk_factors')
                   ->orWhere('referred', true);
             })
-            ->orderBy('visit_date', 'desc')
+            ->orderBy('checkup_date', 'desc')
             ->get();
 
-        return view('reports.high-risk-prenatal', compact('highRiskCases'));
+        return view('reports.high-risk-breeding', compact('highRiskCases'));
     }
 
     /**
@@ -127,8 +127,8 @@ class ReportController extends Controller
             'immunizations' => Immunization::whereYear('date_given', $date->year)
                 ->whereMonth('date_given', $date->month)
                 ->count(),
-            'prenatal_visits' => PrenatalRecord::whereYear('visit_date', $date->year)
-                ->whereMonth('visit_date', $date->month)
+            'breeding_checkups' => BreedingRecord::whereYear('checkup_date', $date->year)
+                ->whereMonth('checkup_date', $date->month)
                 ->count(),
             'referrals' => Referral::whereYear('referral_date', $date->year)
                 ->whereMonth('referral_date', $date->month)

@@ -7,33 +7,79 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+        :root {
+            --bg: #f5f7fb;
+            --bg-alt: #eef2ff;
+            --card: #ffffff;
+            --text: #111827;
+            --muted: #6b7280;
+            --line: #e5e7eb;
+            --primary: #2563eb;
+            --primary-strong: #1d4ed8;
+            --accent: #16a34a;
+            --accent-strong: #15803d;
+            --shadow-sm: 0 4px 14px rgba(15, 23, 42, 0.08);
+            --shadow-lg: 0 20px 40px rgba(15, 23, 42, 0.12);
+            --radius: 14px;
+        }
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f5f5 0%, #f0f9ff 100%);
+            font-family: 'Manrope', sans-serif;
+            background: linear-gradient(135deg, var(--bg) 0%, var(--bg-alt) 100%);
             padding: 20px;
             min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            color: var(--text);
+        }
+
+        body::before,
+        body::after {
+            content: '';
+            position: fixed;
+            z-index: -1;
+            border-radius: 50%;
+            filter: blur(0.5px);
+        }
+
+        body::before {
+            width: 420px;
+            height: 420px;
+            top: -140px;
+            right: -120px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.18) 0%, rgba(37, 99, 235, 0) 70%);
+        }
+
+        body::after {
+            width: 360px;
+            height: 360px;
+            bottom: -160px;
+            left: -100px;
+            background: radial-gradient(circle, rgba(22, 163, 74, 0.16) 0%, rgba(22, 163, 74, 0) 70%);
         }
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
         .header {
-            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
-            padding: 28px;
-            border-radius: 20px;
+            background: var(--card);
+            padding: 24px;
+            border-radius: var(--radius);
             margin-bottom: 24px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
-            border: 1px solid rgba(0, 0, 0, 0.06);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--line);
+            transition: all 0.3s ease;
+            animation: pageEnter 0.5s ease;
         }
         
         .header:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
+            box-shadow: var(--shadow-lg);
         }
         .header-top {
             display: flex;
@@ -47,52 +93,50 @@
             margin-bottom: 20px;
         }
         .btn-new-patient {
-            padding: 14px 28px;
-            background: linear-gradient(135deg, #047857 0%, #059669 100%);
+            padding: 12px 22px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-strong) 100%);
             color: white;
             border: none;
-            border-radius: 12px;
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 8px rgba(4, 120, 87, 0.3);
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
         }
         .btn-new-patient:hover {
-            background: linear-gradient(135deg, #065f46 0%, #047857 100%);
             transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(4, 120, 87, 0.4);
+            box-shadow: 0 12px 24px rgba(37, 99, 235, 0.32);
         }
         .btn-import {
-            padding: 14px 28px;
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-            color: white;
-            border: none;
-            border-radius: 12px;
+            padding: 12px 20px;
+            background: white;
+            color: var(--primary);
+            border: 1px solid rgba(37, 99, 235, 0.25);
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+            transition: all 0.3s ease;
         }
         .btn-import:hover {
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+            background: #eef2ff;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 18px rgba(37, 99, 235, 0.15);
         }
         .btn-back {
-            padding: 10px 20px;
-            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
-            color: white;
-            border: none;
+            padding: 10px 16px;
+            background: white;
+            color: var(--text);
+            border: 1px solid var(--line);
             border-radius: 10px;
             cursor: pointer;
             font-size: 14px;
@@ -101,10 +145,11 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.2s ease;
         }
         .btn-back:hover {
-            background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
+            border-color: var(--primary);
+            color: var(--primary);
             transform: translateY(-1px);
         }
         .header-logo {
@@ -124,10 +169,10 @@
             color: #047857;
         }
         h1 {
-            color: #047857;
+            color: var(--text);
             margin: 0;
             flex: 1;
-            font-size: 32px;
+            font-size: 30px;
             font-weight: 800;
             letter-spacing: -0.02em;
         }
@@ -135,6 +180,7 @@
             display: flex;
             gap: 14px;
             margin-bottom: 18px;
+            align-items: center;
         }
         .search-wrapper {
             flex: 1;
@@ -142,17 +188,17 @@
         }
         input[type="search"] {
             width: 100%;
-            padding: 14px 44px 14px 18px;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            font-size: 15px;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 12px 44px 12px 16px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.2s ease;
             background: white;
         }
         input[type="search"]:focus {
             outline: none;
-            border-color: #047857;
-            box-shadow: 0 0 0 3px rgba(4, 120, 87, 0.1);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
         }
         .search-icon {
             position: absolute;
@@ -162,21 +208,23 @@
             color: #9ca3af;
         }
         .btn {
-            padding: 12px 20px;
+            padding: 10px 18px;
             border: none;
             border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
             text-decoration: none;
-            display: inline-block;
-            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
         .btn-primary {
-            background: #047857;
+            background: var(--accent);
             color: white;
         }
         .btn-primary:hover {
-            background: #059669;
+            background: var(--accent-strong);
         }
         .btn-sm {
             padding: 6px 12px;
@@ -201,34 +249,37 @@
             border: 1px solid #a7f3d0;
         }
         .patients-table {
-            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
-            border-radius: 16px;
+            background: var(--card);
+            border-radius: var(--radius);
             overflow: hidden;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
-            border: 1px solid rgba(0, 0, 0, 0.06);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--line);
+            animation: pageEnter 0.5s ease;
         }
         table {
             width: 100%;
             border-collapse: collapse;
         }
         thead {
-            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+            background: #f8fafc;
         }
         th {
             padding: 16px 18px;
             text-align: left;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
-            color: #374151;
+            color: #475569;
             text-transform: uppercase;
             letter-spacing: 0.8px;
+            border-bottom: 1px solid var(--line);
         }
         td {
-            padding: 18px;
-            border-top: 1px solid #e5e7eb;
+            padding: 16px 18px;
+            border-top: 1px solid var(--line);
+            color: #1f2937;
         }
         tr:hover {
-            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+            background: #f8fafc;
         }
         .patient-id {
             font-family: monospace;
@@ -261,7 +312,18 @@
         .empty-state {
             text-align: center;
             padding: 60px 20px;
-            color: #6b7280;
+            color: var(--muted);
+        }
+
+        @keyframes pageEnter {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         .empty-state svg {
             width: 64px;
@@ -903,21 +965,21 @@
 </head>
 <body>
     <div class="container">
+        <a href="{{ route('dashboard') }}" class="btn-back" style="margin-bottom: 16px;">← Back to Dashboard</a>
         <div class="header">
             <div class="header-top">
                 <a href="{{ route('dashboard') }}" class="header-logo">
                     <img src="/images/systemlogo.png" alt="VetCare" style="height: 35px; object-fit: contain;">
                 </a>
-                <button onclick="goBack()" class="btn-back">← Back</button>
                 <h1>Pet List</h1>
             </div>
             
             <div class="header-actions">
                 <button onclick="openRegistrationModal()" class="btn-new-patient">
-                    ➕ Register New Pet
+                    <i class="bi bi-plus-circle"></i> Register New Pet
                 </button>
                 <button onclick="openImportModal()" class="btn-import">
-                    📥 Import from CSV
+                    <i class="bi bi-file-earmark-arrow-up"></i> Import from CSV
                 </button>
             </div>
             
@@ -938,10 +1000,6 @@
                     <span class="search-icon"><i class="bi bi-search"></i></span>
                     <div id="autocompleteResults" class="autocomplete-results"></div>
                 </div>
-                <div style="display: flex; gap: 8px;">
-                    <button onclick="openImportModal()" class="btn" style="background: #3b82f6; color: white; border: none; cursor: pointer;">📥 Import</button>
-                    <button onclick="openRegistrationModal()" class="btn btn-primary">+ New Pet</button>
-                </div>
             </div>
         </div>
 
@@ -954,7 +1012,7 @@
                         <th>Name</th>
                         <th>Age</th>
                         <th>Sex</th>
-                        <th>Contact</th>
+                        <th>Owner Contact</th>
                         <th>Last Visit</th>
                         <th>Actions</th>
                     </tr>
@@ -970,7 +1028,7 @@
                                 {{ $patient->sex }}
                             </span>
                         </td>
-                        <td>{{ $patient->contact_number ?: '-' }}</td>
+                        <td>{{ $patient->owner_contact ?: '-' }}</td>
                         <td>
                             @if($patient->visits->first())
                                 {{ $patient->visits->first()->visit_date->format('M d, Y') }}
@@ -997,8 +1055,8 @@
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                 </svg>
-                <h3>No patients found</h3>
-                <p>Start by registering a new patient</p>
+                <h3>No pets found</h3>
+                <p>Start by registering a new pet</p>
             </div>
             @endif
         </div>
@@ -1178,16 +1236,13 @@
         // Handle service type changes to show/hide relevant sections
         function updateServiceSection() {
             const serviceTypeSelect = document.getElementById('modalServiceType');
-            const immunizationSection = document.getElementById('modalImmunizationSection');
-            const prenatalSection = document.getElementById('modalPrenatalSection');
-            const familyPlanningSection = document.getElementById('modalFamilyPlanningSection');
+            const vaccinationSection = document.getElementById('modalVaccinationSection');
+            const breedingSection = document.getElementById('modalBreedingSection');            
             const referralSection = document.getElementById('modalReferralSection');
             
             // Get all field elements
             const vaccineName = document.getElementById('modalVaccineName');
             const doseNumber = document.getElementById('modalDoseNumber');
-            const gestationalAge = document.getElementById('modalGestationalAge');
-            const fpMethod = document.getElementById('modalFpMethod');
             const referredTo = document.getElementById('modalReferredTo');
             const referralReason = document.getElementById('modalReferralReason');
             
@@ -1200,29 +1255,24 @@
             console.log('Service type changed to:', serviceType);
             
             // Hide all sections and remove required attributes
-            [immunizationSection, prenatalSection, familyPlanningSection, referralSection].forEach(function(section) {
+            [vaccinationSection, breedingSection, referralSection].forEach(function(section) {
                 if (section) section.style.display = 'none';
             });
             
-            [vaccineName, doseNumber, gestationalAge, fpMethod, referredTo, referralReason].forEach(function(field) {
+            [vaccineName, doseNumber, referredTo, referralReason].forEach(function(field) {
                 if (field) field.removeAttribute('required');
             });
             
             // Show relevant section and add required attributes
-            if (serviceType === 'Immunization' && immunizationSection) {
-                console.log('Showing immunization section');
-                immunizationSection.style.display = 'block';
+            if (serviceType === 'Vaccination' && vaccinationSection) {
+                console.log('Showing vaccination section');
+                vaccinationSection.style.display = 'block';
                 if (vaccineName) vaccineName.setAttribute('required', 'required');
                 if (doseNumber) doseNumber.setAttribute('required', 'required');
-            } else if (serviceType === 'Prenatal' && prenatalSection) {
-                console.log('Showing prenatal section');
-                prenatalSection.style.display = 'block';
-                if (gestationalAge) gestationalAge.setAttribute('required', 'required');
-            } else if (serviceType === 'Family Planning' && familyPlanningSection) {
-                console.log('Showing family planning section');
-                familyPlanningSection.style.display = 'block';
-                if (fpMethod) fpMethod.setAttribute('required', 'required');
-            } else if (serviceType === 'Referral' && referralSection) {
+            } else if (serviceType === 'Breeding Consultation' && breedingSection) {
+                console.log('Showing breeding section');
+                breedingSection.style.display = 'block';
+            } else if (serviceType === 'Follow-up' && referralSection) {
                 console.log('Showing referral section');
                 referralSection.style.display = 'block';
                 if (referredTo) referredTo.setAttribute('required', 'required');
@@ -1431,7 +1481,7 @@
                     
                     // Re-enable submit button
                     submitBtn.disabled = false;
-                    submitBtn.textContent = 'Import Patients';
+                    submitBtn.textContent = 'Import Pets';
                 }
             })
             .catch(error => {
@@ -1442,7 +1492,7 @@
                 
                 // Re-enable submit button
                 submitBtn.disabled = false;
-                submitBtn.textContent = 'Import Patients';
+                submitBtn.textContent = 'Import Pets';
             });
         });
 
@@ -1482,40 +1532,57 @@
                             <label>Service Type <span style="color: #ef4444;">*</span></label>
                             <select name="service_type" id="modalServiceType" required onchange="updateServiceSection()">
                                 <option value="">Select service</option>
-                                <option value="General Checkup">General Checkup</option>
-                                <option value="Immunization">Immunization</option>
-                                <option value="Prenatal">Prenatal Care</option>
-                                <option value="Family Planning">Family Planning</option>
-                                <option value="Referral">Referral</option>
-                                <option value="Health Education">Health Education</option>
+                                <option value="Wellness Exam">Wellness Exam</option>
+                                <option value="Vaccination">Vaccination</option>
+                                <option value="Surgery">Surgery</option>
+                                <option value="Dental Cleaning">Dental Cleaning</option>
+                                <option value="Emergency">Emergency</option>
+                                <option value="Grooming">Grooming</option>
+                                <option value="Boarding Checkup">Boarding Checkup</option>
+                                <option value="Follow-up">Follow-up</option>
+                                <option value="Diagnostics">Diagnostics</option>
+                                <option value="Spay/Neuter">Spay/Neuter</option>
+                                <option value="Breeding Consultation">Breeding Consultation</option>
                                 <option value="Other">Other</option>
                             </select>
                         </div>
                         <div class="modal-form-group">
-                            <label>Health Worker</label>
+                            <label>Veterinarian/Staff</label>
                             <input type="text" name="health_worker" placeholder="Name of health worker">
                         </div>
                     </div>
 
-                    <!-- Immunization Section -->
-                    <div id="modalImmunizationSection" class="modal-service-section" style="display: none;">
+                    <!-- Vaccination Section -->
+                    <div id="modalVaccinationSection" class="modal-service-section" style="display: none;">
                         <div class="modal-section-title" style="background: #dbeafe; color: #1e40af; padding: 12px; border-radius: 6px; margin-bottom: 16px;">
-                            <i class="bi bi-shield-fill-check"></i> Immunization Details
+                            <i class="bi bi-shield-fill-check"></i> Vaccination Details
                         </div>
                         <div class="modal-form-row">
                             <div class="modal-form-group">
                                 <label>Vaccine Name <span style="color: #ef4444;">*</span></label>
                                 <select name="vaccine_name" id="modalVaccineName">
                                     <option value="">Select vaccine</option>
-                                    <option value="BCG">BCG (Bacillus Calmette-Guérin)</option>
-                                    <option value="Hepatitis B">Hepatitis B</option>
-                                    <option value="Pentavalent">Pentavalent (DPT-HepB-Hib)</option>
-                                    <option value="OPV">OPV (Oral Polio Vaccine)</option>
-                                    <option value="IPV">IPV (Inactivated Polio Vaccine)</option>
-                                    <option value="PCV">PCV (Pneumococcal Conjugate Vaccine)</option>
-                                    <option value="MMR">MMR (Measles, Mumps, Rubella)</option>
-                                    <option value="MR">MR (Measles, Rubella)</option>
-                                    <option value="Tetanus Toxoid">Tetanus Toxoid</option>
+                                    <optgroup label="Core Dog Vaccines">
+                                        <option value="Rabies">Rabies</option>
+                                        <option value="DHPP">DHPP (Distemper, Hepatitis, Parvovirus, Parainfluenza)</option>
+                                        <option value="Distemper">Distemper</option>
+                                        <option value="Parvovirus">Parvovirus</option>
+                                    </optgroup>
+                                    <optgroup label="Non-Core Dog Vaccines">
+                                        <option value="Bordetella">Bordetella (Kennel Cough)</option>
+                                        <option value="Leptospirosis">Leptospirosis</option>
+                                        <option value="Lyme">Lyme Disease</option>
+                                        <option value="Canine Influenza">Canine Influenza</option>
+                                    </optgroup>
+                                    <optgroup label="Core Cat Vaccines">
+                                        <option value="FVRCP">FVRCP (Feline Viral Rhinotracheitis, Calicivirus, Panleukopenia)</option>
+                                        <option value="Feline Rabies">Feline Rabies</option>
+                                    </optgroup>
+                                    <optgroup label="Non-Core Cat Vaccines">
+                                        <option value="FeLV">FeLV (Feline Leukemia)</option>
+                                        <option value="FIV">FIV (Feline Immunodeficiency Virus)</option>
+                                        <option value="Chlamydia">Chlamydia</option>
+                                    </optgroup>
                                     <option value="Other">Other</option>
                                 </select>
                             </div>
@@ -1523,11 +1590,11 @@
                                 <label>Dose Number <span style="color: #ef4444;">*</span></label>
                                 <select name="dose_number" id="modalDoseNumber">
                                     <option value="">Select dose</option>
-                                    <option value="1st Dose">1st Dose</option>
-                                    <option value="2nd Dose">2nd Dose</option>
-                                    <option value="3rd Dose">3rd Dose</option>
-                                    <option value="4th Dose">4th Dose</option>
-                                    <option value="Booster">Booster</option>
+                                    <option value="1">1st Dose</option>
+                                    <option value="2">2nd Dose</option>
+                                    <option value="3">3rd Dose</option>
+                                    <option value="4">4th Dose</option>
+                                    <option value="Booster">Annual Booster</option>
                                 </select>
                             </div>
                         </div>
@@ -1543,68 +1610,63 @@
                         </div>
                     </div>
 
-                    <!-- Prenatal Section -->
-                    <div id="modalPrenatalSection" class="modal-service-section" style="display: none;">
+                    <!-- Breeding Consultation Section -->
+                    <div id="modalBreedingSection" class="modal-service-section" style="display: none;">
                         <div class="modal-section-title" style="background: #fce7f3; color: #9f1239; padding: 12px; border-radius: 6px; margin-bottom: 16px;">
-                            <i class="bi bi-heart-pulse-fill"></i> Prenatal Care Details
+                            <i class="bi bi-heart-pulse-fill"></i> Breeding Consultation Details
                         </div>
                         <div class="modal-form-row">
                             <div class="modal-form-group">
-                                <label>Gestational Age (weeks) <span style="color: #ef4444;">*</span></label>
-                                <input type="number" name="gestational_age" id="modalGestationalAge" min="1" max="42" placeholder="e.g., 28">
+                                <label>Breeding Date</label>
+                                <input type="date" name="breeding_date" max="{{ date('Y-m-d') }}">
                             </div>
                             <div class="modal-form-group">
-                                <label>Fundal Height (cm)</label>
-                                <input type="number" name="fundal_height" step="0.1" min="0" placeholder="e.g., 26.5">
-                            </div>
-                        </div>
-                        <div class="modal-form-row">
-                            <div class="modal-form-group">
-                                <label>Fetal Heart Rate (bpm)</label>
-                                <input type="number" name="fetal_heart_rate" min="0" max="200" placeholder="120-160">
-                            </div>
-                            <div class="modal-form-group">
-                                <label>Presentation</label>
-                                <select name="presentation">
-                                    <option value="">Select</option>
-                                    <option value="Cephalic">Cephalic (Head down)</option>
-                                    <option value="Breech">Breech (Bottom down)</option>
-                                    <option value="Transverse">Transverse (Sideways)</option>
+                                <label>Breeding Status</label>
+                                <select name="breeding_status">
+                                    <option value="Planned">Planned</option>
+                                    <option value="Bred">Bred</option>
+                                    <option value="Confirmed Pregnant">Confirmed Pregnant</option>
+                                    <option value="Not Pregnant">Not Pregnant</option>
+                                    <option value="Delivered">Delivered</option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="modal-form-row">
+                            <div class="modal-form-group">
+                                <label>Sire (Male Parent)</label>
+                                <input type="text" name="sire" placeholder="e.g., Max (Golden Retriever)">
+                            </div>
+                            <div class="modal-form-group">
+                                <label>Dam (Female Parent)</label>
+                                <input type="text" name="dam" placeholder="Usually the patient">
                             </div>
                         </div>
                         <div class="modal-form-row full">
                             <div class="modal-form-group">
-                                <label>Prenatal Complications/Concerns</label>
-                                <textarea name="prenatal_notes" placeholder="Any concerns, edema, bleeding, etc."></textarea>
+                                <label>Breeding Notes/Concerns</label>
+                                <textarea name="breeding_notes" placeholder="Any complications, concerns, or special notes..."></textarea>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Family Planning Section -->
+                    <!-- Spay/Neuter Section -->
                     <div id="modalFamilyPlanningSection" class="modal-service-section" style="display: none;">
                         <div class="modal-section-title" style="background: #fef3c7; color: #78350f; padding: 12px; border-radius: 6px; margin-bottom: 16px;">
-                            👨‍👩‍👧 Family Planning Details
+                            Spay/Neuter Details
                         </div>
                         <div class="modal-form-row">
                             <div class="modal-form-group">
-                                <label>Method Provided <span style="color: #ef4444;">*</span></label>
+                                <label>Procedure Type <span style="color: #ef4444;">*</span></label>
                                 <select name="fp_method" id="modalFpMethod">
-                                    <option value="">Select method</option>
-                                    <option value="Pills">Pills (Oral Contraceptives)</option>
-                                    <option value="Condoms">Condoms</option>
-                                    <option value="Injectable">Injectable (Depo)</option>
-                                    <option value="IUD">IUD (Intrauterine Device)</option>
-                                    <option value="Implant">Implant</option>
-                                    <option value="BTL">BTL (Bilateral Tubal Ligation)</option>
-                                    <option value="Vasectomy">Vasectomy</option>
-                                    <option value="Natural">Natural Family Planning</option>
-                                    <option value="Other">Other</option>
+                                    <option value="">Select procedure</option>
+                                    <option value="Spay (Female)">Spay (Female)</option>
+                                    <option value="Neuter (Male)">Neuter (Male)</option>
+                                    <option value="Not Applicable">Not Applicable</option>
                                 </select>
                             </div>
                             <div class="modal-form-group">
-                                <label>Quantity/Cycles Given</label>
-                                <input type="text" name="fp_quantity" placeholder="e.g., 3 months supply">
+                                <label>Procedure Date</label>
+                                <input type="date" name="fp_quantity" max="{{ date('Y-m-d') }}">
                             </div>
                         </div>
                         <div class="modal-form-row full">
@@ -1627,7 +1689,7 @@
                             </div>
                             <div class="modal-form-group">
                                 <label>Reason for Referral <span style="color: #ef4444;">*</span></label>
-                                <input type="text" name="referral_reason" id="modalReferralReason" placeholder="e.g., High blood pressure">
+                                <input type="text" name="referral_reason" id="modalReferralReason" placeholder="e.g., Specialist cardiology consult">
                             </div>
                         </div>
                         <div class="modal-form-row full">
@@ -1653,8 +1715,8 @@
 
                     <div class="modal-form-row">
                         <div class="modal-form-group">
-                            <label>Blood Pressure</label>
-                            <input type="text" name="blood_pressure" placeholder="120/80" pattern="\d{2,3}/\d{2,3}">
+                            <label>Heart Rate (bpm)</label>
+                            <input type="number" name="blood_pressure" placeholder="80" min="40" max="200">
                         </div>
                         <div class="modal-form-group">
                             <label>Temperature (°C)</label>
@@ -1704,7 +1766,7 @@
     <div id="importModal" class="import-modal">
         <div class="import-modal-content">
             <div class="import-modal-header">
-                <h2>📥 Import Patient Records</h2>
+                <h2>Import Patient Records</h2>
                 <button class="modal-close" onclick="closeImportModal()" style="background: none; border: none; font-size: 28px; color: #6b7280; cursor: pointer; padding: 0; line-height: 1;">×</button>
             </div>
             <div class="import-modal-body">
@@ -1717,7 +1779,7 @@
                     <ul>
                         <li><strong>Format:</strong> CSV (Comma-separated values)</li>
                         <li><strong>Required Columns:</strong> first_name, last_name, birthdate, sex, address</li>
-                        <li><strong>Optional Columns:</strong> middle_name, contact_number, philhealth_number</li>
+                        <li><strong>Optional Columns:</strong> middle_name, contact_number, microchip_number</li>
                         <li><strong>Date Format:</strong> YYYY-MM-DD (e.g., 1990-05-15)</li>
                         <li><strong>Sex Values:</strong> Male or Female</li>
                     </ul>
@@ -1727,7 +1789,7 @@
                     @csrf
                     
                     <div class="upload-area" id="uploadArea">
-                        <div class="upload-icon">📁</div>
+                        <div class="upload-icon">File</div>
                         <h3>Drag and drop your file here</h3>
                         <p style="color: #6b7280; margin: 12px 0;">or</p>
                         <label for="importFileInput" class="btn btn-primary" style="cursor: pointer;">Choose File</label>
@@ -1745,7 +1807,7 @@
                 </form>
 
                 <div class="template-section">
-                    <h3 style="margin-bottom: 16px; color: #374151;">📥 Download Sample Template</h3>
+                    <h3 style="margin-bottom: 16px; color: #374151;">Download Sample Template</h3>
                     <p style="color: #6b7280; margin-bottom: 16px;">
                         Download this template, fill in your patient data, and upload it above.
                     </p>
@@ -1796,7 +1858,7 @@
     <div id="registrationModal" class="registration-modal">
         <div class="registration-modal-content">
             <div class="registration-modal-header">
-                <h2>➕ Register New Patient</h2>
+                <h2>Register New Pet</h2>
                 <button class="modal-close" onclick="closeRegistrationModal()" style="background: none; border: none; font-size: 28px; color: #6b7280; cursor: pointer; padding: 0; line-height: 1;">×</button>
             </div>
             <div class="registration-modal-body">
@@ -1862,7 +1924,7 @@
                     <div class="modal-optional-section">
                         <div class="modal-form-row">
                             <div class="modal-form-group">
-                                <label>PhilHealth Number</label>
+                                <label>Microchip Number</label>
                                 <input type="text" name="philhealth_number">
                             </div>
                             <div class="modal-form-group">

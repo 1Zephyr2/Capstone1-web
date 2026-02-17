@@ -6,39 +6,94 @@
     <title>Today's Visits - VetCare</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+        :root {
+            --bg: #f5f7fb;
+            --bg-alt: #eef2ff;
+            --card: #ffffff;
+            --text: #111827;
+            --muted: #6b7280;
+            --line: #e5e7eb;
+            --primary: #2563eb;
+            --primary-strong: #1d4ed8;
+            --accent: #16a34a;
+            --accent-strong: #15803d;
+            --shadow-sm: 0 4px 14px rgba(15, 23, 42, 0.08);
+            --shadow-lg: 0 20px 40px rgba(15, 23, 42, 0.12);
+            --radius: 14px;
+        }
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
+            font-family: 'Manrope', sans-serif;
+            background: linear-gradient(135deg, var(--bg) 0%, var(--bg-alt) 100%);
             padding: 20px;
             min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            color: var(--text);
+        }
+
+        body::before,
+        body::after {
+            content: '';
+            position: fixed;
+            z-index: -1;
+            border-radius: 50%;
+        }
+
+        body::before {
+            width: 420px;
+            height: 420px;
+            top: -140px;
+            right: -120px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.18) 0%, rgba(37, 99, 235, 0) 70%);
+        }
+
+        body::after {
+            width: 360px;
+            height: 360px;
+            bottom: -160px;
+            left: -100px;
+            background: radial-gradient(circle, rgba(22, 163, 74, 0.16) 0%, rgba(22, 163, 74, 0) 70%);
         }
         .container {
             max-width: 1400px;
             margin: 0 auto;
         }
         .header {
-            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
-            padding: 28px;
-            border-radius: 16px;
+            background: var(--card);
+            padding: 24px;
+            border-radius: var(--radius);
             margin-bottom: 24px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
-            border: 1px solid rgba(0, 0, 0, 0.06);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--line);
+            transition: all 0.3s ease;
+            animation: pageEnter 0.5s ease;
         }
         
         .header:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
+            box-shadow: var(--shadow-lg);
         }
         .header-top {
             display: flex;
             align-items: center;
             gap: 16px;
             margin-bottom: 12px;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .header-actions {
+            margin-left: auto;
+            display: flex;
+            gap: 10px;
         }
         .header-logo {
             display: flex;
@@ -47,7 +102,6 @@
             text-decoration: none;
             color: inherit;
             transition: opacity 0.2s;
-            margin-right: auto;
         }
         .header-logo:hover {
             opacity: 0.8;
@@ -58,10 +112,10 @@
             color: #047857;
         }
         .btn-back {
-            padding: 10px 20px;
-            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
-            color: white;
-            border: none;
+            padding: 10px 16px;
+            background: white;
+            color: var(--text);
+            border: 1px solid var(--line);
             border-radius: 10px;
             cursor: pointer;
             font-size: 14px;
@@ -70,20 +124,19 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 8px rgba(107, 114, 128, 0.3);
+            transition: all 0.2s ease;
         }
         
         .btn-back:hover {
-            background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(107, 114, 128, 0.4);
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-1px);
         }
         h1 {
-            color: #047857;
+            color: var(--text);
             margin: 0;
             flex: 1;
-            font-size: 32px;
+            font-size: 30px;
             font-weight: 800;
             letter-spacing: -0.02em;
         }
@@ -93,47 +146,49 @@
             gap: 16px;
             margin-bottom: 20px;
         }
-        .stat-card {
-            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
-            padding: 24px;
-            border-radius: 14px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
-            border: 1px solid rgba(0, 0, 0, 0.06);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        .stat-card,
+        .stat-item {
+            background: var(--card);
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--line);
+            transition: all 0.3s ease;
         }
         
-        .stat-card:hover {
+        .stat-card:hover,
+        .stat-item:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
+            box-shadow: var(--shadow-lg);
         }
         .stat-value {
-            font-size: 32px;
-            font-weight: bold;
-            color: #047857;
+            font-size: 30px;
+            font-weight: 800;
+            color: var(--primary);
         }
         .stat-label {
-            color: #6b7280;
-            font-size: 14px;
-            margin-top: 4px;
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 6px;
         }
         .visits-container {
             display: grid;
             gap: 20px;
         }
         .visit-card {
-            background: white;
-            border-radius: 8px;
+            background: var(--card);
+            border-radius: 12px;
             padding: 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            border: 1px solid #e5e7eb;
-            border-left: 4px solid #047857;
-            transition: all 0.2s;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--line);
+            border-left: 4px solid var(--primary);
+            transition: all 0.2s ease;
             cursor: pointer;
         }
         .visit-card:hover {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: var(--shadow-lg);
             transform: translateY(-2px);
-            border-left-color: #059669;
+            border-left-color: var(--accent);
         }
         .visit-summary {
             display: flex;
@@ -245,8 +300,13 @@
             margin-top: 8px;
         }
         .service-general { background: #dbeafe; color: #1e40af; }
-        .service-immunization { background: #fef3c7; color: #92400e; }
-        .service-prenatal { background: #fce7f3; color: #9f1239; }
+        .service-vaccination { background: #fef3c7; color: #92400e; }
+        .service-breeding { background: #fce7f3; color: #9f1239; }
+        .service-surgery { background: #fee2e2; color: #991b1b; }
+        .service-wellness { background: #d1fae5; color: #065f46; }
+        .service-dental { background: #e0e7ff; color: #3730a3; }
+        .service-emergency { background: #fee2e2; color: #991b1b; }
+        .service-other { background: #f3f4f6; color: #374151; }
         .service-other { background: #e5e7eb; color: #374151; }
         .vital-signs {
             display: grid;
@@ -308,10 +368,11 @@
         .empty-state {
             padding: 60px 20px;
             text-align: center;
-            color: #6b7280;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            color: var(--muted);
+            background: var(--card);
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--line);
         }
         .empty-state svg {
             width: 64px;
@@ -322,7 +383,18 @@
         .empty-state h3 {
             font-size: 18px;
             margin-bottom: 8px;
-            color: #374151;
+            color: #1f2937;
+        }
+
+        @keyframes pageEnter {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
@@ -361,18 +433,20 @@
     </div>
 
     <div class="container">
+        <a href="{{ route('dashboard') }}" class="btn-back" style="margin-bottom: 16px;">← Back to Dashboard</a>
         <div class="header">
             <div class="header-top">
-                <a href="{{ route('dashboard') }}" class="header-logo">
-                    <img src="/images/systemlogo.png" alt="VetCare" style="height: 35px; object-fit: contain;">
-                </a>
-                <div style="display: flex; gap: 10px;">
-                    <a href="{{ route('dashboard') }}" class="btn-back">← Back</a>
+                <div class="header-left">
+                    <a href="{{ route('dashboard') }}" class="header-logo">
+                        <img src="/images/systemlogo.png" alt="VetCare" style="height: 35px; object-fit: contain;">
+                    </a>
+                    <h1><i class="bi bi-clipboard2-check"></i> Today's Visits</h1>
+                </div>
+                <div class="header-actions">
                     <button onclick="openAppointmentsCalendar()" class="btn-calendar" style="padding: 8px 16px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3); transition: all 0.2s; display: flex; align-items: center; gap: 6px;" onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 6px rgba(16, 185, 129, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(16, 185, 129, 0.3)'">
                         <i class="bi bi-calendar3"></i> View Calendar
                     </button>
                 </div>
-                <h1><i class="bi bi-clipboard2-check"></i> Today's Visits</h1>
             </div>
             <p style="color: #6b7280; font-size: 14px;">{{ now()->format('l, F j, Y') }}</p>
         </div>
@@ -388,15 +462,15 @@
             </div>
             <div class="stat-card">
                 <div class="stat-value" id="generalCheckupsToday">0</div>
-                <div class="stat-label">General Checkups</div>
+                <div class="stat-label">Wellness Exams</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-value" id="immunizationsToday">0</div>
-                <div class="stat-label">Immunizations</div>
+            <div class="stat-item">
+                <div class="stat-value" id="vaccinationsToday">0</div>
+                <div class="stat-label">Vaccinations</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-value" id="prenatalCareToday">0</div>
-                <div class="stat-label">Prenatal Care</div>
+            <div class="stat-item">
+                <div class="stat-value" id="breedingConsultToday">0</div>
+                <div class="stat-label">Breeding Consultations</div>
             </div>
         </div>
 
@@ -468,7 +542,7 @@
                 </div>
 
                 <div id="modalHealthWorker" class="health-worker" style="display: none; margin-top: 16px;">
-                    <span class="health-worker-label"><i class="bi bi-person-badge"></i> Health Worker:</span>
+                    <span class="health-worker-label"><i class="bi bi-person-badge"></i> Veterinarian:</span>
                     <span class="health-worker-name" id="modalHealthWorkerName"></span>
                 </div>
             </div>
@@ -509,7 +583,7 @@
             if (vitalSigns) {
                 let vitalHTML = '';
                 if (vitalSigns.blood_pressure) {
-                    vitalHTML += `<div class="vital-item"><div class="vital-label">Blood Pressure</div><div class="vital-value">${vitalSigns.blood_pressure}</div></div>`;
+                    vitalHTML += `<div class="vital-item"><div class="vital-label">Heart Rate</div><div class="vital-value">${vitalSigns.blood_pressure} bpm</div></div>`;
                 }
                 if (vitalSigns.temperature) {
                     vitalHTML += `<div class="vital-item"><div class="vital-label">Temperature</div><div class="vital-value">${vitalSigns.temperature}°C</div></div>`;
@@ -743,7 +817,7 @@
         <div style="background: white; border-radius: 16px; max-width: 800px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);">
             <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 24px; border-radius: 16px 16px 0 0; display: flex; justify-content: space-between; align-items: center;">
                 <div>
-                    <h2 style="margin: 0; font-size: 24px; font-weight: 700;">📅 Appointments Calendar</h2>
+                    <h2 style="margin: 0; font-size: 24px; font-weight: 700;">Appointments Calendar</h2>
                     <p style="margin: 4px 0 0 0; font-size: 14px; opacity: 0.9;">View appointments by date</p>
                 </div>
                 <button onclick="closeAppointmentsCalendar()" style="background: rgba(255,255,255,0.2); border: none; color: white; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">×</button>
@@ -850,9 +924,9 @@
                     
                     let statusBadge = '';
                     if (status === 'attended') {
-                        statusBadge = '<div style="background: #d1fae5; color: #065f46; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase;">✓ Attended</div>';
+                        statusBadge = '<div style="background: #d1fae5; color: #065f46; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase;">Attended</div>';
                     } else if (status === 'rescheduled') {
-                        statusBadge = '<div style="background: #fef3c7; color: #92400e; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase;">🔄 Rescheduled</div>';
+                        statusBadge = '<div style="background: #fef3c7; color: #92400e; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase;">Rescheduled</div>';
                     }
                     
                     div.innerHTML = '' +

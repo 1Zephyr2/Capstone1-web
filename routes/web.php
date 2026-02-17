@@ -67,7 +67,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('admin')->group(function () {
         Route::get('/reports/generate', [ReportController::class, 'generate'])->name('reports.generate');
         Route::get('/reports/overdue-immunizations', [ReportController::class, 'overdueImmunizations'])->name('reports.overdue-immunizations');
-        Route::get('/reports/high-risk-prenatal', [ReportController::class, 'highRiskPrenatal'])->name('reports.high-risk-prenatal');
+        Route::get('/reports/high-risk-breeding', [ReportController::class, 'highRiskBreeding'])->name('reports.high-risk-breeding');
         
         // Data Analytics (Admin only)
         Route::get('/analytics', [\App\Http\Controllers\AnalyticsController::class, 'index'])->name('analytics.index');
@@ -133,13 +133,13 @@ Route::middleware('auth')->group(function () {
         return view('immunizations.index');
     })->name('immunizations.index');
 
-    Route::get('/prenatal-care', function () {
-        return view('prenatal-care');
-    })->name('prenatal.care');
+    Route::get('/breeding-program', function () {
+        return view('breeding-program');
+    })->name('breeding.program');
 
-    Route::get('/general-checkup', function () {
-        return view('general-checkup');
-    })->name('general.checkup');
+    Route::get('/wellness-exam', function () {
+        return view('wellness-exam');
+    })->name('wellness.exam');
 
     // Tools Routes
     Route::get('/automation-support', [\App\Http\Controllers\AutomationController::class, 'index'])->name('automation.support');

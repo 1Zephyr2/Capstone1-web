@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Patient Record - CareSync</title>
+    <title>New Pet Record - VetCare</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
@@ -84,7 +84,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1><i class="bi bi-clipboard2-check"></i> New Patient Record</h1>
+            <h1><i class="bi bi-clipboard2-check"></i> New Pet Record</h1>
             <a href="{{ route('dashboard') }}" class="back-btn">← Back to Dashboard</a>
         </div>
 

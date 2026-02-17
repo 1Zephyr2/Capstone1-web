@@ -117,8 +117,8 @@
         <div class="content-card">
             <div class="coming-soon">
                 <div class="icon"><i class="bi bi-clock-history" style="font-size: 48px;"></i></div>
-                <h2>Patient Queue Management</h2>
-                <p>This feature is under development. Manage today's patient queue here.</p>
+                <h2>Pet Queue Management</h2>
+                <p>This feature is under development. Manage today's pet appointment queue here.</p>
             </div>
         </div>
     </div>

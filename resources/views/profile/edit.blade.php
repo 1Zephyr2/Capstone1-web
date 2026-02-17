@@ -303,7 +303,7 @@
 
                 <!-- Profile Picture Section -->
                 <div class="section">
-                    <h2>📷 Profile Picture</h2>
+                    <h2>Profile Picture</h2>
                     <div class="profile-picture-section">
                         <div class="profile-picture-preview">
                             @if($user->profile_picture)
@@ -321,7 +321,7 @@
                             </div>
                             <div class="file-name" id="fileName">No file chosen</div>
                             @if($user->profile_picture)
-                                <button type="button" class="btn btn-danger btn-small" onclick="deleteProfilePicture()">🗑️ Remove Picture</button>
+                                <button type="button" class="btn btn-danger btn-small" onclick="deleteProfilePicture()">Remove Picture</button>
                             @endif
                             @error('profile_picture')
                                 <div class="error-message">{{ $message }}</div>

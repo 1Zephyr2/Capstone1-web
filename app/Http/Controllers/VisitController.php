@@ -201,7 +201,7 @@ class VisitController extends Controller
             }
             
             // Create immunization record if service is immunization
-            if ($request->service_type === 'Immunization') {
+            if ($request->service_type === 'Vaccination') {
                 \App\Models\Immunization::create([
                     'patient_id' => $request->patient_id,
                     'vaccine_name' => $request->vaccine_name,
@@ -213,18 +213,20 @@ class VisitController extends Controller
                 ]);
             }
             
-            // Create prenatal record if service is prenatal
-            if ($request->service_type === 'Prenatal') {
-                \App\Models\PrenatalRecord::create([
+            // Create breeding record if service is breeding consultation
+            if ($request->service_type === 'Breeding Consultation') {
+                \App\Models\BreedingRecord::create([
                     'patient_id' => $request->patient_id,
-                    'visit_date' => $visitData['visit_time'] ?? now(),
-                    'gestational_age' => $request->gestational_age,
-                    'blood_pressure' => $request->blood_pressure,
+                    'checkup_date' => $visitData['visit_time'] ?? now(),
+                    'breeding_date' => $request->breeding_date,
+                    'sire' => $request->sire,
+                    'dam' => $request->dam,
+                    'heat_cycle_date' => $request->heat_cycle_date,
+                    'pregnancy_confirmed_date' => $request->pregnancy_confirmed_date,
+                    'breeding_status' => $request->breeding_status ?? 'Planned',
                     'weight' => $request->weight,
-                    'fundal_height' => $request->fundal_height,
-                    'fetal_heart_rate' => $request->fetal_heart_rate,
-                    'presentation' => $request->presentation,
-                    'remarks' => $request->prenatal_notes,
+                    'risk_factors' => $request->risk_factors,
+                    'notes' => $request->breeding_notes,
                 ]);
             }
 

@@ -245,6 +245,88 @@
             display: none;
         }
 
+        .search-wrapper {
+            position: relative;
+            margin-bottom: 12px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 14px 12px 40px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: #10b981;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            font-size: 16px;
+        }
+
+        .autocomplete-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-top: none;
+            border-radius: 0 0 10px 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .autocomplete-results.active {
+            display: block;
+        }
+
+        .autocomplete-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            border-bottom: 1px solid #f3f4f6;
+            transition: background 0.2s;
+        }
+
+        .autocomplete-item:hover {
+            background: #f9fafb;
+        }
+
+        .autocomplete-item:last-child {
+            border-bottom: none;
+        }
+
+        .autocomplete-item-name {
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .autocomplete-item-details {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .no-results {
+            padding: 16px;
+            text-align: center;
+            color: #9ca3af;
+            font-size: 13px;
+        }
+
         .checkbox-group {
             display: flex;
             gap: 16px;
@@ -316,26 +398,38 @@
 
             <div class="form-card">
                 <div class="card-header">
-                    <h2><i class="bi bi-person"></i> Patient Information</h2>
+                    <h2><i class="bi bi-person"></i> Pet Information</h2>
                 </div>
 
                 <div class="form-grid">
                     <div class="form-group full-width">
-                        <label for="patient_id">Patient <span class="required">*</span></label>
-                        <select name="patient_id" id="patient_id" class="form-control" required>
+                        <label for="patient_search">Pet / Patient <span class="required">*</span></label>
+                        <div class="search-wrapper">
+                            <i class="bi bi-search search-icon"></i>
+                            <input type="text" 
+                                   id="patient_search" 
+                                   class="search-input" 
+                                   placeholder="Search by pet name, species, breed, or ID..."
+                                   autocomplete="off">
+                            <div id="autocomplete_results" class="autocomplete-results"></div>
+                        </div>
+                        <select name="patient_id" id="patient_id" class="form-control" required style="display: none;">
                             <option value="">Select patient</option>
                             @foreach($patients as $patientItem)
                                 <option value="{{ $patientItem->id }}"
                                     data-patient-id="{{ $patientItem->patient_id }}"
-                                    data-contact="{{ $patientItem->contact_number ?? '' }}"
+                                    data-contact="{{ $patientItem->owner_contact ?? '' }}"
                                     data-age="{{ $patientItem->age }}"
                                     data-sex="{{ $patientItem->sex }}"
+                                    data-pet-name="{{ $patientItem->pet_name }}"
+                                    data-species="{{ $patientItem->species }}"
+                                    data-breed="{{ $patientItem->breed ?? '' }}"
                                     {{ (old('patient_id') ?? optional($patient)->id) == $patientItem->id ? 'selected' : '' }}>
                                     {{ $patientItem->full_name }} ({{ $patientItem->patient_id }})
                                 </option>
                             @endforeach
                         </select>
-                        <div class="helper-text">Auto-fills patient summary and checks for conflicts.</div>
+                        <div class="helper-text">Start typing to search for a pet. Auto-fills patient summary and checks for conflicts.</div>
                     </div>
                 </div>
 
@@ -353,7 +447,7 @@
                         <div class="summary-value" id="summarySex">--</div>
                     </div>
                     <div class="summary-card">
-                        <div class="summary-label">Contact</div>
+                        <div class="summary-label">Owner Contact</div>
                         <div class="summary-value" id="summaryContact">--</div>
                     </div>
                 </div>
@@ -387,11 +481,17 @@
                         <label for="service_type">Service Type <span class="required">*</span></label>
                         <select name="service_type" id="service_type" class="form-control" required>
                             <option value="">Select Service</option>
-                            <option value="Immunization" {{ old('service_type') == 'Immunization' ? 'selected' : '' }}>Immunization</option>
-                            <option value="Prenatal Care" {{ old('service_type') == 'Prenatal Care' ? 'selected' : '' }}>Prenatal Care</option>
-                            <option value="General Checkup" {{ old('service_type') == 'General Checkup' ? 'selected' : '' }}>General Checkup</option>
-                            <option value="Family Planning" {{ old('service_type') == 'Family Planning' ? 'selected' : '' }}>Family Planning</option>
-                            <option value="Referral" {{ old('service_type') == 'Referral' ? 'selected' : '' }}>Referral</option>
+                            <option value="Wellness Exam" {{ old('service_type') == 'Wellness Exam' ? 'selected' : '' }}>Wellness Exam</option>
+                            <option value="Vaccination" {{ old('service_type') == 'Vaccination' ? 'selected' : '' }}>Vaccination</option>
+                            <option value="Surgery" {{ old('service_type') == 'Surgery' ? 'selected' : '' }}>Surgery</option>
+                            <option value="Dental Cleaning" {{ old('service_type') == 'Dental Cleaning' ? 'selected' : '' }}>Dental Cleaning</option>
+                            <option value="Emergency" {{ old('service_type') == 'Emergency' ? 'selected' : '' }}>Emergency</option>
+                            <option value="Grooming" {{ old('service_type') == 'Grooming' ? 'selected' : '' }}>Grooming</option>
+                            <option value="Spay/Neuter" {{ old('service_type') == 'Spay/Neuter' ? 'selected' : '' }}>Spay/Neuter</option>
+                            <option value="Breeding Consultation" {{ old('service_type') == 'Breeding Consultation' ? 'selected' : '' }}>Breeding Consultation</option>
+                            <option value="Boarding Checkup" {{ old('service_type') == 'Boarding Checkup' ? 'selected' : '' }}>Boarding Checkup</option>
+                            <option value="Follow-up" {{ old('service_type') == 'Follow-up' ? 'selected' : '' }}>Follow-up</option>
+                            <option value="Diagnostics" {{ old('service_type') == 'Diagnostics' ? 'selected' : '' }}>Diagnostics</option>
                             <option value="Other" {{ old('service_type') == 'Other' ? 'selected' : '' }}>Other</option>
                         </select>
                     </div>
@@ -410,7 +510,7 @@
                         <textarea name="chief_complaint" id="chief_complaint" class="form-control" rows="3">{{ old('chief_complaint') }}</textarea>
                     </div>
                     <div class="form-group">
-                        <label for="health_worker">Health Worker</label>
+                        <label for="health_worker">Veterinary Staff</label>
                         <input type="text" name="health_worker" id="health_worker" class="form-control"
                                value="{{ old('health_worker', auth()->user()->name ?? '') }}">
                     </div>
@@ -534,6 +634,8 @@
 
     <script>
         const patientSelect = document.getElementById('patient_id');
+        const patientSearch = document.getElementById('patient_search');
+        const autocompleteResults = document.getElementById('autocomplete_results');
         const patientSummary = document.getElementById('patientSummary');
         const summaryPatientId = document.getElementById('summaryPatientId');
         const summaryAge = document.getElementById('summaryAge');
@@ -557,6 +659,95 @@
         const serviceType = document.getElementById('service_type');
 
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        // Patient search functionality
+        let searchTimeout = null;
+        const allPatients = Array.from(patientSelect.options).slice(1).map(option => ({
+            id: option.value,
+            name: option.dataset.petName || '',
+            species: option.dataset.species || '',
+            breed: option.dataset.breed || '',
+            patientId: option.dataset.patientId || '',
+            fullText: option.textContent,
+            age: option.dataset.age || '',
+            sex: option.dataset.sex || '',
+            contact: option.dataset.contact || ''
+        }));
+
+        patientSearch.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            const query = this.value.trim().toLowerCase();
+
+            if (query.length < 1) {
+                autocompleteResults.classList.remove('active');
+                return;
+            }
+
+            searchTimeout = setTimeout(() => {
+                const matches = allPatients.filter(p => {
+                    const nameMatch = p.name && p.name.toLowerCase().includes(query);
+                    const speciesMatch = p.species && p.species.toLowerCase().includes(query);
+                    const breedMatch = p.breed && p.breed.toLowerCase().includes(query);
+                    const idMatch = p.patientId && p.patientId.toLowerCase().includes(query);
+                    const textMatch = p.fullText && p.fullText.toLowerCase().includes(query);
+                    
+                    return nameMatch || speciesMatch || breedMatch || idMatch || textMatch;
+                });
+
+                displaySearchResults(matches);
+            }, 200);
+        });
+
+        function displaySearchResults(patients) {
+            if (patients.length === 0) {
+                autocompleteResults.innerHTML = '<div class="no-results">No pets found</div>';
+                autocompleteResults.classList.add('active');
+                return;
+            }
+
+            autocompleteResults.innerHTML = patients.map(p => `
+                <div class="autocomplete-item" data-patient-id="${p.id}">
+                    <div class="autocomplete-item-name">${p.name} (${p.species})</div>
+                    <div class="autocomplete-item-details">ID: ${p.patientId} | ${p.breed || 'Unknown breed'} | ${p.age} yrs | ${p.sex}</div>
+                </div>
+            `).join('');
+
+            autocompleteResults.classList.add('active');
+
+            // Add click handlers
+            autocompleteResults.querySelectorAll('.autocomplete-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const patientId = this.dataset.patientId;
+                    patientSelect.value = patientId;
+                    const selected = allPatients.find(p => p.id === patientId);
+                    if (selected) {
+                        patientSearch.value = `${selected.name} (${selected.species}) - ${selected.patientId}`;
+                    }
+                    autocompleteResults.classList.remove('active');
+                    updatePatientSummary();
+                    checkConflicts();
+                });
+            });
+        }
+
+        // Close autocomplete when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.search-wrapper')) {
+                autocompleteResults.classList.remove('active');
+            }
+        });
+
+        // Initialize with selected value if any
+        if (patientSelect.value) {
+            const selectedOption = patientSelect.options[patientSelect.selectedIndex];
+            if (selectedOption && selectedOption.value) {
+                const selected = allPatients.find(p => p.id === selectedOption.value);
+                if (selected) {
+                    patientSearch.value = `${selected.name} (${selected.species}) - ${selected.patientId}`;
+                    updatePatientSummary();
+                }
+            }
+        }
 
         const updatePatientSummary = () => {
             const selectedOption = patientSelect.options[patientSelect.selectedIndex];
