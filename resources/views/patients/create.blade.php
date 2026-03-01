@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register New Pet - VetCare</title>
+    <title>Register New Pet - PAWser</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
@@ -263,7 +263,7 @@
     <div class="container">
         <div class="header-top">
             <a href="{{ route('dashboard') }}" class="header-logo">
-                <img src="/images/systemlogo.png" alt="CareSync" style="height: 35px; object-fit: contain;">
+                <img src="/images/systemlogo.png" alt="PAWser" style="height: 35px; object-fit: contain;">
             </a>
             <button onclick="goBack()" class="btn-back">← Back</button>
             <h1>Register New Pet</h1>
@@ -387,11 +387,6 @@
                 <div class="section-title">Additional Information (Optional)</div>
                 <div class="optional-section">
                     <div class="form-row">
-                        <div class="form-group">
-                            <label>Microchip Number</label>
-                            <input type="text" name="microchip_number" value="{{ old('microchip_number') }}" placeholder="15-digit microchip ID">
-                            <span class="hint">Optional - if pet is microchipped</span>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -476,7 +471,6 @@
             document.querySelector('[name="owner_name"]').value = patient.owner_name || '';
             document.querySelector('[name="owner_contact"]').value = patient.owner_contact || '';
             document.querySelector('[name="address"]').value = patient.address || '';
-            document.querySelector('[name="microchip_number"]').value = patient.microchip_number || '';
             
             // Trigger age calculation
             birthdateInput.dispatchEvent(new Event('change'));
@@ -487,7 +481,7 @@
             
             // Show duplicate warning
             duplicateWarning.style.display = 'flex';
-            duplicateMessage.innerHTML = `This pet already exists: <strong>${patient.pet_name}</strong> (${patient.patient_id}). Data has been auto-filled. You can edit or cancel if this is a duplicate.`;
+            duplicateMessage.innerHTML = `This pet already exists: <strong>${patient.pet_name}</strong>. Data has been auto-filled. You can edit or cancel if this is a duplicate.`;
         }
         
         // Check for duplicate pet names on typing

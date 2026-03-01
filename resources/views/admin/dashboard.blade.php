@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - VetCare</title>
+    <title>Admin Dashboard - PAWser</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
@@ -616,7 +616,7 @@
                 <div class="logo-icon">
                     <i class="bi bi-shield-lock"></i>
                 </div>
-                <div class="logo-text">VetCare</div>
+                <div class="logo-text">PAWser</div>
             </a>
             <div class="sidebar-subtitle">ADMIN PANEL</div>
         </div>

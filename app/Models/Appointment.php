@@ -24,6 +24,8 @@ class Appointment extends Model
         'referred_to',
         'referral_urgency',
         'google_event_id',
+        'secondary_contact_name',
+        'secondary_contact_number',
     ];
 
     protected $casts = [

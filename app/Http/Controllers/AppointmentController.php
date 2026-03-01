@@ -172,6 +172,8 @@ class AppointmentController extends Controller
             'fp_method' => 'nullable|string',
             'referred_to' => 'nullable|string',
             'referral_urgency' => 'nullable|in:routine,urgent,emergency',
+            'secondary_contact_name' => 'nullable|string|max:255',
+            'secondary_contact_number' => 'nullable|string|max:50',
         ]);
 
         if ($validator->fails()) {
@@ -184,6 +186,41 @@ class AppointmentController extends Controller
 
         return redirect()->route('appointments.index')
             ->with('success', 'Appointment updated successfully.');
+    }
+
+    /**
+     * Quick inline update from appointment list modal
+     */
+    public function quickUpdate(Request $request, Appointment $appointment)
+    {
+        $validated = $request->validate([
+            'appointment_date'        => 'required|date',
+            'appointment_time'        => 'required',
+            'service_type'            => 'required|string',
+            'status'                  => 'required|in:scheduled,confirmed,completed,cancelled,no-show',
+            'chief_complaint'         => 'nullable|string',
+            'health_worker'           => 'nullable|string|max:255',
+            'notes'                   => 'nullable|string',
+            'secondary_contact_name'  => 'nullable|string|max:255',
+            'secondary_contact_number'=> 'nullable|string|max:50',
+        ]);
+
+        $appointment->update($validated);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Appointment updated.',
+            'appointment' => [
+                'id'                       => $appointment->id,
+                'appointment_date'         => $appointment->appointment_date->format('M d, Y'),
+                'appointment_time'         => \Carbon\Carbon::parse($appointment->appointment_time)->format('h:i A'),
+                'service_type'             => $appointment->service_type,
+                'status'                   => $appointment->status,
+                'chief_complaint'          => $appointment->chief_complaint,
+                'secondary_contact_name'   => $appointment->secondary_contact_name,
+                'secondary_contact_number' => $appointment->secondary_contact_number,
+            ],
+        ]);
     }
 
     /**

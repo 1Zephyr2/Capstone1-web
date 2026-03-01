@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Appointment - CareSync</title>
+    <title>Book Appointment - PAWser</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
@@ -247,85 +247,203 @@
 
         .search-wrapper {
             position: relative;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
 
         .search-input {
             width: 100%;
-            padding: 12px 14px 12px 40px;
+            padding: 13px 14px 13px 44px;
             border: 2px solid #e5e7eb;
-            border-radius: 10px;
-            font-size: 14px;
+            border-radius: 12px;
+            font-size: 15px;
             transition: all 0.2s;
+            background: white;
         }
 
         .search-input:focus {
             border-color: #10b981;
             outline: none;
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12);
+        }
+
+        .search-input.has-value {
+            border-color: #10b981;
+            background: #f0fdf4;
         }
 
         .search-icon {
             position: absolute;
-            left: 14px;
+            left: 15px;
             top: 50%;
             transform: translateY(-50%);
             color: #9ca3af;
-            font-size: 16px;
+            font-size: 17px;
+            pointer-events: none;
+            transition: color 0.2s;
         }
+
+        .search-input:focus ~ .search-icon,
+        .search-wrapper:focus-within .search-icon { color: #10b981; }
+
+        .search-clear {
+            position: absolute;
+            right: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #e5e7eb;
+            border: none;
+            border-radius: 50%;
+            width: 22px; height: 22px;
+            font-size: 14px;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            line-height: 1;
+        }
+        .search-clear:hover { background: #d1d5db; color: #111827; }
+        .search-clear.visible { display: flex; }
 
         .autocomplete-results {
             position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
+            top: calc(100% + 4px);
+            left: 0; right: 0;
             background: white;
-            border: 2px solid #e5e7eb;
-            border-top: none;
-            border-radius: 0 0 10px 10px;
-            max-height: 300px;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 14px;
+            max-height: 360px;
             overflow-y: auto;
             z-index: 1000;
             display: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.13);
         }
+        .autocomplete-results.active { display: block; }
 
-        .autocomplete-results.active {
-            display: block;
+        .ac-hint {
+            padding: 10px 16px 6px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            color: #9ca3af;
         }
-
-        .autocomplete-item {
-            padding: 12px 16px;
-            cursor: pointer;
-            border-bottom: 1px solid #f3f4f6;
-            transition: background 0.2s;
+        .ac-owner-group {
+            border-top: 1px solid #f3f4f6;
         }
-
-        .autocomplete-item:hover {
+        .ac-owner-group:first-of-type { border-top: none; }
+        .ac-owner-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 16px 5px;
             background: #f9fafb;
         }
-
-        .autocomplete-item:last-child {
-            border-bottom: none;
-        }
-
-        .autocomplete-item-name {
-            font-weight: 600;
-            color: #111827;
-            margin-bottom: 4px;
-        }
-
-        .autocomplete-item-details {
+        .ac-owner-avatar {
+            width: 28px; height: 28px;
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            border-radius: 50%;
+            color: white;
             font-size: 12px;
-            color: #6b7280;
+            font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .ac-owner-name {
+            font-size: 13px; font-weight: 700; color: #374151;
+        }
+        .ac-owner-contact {
+            font-size: 12px; color: #9ca3af; margin-left: auto;
+        }
+        .ac-pet-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 9px 16px 9px 52px;
+            cursor: pointer;
+            border-bottom: 1px solid #f3f4f6;
+            transition: background 0.15s;
+        }
+        .ac-pet-item:last-child { border-bottom: none; }
+        .ac-pet-item:hover,
+        .ac-pet-item.kb-focus { background: #f0fdf4; }
+        .ac-pet-item.selected { background: #ecfdf5; }
+        .ac-pet-icon {
+            width: 34px; height: 34px;
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px;
+            color: #059669;
+            flex-shrink: 0;
+        }
+        .ac-pet-info { flex: 1; min-width: 0; }
+        .ac-pet-name { font-size: 14px; font-weight: 700; color: #111827; }
+        .ac-pet-meta { font-size: 12px; color: #6b7280; margin-top: 1px; }
+        .ac-pet-badge {
+            font-size: 11px; font-weight: 600;
+            padding: 2px 8px; border-radius: 10px;
+            background: #ede9fe; color: #5b21b6;
         }
 
         .no-results {
-            padding: 16px;
+            padding: 24px 16px;
             text-align: center;
             color: #9ca3af;
             font-size: 13px;
         }
+        .no-results i { font-size: 28px; display: block; margin-bottom: 8px; }
+
+        /* Selected pet card */
+        .selected-pet-card {
+            display: none;
+            background: #f0fdf4;
+            border: 1.5px solid #6ee7b7;
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-top: 8px;
+            align-items: center;
+            gap: 14px;
+        }
+        .selected-pet-card.visible { display: flex; }
+        .selected-pet-photo {
+            width: 44px; height: 44px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #a7f3d0, #6ee7b7);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px;
+            color: #065f46;
+            flex-shrink: 0;
+        }
+        .selected-pet-details { flex: 1; min-width: 0; }
+        .selected-pet-name {
+            font-size: 16px; font-weight: 800; color: #065f46; line-height: 1.2;
+        }
+        .selected-pet-sub {
+            font-size: 13px; color: #059669; margin-top: 2px;
+        }
+        .selected-pet-owner {
+            margin-top: 6px;
+            display: flex; gap: 16px; flex-wrap: wrap;
+        }
+        .selected-pet-owner span {
+            font-size: 12px; color: #374151;
+            display: flex; align-items: center; gap: 4px;
+        }
+        .selected-pet-owner i { color: #6b7280; }
+        .selected-change-btn {
+            background: white;
+            border: 1.5px solid #6ee7b7;
+            color: #059669;
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.15s;
+        }
+        .selected-change-btn:hover { background: #dcfce7; }
 
         .checkbox-group {
             display: flex;
@@ -403,17 +521,20 @@
 
                 <div class="form-grid">
                     <div class="form-group full-width">
-                        <label for="patient_search">Pet / Patient <span class="required">*</span></label>
+                        <label for="patient_search">Pet / Owner <span class="required">*</span></label>
                         <div class="search-wrapper">
                             <i class="bi bi-search search-icon"></i>
-                            <input type="text" 
-                                   id="patient_search" 
-                                   class="search-input" 
-                                   placeholder="Search by pet name, species, breed, or ID..."
+                            <input type="text"
+                                   id="patient_search"
+                                   class="search-input"
+                                   placeholder="Search by owner name, pet name, species, or breed..."
                                    autocomplete="off">
+                            <button type="button" class="search-clear" id="searchClear" tabindex="-1">&times;</button>
                             <div id="autocomplete_results" class="autocomplete-results"></div>
                         </div>
-                        <select name="patient_id" id="patient_id" class="form-control" required style="display: none;">
+
+                        {{-- hidden select keeps the real patient_id for form submission --}}
+                        <select name="patient_id" id="patient_id" required style="display:none;">
                             <option value="">Select patient</option>
                             @foreach($patients as $patientItem)
                                 <option value="{{ $patientItem->id }}"
@@ -424,18 +545,34 @@
                                     data-pet-name="{{ $patientItem->pet_name }}"
                                     data-species="{{ $patientItem->species }}"
                                     data-breed="{{ $patientItem->breed ?? '' }}"
+                                    data-owner-name="{{ $patientItem->owner_name ?? '' }}"
                                     {{ (old('patient_id') ?? optional($patient)->id) == $patientItem->id ? 'selected' : '' }}>
                                     {{ $patientItem->full_name }} ({{ $patientItem->patient_id }})
                                 </option>
                             @endforeach
                         </select>
-                        <div class="helper-text">Start typing to search for a pet. Auto-fills patient summary and checks for conflicts.</div>
+
+                        {{-- Selected pet confirmation card --}}
+                        <div class="selected-pet-card" id="selectedPetCard">
+                            <div class="selected-pet-photo" id="selectedPetIcon"><i class="bi bi-heart-fill"></i></div>
+                            <div class="selected-pet-details">
+                                <div class="selected-pet-name" id="selectedPetName"></div>
+                                <div class="selected-pet-sub" id="selectedPetSub"></div>
+                                <div class="selected-pet-owner">
+                                    <span><i class="bi bi-person-fill"></i> <span id="selectedOwnerName"></span></span>
+                                    <span><i class="bi bi-telephone-fill"></i> <span id="selectedOwnerContact"></span></span>
+                                </div>
+                            </div>
+                            <button type="button" class="selected-change-btn" id="changePetBtn">Change</button>
+                        </div>
+
+                        <div class="helper-text" id="searchHint">Type at least 2 characters &mdash; search by owner or pet name.</div>
                     </div>
                 </div>
 
                 <div id="patientSummary" class="patient-summary hidden">
                     <div class="summary-card">
-                        <div class="summary-label">Patient ID</div>
+                        <div class="summary-label">Pet Name</div>
                         <div class="summary-value" id="summaryPatientId">--</div>
                     </div>
                     <div class="summary-card">
@@ -481,18 +618,22 @@
                         <label for="service_type">Service Type <span class="required">*</span></label>
                         <select name="service_type" id="service_type" class="form-control" required>
                             <option value="">Select Service</option>
-                            <option value="Wellness Exam" {{ old('service_type') == 'Wellness Exam' ? 'selected' : '' }}>Wellness Exam</option>
-                            <option value="Vaccination" {{ old('service_type') == 'Vaccination' ? 'selected' : '' }}>Vaccination</option>
-                            <option value="Surgery" {{ old('service_type') == 'Surgery' ? 'selected' : '' }}>Surgery</option>
-                            <option value="Dental Cleaning" {{ old('service_type') == 'Dental Cleaning' ? 'selected' : '' }}>Dental Cleaning</option>
-                            <option value="Emergency" {{ old('service_type') == 'Emergency' ? 'selected' : '' }}>Emergency</option>
-                            <option value="Grooming" {{ old('service_type') == 'Grooming' ? 'selected' : '' }}>Grooming</option>
-                            <option value="Spay/Neuter" {{ old('service_type') == 'Spay/Neuter' ? 'selected' : '' }}>Spay/Neuter</option>
-                            <option value="Breeding Consultation" {{ old('service_type') == 'Breeding Consultation' ? 'selected' : '' }}>Breeding Consultation</option>
-                            <option value="Boarding Checkup" {{ old('service_type') == 'Boarding Checkup' ? 'selected' : '' }}>Boarding Checkup</option>
-                            <option value="Follow-up" {{ old('service_type') == 'Follow-up' ? 'selected' : '' }}>Follow-up</option>
-                            <option value="Diagnostics" {{ old('service_type') == 'Diagnostics' ? 'selected' : '' }}>Diagnostics</option>
-                            <option value="Other" {{ old('service_type') == 'Other' ? 'selected' : '' }}>Other</option>
+                            <optgroup label="Grooming Services">
+                                <option value="Bath & Dry" {{ old('service_type') == 'Bath & Dry' ? 'selected' : '' }}>Bath &amp; Dry</option>
+                                <option value="Full Grooming" {{ old('service_type') == 'Full Grooming' ? 'selected' : '' }}>Full Grooming</option>
+                                <option value="Haircut & Styling" {{ old('service_type') == 'Haircut & Styling' ? 'selected' : '' }}>Haircut &amp; Styling</option>
+                                <option value="Nail Trimming" {{ old('service_type') == 'Nail Trimming' ? 'selected' : '' }}>Nail Trimming</option>
+                                <option value="Ear Cleaning" {{ old('service_type') == 'Ear Cleaning' ? 'selected' : '' }}>Ear Cleaning</option>
+                                <option value="Teeth Brushing" {{ old('service_type') == 'Teeth Brushing' ? 'selected' : '' }}>Teeth Brushing</option>
+                                <option value="De-shedding Treatment" {{ old('service_type') == 'De-shedding Treatment' ? 'selected' : '' }}>De-shedding Treatment</option>
+                                <option value="Flea & Tick Treatment" {{ old('service_type') == 'Flea & Tick Treatment' ? 'selected' : '' }}>Flea &amp; Tick Treatment</option>
+                                <option value="Paw Treatment" {{ old('service_type') == 'Paw Treatment' ? 'selected' : '' }}>Paw Treatment</option>
+                            </optgroup>
+                            <optgroup label="Other Services">
+                                <option value="Boarding Checkup" {{ old('service_type') == 'Boarding Checkup' ? 'selected' : '' }}>Boarding Checkup</option>
+                                <option value="Follow-up" {{ old('service_type') == 'Follow-up' ? 'selected' : '' }}>Follow-up</option>
+                                <option value="Other" {{ old('service_type') == 'Other' ? 'selected' : '' }}>Other</option>
+                            </optgroup>
                         </select>
                     </div>
                     <div class="form-group">
@@ -558,22 +699,6 @@
                 </div>
             </div>
 
-            <div id="immunization-fields" class="form-card hidden">
-                <div class="card-header">
-                    <h2><i class="bi bi-shield-check"></i> Immunization Details</h2>
-                </div>
-                <div class="service-grid">
-                    <div class="form-group">
-                        <label for="vaccine_name">Vaccine Name</label>
-                        <input type="text" name="vaccine_name" id="vaccine_name" class="form-control" value="{{ old('vaccine_name') }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="dose_number">Dose Number</label>
-                        <input type="number" name="dose_number" id="dose_number" class="form-control" min="1" value="{{ old('dose_number') }}">
-                    </div>
-                </div>
-            </div>
-
             <div id="prenatal-fields" class="form-card hidden">
                 <div class="card-header">
                     <h2><i class="bi bi-heart-pulse"></i> Prenatal Care Details</h2>
@@ -633,135 +758,212 @@
     </div>
 
     <script>
-        const patientSelect = document.getElementById('patient_id');
-        const patientSearch = document.getElementById('patient_search');
+        const patientSelect   = document.getElementById('patient_id');
+        const patientSearch    = document.getElementById('patient_search');
         const autocompleteResults = document.getElementById('autocomplete_results');
-        const patientSummary = document.getElementById('patientSummary');
+        const searchClear      = document.getElementById('searchClear');
+        const selectedPetCard  = document.getElementById('selectedPetCard');
+        const changePetBtn     = document.getElementById('changePetBtn');
+        const searchHint       = document.getElementById('searchHint');
+        const patientSummary   = document.getElementById('patientSummary');
         const summaryPatientId = document.getElementById('summaryPatientId');
-        const summaryAge = document.getElementById('summaryAge');
-        const summarySex = document.getElementById('summarySex');
-        const summaryContact = document.getElementById('summaryContact');
-        const appointmentDate = document.getElementById('appointment_date');
-        const conflictWarning = document.getElementById('conflictWarning');
-        const conflictDetails = document.getElementById('conflictDetails');
-        const reminderSms = document.getElementById('reminder_sms');
-        const reminderEmail = document.getElementById('reminder_email');
-        const reminderTiming = document.getElementById('reminder_timing');
+        const summaryAge       = document.getElementById('summaryAge');
+        const summarySex       = document.getElementById('summarySex');
+        const summaryContact   = document.getElementById('summaryContact');
+        const appointmentDate  = document.getElementById('appointment_date');
+        const conflictWarning  = document.getElementById('conflictWarning');
+        const conflictDetails  = document.getElementById('conflictDetails');
+        const reminderSms      = document.getElementById('reminder_sms');
+        const reminderEmail    = document.getElementById('reminder_email');
+        const reminderTiming   = document.getElementById('reminder_timing');
         const reminderSummaryText = document.getElementById('reminderSummaryText');
-        const reminderNote = document.getElementById('reminder_note');
-        const notesField = document.getElementById('notes');
-        const appointmentForm = document.getElementById('appointmentForm');
-
-        const immunizationFields = document.getElementById('immunization-fields');
-        const prenatalFields = document.getElementById('prenatal-fields');
+        const reminderNote     = document.getElementById('reminder_note');
+        const notesField       = document.getElementById('notes');
+        const appointmentForm  = document.getElementById('appointmentForm');
+        const prenatalFields      = document.getElementById('prenatal-fields');
         const familyPlanningFields = document.getElementById('familyplanning-fields');
-        const referralFields = document.getElementById('referral-fields');
-        const serviceType = document.getElementById('service_type');
-
+        const referralFields      = document.getElementById('referral-fields');
+        const serviceType         = document.getElementById('service_type');
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-        // Patient search functionality
+        // ── Species icon helper (Bootstrap Icons) ───────────────────────
+        function speciesIconClass(species) {
+            const map = {
+                dog:         'bi-heart-fill',
+                cat:         'bi-heart-fill',
+                rabbit:      'bi-heart-fill',
+                bird:        'bi-feather',
+                hamster:     'bi-heart-fill',
+                'guinea pig':'bi-heart-fill',
+                fish:        'bi-droplet-fill',
+                reptile:     'bi-heart-fill',
+            };
+            return map[(species||'').toLowerCase()] || 'bi-heart-fill';
+        }
+        function speciesIconHtml(species) {
+            return `<i class="bi ${speciesIconClass(species)}"></i>`;
+        }
+
+        // ── Show selected pet card ───────────────────────────────────────
+        function showSelectedPet(p) {
+            document.getElementById('selectedPetIcon').innerHTML  = speciesIconHtml(p.species);
+            document.getElementById('selectedPetName').textContent  = p.pet_name || p.name || 'Unknown';
+            document.getElementById('selectedPetSub').textContent   =
+                [p.species, p.breed, p.age ? p.age + ' yrs' : '', p.sex].filter(Boolean).join(' · ');
+            document.getElementById('selectedOwnerName').textContent    = p.owner_name || '—';
+            document.getElementById('selectedOwnerContact').textContent = p.owner_contact || p.contact || '—';
+            selectedPetCard.classList.add('visible');
+            patientSearch.style.display = 'none';
+            searchClear.classList.remove('visible');
+            searchHint.style.display = 'none';
+            autocompleteResults.classList.remove('active');
+            // update old summary strip too
+            summaryPatientId.textContent = p.pet_name || p.name || '--';
+            summaryAge.textContent       = p.age ? p.age + ' yrs' : '--';
+            summarySex.textContent       = p.sex || '--';
+            summaryContact.textContent   = p.owner_contact || p.contact || 'N/A';
+            patientSummary.classList.remove('hidden');
+        }
+
+        function clearSelection() {
+            patientSelect.value = '';
+            selectedPetCard.classList.remove('visible');
+            patientSearch.style.display = '';
+            patientSearch.value = '';
+            searchClear.classList.remove('visible');
+            searchHint.style.display = '';
+            patientSearch.classList.remove('has-value');
+            patientSummary.classList.add('hidden');
+            conflictWarning.classList.add('hidden');
+            patientSearch.focus();
+        }
+
+        changePetBtn.addEventListener('click', clearSelection);
+
+        // ── Live API search ──────────────────────────────────────────────
         let searchTimeout = null;
-        const allPatients = Array.from(patientSelect.options).slice(1).map(option => ({
-            id: option.value,
-            name: option.dataset.petName || '',
-            species: option.dataset.species || '',
-            breed: option.dataset.breed || '',
-            patientId: option.dataset.patientId || '',
-            fullText: option.textContent,
-            age: option.dataset.age || '',
-            sex: option.dataset.sex || '',
-            contact: option.dataset.contact || ''
-        }));
 
         patientSearch.addEventListener('input', function() {
-            clearTimeout(searchTimeout);
-            const query = this.value.trim().toLowerCase();
+            const q = this.value.trim();
+            searchClear.classList.toggle('visible', q.length > 0);
+            this.classList.toggle('has-value', q.length > 0);
 
-            if (query.length < 1) {
+            if (q.length < 2) {
                 autocompleteResults.classList.remove('active');
                 return;
             }
+            clearTimeout(searchTimeout);
+            autocompleteResults.innerHTML = '<div class="ac-hint">Searching...</div>';
+            autocompleteResults.classList.add('active');
 
             searchTimeout = setTimeout(() => {
-                const matches = allPatients.filter(p => {
-                    const nameMatch = p.name && p.name.toLowerCase().includes(query);
-                    const speciesMatch = p.species && p.species.toLowerCase().includes(query);
-                    const breedMatch = p.breed && p.breed.toLowerCase().includes(query);
-                    const idMatch = p.patientId && p.patientId.toLowerCase().includes(query);
-                    const textMatch = p.fullText && p.fullText.toLowerCase().includes(query);
-                    
-                    return nameMatch || speciesMatch || breedMatch || idMatch || textMatch;
+                fetch(`/api/patients/search?term=${encodeURIComponent(q)}`, {
+                    headers: { 'X-CSRF-TOKEN': csrfToken, 'Accept': 'application/json' }
+                })
+                .then(r => r.json())
+                .then(patients => renderResults(patients, q))
+                .catch(() => {
+                    autocompleteResults.innerHTML = '<div class="no-results"><i class="bi bi-wifi-off"></i>Search unavailable</div>';
                 });
-
-                displaySearchResults(matches);
-            }, 200);
+            }, 280);
         });
 
-        function displaySearchResults(patients) {
-            if (patients.length === 0) {
-                autocompleteResults.innerHTML = '<div class="no-results">No pets found</div>';
+        searchClear.addEventListener('click', clearSelection);
+
+        // ── Render grouped results ───────────────────────────────────────
+        function renderResults(patients, q) {
+            if (!patients.length) {
+                autocompleteResults.innerHTML = `<div class="no-results"><i class="bi bi-search"></i>No results for "${q}"<br><small style="font-size:11px;">Try owner name, pet name, species or breed</small></div>`;
                 autocompleteResults.classList.add('active');
                 return;
             }
 
-            autocompleteResults.innerHTML = patients.map(p => `
-                <div class="autocomplete-item" data-patient-id="${p.id}">
-                    <div class="autocomplete-item-name">${p.name} (${p.species})</div>
-                    <div class="autocomplete-item-details">ID: ${p.patientId} | ${p.breed || 'Unknown breed'} | ${p.age} yrs | ${p.sex}</div>
-                </div>
-            `).join('');
+            // Group by owner_name
+            const groups = {};
+            patients.forEach(p => {
+                const owner = p.owner_name || 'Unknown Owner';
+                if (!groups[owner]) groups[owner] = { contact: p.owner_contact || p.contact || '', pets: [] };
+                groups[owner].pets.push(p);
+            });
 
+            let html = `<div class="ac-hint">${patients.length} result${patients.length>1?'s':''} found</div>`;
+            Object.entries(groups).forEach(([owner, data]) => {
+                html += `
+                <div class="ac-owner-group">
+                    <div class="ac-owner-header">
+                        <div class="ac-owner-avatar">${owner.charAt(0).toUpperCase()}</div>
+                        <span class="ac-owner-name">${owner}</span>
+                        ${data.contact ? `<span class="ac-owner-contact"><i class="bi bi-telephone" style="margin-right:3px;"></i>${data.contact}</span>` : ''}
+                    </div>
+                    ${data.pets.map(p => `
+                        <div class="ac-pet-item" data-pid="${p.id}">
+                            <div class="ac-pet-icon">${speciesIconHtml(p.species)}</div>
+                            <div class="ac-pet-info">
+                                <div class="ac-pet-name">${p.pet_name || p.name}</div>
+                                <div class="ac-pet-meta">${[p.species, p.breed, p.age ? p.age+' yrs' : '', p.sex].filter(Boolean).join(' · ')}</div>
+                            </div>
+                            <span class="ac-pet-badge">${p.species || '—'}</span>
+                        </div>
+                    `).join('')}
+                </div>`;
+            });
+
+            autocompleteResults.innerHTML = html;
             autocompleteResults.classList.add('active');
 
-            // Add click handlers
-            autocompleteResults.querySelectorAll('.autocomplete-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    const patientId = this.dataset.patientId;
-                    patientSelect.value = patientId;
-                    const selected = allPatients.find(p => p.id === patientId);
-                    if (selected) {
-                        patientSearch.value = `${selected.name} (${selected.species}) - ${selected.patientId}`;
-                    }
-                    autocompleteResults.classList.remove('active');
-                    updatePatientSummary();
+            // Click handlers
+            autocompleteResults.querySelectorAll('.ac-pet-item').forEach(el => {
+                el.addEventListener('click', function() {
+                    const pid = this.dataset.pid;
+                    patientSelect.value = pid;
+                    const p = patients.find(p => String(p.id) === String(pid));
+                    if (p) showSelectedPet(p);
                     checkConflicts();
                 });
             });
         }
 
-        // Close autocomplete when clicking outside
+        // Close when clicking outside
         document.addEventListener('click', function(e) {
-            if (!e.target.closest('.search-wrapper')) {
+            if (!e.target.closest('.search-wrapper')) autocompleteResults.classList.remove('active');
+        });
+
+        // Keyboard nav
+        patientSearch.addEventListener('keydown', function(e) {
+            const items = autocompleteResults.querySelectorAll('.ac-pet-item');
+            let active = autocompleteResults.querySelector('.ac-pet-item.kb-focus');
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                const next = active ? (active.nextElementSibling?.classList.contains('ac-pet-item') ? active.nextElementSibling : items[0]) : items[0];
+                if (active) active.classList.remove('kb-focus');
+                if (next) { next.classList.add('kb-focus'); next.scrollIntoView({block:'nearest'}); }
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                const prev = active ? (active.previousElementSibling?.classList.contains('ac-pet-item') ? active.previousElementSibling : items[items.length-1]) : items[items.length-1];
+                if (active) active.classList.remove('kb-focus');
+                if (prev) { prev.classList.add('kb-focus'); prev.scrollIntoView({block:'nearest'}); }
+            } else if (e.key === 'Enter') {
+                if (active) { e.preventDefault(); active.click(); }
+            } else if (e.key === 'Escape') {
                 autocompleteResults.classList.remove('active');
             }
         });
 
-        // Initialize with selected value if any
+        // Initialize if a patient was pre-selected (e.g. old() on validation fail)
         if (patientSelect.value) {
-            const selectedOption = patientSelect.options[patientSelect.selectedIndex];
-            if (selectedOption && selectedOption.value) {
-                const selected = allPatients.find(p => p.id === selectedOption.value);
-                if (selected) {
-                    patientSearch.value = `${selected.name} (${selected.species}) - ${selected.patientId}`;
-                    updatePatientSummary();
-                }
+            const opt = patientSelect.options[patientSelect.selectedIndex];
+            if (opt && opt.value) {
+                showSelectedPet({
+                    pet_name: opt.dataset.petName,
+                    species:  opt.dataset.species,
+                    breed:    opt.dataset.breed,
+                    age:      opt.dataset.age,
+                    sex:      opt.dataset.sex,
+                    owner_name:    opt.dataset.ownerName || '',
+                    owner_contact: opt.dataset.contact || '',
+                });
             }
         }
-
-        const updatePatientSummary = () => {
-            const selectedOption = patientSelect.options[patientSelect.selectedIndex];
-            if (!selectedOption || !selectedOption.value) {
-                patientSummary.classList.add('hidden');
-                return;
-            }
-
-            summaryPatientId.textContent = selectedOption.dataset.patientId || '--';
-            summaryAge.textContent = selectedOption.dataset.age ? `${selectedOption.dataset.age} yrs` : '--';
-            summarySex.textContent = selectedOption.dataset.sex || '--';
-            summaryContact.textContent = selectedOption.dataset.contact || 'N/A';
-            patientSummary.classList.remove('hidden');
-        };
 
         const updateReminderSummary = () => {
             const channels = [];
@@ -775,7 +977,6 @@
 
         const updateServiceFields = () => {
             const selected = serviceType.value;
-            immunizationFields.classList.toggle('hidden', selected !== 'Immunization');
             prenatalFields.classList.toggle('hidden', selected !== 'Prenatal Care');
             familyPlanningFields.classList.toggle('hidden', selected !== 'Family Planning');
             referralFields.classList.toggle('hidden', selected !== 'Referral');
@@ -839,7 +1040,6 @@
         });
 
         patientSelect.addEventListener('change', () => {
-            updatePatientSummary();
             checkConflicts();
         });
 
@@ -849,7 +1049,6 @@
         reminderTiming.addEventListener('change', updateReminderSummary);
         serviceType.addEventListener('change', updateServiceFields);
 
-        updatePatientSummary();
         updateReminderSummary();
         updateServiceFields();
         checkConflicts();

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Password Reset - CareSync</title>
+    <title>Password Reset - PAWser</title>
     <style>
         * {
             margin: 0;

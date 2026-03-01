@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Automation Support - VetCare</title>
+    <title>Automation Support - PAWser</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
@@ -154,8 +154,8 @@
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
             margin-bottom: 32px;
         }
 
@@ -494,17 +494,21 @@
                 <h3>Total Pets</h3>
                 <div class="number">{{ $stats['total_patients'] }}</div>
             </div>
+            <div class="stat-card" style="border-top-color:#f59e0b;">
+                <h3>Today's Appointments</h3>
+                <div class="number" style="color:#d97706;">{{ $stats['today_appointments'] }}</div>
+            </div>
+            <div class="stat-card" style="border-top-color:#8b5cf6;">
+                <h3>Upcoming (7 Days)</h3>
+                <div class="number" style="color:#7c3aed;">{{ $stats['upcoming_week'] }}</div>
+            </div>
+            <div class="stat-card" style="border-top-color:#ef4444;">
+                <h3>No-Shows (7 Days)</h3>
+                <div class="number" style="color:#dc2626;">{{ $stats['no_shows'] }}</div>
+            </div>
             <div class="stat-card">
                 <h3>Visits This Week</h3>
                 <div class="number">{{ $stats['visits_this_week'] }}</div>
-            </div>
-            <div class="stat-card">
-                <h3>Pending Vaccinations</h3>
-                <div class="number">{{ $stats['pending_immunizations'] }}</div>
-            </div>
-            <div class="stat-card">
-                <h3>Active Breeding Cases</h3>
-                <div class="number">{{ $stats['active_breeding'] }}</div>
             </div>
         </div>
 
@@ -515,11 +519,11 @@
                 <h2><i class="bi bi-exclamation-triangle-fill"></i> Incomplete Pet Records<span class="badge warning">{{ $incompleteRecords->count() }}</span></h2>
                 @forelse($incompleteRecords as $patient)
                     <div class="alert-item" onclick="showPatientModal({{ json_encode($patient) }}, 'incomplete')">
-                        <strong>{{ $patient->full_name }} ({{ $patient->patient_id }})</strong>
+                        <strong>{{ $patient->pet_name ?? $patient->full_name }} ({{ $patient->patient_id }})</strong>
                         <small>
-                            Missing: 
-                            @if(!$patient->microchip_number) Microchip Number @endif
-                            @if(!$patient->owner_contact) Owner Contact Number @endif
+                            Missing:
+                            @if(!$patient->owner_name) <span style="color:#ef4444;">Owner Name</span> @endif
+                            @if(!$patient->owner_contact) <span style="color:#ef4444;">Owner Contact</span> @endif
                         </small>
                     </div>
                 @empty
@@ -527,54 +531,62 @@
                 @endforelse
             </div>
 
-            <!-- Due for Follow Up -->
-            <div class="alert-card">
-                <h2><i class="bi bi-shield-fill-check"></i> Overdue Vaccinations<span class="badge danger">{{ $overdueImmunizations->count() }}</span></h2>
-                @forelse($overdueImmunizations as $immunization)
-                    <div class="alert-item danger" onclick="showPatientModal({{ json_encode($immunization->patient) }}, 'vaccination', '{{ $immunization->vaccine_name }}', '{{ Carbon\Carbon::parse($immunization->next_dose_date)->format('M d, Y') }}')">
-                        <strong>{{ $immunization->patient->full_name }}</strong>
-                        <small>{{ $immunization->vaccine_name }} - Due: {{ Carbon\Carbon::parse($immunization->next_dose_date)->format('M d, Y') }}</small>
-                    </div>
-                @empty
-                    <div class="empty-state">No overdue vaccinations.</div>
-                @endforelse
-            </div>
-
-            <!-- High Risk Prenatal -->
-            <div class="alert-card">
-                <h2><i class="bi bi-heart-pulse-fill"></i> High-Risk Breeding Cases<span class="badge danger">{{ $highRiskBreeding->count() }}</span></h2>
-                @forelse($highRiskBreeding as $record)
-                    <div class="alert-item danger" onclick="showPatientModal({{ json_encode($record->patient) }}, 'breeding', null, null, {{ json_encode(['risk_factors' => $record->risk_factors, 'referred' => $record->referred, 'checkup_date' => optional($record->checkup_date)->format('M d, Y')]) }})">
-                        <strong>{{ $record->patient->full_name }}</strong>
+            <!-- Today's Appointments -->
+            <div class="alert-card" style="border-left-color:#f59e0b;">
+                <h2 style="color:#d97706;"><i class="bi bi-calendar-check-fill"></i> Today's Appointments<span class="badge warning">{{ $todayAppointments->count() }}</span></h2>
+                @forelse($todayAppointments as $appt)
+                    <div class="alert-item {{ $appt->status === 'completed' ? 'success' : ($appt->status === 'cancelled' ? '' : '') }}"
+                         style="border-left-color: {{ $appt->status === 'completed' ? '#10b981' : ($appt->status === 'cancelled' ? '#6b7280' : '#f59e0b') }}; background: {{ $appt->status === 'completed' ? '#ecfdf5' : ($appt->status === 'cancelled' ? '#f9fafb' : '#fffbeb') }};">
+                        <strong>{{ $appt->patient->owner_name ?? 'Unknown Owner' }} &mdash; {{ $appt->patient->pet_name }}</strong>
                         <small>
-                            @if($record->risk_factors)
-                                Risk: {{ $record->risk_factors }}
-                            @elseif($record->referred)
-                                Referred for evaluation
-                            @else
-                                Monitoring required
+                            <i class="bi bi-clock"></i> {{ \Carbon\Carbon::parse($appt->appointment_time)->format('g:i A') }}
+                            &nbsp;&bull;&nbsp; {{ $appt->service_type }}
+                            &nbsp;&bull;&nbsp; <span style="text-transform:capitalize;">{{ $appt->status }}</span>
+                            @if($appt->chief_complaint)
+                                <br><i class="bi bi-chat-dots"></i> {{ $appt->chief_complaint }}
                             @endif
                         </small>
                     </div>
                 @empty
-                    <div class="empty-state">No high-risk breeding cases.</div>
+                    <div class="empty-state"><i class="bi bi-calendar2-x" style="font-size:28px;display:block;margin-bottom:8px;"></i>No appointments scheduled for today.</div>
                 @endforelse
             </div>
 
-            <!-- Recent Visits -->
-            <div class="alert-card">
-                <h2><i class="bi bi-hospital"></i> Recent Visits<span class="badge success">{{ $recentVisits->count() }}</span></h2>
-                @forelse($recentVisits as $visit)
-                    <div class="alert-item success" onclick="showPatientModal({{ json_encode($visit->patient) }}, 'visit', null, null, null, '{{ $visit->service_type }}', '{{ $visit->visit_date->format('M d, Y g:i A') }}', '{{ $visit->health_worker ?? 'N/A' }}')">
-                        <strong>{{ $visit->patient->full_name }}</strong>
-                        <small>{{ $visit->service_type }} - {{ $visit->visit_date->format('M d, Y g:i A') }}
-                        @if($visit->health_worker)
-                            <br><i class="bi bi-person-badge"></i> Veterinarian: {{ $visit->health_worker }}
-                        @endif
+            <!-- Upcoming Appointments (next 7 days) -->
+            <div class="alert-card" style="border-left-color:#8b5cf6;">
+                <h2 style="color:#7c3aed;"><i class="bi bi-calendar-week-fill"></i> Upcoming This Week<span class="badge" style="background:#ede9fe;color:#5b21b6;">{{ $upcomingAppointments->count() }}</span></h2>
+                @forelse($upcomingAppointments as $appt)
+                    <div class="alert-item info">
+                        <strong>{{ $appt->patient->owner_name ?? 'Unknown Owner' }} &mdash; {{ $appt->patient->pet_name }}</strong>
+                        <small>
+                            <i class="bi bi-calendar"></i> {{ $appt->appointment_date->format('M d, Y') }}
+                            &nbsp;&bull;&nbsp; <i class="bi bi-clock"></i> {{ \Carbon\Carbon::parse($appt->appointment_time)->format('g:i A') }}
+                            <br><i class="bi bi-scissors"></i> {{ $appt->service_type }}
                         </small>
                     </div>
                 @empty
-                    <div class="empty-state">No recent visits</div>
+                    <div class="empty-state"><i class="bi bi-calendar2-check" style="font-size:28px;display:block;margin-bottom:8px;"></i>No upcoming appointments this week.</div>
+                @endforelse
+            </div>
+
+            <!-- Missed / No-Show Appointments -->
+            <div class="alert-card" style="border-left-color:#ef4444;">
+                <h2 style="color:#dc2626;"><i class="bi bi-person-x-fill"></i> No-Shows &amp; Missed (7 Days)<span class="badge danger">{{ $missedAppointments->count() }}</span></h2>
+                @forelse($missedAppointments as $appt)
+                    <div class="alert-item danger">
+                        <strong>{{ $appt->patient->owner_name ?? 'Unknown Owner' }} &mdash; {{ $appt->patient->pet_name }}</strong>
+                        <small>
+                            <i class="bi bi-calendar"></i> {{ $appt->appointment_date->format('M d, Y') }}
+                            &nbsp;&bull;&nbsp; {{ $appt->service_type }}
+                            @if($appt->secondary_contact_name)
+                                <br><i class="bi bi-telephone"></i> Secondary: {{ $appt->secondary_contact_name }} {{ $appt->secondary_contact_number }}
+                            @elseif($appt->patient->owner_contact)
+                                <br><i class="bi bi-telephone"></i> {{ $appt->patient->owner_contact }}
+                            @endif
+                        </small>
+                    </div>
+                @empty
+                    <div class="empty-state success"><i class="bi bi-check-circle-fill" style="font-size:28px;display:block;margin-bottom:8px;"></i>No missed appointments in the last 7 days.</div>
                 @endforelse
             </div>
         </div>
@@ -604,7 +616,6 @@
             const modalBody = document.getElementById('modalBody');
             const modalTitle = document.getElementById('modalTitle');
             const viewBtn = document.getElementById('viewProfileBtn');
-            const breedingDetails = extraDetails && typeof extraDetails === 'object' ? extraDetails : null;
             const petDisplayName = patient.pet_name
                 ? `${patient.pet_name}${patient.species ? ' (' + patient.species + ')' : ''}`
                 : (patient.full_name || 'Unknown');
@@ -612,8 +623,6 @@
             // Set title based on type
             let title = '<i class="bi bi-person-circle"></i> Pet Information';
             if (type === 'incomplete') title = '<i class="bi bi-exclamation-triangle-fill"></i> Incomplete Pet Record';
-            if (type === 'vaccination') title = '<i class="bi bi-shield-fill-check"></i> Overdue Vaccination';
-            if (type === 'breeding') title = '<i class="bi bi-heart-pulse-fill"></i> High-Risk Breeding Case';
             if (type === 'visit') title = '<i class="bi bi-hospital"></i> Recent Visit';
             
             modalTitle.innerHTML = title;
@@ -647,39 +656,6 @@
             `;
             
             // Add type-specific information
-            if (type === 'vaccination' && vaccine) {
-                content += `
-                    <div class="patient-detail-row" style="border-left-color: #ef4444; background: #fef2f2;">
-                        <label>Vaccine Due</label>
-                        <div class="value">${vaccine}</div>
-                    </div>
-                    <div class="patient-detail-row" style="border-left-color: #ef4444; background: #fef2f2;">
-                        <label>Due Date</label>
-                        <div class="value">${dueDate}</div>
-                    </div>
-                `;
-            }
-            
-            if (type === 'breeding' && breedingDetails) {
-                const riskFactors = breedingDetails.risk_factors || 'Not specified';
-                const referredText = breedingDetails.referred ? 'Yes' : 'No';
-                const checkupDate = breedingDetails.checkup_date || 'N/A';
-                content += `
-                    <div class="patient-detail-row" style="border-left-color: #ef4444; background: #fef2f2;">
-                        <label>Risk Factors</label>
-                        <div class="value">${riskFactors}</div>
-                    </div>
-                    <div class="patient-detail-row" style="border-left-color: #ef4444; background: #fef2f2;">
-                        <label>Referred</label>
-                        <div class="value">${referredText}</div>
-                    </div>
-                    <div class="patient-detail-row" style="border-left-color: #ef4444; background: #fef2f2;">
-                        <label>Last Checkup</label>
-                        <div class="value">${checkupDate}</div>
-                    </div>
-                `;
-            }
-            
             if (type === 'visit' && serviceType) {
                 content += `
                     <div class="patient-detail-row" style="border-left-color: #10b981; background: #ecfdf5;">

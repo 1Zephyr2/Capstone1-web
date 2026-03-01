@@ -106,6 +106,7 @@ Route::middleware('auth')->group(function () {
 
     // Appointment Routes
     Route::resource('appointments', AppointmentController::class);
+    Route::patch('/appointments/{appointment}/quick-update', [AppointmentController::class, 'quickUpdate'])->name('appointments.quick-update');
     Route::get('/appointments/calendar/data', [AppointmentController::class, 'calendar'])->name('appointments.calendar.data');
     Route::get('/appointments-today', [AppointmentController::class, 'today'])->name('appointments.today');
     Route::get('/appointments/conflicts', [AppointmentController::class, 'conflicts'])->name('appointments.conflicts');

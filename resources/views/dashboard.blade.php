@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - VetCare</title>
+    <title>Dashboard - PAWser</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
@@ -2185,11 +2185,11 @@
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <a href="{{ route('dashboard') }}" class="logo-container">
-                <img src="/images/systemlogo.png" alt="VetCare" class="sidebar-logo">
+                <img src="/images/systemlogo.png" alt="PAWser" class="sidebar-logo">
             </a>
             <div class="sidebar-brand">
-                <div class="sidebar-title">VetCare</div>
-                <div class="sidebar-subtitle">Veterinary Clinic System</div>
+                <div class="sidebar-title">PAWser</div>
+                <div class="sidebar-subtitle">Pet Appointment &amp; Workflow Service</div>
             </div>
         </div>
 
@@ -2300,17 +2300,24 @@
                 </div>
             </div>
 
-            <!-- AI Alerts Summary (only show if there are alerts and user is admin) -->
-            @if(Auth::user()->hasStaffAccess() && isset($totalAlerts) && $totalAlerts > 0)
+            <!-- Automation Support Alerts (compact) -->
+            @if(Auth::user()->hasStaffAccess())
             <div class="alerts-summary-section">
                 <div class="alerts-summary-card">
                     <div class="alerts-summary-header">
                         <div>
                             <h2 style="margin: 0; font-size: 20px; color: #1f2937;"><i class="bi bi-cpu-fill"></i> Automation Support Alerts</h2>
-                            <p style="margin: 4px 0 0 0; font-size: 14px; color: #6b7280;">{{ $totalAlerts }} active alert(s) requiring attention</p>
+                            <p style="margin: 4px 0 0 0; font-size: 14px; color: #6b7280;">
+                                @if($totalAlerts > 0)
+                                    {{ $totalAlerts }} active alert(s) requiring attention
+                                @else
+                                    All clear — no active alerts
+                                @endif
+                            </p>
                         </div>
                         <a href="{{ route('automation.support') }}" class="view-all-btn">View All →</a>
                     </div>
+                    @if(count($topAlerts) > 0)
                     <div class="alerts-grid">
                         @foreach($topAlerts as $alert)
                         <div class="alert-item alert-{{ $alert['type'] }}">
@@ -2323,6 +2330,12 @@
                         </div>
                         @endforeach
                     </div>
+                    @else
+                    <div style="padding: 20px; text-align: center; color: #6b7280; font-size: 14px;">
+                        <i class="bi bi-check-circle-fill" style="color: #10b981; font-size: 28px; display: block; margin-bottom: 8px;"></i>
+                        No active alerts right now. Everything looks good!
+                    </div>
+                    @endif
                 </div>
             </div>
             @endif
@@ -2349,14 +2362,6 @@
                         <div class="stat-change">{{ $monthChangePercent > 0 ? '↑' : '↓' }} {{ abs($monthChangePercent) }}% this month</div>
                     </div>
 
-                    <div class="stat-card" onclick="openModal('immunizations')" style="cursor: pointer;">
-                        <div class="stat-header">
-                            <span class="stat-title">Immunizations</span>
-                            <div class="stat-icon" style="background: #FEF3C7; color: #F59E0B;"><i class="bi bi-shield-fill-check"></i></div>
-                        </div>
-                        <div class="stat-value">{{ $totalImmunizations }}</div>
-                        <div class="stat-change">Total records</div>
-                    </div>
                 </div>
 
                 <!-- Right Column: Calendar Summary -->
@@ -2580,85 +2585,48 @@
                         </label>
                         <select name="service_type" id="appointmentServiceType" required style="padding: 12px 14px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 14px; transition: all 0.2s; cursor: pointer; background-color: white;">
                             <option value="">Select service</option>
-                            <option value="Wellness Exam">Wellness Exam</option>
-                            <option value="Vaccination">Vaccination</option>
-                            <option value="Surgery">Surgery</option>
-                            <option value="Dental Cleaning">Dental Cleaning</option>
-                            <option value="Emergency">Emergency</option>
-                            <option value="Grooming">Grooming</option>
-                            <option value="Spay/Neuter">Spay/Neuter</option>
-                            <option value="Breeding Consultation">Breeding Consultation</option>
-                            <option value="Boarding Checkup">Boarding Checkup</option>
-                            <option value="Follow-up">Follow-up</option>
-                            <option value="Diagnostics">Diagnostics</option>
-                            <option value="Other">Other</option>
+                            <optgroup label="Grooming Services">
+                                <option value="Bath & Dry">Bath &amp; Dry</option>
+                                <option value="Full Grooming">Full Grooming</option>
+                                <option value="Haircut & Styling">Haircut &amp; Styling</option>
+                                <option value="Nail Trimming">Nail Trimming</option>
+                                <option value="Ear Cleaning">Ear Cleaning</option>
+                                <option value="Teeth Brushing">Teeth Brushing</option>
+                                <option value="De-shedding Treatment">De-shedding Treatment</option>
+                                <option value="Flea & Tick Treatment">Flea &amp; Tick Treatment</option>
+                                <option value="Paw Treatment">Paw Treatment</option>
+                            </optgroup>
+                            <optgroup label="Other Services">
+                                <option value="Boarding Checkup">Boarding Checkup</option>
+                                <option value="Follow-up">Follow-up</option>
+                                <option value="Other">Other</option>
+                            </optgroup>
                         </select>
                     </div>
 
-                    <!-- Vaccination Section -->
-                    <div id="appointmentVaccination" style="display: none; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 18px; border-radius: 12px; gap: 12px; flex-direction: column; border: 2px solid #93c5fd; box-shadow: 0 2px 4px rgba(59, 130, 246, 0.1);">
-                        <h4 style="margin: 0 0 12px 0; color: #1e40af; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px;"><i class="bi bi-shield-fill-plus"></i> Vaccination Details</h4>
+                    <!-- Grooming Details Section -->
+                    <div id="appointmentVaccination" style="display: none; background: linear-gradient(135deg, #fdf4ff 0%, #fae8ff 100%); padding: 18px; border-radius: 12px; gap: 12px; flex-direction: column; border: 2px solid #d8b4fe; box-shadow: 0 2px 4px rgba(168, 85, 247, 0.1);">
+                        <h4 style="margin: 0 0 12px 0; color: #6b21a8; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px;"><i class="bi bi-scissors"></i> Grooming Service Details</h4>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                             <div style="display: flex; flex-direction: column; gap: 6px;">
-                                <label style="font-weight: 600; color: #374151; font-size: 12px;">Vaccine</label>
-                                <select name="vaccine_name" style="padding: 10px 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 13px; transition: all 0.2s;">
-                                    <option value="">Select vaccine</option>
-                                    <option value="Rabies">Rabies</option>
-                                    <option value="DHPP">DHPP (Dogs)</option>
-                                    <option value="Bordetella">Bordetella</option>
-                                    <option value="FVRCP">FVRCP (Cats)</option>
-                                    <option value="FeLV">FeLV (Feline Leukemia)</option>
-                                    <option value="Leptospirosis">Leptospirosis</option>
+                                <label style="font-weight: 600; color: #374151; font-size: 12px;">Coat Condition</label>
+                                <select name="coat_condition" style="padding: 10px 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 13px; transition: all 0.2s;">
+                                    <option value="">Select condition</option>
+                                    <option value="Clean">Clean</option>
+                                    <option value="Matted">Matted</option>
+                                    <option value="Dirty">Dirty</option>
+                                    <option value="Shedding">Shedding</option>
+                                    <option value="Flea-Infested">Flea-Infested</option>
                                 </select>
                             </div>
                             <div style="display: flex; flex-direction: column; gap: 6px;">
-                                <label style="font-weight: 600; color: #374151; font-size: 12px;">Dose</label>
-                                <select name="dose_number" style="padding: 10px 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 13px; transition: all 0.2s;">
-                                    <option value="">Select dose</option>
-                                    <option value="1st Dose">1st Dose</option>
-                                    <option value="2nd Dose">2nd Dose</option>
-                                    <option value="3rd Dose">3rd Dose</option>
-                                    <option value="Booster">Booster</option>
-                                </select>
+                                <label style="font-weight: 600; color: #374151; font-size: 12px;">Special Instructions</label>
+                                <input type="text" name="grooming_notes" placeholder="e.g., use sensitive shampoo" style="padding: 10px 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 13px; transition: all 0.2s;">
                             </div>
                         </div>
                     </div>
 
-                    <!-- Breeding Consultation Section -->
-                    <div id="appointmentBreeding" style="display: none; background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); padding: 18px; border-radius: 12px; gap: 12px; flex-direction: column; border: 2px solid #fbbf24; box-shadow: 0 2px 4px rgba(245, 158, 11, 0.1);">
-                        <h4 style="margin: 0 0 12px 0; color: #92400e; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px;"><i class="bi bi-heart-fill"></i> Breeding Consultation Details</h4>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                            <div style="display: flex; flex-direction: column; gap: 6px;">
-                                <label style="font-weight: 600; color: #374151; font-size: 12px;">Breeding Status</label>
-                                <select name="breeding_status" style="padding: 10px 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 13px; transition: all 0.2s;">
-                                    <option value="">Select status</option>
-                                    <option value="Planned">Planned</option>
-                                    <option value="Bred">Bred</option>
-                                    <option value="Confirmed Pregnant">Confirmed Pregnant</option>
-                                    <option value="Not Pregnant">Not Pregnant</option>
-                                    <option value="Delivered">Delivered</option>
-                                </select>
-                            </div>
-                            <div style="display: flex; flex-direction: column; gap: 6px;">
-                                <label style="font-weight: 600; color: #374151; font-size: 12px;">Expected Delivery Date</label>
-                                <input type="date" name="expected_delivery" style="padding: 10px 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 13px; transition: all 0.2s;">
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Spay/Neuter Section -->
-                    <div id="appointmentFP" style="display: none; background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); padding: 18px; border-radius: 12px; gap: 12px; flex-direction: column; border: 2px solid #6ee7b7; box-shadow: 0 2px 4px rgba(16, 185, 129, 0.1);">
-                        <h4 style="margin: 0 0 12px 0; color: #166534; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px;"><i class="bi bi-scissors"></i> Spay/Neuter Details</h4>
-                        <div style="display: flex; flex-direction: column; gap: 6px;">
-                            <label style="font-weight: 600; color: #374151; font-size: 12px;">Procedure Type</label>
-                            <select name="fp_method" style="padding: 10px 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 13px; transition: all 0.2s;">
-                                <option value="">Select procedure</option>
-                                <option value="Spay (Female)">Spay (Female)</option>
-                                <option value="Neuter (Male)">Neuter (Male)</option>
-                                <option value="Implant">Implant</option>
-                            </select>
-                        </div>
-                    </div>
 
                     <!-- Referral Section -->
                     <div id="appointmentReferral" style="display: none; background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); padding: 18px; border-radius: 12px; gap: 12px; flex-direction: column; border: 2px solid #fca5a5; box-shadow: 0 2px 4px rgba(239, 68, 68, 0.1);">
@@ -2878,62 +2846,6 @@
         </div>
     </div>
 
-    <!-- Immunizations Modal -->
-    <div id="immunizationsModal" class="ai-modal" onclick="closeModalOnBackdrop(event, 'immunizations')">
-        <div class="ai-modal-content">
-            <div class="ai-modal-header" style="background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);">
-                <h2><i class="bi bi-shield-fill-check"></i> Immunizations</h2>
-                <button class="ai-modal-close" onclick="closeModal('immunizations')">x</button>
-            </div>
-            <div class="ai-modal-body">
-                <div class="ai-icon"><i class="bi bi-shield-fill-check"></i></div>
-                @php
-                    use App\Models\Immunization;
-                    $allImmunizations = Immunization::with('patient')->orderBy('date_given', 'desc')->get();
-                    $thisMonthImm = $allImmunizations->filter(function($imm) {
-                        return \Carbon\Carbon::parse($imm->date_given)->isCurrentMonth();
-                    });
-                    $patientGroups = $allImmunizations->groupBy('patient_id');
-                @endphp
-                <h3>{{ $thisMonthImm->count() }} Immunizations This Month</h3>
-                <div style="margin-top: 24px; text-align: left; max-width: 800px; margin-left: auto; margin-right: auto; max-height: 500px; overflow-y: auto;">
-                    @foreach($patientGroups as $patientId => $immunizations)
-                        @php $patient = $immunizations->first()->patient; @endphp
-                        <div style="background: #fff; border-radius: 8px; padding: 16px; margin-bottom: 12px; border-left: 4px solid #f59e0b; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                                <div style="display: flex; align-items: center; gap: 12px;">
-                                    <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 14px;">
-                                        <i class="bi bi-person-fill" style="font-size: 20px;"></i>
-                                    </div>
-                                    <div>
-                                        <div style="font-weight: 600; font-size: 16px; color: #111827;">{{ $patient->first_name }} {{ $patient->last_name }}</div>
-                                        <div style="font-size: 12px; color: #6b7280;">{{ $patient->age }} years old • {{ $patient->bhc_id }}</div>
-                                    </div>
-                                </div>
-                                <div style="background: #e0e7ff; color: #3730a3; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600;">
-                                    {{ $immunizations->count() }} {{ $immunizations->count() === 1 ? 'Vaccine' : 'Vaccines' }}
-                                </div>
-                            </div>
-                            @foreach($immunizations as $imm)
-                                <div style="background: #fef3c7; padding: 12px; border-radius: 6px; margin-top: 8px;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                                        <div style="font-weight: 600; color: #92400e;">{{ $imm->vaccine_name }}</div>
-                                        <span style="background: #10b981; color: white; padding: 2px 8px; border-radius: 4px; font-size: 11px;">Dose {{ $imm->dose_number }}</span>
-                                    </div>
-                                    <div style="font-size: 13px; color: #78716c;">Date: {{ \Carbon\Carbon::parse($imm->date_given)->format('F j, Y') }}</div>
-                                    <div style="font-size: 12px; color: #78716c; margin-top: 2px;">Administered by: {{ $imm->administered_by }}</div>
-                                </div>
-                            @endforeach
-                        </div>
-                    @endforeach
-                </div>
-                <div style="margin-top: 20px;">
-                    <a href="{{ route('immunizations.index') }}" style="display: inline-block; background: #f59e0b; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 500;">View All Records</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Medical Records Modal -->
     <div id="medicalRecordsModal" class="ai-modal" onclick="closeModalOnBackdrop(event, 'medicalRecords')">
         <div class="ai-modal-content" style="max-width: 900px;">
@@ -2966,12 +2878,18 @@
                                     <label for="recordType">Visit Type <span style="color: red;">*</span></label>
                                     <select id="recordType" required>
                                         <option value="">Select type</option>
-                                        <option value="Wellness Exam">Wellness Exam</option>
-                                        <option value="Breeding Consultation">Breeding Consultation</option>
-                                        <option value="Vaccination">Vaccination</option>
+                                        <option value="Bath & Dry">Bath &amp; Dry</option>
+                                        <option value="Full Grooming">Full Grooming</option>
+                                        <option value="Haircut & Styling">Haircut &amp; Styling</option>
+                                        <option value="Nail Trimming">Nail Trimming</option>
+                                        <option value="Ear Cleaning">Ear Cleaning</option>
+                                        <option value="Teeth Brushing">Teeth Brushing</option>
+                                        <option value="De-shedding Treatment">De-shedding Treatment</option>
+                                        <option value="Flea & Tick Treatment">Flea &amp; Tick Treatment</option>
+                                        <option value="Paw Treatment">Paw Treatment</option>
+                                        <option value="Boarding Checkup">Boarding Checkup</option>
                                         <option value="Follow-up">Follow-up</option>
-                                        <option value="Emergency">Emergency</option>
-                                        <option value="Consultation">Consultation</option>
+                                        <option value="Other">Other</option>
                                     </select>
                                 </div>
                             </div>
@@ -3035,9 +2953,8 @@
                     <!-- Filter Tabs -->
                     <div class="filter-tabs">
                         <button class="filter-tab active" onclick="filterRecordsByType('all')">All Records</button>
-                        <button class="filter-tab" onclick="filterRecordsByType('Wellness Exam')">Wellness Exam</button>
-                        <button class="filter-tab" onclick="filterRecordsByType('Breeding Consultation')">Breeding Consultation</button>
-                        <button class="filter-tab" onclick="filterRecordsByType('Vaccination')">Vaccination</button>
+                        <button class="filter-tab" onclick="filterRecordsByType('Full Grooming')">Full Grooming</button>
+                        <button class="filter-tab" onclick="filterRecordsByType('Bath & Dry')">Bath &amp; Dry</button>
                         <button class="filter-tab" onclick="filterRecordsByType('Follow-up')">Follow-up</button>
                     </div>
                     
@@ -3596,7 +3513,6 @@
                 'todayPatients': 'todayPatientsModal',
                 'appointmentsToday': 'appointmentsTodayModal',
                 'totalPatients': 'totalPatientsModal',
-                'immunizations': 'immunizationsModal',
                 'medicalRecords': 'medicalRecordsModal',
                 'patientList': 'patientListModal',
                 'schedule': 'scheduleModal',
@@ -3617,7 +3533,6 @@
                 'todayPatients': 'todayPatientsModal',
                 'appointmentsToday': 'appointmentsTodayModal',
                 'totalPatients': 'totalPatientsModal',
-                'immunizations': 'immunizationsModal',
                 'medicalRecords': 'medicalRecordsModal',
                 'patientList': 'patientListModal',
                 'schedule': 'scheduleModal',
@@ -3638,7 +3553,6 @@
                 'todayPatients': 'todayPatientsModal',
                 'appointmentsToday': 'appointmentsTodayModal',
                 'totalPatients': 'totalPatientsModal',
-                'immunizations': 'immunizationsModal',
                 'medicalRecords': 'medicalRecordsModal',
                 'patientList': 'patientListModal',
                 'schedule': 'scheduleModal',
@@ -4617,40 +4531,23 @@ Registered: ${new Date(patient.registeredDate).toLocaleString()}
             const appointmentServiceType = document.getElementById('appointmentServiceType');
             if (appointmentServiceType) {
                 appointmentServiceType.addEventListener('change', function() {
-                    const vaccinationSection = document.getElementById('appointmentVaccination');
-                    const breedingSection = document.getElementById('appointmentBreeding');
-                    const spayNeuterSection = document.getElementById('appointmentFP');
+                    const groomingSection = document.getElementById('appointmentVaccination');
                     const referralSection = document.getElementById('appointmentReferral');
+
+                    const groomingServices = [
+                        'Bath & Dry', 'Full Grooming', 'Haircut & Styling', 'Nail Trimming',
+                        'Ear Cleaning', 'Teeth Brushing', 'De-shedding Treatment',
+                        'Flea & Tick Treatment', 'Paw Treatment'
+                    ];
                     
                     // Hide all sections
-                    if (vaccinationSection) vaccinationSection.style.display = 'none';
-                    if (breedingSection) breedingSection.style.display = 'none';
-                    if (spayNeuterSection) spayNeuterSection.style.display = 'none';
+                    if (groomingSection) groomingSection.style.display = 'none';
                     if (referralSection) referralSection.style.display = 'none';
                     
-                    // Remove required attributes
-                    document.querySelectorAll('#appointmentVaccination input, #appointmentVaccination select, #appointmentBreeding input, #appointmentBreeding select, #appointmentFP input, #appointmentFP select, #appointmentReferral input, #appointmentReferral select').forEach(field => {
-                        field.removeAttribute('required');
-                    });
-                    
-                    // Show relevant section and set required
-                    if (this.value === 'Vaccination') {
-                        if (vaccinationSection) {
-                            vaccinationSection.style.display = 'flex';
-                            vaccinationSection.querySelector('[name="vaccine_name"]').setAttribute('required', 'required');
-                            vaccinationSection.querySelector('[name="dose_number"]').setAttribute('required', 'required');
-                        }
-                    } else if (this.value === 'Breeding Consultation') {
-                        if (breedingSection) {
-                            breedingSection.style.display = 'flex';
-                            breedingSection.querySelector('[name="breeding_status"]').setAttribute('required', 'required');
-                        }
-                    } else if (this.value === 'Spay/Neuter') {
-                        if (spayNeuterSection) {
-                            spayNeuterSection.style.display = 'flex';
-                            spayNeuterSection.querySelector('[name="fp_method"]').setAttribute('required', 'required');
-                        }
-                    } else if (this.value === 'Referral') {
+                    // Show relevant section
+                    if (groomingServices.includes(this.value)) {
+                        if (groomingSection) groomingSection.style.display = 'flex';
+                    } else if (this.value === 'Follow-up') {
                         if (referralSection) {
                             referralSection.style.display = 'flex';
                             referralSection.querySelector('[name="referred_to"]').setAttribute('required', 'required');
@@ -4846,5 +4743,69 @@ Registered: ${new Date(patient.registeredDate).toLocaleString()}
             </form>
         </div>
     </div>
+
+    <!-- Automation Panel Patient Modal -->
+    <div id="dashAutomationModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center;" onclick="if(event.target===this)closeDashAutomationModal()">
+        <div style="background:#fff; border-radius:16px; width:90%; max-width:480px; box-shadow:0 20px 50px rgba(0,0,0,0.2); overflow:hidden;">
+            <div style="background:linear-gradient(135deg,#2563eb,#1d4ed8); padding:20px 24px; display:flex; justify-content:space-between; align-items:center;">
+                <h2 id="dashAutoModalTitle" style="color:#fff; font-size:17px; font-weight:700; margin:0;"><i class="bi bi-person-circle"></i> Pet Information</h2>
+                <button onclick="closeDashAutomationModal()" style="background:rgba(255,255,255,0.2); border:none; color:#fff; border-radius:8px; padding:4px 10px; cursor:pointer; font-size:18px;">&times;</button>
+            </div>
+            <div id="dashAutoModalBody" style="padding:24px; max-height:70vh; overflow-y:auto;"></div>
+            <div style="padding:16px 24px; background:#f9fafb; display:flex; gap:10px; justify-content:flex-end;">
+                <a id="dashAutoViewBtn" href="#" style="padding:9px 18px; background:#2563eb; color:#fff; border-radius:8px; text-decoration:none; font-size:14px; font-weight:600;">View Full Profile</a>
+                <button onclick="closeDashAutomationModal()" style="padding:9px 18px; background:#e5e7eb; color:#374151; border:none; border-radius:8px; cursor:pointer; font-size:14px; font-weight:600;">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showDashAutomationModal(patient, type) {
+            const modal = document.getElementById('dashAutomationModal');
+            const title = document.getElementById('dashAutoModalTitle');
+            const body  = document.getElementById('dashAutoModalBody');
+            const viewBtn = document.getElementById('dashAutoViewBtn');
+
+            title.innerHTML = type === 'incomplete'
+                ? '<i class="bi bi-exclamation-triangle-fill"></i> Incomplete Pet Record'
+                : '<i class="bi bi-person-circle"></i> Pet Information';
+
+            const petName = patient.pet_name
+                ? `${patient.pet_name}${patient.species ? ' (' + patient.species + ')' : ''}`
+                : (patient.full_name || 'Unknown');
+
+            const row = (label, value, highlight = false) =>
+                `<div style="display:flex; justify-content:space-between; align-items:flex-start; padding:10px 0; border-bottom:1px solid #f3f4f6; ${highlight ? 'background:#fffbeb; padding-left:10px; border-radius:6px; margin-bottom:2px;' : ''}">
+                    <span style="font-size:13px; color:#6b7280; font-weight:500; min-width:130px;">${label}</span>
+                    <span style="font-size:13px; color:#111827; font-weight:600; text-align:right;">${value}</span>
+                </div>`;
+
+            let missing = [];
+            if (!patient.owner_name) missing.push('Owner Name');
+            if (!patient.owner_contact) missing.push('Owner Contact');
+
+            body.innerHTML =
+                row('Pet Name', petName) +
+                row('Patient ID', patient.patient_id || 'N/A') +
+                row('Species', patient.species || 'N/A') +
+                row('Owner', patient.owner_name || '<span style="color:#ef4444;">Not provided</span>') +
+                row('Owner Contact', patient.owner_contact || '<span style="color:#ef4444;">Not provided</span>') +
+                row('Address', patient.address || 'N/A') +
+                (type === 'incomplete' && missing.length
+                    ? row('Missing Fields', `<span style="color:#ef4444;">${missing.join(', ')}</span>`, true)
+                    : '');
+
+            viewBtn.href = '/patients/' + patient.id;
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        function closeDashAutomationModal() {
+            document.getElementById('dashAutomationModal').style.display = 'none';
+            document.body.style.overflow = '';
+        }
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeDashAutomationModal();
+        });
+    </script>
 </body>
 </html>

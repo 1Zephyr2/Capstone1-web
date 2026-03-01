@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Today's Visits - VetCare</title>
+    <title>Today's Visits - PAWser</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
@@ -173,32 +173,89 @@
         }
         .visits-container {
             display: grid;
-            gap: 20px;
+            gap: 16px;
         }
-        .visit-card {
+        /* Owner group accordion */
+        .owner-group-card {
             background: var(--card);
             border-radius: 12px;
-            padding: 20px;
             box-shadow: var(--shadow-sm);
             border: 1px solid var(--line);
-            border-left: 4px solid var(--primary);
-            transition: all 0.2s ease;
-            cursor: pointer;
+            overflow: hidden;
+            transition: box-shadow 0.2s;
         }
-        .visit-card:hover {
+        .owner-group-card:hover {
             box-shadow: var(--shadow-lg);
-            transform: translateY(-2px);
+        }
+        .owner-group-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            cursor: pointer;
+            background: #f8fafc;
+            border-bottom: 1px solid transparent;
+            transition: background 0.2s, border-color 0.2s;
+            user-select: none;
+        }
+        .owner-group-header:hover { background: #eff6ff; }
+        .owner-group-header.open {
+            background: #eff6ff;
+            border-bottom-color: var(--line);
+        }
+        .owner-group-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .owner-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        .owner-group-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #111827;
+        }
+        .owner-group-meta {
+            font-size: 13px;
+            color: #6b7280;
+            margin-top: 2px;
+        }
+        .owner-chevron {
+            font-size: 16px;
+            color: #6b7280;
+            transition: transform 0.25s ease;
+        }
+        .owner-group-header.open .owner-chevron { transform: rotate(180deg); }
+        /* Pet rows inside owner group */
+        .owner-pets-list { display: none; }
+        .owner-pets-list.open { display: block; }
+        .pet-visit-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            border-bottom: 1px solid #f3f4f6;
+            border-left: 4px solid var(--primary);
+            cursor: pointer;
+            transition: background 0.15s, border-left-color 0.15s;
+        }
+        .pet-visit-row:last-child { border-bottom: none; }
+        .pet-visit-row:hover {
+            background: #f0fdf4;
             border-left-color: var(--accent);
         }
-        .visit-summary {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .visit-summary-left {
-            flex: 1;
-        }
-        .visit-summary-right {
+        .pet-visit-left { flex: 1; }
+        .pet-visit-right {
             display: flex;
             align-items: center;
             gap: 12px;
@@ -438,7 +495,7 @@
             <div class="header-top">
                 <div class="header-left">
                     <a href="{{ route('dashboard') }}" class="header-logo">
-                        <img src="/images/systemlogo.png" alt="VetCare" style="height: 35px; object-fit: contain;">
+                        <img src="/images/systemlogo.png" alt="PAWser" style="height: 35px; object-fit: contain;">
                     </a>
                     <h1><i class="bi bi-clipboard2-check"></i> Today's Visits</h1>
                 </div>
@@ -476,26 +533,43 @@
 
         <div class="visits-container">
             @if($visits->count() > 0)
-                @foreach($visits as $visit)
-                <div class="visit-card" onclick="openVisitModal({{ $visit->id }})">
-                    <div class="visit-summary">
-                        <div class="visit-summary-left">
-                            <div class="patient-name">{{ $visit->patient->full_name }}</div>
-                            <div class="patient-info">
-                                <span><strong>ID:</strong> {{ $visit->patient->patient_id }}</span>
-                                <span><strong>Age:</strong> {{ $visit->patient->age }} years</span>
-                                <span><strong>Sex:</strong> {{ $visit->patient->sex }}</span>
-                            </div>
-                            <div class="click-hint">Click to view full details</div>
-                        </div>
-                        <div class="visit-summary-right">
-                            <span class="service-badge service-{{ strtolower(str_replace(' ', '-', $visit->service_type)) }}">
-                                {{ $visit->service_type }}
-                            </span>
-                            <div class="visit-time">
-                                <i class="bi bi-clock"></i> {{ \Carbon\Carbon::parse($visit->visit_time)->format('h:i A') }}
+                @php
+                    $groupedVisits = $visits->getCollection()->groupBy(fn($v) => $v->patient->owner_name ?: 'Unknown Owner');
+                @endphp
+                @foreach($groupedVisits as $ownerName => $ownerVisits)
+                <div class="owner-group-card">
+                    <div class="owner-group-header open" onclick="toggleOwnerGroup(this)">
+                        <div class="owner-group-left">
+                            <div class="owner-icon"><i class="bi bi-person-fill"></i></div>
+                            <div>
+                                <div class="owner-group-name">{{ $ownerName }}</div>
+                                <div class="owner-group-meta">{{ $ownerVisits->count() }} pet visit{{ $ownerVisits->count() > 1 ? 's' : '' }} today</div>
                             </div>
                         </div>
+                        <i class="bi bi-chevron-down owner-chevron"></i>
+                    </div>
+                    <div class="owner-pets-list open">
+                        @foreach($ownerVisits as $visit)
+                        <div class="pet-visit-row" onclick="openVisitModal({{ $visit->id }})">
+                            <div class="pet-visit-left">
+                                <div class="patient-name">{{ $visit->patient->full_name }}</div>
+                                <div class="patient-info">
+                                    <span><strong>ID:</strong> {{ $visit->patient->patient_id }}</span>
+                                    <span><strong>Age:</strong> {{ $visit->patient->age }} years</span>
+                                    <span><strong>Sex:</strong> {{ $visit->patient->sex }}</span>
+                                </div>
+                                <div class="click-hint">Click to view full details</div>
+                            </div>
+                            <div class="pet-visit-right">
+                                <span class="service-badge service-{{ strtolower(str_replace(' ', '-', $visit->service_type)) }}">
+                                    {{ $visit->service_type }}
+                                </span>
+                                <div class="visit-time">
+                                    <i class="bi bi-clock"></i> {{ \Carbon\Carbon::parse($visit->visit_time)->format('h:i A') }}
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
                     </div>
                 </div>
                 @endforeach
@@ -552,6 +626,11 @@
     <script>
         const visitsData = @json($visits);
         const visits = visitsData.data || visitsData;
+
+        function toggleOwnerGroup(header) {
+            header.classList.toggle('open');
+            header.nextElementSibling.classList.toggle('open');
+        }
 
         function openVisitModal(visitId) {
             console.log('Opening modal for visit ID:', visitId);

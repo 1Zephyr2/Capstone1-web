@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Import Pets - VetCare</title>
+    <title>Import Pets - PAWser</title>
     <style>
         * {
             margin: 0;
@@ -198,7 +198,7 @@
         <div class="card">
             <div class="header-top">
                 <a href="{{ route('dashboard') }}" class="header-logo">
-                    <img src="/images/systemlogo.png" alt="CareSync" style="height: 35px; object-fit: contain;">
+                    <img src="/images/systemlogo.png" alt="PAWser" style="height: 35px; object-fit: contain;">
                 </a>
                 <button onclick="goBack()" class="btn-back">← Back</button>
                 <h1>Import Patient Records</h1>
@@ -233,7 +233,7 @@
                 <ul>
                     <li><strong>Format:</strong> CSV (Comma-separated values) or Excel (.xlsx, .xls)</li>
                     <li><strong>Required Columns:</strong> first_name, last_name, birthdate, sex, address</li>
-                    <li><strong>Optional Columns:</strong> middle_name, contact_number, microchip_number</li>
+                    <li><strong>Optional Columns:</strong> contact_number</li>
                     <li><strong>Date Format:</strong> YYYY-MM-DD (e.g., 1990-05-15)</li>
                     <li><strong>Sex Values:</strong> Male or Female</li>
                 </ul>
@@ -280,7 +280,6 @@
                             <th>sex</th>
                             <th>contact_number</th>
                             <th>address</th>
-                            <th>microchip_number</th>
                         </tr>
                     </thead>
                     <tbody>

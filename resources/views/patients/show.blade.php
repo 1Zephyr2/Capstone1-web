@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $patient->full_name }} - Patient Profile</title>
+    <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
             margin: 0;
@@ -183,7 +184,8 @@
     <div class="container">
         <div class="header-actions">
             <a href="{{ route('patients.index') }}" class="btn btn-secondary">← Back to Patients</a>
-            <div>
+            <div style="display:flex; gap:8px;">
+                <a href="{{ route('patients.edit', $patient) }}" class="btn" style="background:#4f46e5; color:white;"><i class="bi bi-pencil-fill"></i> Edit Pet</a>
                 <a href="{{ route('visits.create', ['patient_id' => $patient->id]) }}" class="btn btn-primary">+ Record Visit</a>
             </div>
         </div>
@@ -196,7 +198,6 @@
 
         <div class="patient-header">
             <h1>{{ $patient->full_name }}</h1>
-            <div class="patient-id">Patient ID: {{ $patient->patient_id }}</div>
             
             <div class="patient-grid">
                 <div class="info-item">

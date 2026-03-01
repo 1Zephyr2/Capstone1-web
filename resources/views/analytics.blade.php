@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Analytics - VetCare</title>
+    <title>Data Analytics - PAWser</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -362,9 +362,29 @@
         <!-- Key Metrics -->
         <div class="metrics-grid">
             <div class="metric-card">
-                <div class="metric-label">Total Pets</div>
+                <div class="metric-label">Total Pets Registered</div>
                 <div class="metric-value">{{ number_format($metrics['total_patients']) }}</div>
                 <span class="metric-trend trend-neutral">All time</span>
+            </div>
+
+            <div class="metric-card" style="border-left-color: #f59e0b;">
+                <div class="metric-label">Appointments This Month</div>
+                <div class="metric-value" style="color: #d97706;">{{ number_format($metrics['appointments_this_month']) }}</div>
+                <span class="metric-trend {{ $metrics['appointment_growth_rate'] > 0 ? 'trend-up' : ($metrics['appointment_growth_rate'] < 0 ? 'trend-down' : 'trend-neutral') }}">
+                    {{ $metrics['appointment_growth_rate'] > 0 ? '+' : '' }}{{ $metrics['appointment_growth_rate'] }}% vs last month
+                </span>
+            </div>
+
+            <div class="metric-card" style="border-left-color: #8b5cf6;">
+                <div class="metric-label">Appointment Completion Rate</div>
+                <div class="metric-value" style="color: #7c3aed;">{{ $metrics['appointment_completion'] }}%</div>
+                <span class="metric-trend trend-neutral">{{ number_format($metrics['completed_appointments']) }} of {{ number_format($metrics['total_appointments']) }} total</span>
+            </div>
+
+            <div class="metric-card" style="border-left-color: #10b981;">
+                <div class="metric-label">Upcoming (Next 7 Days)</div>
+                <div class="metric-value" style="color: #059669;">{{ number_format($metrics['upcoming_appointments']) }}</div>
+                <span class="metric-trend trend-up">Scheduled appointments</span>
             </div>
 
             <div class="metric-card">
@@ -375,53 +395,51 @@
                 </span>
             </div>
 
-            <div class="metric-card">
-                <div class="metric-label">Vaccination Completion</div>
-                <div class="metric-value">{{ $metrics['completion_rate'] }}%</div>
-                <span class="metric-trend trend-neutral">{{ number_format($metrics['total_immunizations']) }} total records</span>
-            </div>
-
-            <div class="metric-card">
-                <div class="metric-label">Predicted Next Month</div>
-                <div class="metric-value">{{ number_format($metrics['predicted_next_month']) }}</div>
-                <span class="metric-trend trend-up">Based on trend analysis</span>
-            </div>
         </div>
 
         <!-- Predictive Insights -->
         <div class="insights-section">
-            <h3><i class="bi bi-lightbulb-fill"></i> Predictive Insights & Recommendations</h3>
-            
+            <h3><i class="bi bi-lightbulb-fill"></i> Predictive Insights &amp; Recommendations</h3>
+
+            <div class="insight-item">
+                <h4>Appointment Forecast</h4>
+                <p>This month has <strong>{{ $metrics['appointments_this_month'] }} appointments</strong> booked
+                    ({{ $metrics['appointment_growth_rate'] > 0 ? '+' : '' }}{{ $metrics['appointment_growth_rate'] }}% vs last month).
+                    <strong>{{ $metrics['upcoming_appointments'] }} more</strong> are scheduled for the next 7 days.
+                    Appointment completion rate is <strong>{{ $metrics['appointment_completion'] }}%</strong>
+                    — {{ $metrics['no_show_appointments'] }} no-show{{ $metrics['no_show_appointments'] == 1 ? '' : 's' }} and
+                    {{ $metrics['cancelled_appointments'] }} cancellation{{ $metrics['cancelled_appointments'] == 1 ? '' : 's' }} recorded.</p>
+            </div>
+
             <div class="insight-item">
                 <h4>Visit Forecast</h4>
-                <p>Based on the last 3 months average ({{ $metrics['avg_monthly_visits'] }} visits/month) and current growth rate ({{ $metrics['visit_growth_rate'] }}%), we predict approximately <strong>{{ $metrics['predicted_next_month'] }} visits next month</strong>. Consider staffing adjustments accordingly.</p>
+                <p>Based on the last 3 months average ({{ $metrics['avg_monthly_visits'] }} visits/month) and current growth rate ({{ $metrics['visit_growth_rate'] }}%), we predict approximately <strong>{{ $metrics['predicted_next_month'] }} clinic visits next month</strong>. Adjust staffing accordingly.</p>
             </div>
+
+            @if($metrics['appointment_growth_rate'] > 20)
+            <div class="insight-item">
+                <h4>High Appointment Demand</h4>
+                <p>Appointments have surged by <strong>+{{ $metrics['appointment_growth_rate'] }}%</strong> this month. Consider extending available time slots or adding a second grooming/consultation session to handle demand.</p>
+            </div>
+            @elseif($metrics['appointment_growth_rate'] < -20)
+            <div class="insight-item">
+                <h4>Declining Appointment Trend</h4>
+                <p>Appointments dropped by <strong>{{ abs($metrics['appointment_growth_rate']) }}%</strong> this month. Consider promotional outreach (e.g. grooming discounts, vaccination reminders) to re-engage owners.</p>
+            </div>
+            @endif
 
             @if($metrics['visit_growth_rate'] > 15)
             <div class="insight-item">
-                <h4>High Growth Alert</h4>
-                <p>Pet visits are increasing significantly (+{{ $metrics['visit_growth_rate'] }}%). This indicates growing demand for services. Recommend expanding clinic hours or adding staff to maintain service quality.</p>
+                <h4>High Visit Growth Alert</h4>
+                <p>Pet visits are increasing significantly (+{{ $metrics['visit_growth_rate'] }}%). This indicates growing demand. Recommend expanding clinic hours or adding staff to maintain service quality.</p>
             </div>
             @elseif($metrics['visit_growth_rate'] < -15)
             <div class="insight-item">
-                <h4>Declining Trend Alert</h4>
-                <p>Pet visits have decreased by {{ abs($metrics['visit_growth_rate']) }}%. Consider implementing community outreach programs or reviewing service accessibility to re-engage pet owners.</p>
+                <h4>Declining Visit Trend Alert</h4>
+                <p>Pet visits have decreased by {{ abs($metrics['visit_growth_rate']) }}%. Consider community outreach programs or reviewing service accessibility to re-engage pet owners.</p>
             </div>
             @endif
 
-            @if($metrics['completion_rate'] < 50)
-            <div class="insight-item">
-                <h4>Vaccination Follow-up Needed</h4>
-                <p>Only {{ $metrics['completion_rate'] }}% of vaccinations are completed. Many pets need follow-up doses. Implement automated reminder system to improve completion rates.</p>
-            </div>
-            @endif
-
-            @if($metrics['high_risk_breeding'] > 5)
-            <div class="insight-item">
-                <h4>High-Risk Breeding Cases</h4>
-                <p>Currently tracking {{ $metrics['high_risk_breeding'] }} high-risk breeding cases. Ensure regular monitoring and consider specialized care coordination for these animals.</p>
-            </div>
-            @endif
         </div>
 
         <!-- Pet Activity & Retention Analytics -->
@@ -491,9 +509,9 @@
         <!-- Charts Section -->
         <div class="charts-section">
             <h2 class="section-title"><i class="bi bi-bar-chart-fill"></i> Visual Analytics</h2>
-            
+
             <div class="charts-grid">
-                <!-- Patient Growth -->
+                <!-- Pet Registration Trend -->
                 <div class="chart-card">
                     <h3><i class="bi bi-graph-up"></i> Pet Registration Trend (6 Months)</h3>
                     <div class="chart-container">
@@ -501,7 +519,15 @@
                     </div>
                 </div>
 
-                <!-- Visit Trends -->
+                <!-- Appointment Trend -->
+                <div class="chart-card">
+                    <h3><i class="bi bi-calendar-check"></i> Appointment Trend (6 Months)</h3>
+                    <div class="chart-container">
+                        <canvas id="appointmentTrendChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Daily Visit Patterns -->
                 <div class="chart-card">
                     <h3><i class="bi bi-hospital"></i> Daily Visit Patterns (30 Days)</h3>
                     <div class="chart-container">
@@ -509,23 +535,39 @@
                     </div>
                 </div>
 
-                <!-- Service Distribution -->
+                <!-- Appointment Service Distribution -->
                 <div class="chart-card">
-                    <h3><i class="bi bi-bullseye"></i> Service Type Distribution</h3>
+                    <h3><i class="bi bi-bullseye"></i> Appointment Service Breakdown</h3>
                     <div class="chart-container">
                         <canvas id="serviceDistributionChart"></canvas>
                     </div>
                 </div>
 
+                <!-- Appointment Status -->
+                <div class="chart-card">
+                    <h3><i class="bi bi-pie-chart-fill"></i> Appointment Status Breakdown</h3>
+                    <div class="chart-container">
+                        <canvas id="appointmentStatusChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Species Distribution -->
+                <div class="chart-card">
+                    <h3><i class="bi bi-heart-fill"></i> Species Distribution</h3>
+                    <div class="chart-container">
+                        <canvas id="speciesDistributionChart"></canvas>
+                    </div>
+                </div>
+
                 <!-- Age Demographics -->
                 <div class="chart-card">
-                    <h3><i class="bi bi-people-fill"></i> Age Distribution</h3>
+                    <h3><i class="bi bi-people-fill"></i> Pet Age Distribution</h3>
                     <div class="chart-container">
                         <canvas id="ageDemographicsChart"></canvas>
                     </div>
                 </div>
 
-                <!-- Gender Distribution -->
+                <!-- Sex Distribution -->
                 <div class="chart-card">
                     <h3><i class="bi bi-person-badge"></i> Sex Distribution</h3>
                     <div class="chart-container">
@@ -533,25 +575,9 @@
                     </div>
                 </div>
 
-                <!-- Vaccination Coverage -->
-                <div class="chart-card">
-                    <h3><i class="bi bi-shield-check-fill"></i> Vaccination Coverage</h3>
-                    <div class="chart-container">
-                        <canvas id="vaccinationCoverageChart"></canvas>
-                    </div>
-                </div>
-
-                <!-- High-Risk Breeding Trend -->
-                <div class="chart-card">
-                    <h3><i class="bi bi-exclamation-triangle-fill"></i> High-Risk Breeding Cases Trend</h3>
-                    <div class="chart-container">
-                        <canvas id="highRiskBreedingChart"></canvas>
-                    </div>
-                </div>
-
                 <!-- Top Complaints -->
                 <div class="chart-card">
-                    <h3><i class="bi bi-chat-text"></i> Top 5 Chief Complaints</h3>
+                    <h3><i class="bi bi-chat-text"></i> Top Chief Complaints</h3>
                     <div class="chart-container">
                         <canvas id="topComplaintsChart"></canvas>
                     </div>
@@ -561,11 +587,12 @@
     </div>
 
     <script>
-        // Chart.js Configuration
         Chart.defaults.font.family = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
         Chart.defaults.color = '#6b7280';
 
-        // Patient Growth Chart
+        const PALETTE = ['#059669','#f59e0b','#3b82f6','#8b5cf6','#ec4899','#14b8a6','#ef4444','#f97316','#6366f1','#84cc16'];
+
+        // ── Pet Registration Trend ────────────────────────────────────────
         new Chart(document.getElementById('patientGrowthChart'), {
             type: 'line',
             data: {
@@ -574,31 +601,32 @@
                     label: 'New Pets',
                     data: {!! json_encode($patientGrowth->pluck('count')) !!},
                     borderColor: '#059669',
-                    backgroundColor: 'rgba(5, 150, 105, 0.1)',
-                    fill: true,
-                    tension: 0.4
+                    backgroundColor: 'rgba(5,150,105,0.1)',
+                    fill: true, tension: 0.4, pointRadius: 4
                 }]
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            precision: 0
-                        }
-                    }
-                }
-            }
+            options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
+                scales:{y:{beginAtZero:true,ticks:{precision:0}}} }
         });
 
-        // Visit Trends Chart
+        // ── Appointment Trend ──────────────────────────────────────────────
+        new Chart(document.getElementById('appointmentTrendChart'), {
+            type: 'bar',
+            data: {
+                labels: {!! json_encode($appointmentTrend->pluck('month')) !!},
+                datasets: [{
+                    label: 'Appointments',
+                    data: {!! json_encode($appointmentTrend->pluck('count')) !!},
+                    backgroundColor: 'rgba(245,158,11,0.8)',
+                    borderColor: '#d97706', borderWidth: 1,
+                    borderRadius: 6
+                }]
+            },
+            options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
+                scales:{y:{beginAtZero:true,ticks:{precision:0}}} }
+        });
+
+        // ── Daily Visit Patterns ───────────────────────────────────────────
         new Chart(document.getElementById('visitTrendsChart'), {
             type: 'line',
             data: {
@@ -607,59 +635,51 @@
                     label: 'Daily Visits',
                     data: {!! json_encode($visitTrends->pluck('count')) !!},
                     borderColor: '#047857',
-                    backgroundColor: 'rgba(4, 120, 87, 0.1)',
-                    fill: true,
-                    tension: 0.4
+                    backgroundColor: 'rgba(4,120,87,0.1)',
+                    fill: true, tension: 0.4, pointRadius: 3
                 }]
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            precision: 0
-                        }
-                    }
-                }
-            }
+            options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
+                scales:{y:{beginAtZero:true,ticks:{precision:0}}} }
         });
 
-        // Service Distribution Chart
+        // ── Appointment Service Breakdown ─────────────────────────────────
         new Chart(document.getElementById('serviceDistributionChart'), {
             type: 'doughnut',
             data: {
-                labels: {!! json_encode($serviceDistribution->pluck('service_type')) !!},
-                datasets: [{
-                    data: {!! json_encode($serviceDistribution->pluck('count')) !!},
-                    backgroundColor: [
-                        '#059669',
-                        '#f59e0b',
-                        '#3b82f6',
-                        '#8b5cf6',
-                        '#ec4899',
-                        '#14b8a6'
-                    ]
-                }]
+                labels: {!! json_encode($appointmentServiceDistribution->pluck('service_type')) !!},
+                datasets: [{ data: {!! json_encode($appointmentServiceDistribution->pluck('count')) !!},
+                    backgroundColor: PALETTE }]
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    }
-                }
-            }
+            options: { responsive:true, maintainAspectRatio:false,
+                plugins:{ legend:{ position:'bottom', labels:{boxWidth:12,padding:10,font:{size:11}} } } }
         });
 
-        // Age Demographics Chart
+        // ── Appointment Status ────────────────────────────────────────────
+        new Chart(document.getElementById('appointmentStatusChart'), {
+            type: 'doughnut',
+            data: {
+                labels: {!! json_encode($appointmentStatusBreakdown->pluck('status')->map(fn($s) => ucfirst($s))) !!},
+                datasets: [{ data: {!! json_encode($appointmentStatusBreakdown->pluck('count')) !!},
+                    backgroundColor: ['#059669','#f59e0b','#ef4444','#6b7280','#3b82f6'] }]
+            },
+            options: { responsive:true, maintainAspectRatio:false,
+                plugins:{ legend:{ position:'bottom', labels:{boxWidth:12,padding:10,font:{size:11}} } } }
+        });
+
+        // ── Species Distribution ──────────────────────────────────────────
+        new Chart(document.getElementById('speciesDistributionChart'), {
+            type: 'doughnut',
+            data: {
+                labels: {!! json_encode($speciesDistribution->pluck('species')) !!},
+                datasets: [{ data: {!! json_encode($speciesDistribution->pluck('count')) !!},
+                    backgroundColor: PALETTE }]
+            },
+            options: { responsive:true, maintainAspectRatio:false,
+                plugins:{ legend:{ position:'bottom', labels:{boxWidth:12,padding:10,font:{size:11}} } } }
+        });
+
+        // ── Pet Age Distribution ──────────────────────────────────────────
         new Chart(document.getElementById('ageDemographicsChart'), {
             type: 'bar',
             data: {
@@ -667,122 +687,27 @@
                 datasets: [{
                     label: 'Pets',
                     data: {!! json_encode($ageDemographics->pluck('count')) !!},
-                    backgroundColor: 'rgba(5, 150, 105, 0.8)',
-                    borderColor: '#059669',
-                    borderWidth: 1
+                    backgroundColor: 'rgba(5,150,105,0.8)',
+                    borderColor: '#059669', borderWidth: 1, borderRadius: 5
                 }]
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            precision: 0
-                        }
-                    }
-                }
-            }
+            options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
+                scales:{y:{beginAtZero:true,ticks:{precision:0}}} }
         });
 
-        // Gender Distribution Chart
+        // ── Sex Distribution ──────────────────────────────────────────────
         new Chart(document.getElementById('genderDistributionChart'), {
             type: 'pie',
             data: {
                 labels: {!! json_encode($genderDistribution->pluck('sex')) !!},
-                datasets: [{
-                    data: {!! json_encode($genderDistribution->pluck('count')) !!},
-                    backgroundColor: [
-                        '#059669',
-                        '#f59e0b',
-                        '#3b82f6'
-                    ]
-                }]
+                datasets: [{ data: {!! json_encode($genderDistribution->pluck('count')) !!},
+                    backgroundColor: ['#059669','#f59e0b','#3b82f6'] }]
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    }
-                }
-            }
+            options: { responsive:true, maintainAspectRatio:false,
+                plugins:{ legend:{ position:'bottom', labels:{boxWidth:12,padding:10} } } }
         });
 
-        // Vaccination Coverage Chart
-        new Chart(document.getElementById('vaccinationCoverageChart'), {
-            type: 'bar',
-            data: {
-                labels: {!! json_encode($immunizationCoverage->pluck('vaccine_name')) !!},
-                datasets: [{
-                    label: 'Doses Administered',
-                    data: {!! json_encode($immunizationCoverage->pluck('count')) !!},
-                    backgroundColor: 'rgba(4, 120, 87, 0.8)',
-                    borderColor: '#047857',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                indexAxis: 'y',
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    x: {
-                        beginAtZero: true,
-                        ticks: {
-                            precision: 0
-                        }
-                    }
-                }
-            }
-        });
-
-        // High-Risk Breeding Trend Chart
-        new Chart(document.getElementById('highRiskBreedingChart'), {
-            type: 'line',
-            data: {
-                labels: {!! json_encode($highRiskBreedingTrend->pluck('month')) !!},
-                datasets: [{
-                    label: 'High-Risk Cases',
-                    data: {!! json_encode($highRiskBreedingTrend->pluck('count')) !!},
-                    borderColor: '#dc2626',
-                    backgroundColor: 'rgba(220, 38, 38, 0.1)',
-                    fill: true,
-                    tension: 0.4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            precision: 0
-                        }
-                    }
-                }
-            }
-        });
-
-        // Top Complaints Chart
+        // ── Top Chief Complaints ──────────────────────────────────────────
         new Chart(document.getElementById('topComplaintsChart'), {
             type: 'bar',
             data: {
@@ -790,32 +715,11 @@
                 datasets: [{
                     label: 'Occurrences',
                     data: {!! json_encode($topComplaints->pluck('count')) !!},
-                    backgroundColor: [
-                        '#059669',
-                        '#047857',
-                        '#f59e0b',
-                        '#3b82f6',
-                        '#8b5cf6'
-                    ]
+                    backgroundColor: PALETTE
                 }]
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            precision: 0
-                        }
-                    }
-                }
-            }
+            options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
+                scales:{y:{beginAtZero:true,ticks:{precision:0}}} }
         });
     </script>
 </body>

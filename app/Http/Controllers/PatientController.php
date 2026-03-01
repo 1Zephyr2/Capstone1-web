@@ -22,7 +22,7 @@ class PatientController extends Controller
             $query->search($request->search);
         }
 
-        $patients = $query->orderBy('created_at', 'desc')->paginate(20);
+        $patients = $query->orderBy('owner_name', 'asc')->orderBy('pet_name', 'asc')->paginate(50);
 
         return view('patients.index', compact('patients'));
     }
@@ -155,27 +155,41 @@ class PatientController extends Controller
     public function update(Request $request, Patient $patient)
     {
         $validator = Validator::make($request->all(), [
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'middle_name' => 'nullable|string|max:255',
-            'birthdate' => 'required|date|before:today',
-            'sex' => 'required|in:Male,Female',
-            'contact_number' => 'nullable|string|max:20',
-            'address' => 'required|string',
-            'philhealth_number' => 'nullable|string|max:50',
-            'emergency_contact_name' => 'nullable|string|max:255',
-            'emergency_contact_number' => 'nullable|string|max:20',
+            'pet_name'                  => 'required|string|max:255',
+            'species'                   => 'required|string|max:255',
+            'breed'                     => 'nullable|string|max:255',
+            'color'                     => 'nullable|string|max:255',
+            'birthdate'                 => 'required|date|before:today',
+            'sex'                       => 'required|in:Male,Female,Neutered Male,Spayed Female',
+            'owner_name'                => 'required|string|max:255',
+            'owner_contact'             => 'nullable|string|max:20',
+            'address'                   => 'required|string',
+            'microchip_number'          => 'nullable|string|max:50',
+            'emergency_contact_name'    => 'nullable|string|max:255',
+            'emergency_contact_number'  => 'nullable|string|max:20',
+            'pet_photo'                 => 'nullable|image|max:4096',
         ]);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
 
-        $patient->update($request->all());
+        $data = $request->except(['_token', '_method', 'pet_photo']);
+
+        if ($request->hasFile('pet_photo')) {
+            // Delete old photo if exists
+            if ($patient->pet_photo_path) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($patient->pet_photo_path);
+            }
+            $data['pet_photo_path'] = $request->file('pet_photo')
+                ->store('pet-photos', 'public');
+        }
+
+        $patient->update($data);
 
         return redirect()
             ->route('patients.show', $patient)
-            ->with('success', 'Patient information updated successfully!');
+            ->with('success', 'Pet information updated successfully!');
     }
 
     /**

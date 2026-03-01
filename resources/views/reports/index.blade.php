@@ -408,7 +408,7 @@
 
         <div class="footer">
             <p><strong>Report generated on {{ now()->format('F d, Y h:i A') }}</strong></p>
-            <p>© 2026 CareSync - Health Center Management System</p>
+            <p>© 2026 PAWser - Pet Appointment and Workflow Service &amp; Records System</p>
         </div>
     </div>
 

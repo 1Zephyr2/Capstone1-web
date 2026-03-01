@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pets - Veterinary Clinic</title>
+    <title>Pets - PAWser</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
@@ -248,6 +248,7 @@
             color: #065f46;
             border: 1px solid #a7f3d0;
         }
+        /* ── Owner-grouped table ── */
         .patients-table {
             background: var(--card);
             border-radius: var(--radius);
@@ -264,51 +265,125 @@
             background: #f8fafc;
         }
         th {
-            padding: 16px 18px;
+            padding: 13px 20px;
             text-align: left;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
-            color: #475569;
+            color: #64748b;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
-            border-bottom: 1px solid var(--line);
+            letter-spacing: 0.9px;
+            border-bottom: 2px solid #e5e7eb;
         }
         td {
-            padding: 16px 18px;
-            border-top: 1px solid var(--line);
+            padding: 0;
             color: #1f2937;
         }
-        tr:hover {
-            background: #f8fafc;
+        /* Owner row */
+        .owner-row {
+            cursor: pointer;
+            transition: background 0.15s;
         }
-        .patient-id {
-            font-family: monospace;
-            color: #6b7280;
-            font-size: 13px;
+        .owner-row:hover { background: #eff6ff; }
+        .owner-row > td {
+            padding: 14px 20px;
+            border-top: 2px solid #e0e7ff;
+            background: #f5f8ff;
+            vertical-align: middle;
         }
-        .patient-name {
-            font-weight: 600;
-            color: #111827;
+        .owner-row:first-child > td { border-top: none; }
+        .owner-name-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
-        .badge {
-            padding: 5px 12px;
-            border-radius: 14px;
+        .owner-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 15px;
+            font-weight: 800;
+            flex-shrink: 0;
+            box-shadow: 0 2px 6px rgba(99,102,241,0.35);
+        }
+        .owner-label {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1e1b4b;
+        }
+        .pet-count-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #e0e7ff;
+            color: #4338ca;
+            border-radius: 20px;
+            padding: 4px 12px;
             font-size: 12px;
+            font-weight: 700;
+        }
+        .owner-contact {
+            font-size: 13px;
+            color: #6b7280;
+        }
+        .chevron-cell {
+            text-align: right;
+            width: 40px;
+        }
+        .chevron {
+            font-size: 16px;
+            color: #94a3b8;
+            transition: transform 0.22s ease;
+            display: inline-block;
+        }
+        .chevron.open { transform: rotate(180deg); }
+        /* Pet row */
+        .pet-row { display: none; }
+        .pet-row.visible { display: table-row; }
+        .pet-row > td {
+            padding: 11px 20px;
+            border-top: 1px solid #f1f5f9;
+            background: #fff;
+            vertical-align: middle;
+        }
+        .pet-row.visible:last-of-type > td {
+            border-bottom: 2px solid #e0e7ff;
+        }
+        .pet-name-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-left: 50px;
+        }
+        .pet-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #fce7f3, #fbcfe8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .pet-label { font-weight: 600; color: #111827; font-size: 14px; }
+        .pet-sub   { font-size: 12px; color: #9ca3af; margin-top: 1px; }
+        .badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
             font-weight: 700;
             letter-spacing: 0.3px;
         }
-        .badge-male {
-            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-            color: #1e40af;
-        }
-        .badge-female {
-            background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
-            color: #9f1239;
-        }
-        .actions {
-            display: flex;
-            gap: 8px;
-        }
+        .badge-male   { background: #dbeafe; color: #1e40af; }
+        .badge-female { background: #fce7f3; color: #9f1239; }
+        .visit-date { font-size: 13px; color: #374151; }
+        .no-visit   { font-size: 12px; color: #d1d5db; font-style: italic; }
+        .actions { display: flex; gap: 6px; }
         .empty-state {
             text-align: center;
             padding: 60px 20px;
@@ -961,6 +1036,58 @@
         .btn-download:hover {
             background: #2563eb;
         }
+
+        /* Add-pet row */
+        .add-pet-row > td {
+            background: linear-gradient(90deg, #f0fdf4 0%, #f8faff 100%);
+            border-top: 1px dashed #bbf7d0;
+            padding: 10px 20px 12px 52px !important;
+        }
+        .btn-add-pet {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background: white;
+            color: #15803d;
+            border: 1.5px solid #86efac;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 4px rgba(22,163,74,0.10);
+            letter-spacing: 0.01em;
+        }
+        .btn-add-pet .add-pet-icon {
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 13px;
+            flex-shrink: 0;
+            transition: transform 0.2s;
+        }
+        .btn-add-pet:hover {
+            background: #f0fdf4;
+            border-color: #4ade80;
+            color: #166534;
+            box-shadow: 0 4px 12px rgba(22,163,74,0.18);
+            transform: translateY(-1px);
+        }
+        .btn-add-pet:hover .add-pet-icon {
+            transform: rotate(90deg);
+        }
+        .add-pet-hint {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-left: 4px;
+            font-weight: 400;
+        }
     </style>
 </head>
 <body>
@@ -969,7 +1096,7 @@
         <div class="header">
             <div class="header-top">
                 <a href="{{ route('dashboard') }}" class="header-logo">
-                    <img src="/images/systemlogo.png" alt="VetCare" style="height: 35px; object-fit: contain;">
+                    <img src="/images/systemlogo.png" alt="PAWser" style="height: 35px; object-fit: contain;">
                 </a>
                 <h1>Pet List</h1>
             </div>
@@ -1005,48 +1132,94 @@
 
         <div class="patients-table">
             @if($patients->count() > 0)
+            @php $grouped = $patients->groupBy('owner_name'); @endphp
             <table>
                 <thead>
                     <tr>
-                        <th>Patient ID</th>
-                        <th>Name</th>
-                        <th>Age</th>
-                        <th>Sex</th>
-                        <th>Owner Contact</th>
-                        <th>Last Visit</th>
-                        <th>Actions</th>
+                        <th style="width:35%">Owner / Pet</th>
+                        <th style="width:15%">Details</th>
+                        <th style="width:18%">Last Visit</th>
+                        <th style="width:22%">Actions</th>
+                        <th style="width:10%"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($patients as $patient)
-                    <tr>
-                        <td class="patient-id">{{ $patient->patient_id }}</td>
-                        <td class="patient-name">{{ $patient->full_name }}</td>
-                        <td>{{ $patient->age }} yrs</td>
+                    @foreach($grouped as $ownerName => $ownerPets)
+                    @php $ownerId = 'owner-' . $loop->index; @endphp
+
+                    {{-- Owner row --}}
+                    <tr class="owner-row" onclick="toggleOwner('{{ $ownerId }}', this)">
                         <td>
-                            <span class="badge badge-{{ strtolower($patient->sex) }}">
-                                {{ $patient->sex }}
+                            <div class="owner-name-cell">
+                                <div class="owner-avatar">{{ strtoupper(substr($ownerName ?: 'U', 0, 1)) }}</div>
+                                <span class="owner-label">{{ $ownerName ?: 'Unknown Owner' }}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="pet-count-badge">
+                                <i class="bi bi-heart-fill" style="font-size:10px;"></i>
+                                {{ $ownerPets->count() }} {{ $ownerPets->count() === 1 ? 'pet' : 'pets' }}
                             </span>
                         </td>
-                        <td>{{ $patient->owner_contact ?: '-' }}</td>
+                        <td colspan="2">
+                            <span class="owner-contact">{{ $ownerPets->first()->owner_contact ?: 'No contact on file' }}</span>
+                        </td>
+                        <td class="chevron-cell">
+                            <i class="bi bi-chevron-down chevron" id="chevron-{{ $ownerId }}"></i>
+                        </td>
+                    </tr>
+
+                    {{-- Pet rows (hidden by default) --}}
+                    @foreach($ownerPets as $patient)
+                    <tr class="pet-row" data-owner="{{ $ownerId }}">
+                        <td>
+                            <div class="pet-name-cell">
+                                <div class="pet-icon">🐾</div>
+                                <div>
+                                    <div class="pet-label">{{ $patient->pet_name }}</div>
+                                    <div class="pet-sub">{{ $patient->species }}{{ $patient->breed ? ' · ' . $patient->breed : '' }}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge badge-{{ strtolower($patient->sex) }}">{{ $patient->sex }}</span>
+                            <span style="font-size:12px; color:#6b7280; margin-left:5px;">{{ $patient->age }} yrs</span>
+                        </td>
                         <td>
                             @if($patient->visits->first())
-                                {{ $patient->visits->first()->visit_date->format('M d, Y') }}
+                                <span class="visit-date">{{ $patient->visits->first()->visit_date->format('M d, Y') }}</span>
                             @else
-                                <span style="color: #9ca3af;">No visits</span>
+                                <span class="no-visit">No visits yet</span>
                             @endif
                         </td>
                         <td>
                             <div class="actions">
                                 <a href="{{ route('patients.show', $patient) }}" class="btn btn-info btn-sm">View</a>
-                                <button onclick="openVisitModal({{ $patient->id }}, '{{ $patient->full_name }}', '{{ $patient->patient_id }}', {{ $patient->age }}, '{{ $patient->sex }}')" class="btn btn-success btn-sm">+ Visit</button>
+                                <a href="{{ route('patients.edit', $patient) }}" class="btn btn-sm" style="background:#4f46e5;color:white;">Edit</a>
+                                <button onclick="event.stopPropagation(); openVisitModal({{ $patient->id }}, '{{ addslashes($patient->full_name) }}', {{ $patient->age }}, '{{ $patient->sex }}')" class="btn btn-success btn-sm">+ Visit</button>
                             </div>
                         </td>
+                        <td></td>
                     </tr>
+                    @endforeach
+
+                    {{-- Add Pet row for this owner --}}
+                    <tr class="pet-row add-pet-row" data-owner="{{ $ownerId }}">
+                        <td colspan="5">
+                            <button
+                                class="btn-add-pet"
+                                onclick="event.stopPropagation(); openRegistrationModal('{{ addslashes($ownerName) }}', '{{ $ownerPets->first()->owner_contact }}', '{{ addslashes($ownerPets->first()->address) }}')">
+                                <span class="add-pet-icon"><i class="bi bi-plus"></i></span>
+                                Add pet for <strong style="margin:0 2px;">{{ $ownerName ?: 'this owner' }}</strong>
+                                <span class="add-pet-hint">· new pet, same owner</span>
+                            </button>
+                        </td>
+                    </tr>
+
                     @endforeach
                 </tbody>
             </table>
-            
+
             <div class="pagination">
                 {{ $patients->links() }}
             </div>
@@ -1076,10 +1249,6 @@
                         <div class="value" id="quickPatientName"></div>
                     </div>
                     <div class="patient-quick-field">
-                        <label>Patient ID</label>
-                        <div class="value" id="quickPatientId"></div>
-                    </div>
-                    <div class="patient-quick-field">
                         <label>Age</label>
                         <div class="value" id="quickPatientAge"></div>
                     </div>
@@ -1090,61 +1259,34 @@
                     <div class="patient-quick-field">
                         <label>Contact Number</label>
                         <div class="value" id="quickPatientContact"></div>
-                    </div>showPatientQuickModal(${JSON.stringify(patient).replace(/"/g, '&quot;')})">
-                                <div class="name">${patient.name} <span style="color: #047857; font-size: 12px; font-weight: 500;">(${patient.patient_id})</span></div>
-                                <div class="details">${patient.age} yrs • ${patient.sex} ${patient.contact ? '• ' + patient.contact : ''}</div>
-                            </div>
-                        `).join('');
-                    }
-                    autocompleteResults.classList.add('show');
-                })
-                .catch(error => console.error('Search error:', error));
-            }, 300);
-        });
-
-        // Patient Quick View Modal Functions
-        function showPatientQuickModal(patient) {
-            document.getElementById('quickPatientName').textContent = patient.name;
-            document.getElementById('quickPatientId').textContent = patient.patient_id;
-            document.getElementById('quickPatientAge').textContent = `${patient.age} years old`;
-            document.getElementById('quickPatientSex').textContent = patient.sex;
-            document.getElementById('quickPatientContact').textContent = patient.contact || 'Not provided';
-            document.getElementById('quickPatientAddress').textContent = patient.address || 'Not provided';
-            
-            document.getElementById('quickViewFullBtn').href = `/patients/${patient.id}`;
-            document.getElementById('quickAddVisitBtn').href = `/visits/create?patient_id=${patient.id}`;
-            
-            document.getElementById('patientQuickModal').classList.add('active');
-            autocompleteResults.classList.remove('show');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closePatientQuickModal() {
-            document.getElementById('patientQuickModal').classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        // Close modal on outside click
-        document.getElementById('patientQuickModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closePatientQuickModal();
-            }
-        });
-
-        // Close modal on ESC key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closePatientQuickModal();
-            }<i class="bi bi-clipboard2-check"></i> View Full Record
-                </a>
-                <a id="quickAddVisitBtn" href="#" class="patient-quick-btn patient-quick-btn-secondary">
-                    <i class="bi bi-hospital"></i> Add Visit
-                </a>
+                    </div>
+                    <div class="patient-quick-field full">
+                        <label>Address</label>
+                        <div class="value" id="quickPatientAddress"></div>
+                    </div>
+                </div>
+                <div class="patient-quick-actions">
+                    <a id="quickViewFullBtn" href="#" class="patient-quick-btn patient-quick-btn-primary">
+                        <i class="bi bi-clipboard2-check"></i> View Full Record
+                    </a>
+                    <a id="quickAddVisitBtn" href="#" class="patient-quick-btn patient-quick-btn-secondary">
+                        <i class="bi bi-hospital"></i> Add Visit
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
+        // Owner-expand toggle
+        function toggleOwner(ownerId, row) {
+            const petRows = document.querySelectorAll(`.pet-row[data-owner="${ownerId}"]`);
+            const chevron = document.getElementById('chevron-' + ownerId);
+            const isOpen = chevron.classList.contains('open');
+            petRows.forEach(r => r.classList.toggle('visible', !isOpen));
+            chevron.classList.toggle('open', !isOpen);
+        }
+
         // Type-ahead search functionality
         const searchInput = document.getElementById('patientSearch');
         const autocompleteResults = document.getElementById('autocompleteResults');
@@ -1174,7 +1316,7 @@
                         autocompleteResults.innerHTML = patients.map(patient => `
                             <div class="autocomplete-item" onclick="window.location.href='/patients/${patient.id}'">
                                 <div class="name">${patient.name}</div>
-                                <div class="details">${patient.patient_id} • ${patient.age} yrs • ${patient.sex} ${patient.contact ? '• ' + patient.contact : ''}</div>
+                                <div class="details">${patient.age} yrs • ${patient.sex} ${patient.contact ? '• ' + patient.contact : ''}</div>
                             </div>
                         `).join('');
                     }
@@ -1204,14 +1346,13 @@
         }
 
         // Visit Modal Functions
-        function openVisitModal(patientId, patientName, patientIdCode, age, sex) {
+        function openVisitModal(patientId, patientName, age, sex) {
             document.getElementById('visitModal').classList.add('active');
             document.getElementById('modalPatientName').textContent = patientName;
-            document.getElementById('modalPatientId').textContent = patientIdCode;
             document.getElementById('modalPatientAge').textContent = age;
             document.getElementById('modalPatientSex').textContent = sex;
             document.getElementById('visitPatientId').value = patientId;
-            updateServiceSection(); // Update service section visibility
+            updateServiceSection();
         }
 
         function closeVisitModal() {
@@ -1236,13 +1377,10 @@
         // Handle service type changes to show/hide relevant sections
         function updateServiceSection() {
             const serviceTypeSelect = document.getElementById('modalServiceType');
-            const vaccinationSection = document.getElementById('modalVaccinationSection');
             const breedingSection = document.getElementById('modalBreedingSection');            
             const referralSection = document.getElementById('modalReferralSection');
             
             // Get all field elements
-            const vaccineName = document.getElementById('modalVaccineName');
-            const doseNumber = document.getElementById('modalDoseNumber');
             const referredTo = document.getElementById('modalReferredTo');
             const referralReason = document.getElementById('modalReferralReason');
             
@@ -1254,26 +1392,28 @@
             const serviceType = serviceTypeSelect.value;
             console.log('Service type changed to:', serviceType);
             
-            // Hide all sections and remove required attributes
-            [vaccinationSection, breedingSection, referralSection].forEach(function(section) {
+            const groomingServices = [
+                'Bath & Dry', 'Full Grooming', 'Haircut & Styling', 'Nail Trimming',
+                'Ear Cleaning', 'Teeth Brushing', 'De-shedding Treatment',
+                'Flea & Tick Treatment', 'Paw Treatment'
+            ];
+            const groomingSection = document.getElementById('modalGroomingSection');
+
+            // Hide all sections
+            [groomingSection, breedingSection, referralSection].forEach(function(section) {
                 if (section) section.style.display = 'none';
             });
-            
-            [vaccineName, doseNumber, referredTo, referralReason].forEach(function(field) {
+
+            [referredTo, referralReason].forEach(function(field) {
                 if (field) field.removeAttribute('required');
             });
-            
-            // Show relevant section and add required attributes
-            if (serviceType === 'Vaccination' && vaccinationSection) {
-                console.log('Showing vaccination section');
-                vaccinationSection.style.display = 'block';
-                if (vaccineName) vaccineName.setAttribute('required', 'required');
-                if (doseNumber) doseNumber.setAttribute('required', 'required');
+
+            // Show relevant section
+            if (groomingServices.includes(serviceType) && groomingSection) {
+                groomingSection.style.display = 'block';
             } else if (serviceType === 'Breeding Consultation' && breedingSection) {
-                console.log('Showing breeding section');
                 breedingSection.style.display = 'block';
             } else if (serviceType === 'Follow-up' && referralSection) {
-                console.log('Showing referral section');
                 referralSection.style.display = 'block';
                 if (referredTo) referredTo.setAttribute('required', 'required');
                 if (referralReason) referralReason.setAttribute('required', 'required');
@@ -1289,15 +1429,57 @@
             }
         });
         
+        // Quick View Modal Functions
+        function showPatientQuickModal(patient) {
+            document.getElementById('quickPatientName').textContent = patient.name;
+            document.getElementById('quickPatientAge').textContent = `${patient.age} years old`;
+            document.getElementById('quickPatientSex').textContent = patient.sex;
+            document.getElementById('quickPatientContact').textContent = patient.contact || 'Not provided';
+            document.getElementById('quickPatientAddress').textContent = patient.address || 'Not provided';
+            document.getElementById('quickViewFullBtn').href = `/patients/${patient.id}`;
+            document.getElementById('quickAddVisitBtn').href = `/visits/create?patient_id=${patient.id}`;
+            document.getElementById('patientQuickModal').classList.add('active');
+            autocompleteResults.classList.remove('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePatientQuickModal() {
+            document.getElementById('patientQuickModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.getElementById('patientQuickModal')?.addEventListener('click', function(e) {
+            if (e.target === this) closePatientQuickModal();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closePatientQuickModal();
+        });
+
         // Registration Modal Functions
-        function openRegistrationModal() {
+        function openRegistrationModal(ownerName = '', ownerContact = '', ownerAddress = '') {
             document.getElementById('registrationModal').classList.add('active');
+            if (ownerName) {
+                const field = document.getElementById('regOwnerName');
+                if (field) { field.value = ownerName; field.readOnly = true; field.style.background = '#f0fdf4'; }
+            }
+            if (ownerContact) {
+                const field = document.getElementById('regOwnerContact');
+                if (field) field.value = ownerContact;
+            }
+            if (ownerAddress) {
+                const field = document.getElementById('regAddress');
+                if (field) field.value = ownerAddress;
+            }
         }
 
         function closeRegistrationModal() {
             document.getElementById('registrationModal').classList.remove('active');
             document.getElementById('registrationForm').reset();
             document.getElementById('registrationAlert').style.display = 'none';
+            // Unlock owner name field
+            const field = document.getElementById('regOwnerName');
+            if (field) { field.readOnly = false; field.style.background = ''; }
         }
 
         // Handle registration form submission via AJAX
@@ -1348,7 +1530,7 @@
                     
                     // Re-enable submit button
                     submitBtn.disabled = false;
-                    submitBtn.textContent = 'Register Patient';
+                    submitBtn.textContent = 'Register Pet';
                 }
             })
             .catch(error => {
@@ -1359,7 +1541,7 @@
                 
                 // Re-enable submit button
                 submitBtn.disabled = false;
-                submitBtn.textContent = 'Register Patient';
+                submitBtn.textContent = 'Register Pet';
             });
         });
 
@@ -1515,13 +1697,12 @@
                 <div class="modal-patient-info">
                     <h3 id="modalPatientName"></h3>
                     <div class="modal-patient-details">
-                        <div><strong>ID:</strong> <span id="modalPatientId"></span></div>
                         <div><strong>Age:</strong> <span id="modalPatientAge"></span> years</div>
                         <div><strong>Sex:</strong> <span id="modalPatientSex"></span></div>
                     </div>
                 </div>
 
-                <form id="visitForm" action="{{ route('visits.store') }}" method="POST">
+                <form id="visitForm" action="{{ route('visits.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="patient_id" id="visitPatientId">
 
@@ -1532,18 +1713,23 @@
                             <label>Service Type <span style="color: #ef4444;">*</span></label>
                             <select name="service_type" id="modalServiceType" required onchange="updateServiceSection()">
                                 <option value="">Select service</option>
-                                <option value="Wellness Exam">Wellness Exam</option>
-                                <option value="Vaccination">Vaccination</option>
-                                <option value="Surgery">Surgery</option>
-                                <option value="Dental Cleaning">Dental Cleaning</option>
-                                <option value="Emergency">Emergency</option>
-                                <option value="Grooming">Grooming</option>
-                                <option value="Boarding Checkup">Boarding Checkup</option>
-                                <option value="Follow-up">Follow-up</option>
-                                <option value="Diagnostics">Diagnostics</option>
-                                <option value="Spay/Neuter">Spay/Neuter</option>
-                                <option value="Breeding Consultation">Breeding Consultation</option>
-                                <option value="Other">Other</option>
+                                <optgroup label="Grooming Services">
+                                    <option value="Bath & Dry">Bath &amp; Dry</option>
+                                    <option value="Full Grooming">Full Grooming</option>
+                                    <option value="Haircut & Styling">Haircut &amp; Styling</option>
+                                    <option value="Nail Trimming">Nail Trimming</option>
+                                    <option value="Ear Cleaning">Ear Cleaning</option>
+                                    <option value="Teeth Brushing">Teeth Brushing</option>
+                                    <option value="De-shedding Treatment">De-shedding Treatment</option>
+                                    <option value="Flea & Tick Treatment">Flea &amp; Tick Treatment</option>
+                                    <option value="Paw Treatment">Paw Treatment</option>
+                                </optgroup>
+                                <optgroup label="Other Services">
+                                    <option value="Breeding Consultation">Breeding Consultation</option>
+                                    <option value="Boarding Checkup">Boarding Checkup</option>
+                                    <option value="Follow-up">Follow-up</option>
+                                    <option value="Other">Other</option>
+                                </optgroup>
                             </select>
                         </div>
                         <div class="modal-form-group">
@@ -1552,60 +1738,59 @@
                         </div>
                     </div>
 
-                    <!-- Vaccination Section -->
-                    <div id="modalVaccinationSection" class="modal-service-section" style="display: none;">
-                        <div class="modal-section-title" style="background: #dbeafe; color: #1e40af; padding: 12px; border-radius: 6px; margin-bottom: 16px;">
-                            <i class="bi bi-shield-fill-check"></i> Vaccination Details
+                    <!-- Pet Profile Section (always visible) -->
+                    <div class="modal-section-title" style="margin-top: 16px;">Pet Profile</div>
+                    <div class="modal-form-row">
+                        <div class="modal-form-group">
+                            <label>Animal Size</label>
+                            <select name="animal_size">
+                                <option value="">Select size</option>
+                                <option value="Small">Small</option>
+                                <option value="Big">Big</option>
+                            </select>
+                        </div>
+                        <div class="modal-form-group">
+                            <label>Behavior</label>
+                            <select name="behavior">
+                                <option value="">Select behavior</option>
+                                <option value="Calm">Calm</option>
+                                <option value="Aggressive">Aggressive</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-form-row">
+                        <div class="modal-form-group">
+                            <label>Animal Picture</label>
+                            <input type="file" name="animal_photo" accept="image/*">
+                        </div>
+                    </div>
+
+                    <!-- Grooming Details Section -->
+                    <div id="modalGroomingSection" class="modal-service-section" style="display: none;">
+                        <div class="modal-section-title" style="background: #fce7f3; color: #9f1239; padding: 12px; border-radius: 6px; margin-bottom: 16px;">
+                            <i class="bi bi-scissors"></i> Grooming Service Details
                         </div>
                         <div class="modal-form-row">
                             <div class="modal-form-group">
-                                <label>Vaccine Name <span style="color: #ef4444;">*</span></label>
-                                <select name="vaccine_name" id="modalVaccineName">
-                                    <option value="">Select vaccine</option>
-                                    <optgroup label="Core Dog Vaccines">
-                                        <option value="Rabies">Rabies</option>
-                                        <option value="DHPP">DHPP (Distemper, Hepatitis, Parvovirus, Parainfluenza)</option>
-                                        <option value="Distemper">Distemper</option>
-                                        <option value="Parvovirus">Parvovirus</option>
-                                    </optgroup>
-                                    <optgroup label="Non-Core Dog Vaccines">
-                                        <option value="Bordetella">Bordetella (Kennel Cough)</option>
-                                        <option value="Leptospirosis">Leptospirosis</option>
-                                        <option value="Lyme">Lyme Disease</option>
-                                        <option value="Canine Influenza">Canine Influenza</option>
-                                    </optgroup>
-                                    <optgroup label="Core Cat Vaccines">
-                                        <option value="FVRCP">FVRCP (Feline Viral Rhinotracheitis, Calicivirus, Panleukopenia)</option>
-                                        <option value="Feline Rabies">Feline Rabies</option>
-                                    </optgroup>
-                                    <optgroup label="Non-Core Cat Vaccines">
-                                        <option value="FeLV">FeLV (Feline Leukemia)</option>
-                                        <option value="FIV">FIV (Feline Immunodeficiency Virus)</option>
-                                        <option value="Chlamydia">Chlamydia</option>
-                                    </optgroup>
-                                    <option value="Other">Other</option>
+                                <label>Coat Condition</label>
+                                <select name="coat_condition">
+                                    <option value="">Select condition</option>
+                                    <option value="Clean">Clean</option>
+                                    <option value="Matted">Matted</option>
+                                    <option value="Dirty">Dirty</option>
+                                    <option value="Shedding">Shedding</option>
+                                    <option value="Flea-Infested">Flea-Infested</option>
                                 </select>
                             </div>
                             <div class="modal-form-group">
-                                <label>Dose Number <span style="color: #ef4444;">*</span></label>
-                                <select name="dose_number" id="modalDoseNumber">
-                                    <option value="">Select dose</option>
-                                    <option value="1">1st Dose</option>
-                                    <option value="2">2nd Dose</option>
-                                    <option value="3">3rd Dose</option>
-                                    <option value="4">4th Dose</option>
-                                    <option value="Booster">Annual Booster</option>
-                                </select>
+                                <label>Groomer</label>
+                                <input type="text" name="groomer" placeholder="Name of groomer">
                             </div>
                         </div>
-                        <div class="modal-form-row">
+                        <div class="modal-form-row full">
                             <div class="modal-form-group">
-                                <label>Batch/Lot Number</label>
-                                <input type="text" name="batch_number" placeholder="e.g., LOT123456">
-                            </div>
-                            <div class="modal-form-group">
-                                <label>Next Dose Due Date</label>
-                                <input type="date" name="next_dose_date" min="{{ date('Y-m-d') }}">
+                                <label>Grooming Notes</label>
+                                <textarea name="grooming_notes" placeholder="Special instructions, coat issues, client requests..."></textarea>
                             </div>
                         </div>
                     </div>
@@ -1649,33 +1834,7 @@
                         </div>
                     </div>
 
-                    <!-- Spay/Neuter Section -->
-                    <div id="modalFamilyPlanningSection" class="modal-service-section" style="display: none;">
-                        <div class="modal-section-title" style="background: #fef3c7; color: #78350f; padding: 12px; border-radius: 6px; margin-bottom: 16px;">
-                            Spay/Neuter Details
-                        </div>
-                        <div class="modal-form-row">
-                            <div class="modal-form-group">
-                                <label>Procedure Type <span style="color: #ef4444;">*</span></label>
-                                <select name="fp_method" id="modalFpMethod">
-                                    <option value="">Select procedure</option>
-                                    <option value="Spay (Female)">Spay (Female)</option>
-                                    <option value="Neuter (Male)">Neuter (Male)</option>
-                                    <option value="Not Applicable">Not Applicable</option>
-                                </select>
-                            </div>
-                            <div class="modal-form-group">
-                                <label>Procedure Date</label>
-                                <input type="date" name="fp_quantity" max="{{ date('Y-m-d') }}">
-                            </div>
-                        </div>
-                        <div class="modal-form-row full">
-                            <div class="modal-form-group">
-                                <label>Follow-up Date</label>
-                                <input type="date" name="fp_followup_date" min="{{ date('Y-m-d') }}">
-                            </div>
-                        </div>
-                    </div>
+
 
                     <!-- Referral Section -->
                     <div id="modalReferralSection" class="modal-service-section" style="display: none;">
@@ -1779,7 +1938,7 @@
                     <ul>
                         <li><strong>Format:</strong> CSV (Comma-separated values)</li>
                         <li><strong>Required Columns:</strong> first_name, last_name, birthdate, sex, address</li>
-                        <li><strong>Optional Columns:</strong> middle_name, contact_number, microchip_number</li>
+                        <li><strong>Optional Columns:</strong> contact_number</li>
                         <li><strong>Date Format:</strong> YYYY-MM-DD (e.g., 1990-05-15)</li>
                         <li><strong>Sex Values:</strong> Male or Female</li>
                     </ul>
@@ -1864,86 +2023,102 @@
             <div class="registration-modal-body">
                 <div id="registrationAlert" class="alert-modal" style="display: none;"></div>
                 
-                <p style="color: #6b7280; margin-bottom: 20px; font-size: 14px;">Fill in essential patient information. Patient ID will be auto-generated.</p>
+                <p style="color: #6b7280; margin-bottom: 20px; font-size: 14px;">Fill in essential patient information.</p>
 
                 <form id="registrationForm">
                     @csrf
 
-                    <!-- Basic Information -->
-                    <div class="modal-section-title">Basic Information</div>
-                    
+                    <!-- Pet Information -->
+                    <div class="modal-section-title">Pet Information</div>
+
                     <div class="modal-form-row">
                         <div class="modal-form-group">
-                            <label>First Name <span class="required">*</span></label>
-                            <input type="text" name="first_name" required>
+                            <label>Pet Name <span class="required">*</span></label>
+                            <input type="text" name="pet_name" required placeholder="e.g. Buddy">
                         </div>
                         <div class="modal-form-group">
-                            <label>Last Name <span class="required">*</span></label>
-                            <input type="text" name="last_name" required>
+                            <label>Species <span class="required">*</span></label>
+                            <select name="species" required>
+                                <option value="">Select species</option>
+                                <option value="Dog">Dog</option>
+                                <option value="Cat">Cat</option>
+                                <option value="Rabbit">Rabbit</option>
+                                <option value="Bird">Bird</option>
+                                <option value="Hamster">Hamster</option>
+                                <option value="Guinea Pig">Guinea Pig</option>
+                                <option value="Fish">Fish</option>
+                                <option value="Reptile">Reptile</option>
+                                <option value="Other">Other</option>
+                            </select>
                         </div>
                     </div>
 
                     <div class="modal-form-row">
                         <div class="modal-form-group">
-                            <label>Middle Name</label>
-                            <input type="text" name="middle_name">
-                            <span class="hint">Optional</span>
+                            <label>Breed</label>
+                            <input type="text" name="breed" placeholder="e.g. Labrador">
                         </div>
                         <div class="modal-form-group">
-                            <label>Birthdate <span class="required">*</span></label>
+                            <label>Color / Markings</label>
+                            <input type="text" name="color" placeholder="e.g. Golden, white paws">
+                        </div>
+                    </div>
+
+                    <div class="modal-form-row">
+                        <div class="modal-form-group">
+                            <label>Date of Birth <span class="required">*</span></label>
                             <input type="date" name="birthdate" required max="{{ date('Y-m-d') }}">
-                            <span class="hint">Age will be auto-calculated</span>
                         </div>
-                    </div>
-
-                    <div class="modal-form-row">
                         <div class="modal-form-group">
                             <label>Sex <span class="required">*</span></label>
                             <select name="sex" required>
                                 <option value="">Select</option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
+                                <option value="Neutered Male">Neutered Male</option>
+                                <option value="Spayed Female">Spayed Female</option>
                             </select>
+                        </div>
+                    </div>
+
+                    <!-- Owner Information -->
+                    <div class="modal-section-title" style="margin-top:16px;">Owner Information</div>
+
+                    <div class="modal-form-row">
+                        <div class="modal-form-group">
+                            <label>Owner Name <span class="required">*</span></label>
+                            <input type="text" id="regOwnerName" name="owner_name" required placeholder="Full name of owner">
                         </div>
                         <div class="modal-form-group">
                             <label>Contact Number</label>
-                            <input type="tel" name="contact_number" placeholder="09XX-XXX-XXXX">
+                            <input type="tel" id="regOwnerContact" name="owner_contact" placeholder="09XX-XXX-XXXX">
                         </div>
                     </div>
 
                     <div class="modal-form-row full">
                         <div class="modal-form-group">
                             <label>Address <span class="required">*</span></label>
-                            <textarea name="address" required></textarea>
-                            <span class="hint">House No., Street, Barangay, City</span>
+                            <textarea id="regAddress" name="address" required placeholder="House No., Street, Barangay, City"></textarea>
                         </div>
                     </div>
 
-                    <!-- Optional Information -->
-                    <div class="modal-section-title">Additional Information (Optional)</div>
-                    <div class="modal-optional-section">
-                        <div class="modal-form-row">
-                            <div class="modal-form-group">
-                                <label>Microchip Number</label>
-                                <input type="text" name="philhealth_number">
-                            </div>
-                            <div class="modal-form-group">
-                                <label>Emergency Contact Name</label>
-                                <input type="text" name="emergency_contact_name">
-                            </div>
+                    <!-- Optional -->
+                    <div class="modal-section-title" style="margin-top:16px;">Emergency Contact <span style="font-weight:400;color:#9ca3af;">(Optional)</span></div>
+                    <div class="modal-form-row">
+                        <div class="modal-form-group">
+                            <label>Emergency Contact Name</label>
+                            <input type="text" name="emergency_contact_name">
                         </div>
-                        <div class="modal-form-row">
-                            <div class="modal-form-group">
-                                <label>Emergency Contact Number</label>
-                                <input type="tel" name="emergency_contact_number">
-                            </div>
+                        <div class="modal-form-group">
+                            <label>Emergency Contact Number</label>
+                            <input type="tel" name="emergency_contact_number">
                         </div>
                     </div>
 
                     <!-- Actions -->
                     <div class="registration-modal-actions">
                         <button type="button" class="btn-modal-cancel" onclick="closeRegistrationModal()">Cancel</button>
-                        <button type="submit" class="btn-modal-submit">Register Patient</button>
+                        <button type="submit" class="btn-modal-submit">Register Pet</button>
                     </div>
                 </form>
             </div>

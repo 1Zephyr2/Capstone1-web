@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Patient;
 use App\Models\Visit;
-use App\Models\Immunization;
-use App\Models\BreedingRecord;
+use App\Models\Appointment;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -13,43 +12,63 @@ class AutomationController extends Controller
 {
     public function index()
     {
-        // Detect incomplete patient records
-        $incompleteRecords = Patient::whereNull('microchip_number')
-            ->orWhereNull('owner_contact')
+        // ── Incomplete pet records ────────────────────────────────────────
+        // Flag pets missing owner contact or owner name (microchip removed)
+        $incompleteRecords = Patient::where(function ($q) {
+                $q->whereNull('owner_contact')
+                  ->orWhere('owner_contact', '')
+                  ->orWhereNull('owner_name')
+                  ->orWhere('owner_name', '');
+            })
+            ->limit(15)
+            ->get();
+
+        // ── Today's appointments ──────────────────────────────────────────
+        $todayAppointments = Appointment::with('patient')
+            ->whereDate('appointment_date', Carbon::today())
+            ->orderBy('appointment_time', 'asc')
+            ->get();
+
+        // ── Upcoming appointments (next 7 days, excluding today) ──────────
+        $upcomingAppointments = Appointment::with('patient')
+            ->whereDate('appointment_date', '>', Carbon::today())
+            ->whereDate('appointment_date', '<=', Carbon::today()->addDays(7))
+            ->where('status', 'scheduled')
+            ->orderBy('appointment_date', 'asc')
+            ->orderBy('appointment_time', 'asc')
             ->limit(10)
             ->get();
 
-        // Overdue immunizations (if any exist)
-        $overdueImmunizations = Immunization::where('next_dose_date', '<', Carbon::now())
-            ->whereNull('completed_at')
-            ->with('patient')
+        // ── Missed / no-show appointments (last 7 days) ───────────────────
+        $missedAppointments = Appointment::with('patient')
+            ->where('status', 'no-show')
+            ->whereDate('appointment_date', '>=', Carbon::today()->subDays(7))
+            ->orderBy('appointment_date', 'desc')
             ->limit(10)
             ->get();
 
-        // High-risk breeding patients
-        $highRiskBreeding = BreedingRecord::where(function($query) {
-            $query->whereNotNull('risk_factors')
-                  ->orWhere('referred', true);
-        })->with('patient')->limit(10)->get();
-
-        // Recent visit summary
+        // ── Recent visits ─────────────────────────────────────────────────
         $recentVisits = Visit::with('patient')
             ->orderBy('visit_date', 'desc')
             ->limit(5)
             ->get();
 
-        // Quick stats
+        // ── Quick stats ───────────────────────────────────────────────────
         $stats = [
-            'total_patients' => Patient::count(),
-            'visits_this_week' => Visit::where('visit_date', '>=', Carbon::now()->startOfWeek())->count(),
-            'pending_immunizations' => Immunization::whereNull('completed_at')->count(),
-            'active_breeding' => BreedingRecord::whereDate('created_at', '>=', Carbon::now()->subMonths(3))->count(),
+            'total_patients'        => Patient::count(),
+            'visits_this_week'      => Visit::where('visit_date', '>=', Carbon::now()->startOfWeek())->count(),
+            'today_appointments'    => $todayAppointments->count(),
+            'upcoming_week'         => $upcomingAppointments->count(),
+            'no_shows'              => Appointment::where('status', 'no-show')
+                                          ->whereDate('appointment_date', '>=', Carbon::today()->subDays(7))
+                                          ->count(),
         ];
 
         return view('automation-support', compact(
             'incompleteRecords',
-            'overdueImmunizations',
-            'highRiskBreeding',
+            'todayAppointments',
+            'upcomingAppointments',
+            'missedAppointments',
             'recentVisits',
             'stats'
         ));

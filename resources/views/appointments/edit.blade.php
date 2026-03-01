@@ -69,18 +69,23 @@
                         <label for="service_type">Service Type <span class="required">*</span></label>
                         <select name="service_type" id="service_type" class="form-control" required>
                             <option value="">Select Service</option>
-                            <option value="Wellness Exam" {{ old('service_type', $appointment->service_type) == 'Wellness Exam' ? 'selected' : '' }}>Wellness Exam</option>
-                            <option value="Vaccination" {{ old('service_type', $appointment->service_type) == 'Vaccination' ? 'selected' : '' }}>Vaccination</option>
-                            <option value="Surgery" {{ old('service_type', $appointment->service_type) == 'Surgery' ? 'selected' : '' }}>Surgery</option>
-                            <option value="Dental Cleaning" {{ old('service_type', $appointment->service_type) == 'Dental Cleaning' ? 'selected' : '' }}>Dental Cleaning</option>
-                            <option value="Emergency" {{ old('service_type', $appointment->service_type) == 'Emergency' ? 'selected' : '' }}>Emergency</option>
-                            <option value="Grooming" {{ old('service_type', $appointment->service_type) == 'Grooming' ? 'selected' : '' }}>Grooming</option>
-                            <option value="Spay/Neuter" {{ old('service_type', $appointment->service_type) == 'Spay/Neuter' ? 'selected' : '' }}>Spay/Neuter</option>
-                            <option value="Breeding Consultation" {{ old('service_type', $appointment->service_type) == 'Breeding Consultation' ? 'selected' : '' }}>Breeding Consultation</option>
-                            <option value="Boarding Checkup" {{ old('service_type', $appointment->service_type) == 'Boarding Checkup' ? 'selected' : '' }}>Boarding Checkup</option>
-                            <option value="Follow-up" {{ old('service_type', $appointment->service_type) == 'Follow-up' ? 'selected' : '' }}>Follow-up</option>
-                            <option value="Diagnostics" {{ old('service_type', $appointment->service_type) == 'Diagnostics' ? 'selected' : '' }}>Diagnostics</option>
-                            <option value="Other" {{ old('service_type', $appointment->service_type) == 'Other' ? 'selected' : '' }}>Other</option>
+                            <optgroup label="Grooming Services">
+                                <option value="Bath & Dry" {{ old('service_type', $appointment->service_type) == 'Bath & Dry' ? 'selected' : '' }}>Bath &amp; Dry</option>
+                                <option value="Full Grooming" {{ old('service_type', $appointment->service_type) == 'Full Grooming' ? 'selected' : '' }}>Full Grooming</option>
+                                <option value="Haircut & Styling" {{ old('service_type', $appointment->service_type) == 'Haircut & Styling' ? 'selected' : '' }}>Haircut &amp; Styling</option>
+                                <option value="Nail Trimming" {{ old('service_type', $appointment->service_type) == 'Nail Trimming' ? 'selected' : '' }}>Nail Trimming</option>
+                                <option value="Ear Cleaning" {{ old('service_type', $appointment->service_type) == 'Ear Cleaning' ? 'selected' : '' }}>Ear Cleaning</option>
+                                <option value="Teeth Brushing" {{ old('service_type', $appointment->service_type) == 'Teeth Brushing' ? 'selected' : '' }}>Teeth Brushing</option>
+                                <option value="De-shedding Treatment" {{ old('service_type', $appointment->service_type) == 'De-shedding Treatment' ? 'selected' : '' }}>De-shedding Treatment</option>
+                                <option value="Flea & Tick Treatment" {{ old('service_type', $appointment->service_type) == 'Flea & Tick Treatment' ? 'selected' : '' }}>Flea &amp; Tick Treatment</option>
+                                <option value="Paw Treatment" {{ old('service_type', $appointment->service_type) == 'Paw Treatment' ? 'selected' : '' }}>Paw Treatment</option>
+                            </optgroup>
+                            <optgroup label="Other Services">
+                                <option value="Breeding Consultation" {{ old('service_type', $appointment->service_type) == 'Breeding Consultation' ? 'selected' : '' }}>Breeding Consultation</option>
+                                <option value="Boarding Checkup" {{ old('service_type', $appointment->service_type) == 'Boarding Checkup' ? 'selected' : '' }}>Boarding Checkup</option>
+                                <option value="Follow-up" {{ old('service_type', $appointment->service_type) == 'Follow-up' ? 'selected' : '' }}>Follow-up</option>
+                                <option value="Other" {{ old('service_type', $appointment->service_type) == 'Other' ? 'selected' : '' }}>Other</option>
+                            </optgroup>
                         </select>
                     </div>
                     <div class="form-group">
@@ -114,6 +119,28 @@
                     <div class="form-group full-width">
                         <label for="notes">Notes</label>
                         <textarea name="notes" id="notes" class="form-control" rows="3">{{ old('notes', $appointment->notes) }}</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-card">
+            <div class="card-header">
+                <h2><i class="bi bi-person-lines-fill"></i> Pickup / Secondary Contact <span style="font-size:13px;font-weight:400;color:#6b7280;">(Optional — if someone else picks up the pet)</span></h2>
+            </div>
+            <div class="card-body" style="background:#fffbeb;">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="secondary_contact_name">Contact Person Name</label>
+                        <input type="text" name="secondary_contact_name" id="secondary_contact_name" class="form-control"
+                               placeholder="e.g. Maria Santos"
+                               value="{{ old('secondary_contact_name', $appointment->secondary_contact_name) }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="secondary_contact_number">Contact Number</label>
+                        <input type="tel" name="secondary_contact_number" id="secondary_contact_number" class="form-control"
+                               placeholder="09XX-XXX-XXXX"
+                               value="{{ old('secondary_contact_number', $appointment->secondary_contact_number) }}">
                     </div>
                 </div>
             </div>

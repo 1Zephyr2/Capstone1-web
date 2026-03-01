@@ -22,6 +22,7 @@ class Patient extends Model
         'owner_contact',
         'address',
         'microchip_number',
+        'pet_photo_path',
         'emergency_contact_name',
         'emergency_contact_number',
     ];

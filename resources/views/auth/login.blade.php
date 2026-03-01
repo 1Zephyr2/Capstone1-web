@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VetCare - Login</title>
+    <title>PAWSER - Login</title>
     <style>
         * {
             margin: 0;
@@ -264,9 +264,9 @@
         <div class="login-left">
             <div class="login-container">
                 <div class="login-header">
-                    <div class="logo"><img src="/images/systemlogo.png" alt="VetCare Logo"></div>
-                    <h1>VetCare</h1>
-                    <p>Veterinary Clinic Management System</p>
+                    <div class="logo"><img src="/images/systemlogo.png" alt="PAWSER Logo"></div>
+                    <h1>PAWSER</h1>
+                    <p>Pet Appointment and Workflow Service &amp; Records System</p>
                 </div>
 
                 @if ($errors->any())
@@ -324,7 +324,7 @@
                 </form>
 
                 <div class="footer-text">
-                    &copy; {{ date('Y') }} VetCare. Designed for Veterinary Clinic Staff.
+                    &copy; {{ date('Y') }} PAWSER. Designed for Veterinary Clinic Staff.
                 </div>
             </div>
         </div>
@@ -332,7 +332,7 @@
         <!-- Right Side - Background -->
         <div class="login-right">
             <div class="background-content">
-                <h2>Welcome to VetCare</h2>
+                <h2>Welcome to PAWSER</h2>
                 <p>Streamlining veterinary clinic operations<br>
                 for better pet care and efficient medical record management.</p>
             </div>

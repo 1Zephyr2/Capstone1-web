@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Settings - VetCare Admin</title>
+    <title>System Settings - PAWser Admin</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
@@ -287,7 +287,7 @@
                 <div class="logo-icon">
                     <i class="bi bi-shield-lock"></i>
                 </div>
-                <div class="logo-text">VetCare</div>
+                <div class="logo-text">PAWser</div>
             </a>
             <div class="sidebar-subtitle">ADMIN PANEL</div>
         </div>
@@ -363,7 +363,7 @@
             <h2 class="card-title">System Information</h2>
             <div class="info-grid">
                 <div class="info-label">Application Name:</div>
-                <div class="info-value">VetCare - Veterinary Management System</div>
+                <div class="info-value">PAWser - Pet Appointment and Workflow Service &amp; Records System</div>
 
                 <div class="info-label">Version:</div>
                 <div class="info-value">1.0.0</div>

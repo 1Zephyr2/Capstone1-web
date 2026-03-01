@@ -4,11 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Patient;
 use App\Models\Visit;
-use App\Models\Immunization;
-use App\Models\BreedingRecord;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -28,9 +27,6 @@ class DashboardController extends Controller
         // Get total patients count
         $totalPatients = Patient::count();
         
-        // Get total immunizations count
-        $totalImmunizations = Immunization::count();
-        
         // Get yesterday's patient count for comparison
         $yesterdayPatients = Visit::whereDate('visit_date', today()->subDay())
             ->distinct('patient_id')
@@ -47,12 +43,7 @@ class DashboardController extends Controller
         $prevMonthEndDate = $monthStartDate->subDay();
         $prevMonthPatients = Patient::whereDate('created_at', '<', $monthStartDate)->count();
         
-        // Calculate month percentage change
-        $monthChangePercent = $prevMonthPatients > 0
-            ? round((($monthPatients - count(Patient::whereDateBetween('created_at', [$prevMonthEndDate->subMonth()->startOfMonth(), $prevMonthEndDate])) ?? 1) / (count(Patient::whereDateBetween('created_at', [$prevMonthEndDate->subMonth()->startOfMonth(), $prevMonthEndDate])) ?? 1)) * 100)
-            : ($monthPatients > 0 ? 100 : 0);
-        
-        // Simpler approach for month comparison
+        // Month comparison
         $thisMonthNew = Patient::whereDate('created_at', '>=', today()->startOfMonth())->count();
         $lastMonthNew = Patient::whereDate('created_at', '>=', today()->subMonth()->startOfMonth())
             ->whereDate('created_at', '<', today()->startOfMonth())->count();
@@ -66,67 +57,97 @@ class DashboardController extends Controller
             now()->endOfWeek()
         ])->count();
         
-        // Get overdue immunizations count
-        $overdueImmunizations = Immunization::where('next_dose_date', '<', now())
-            ->where('status', '!=', 'completed')
-            ->count();
-        
-        // Get active breeding records count
-        $activeBreeding = BreedingRecord::whereHas('patient', function ($query) {
-            $query->whereNotNull('id');
-        })->count();
-        
-        // Get incomplete patient records
+        // Get incomplete patient records (missing owner name or contact)
         $incompleteRecords = Patient::where(function ($query) {
-            $query->whereNull('microchip_number')
-                  ->orWhereNull('owner_contact');
+            $query->whereNull('owner_contact')
+                  ->orWhere('owner_contact', '')
+                  ->orWhereNull('owner_name')
+                  ->orWhere('owner_name', '');
         })->count();
-        
-        // Get high-risk breeding cases
-        $highRiskBreeding = BreedingRecord::where(function ($query) {
-            $query->whereNotNull('risk_factors')
-                  ->orWhere('referred', true);
-        })->count();
-        
+
+        // Today's appointments
+        $todayAppointments = Appointment::whereDate('appointment_date', now()->toDateString())
+            ->where('status', 'scheduled')
+            ->count();
+
+        // No-shows in the last 7 days
+        $noShowAppointments = Appointment::where('status', 'no-show')
+            ->whereDate('appointment_date', '>=', now()->subDays(7)->toDateString())
+            ->count();
+
         // Total alerts count
-        $totalAlerts = $incompleteRecords + $overdueImmunizations + $highRiskBreeding;
-        
-        // Get top alerts with details (limit to 3-5)
+        $totalAlerts = $incompleteRecords + $todayAppointments + $noShowAppointments;
+
+        // Top alerts for dashboard (limit 4)
         $topAlerts = [];
-        
+
+        if ($todayAppointments > 0) {
+            $topAlerts[] = [
+                'type'    => 'warning',
+                'icon'    => 'bi-calendar-check-fill',
+                'title'   => "Today's Appointments",
+                'count'   => $todayAppointments,
+                'message' => "$todayAppointments appointment(s) scheduled for today",
+            ];
+        }
+
+        if ($noShowAppointments > 0) {
+            $topAlerts[] = [
+                'type'    => 'danger',
+                'icon'    => 'bi-person-x-fill',
+                'title'   => 'No-Shows (7 Days)',
+                'count'   => $noShowAppointments,
+                'message' => "$noShowAppointments appointment(s) marked as no-show",
+            ];
+        }
+
         if ($incompleteRecords > 0) {
             $topAlerts[] = [
-                'type' => 'warning',
-                'icon' => 'bi-exclamation-triangle-fill',
-                'title' => 'Incomplete Records',
-                'count' => $incompleteRecords,
-                'message' => "$incompleteRecords patient(s) with missing information"
+                'type'    => 'warning',
+                'icon'    => 'bi-exclamation-triangle-fill',
+                'title'   => 'Incomplete Pet Records',
+                'count'   => $incompleteRecords,
+                'message' => "$incompleteRecords pet record(s) missing owner info",
             ];
         }
+
+        // Limit to top 4 alerts for dashboard
+        $topAlerts = array_slice($topAlerts, 0, 4);
         
-        if ($overdueImmunizations > 0) {
-            $topAlerts[] = [
-                'type' => 'danger',
-                'icon' => 'bi-shield-fill-exclamation',
-                'title' => 'Overdue Immunizations',
-                'count' => $overdueImmunizations,
-                'message' => "$overdueImmunizations immunization(s) overdue"
-            ];
-        }
-        
-        if ($highRiskBreeding > 0) {
-            $topAlerts[] = [
-                'type' => 'danger',
-                'icon' => 'bi-exclamation-triangle-fill',
-                'title' => 'High-Risk Breeding',
-                'count' => $highRiskBreeding,
-                'message' => "$highRiskBreeding breeding case(s) require attention"
-            ];
-        }
-        
-        // Limit to top 3 alerts for dashboard
-        $topAlerts = array_slice($topAlerts, 0, 3);
-        
+        // ── Automation panel data ─────────────────────────────────────────
+        $automationIncomplete = Patient::where(function ($q) {
+                $q->whereNull('owner_contact')->orWhere('owner_contact', '')
+                  ->orWhereNull('owner_name')->orWhere('owner_name', '');
+            })->limit(15)->get();
+
+        $automationToday = Appointment::with('patient')
+            ->whereDate('appointment_date', Carbon::today())
+            ->orderBy('appointment_time', 'asc')
+            ->get();
+
+        $automationUpcoming = Appointment::with('patient')
+            ->whereDate('appointment_date', '>', Carbon::today())
+            ->whereDate('appointment_date', '<=', Carbon::today()->addDays(7))
+            ->where('status', 'scheduled')
+            ->orderBy('appointment_date', 'asc')
+            ->orderBy('appointment_time', 'asc')
+            ->limit(10)->get();
+
+        $automationMissed = Appointment::with('patient')
+            ->where('status', 'no-show')
+            ->whereDate('appointment_date', '>=', Carbon::today()->subDays(7))
+            ->orderBy('appointment_date', 'desc')
+            ->limit(10)->get();
+
+        $automationStats = [
+            'total_patients'     => $totalPatients,
+            'today_appointments' => $automationToday->count(),
+            'upcoming_week'      => $automationUpcoming->count(),
+            'no_shows'           => Appointment::where('status', 'no-show')
+                                        ->whereDate('appointment_date', '>=', Carbon::today()->subDays(7))->count(),
+            'visits_this_week'   => $weeklyVisits,
+        ];
+
         // Get appointments for calendar (scheduled appointments only)
         $appointments = Appointment::with('patient')
             ->where('status', '!=', 'cancelled')
@@ -150,15 +171,17 @@ class DashboardController extends Controller
         return view('dashboard', compact(
             'todayPatients',
             'totalPatients',
-            'totalImmunizations',
             'patientChangePercent',
             'monthChangePercent',
             'weeklyVisits',
-            'overdueImmunizations',
-            'activeBreeding',
             'totalAlerts',
             'topAlerts',
-            'appointments'
+            'appointments',
+            'automationIncomplete',
+            'automationToday',
+            'automationUpcoming',
+            'automationMissed',
+            'automationStats'
         ));
     }
 }

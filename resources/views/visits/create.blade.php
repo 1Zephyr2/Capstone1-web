@@ -265,7 +265,7 @@
         </div>
         @endif
 
-        <form action="{{ route('visits.store') }}" method="POST">
+        <form action="{{ route('visits.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="patient_id" value="{{ $patient ? $patient->id : old('patient_id') }}">
 
@@ -277,18 +277,23 @@
                     <label>Service Type <span class="required">*</span></label>
                     <select name="service_type" id="serviceType" required>
                         <option value="">Select service</option>
-                        <option value="Wellness Exam">Wellness Exam</option>
-                        <option value="Vaccination">Vaccination</option>
-                        <option value="Surgery">Surgery</option>
-                        <option value="Dental Cleaning">Dental Cleaning</option>
-                        <option value="Emergency">Emergency</option>
-                        <option value="Grooming">Grooming</option>
-                        <option value="Boarding Checkup">Boarding Checkup</option>
-                        <option value="Follow-up">Follow-up</option>
-                        <option value="Diagnostics">Diagnostics</option>
-                        <option value="Spay/Neuter">Spay/Neuter</option>
-                        <option value="Breeding Consultation">Breeding Consultation</option>
-                        <option value="Other">Other</option>
+                        <optgroup label="Grooming Services">
+                            <option value="Bath & Dry">Bath &amp; Dry</option>
+                            <option value="Full Grooming">Full Grooming</option>
+                            <option value="Haircut & Styling">Haircut &amp; Styling</option>
+                            <option value="Nail Trimming">Nail Trimming</option>
+                            <option value="Ear Cleaning">Ear Cleaning</option>
+                            <option value="Teeth Brushing">Teeth Brushing</option>
+                            <option value="De-shedding Treatment">De-shedding Treatment</option>
+                            <option value="Flea & Tick Treatment">Flea &amp; Tick Treatment</option>
+                            <option value="Paw Treatment">Paw Treatment</option>
+                        </optgroup>
+                        <optgroup label="Other Services">
+                            <option value="Breeding Consultation">Breeding Consultation</option>
+                            <option value="Boarding Checkup">Boarding Checkup</option>
+                            <option value="Follow-up">Follow-up</option>
+                            <option value="Other">Other</option>
+                        </optgroup>
                     </select>
                 </div>
                 <div class="form-group">
@@ -298,59 +303,58 @@
                 </div>
             </div>
 
-            <!-- Vaccination Section -->
-            <div id="vaccinationSection" class="service-section">
-                <h3><i class="bi bi-shield-fill-check"></i> Vaccination Details</h3>
+            <!-- Pet Profile Section (always visible) -->
+            <div class="section-title">Pet Profile</div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Animal Size</label>
+                    <select name="animal_size">
+                        <option value="">Select size</option>
+                        <option value="Small">Small</option>
+                        <option value="Big">Big</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Behavior</label>
+                    <select name="behavior">
+                        <option value="">Select behavior</option>
+                        <option value="Calm">Calm</option>
+                        <option value="Aggressive">Aggressive</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Animal Picture</label>
+                    <input type="file" name="animal_photo" accept="image/*">
+                    <span class="hint">Upload pet/animal photo (optional)</span>
+                </div>
+            </div>
+
+            <!-- Grooming Service Section -->
+            <div id="groomingSection" class="service-section">
+                <h3><i class="bi bi-scissors"></i> Grooming Service Details</h3>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Vaccine Name <span class="required">*</span></label>
-                        <select name="vaccine_name" id="vaccineName">
-                            <option value="">Select vaccine</option>
-                            <optgroup label="Core Dog Vaccines">
-                                <option value="Rabies">Rabies</option>
-                                <option value="DHPP">DHPP (Distemper, Hepatitis, Parvovirus, Parainfluenza)</option>
-                                <option value="Distemper">Distemper</option>
-                                <option value="Parvovirus">Parvovirus</option>
-                            </optgroup>
-                            <optgroup label="Non-Core Dog Vaccines">
-                                <option value="Bordetella">Bordetella (Kennel Cough)</option>
-                                <option value="Leptospirosis">Leptospirosis</option>
-                                <option value="Lyme">Lyme Disease</option>
-                                <option value="Canine Influenza">Canine Influenza</option>
-                            </optgroup>
-                            <optgroup label="Core Cat Vaccines">
-                                <option value="FVRCP">FVRCP (Feline Viral Rhinotracheitis, Calicivirus, Panleukopenia)</option>
-                                <option value="Feline Rabies">Feline Rabies</option>
-                            </optgroup>
-                            <optgroup label="Non-Core Cat Vaccines">
-                                <option value="FeLV">FeLV (Feline Leukemia)</option>
-                                <option value="FIV">FIV (Feline Immunodeficiency Virus)</option>
-                                <option value="Chlamydia">Chlamydia</option>
-                            </optgroup>
-                            <option value="Other">Other</option>
+                        <label>Coat Condition</label>
+                        <select name="coat_condition">
+                            <option value="">Select condition</option>
+                            <option value="Clean">Clean</option>
+                            <option value="Matted">Matted</option>
+                            <option value="Dirty">Dirty</option>
+                            <option value="Shedding">Shedding</option>
+                            <option value="Flea-Infested">Flea-Infested</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Dose Number <span class="required">*</span></label>
-                        <select name="dose_number" id="doseNumber">
-                            <option value="">Select dose</option>
-                            <option value="1">1st Dose</option>
-                            <option value="2">2nd Dose</option>
-                            <option value="3">3rd Dose</option>
-                            <option value="4">4th Dose</option>
-                            <option value="Booster">Annual Booster</option>
-                        </select>
+                        <label>Groomer</label>
+                        <input type="text" name="groomer" placeholder="Name of groomer">
                     </div>
                 </div>
-                <div class="form-row">
+                <div class="form-row full">
                     <div class="form-group">
-                        <label>Batch/Lot Number</label>
-                        <input type="text" name="batch_number" placeholder="e.g., LOT123456">
-                    </div>
-                    <div class="form-group">
-                        <label>Next Dose Due Date</label>
-                        <input type="date" name="next_dose_date" min="{{ date('Y-m-d') }}">
-                        <span class="hint">Leave blank if completed series</span>
+                        <label>Grooming Notes</label>
+                        <textarea name="grooming_notes" placeholder="Special instructions, coat issues, client requests..."></textarea>
                     </div>
                 </div>
             </div>
@@ -408,41 +412,7 @@
                 </div>
             </div>
 
-            <!-- Spay/Neuter Section -->
-            <div id="spayNeuterSection" class="service-section">
-                <h3><i class="bi bi-heart-fill"></i> Spay/Neuter Procedure Details</h3>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Procedure Type <span class="required">*</span></label>
-                        <select name="procedure_type">
-                            <option value="">Select procedure</option>
-                            <option value="Spay">Spay (Ovariohysterectomy)</option>
-                            <option value="Neuter">Neuter (Castration)</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Procedure Date</label>
-                        <input type="date" name="procedure_date" value="{{ date('Y-m-d') }}">
-                    </div>
-                </div>
-                <div class="form-row full">
-                    <div class="form-group">
-                        <label>Post-Op Instructions</label>
-                        <textarea name="postop_instructions" placeholder="Recovery instructions, medication schedule, follow-up date..."></textarea>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Family Planning Section -->
-            <div id="familyPlanningSection" class="service-section" style="display: none;">
-                <h3><i class="bi bi-people"></i> Reproductive Health Details</h3>
-                <div class="form-row full">
-                    <div class="form-group">
-                        <label>Notes</label>
-                        <textarea name="fp_notes" placeholder="Reproductive health notes..."></textarea>
-                    </div>
-                </div>
-            </div>
 
             <!-- Referral Section -->
             <div id="referralSection" class="service-section">
@@ -538,36 +508,29 @@
     <script>
         // Service type handler - show/hide specific sections
         const serviceTypeSelect = document.getElementById('serviceType');
-        const immunizationSection = document.getElementById('immunizationSection');
-        const prenatalSection = document.getElementById('prenatalSection');
-        const familyPlanningSection = document.getElementById('familyPlanningSection');
+        const groomingSection = document.getElementById('groomingSection');
+        const breedingSection = document.getElementById('breedingSection');
         const referralSection = document.getElementById('referralSection');
+
+        const groomingServices = [
+            'Bath & Dry', 'Full Grooming', 'Haircut & Styling', 'Nail Trimming',
+            'Ear Cleaning', 'Teeth Brushing', 'De-shedding Treatment',
+            'Flea & Tick Treatment', 'Paw Treatment'
+        ];
         
         function updateServiceSection() {
             const selectedService = serviceTypeSelect.value;
             
             // Hide all sections first
-            immunizationSection.classList.remove('active');
-            prenatalSection.classList.remove('active');
-            familyPlanningSection.classList.remove('active');
-            referralSection.classList.remove('active');
+            [groomingSection, breedingSection, referralSection].forEach(s => { if(s) s.classList.remove('active'); });
             
-            // Clear required attributes
-            document.querySelectorAll('.service-section input, .service-section select').forEach(field => {
-                field.removeAttribute('required');
-            });
-            
-            // Show relevant section and set required fields
-            if (selectedService === 'Vaccination') {
-                vaccinationSection.classList.add('active');
-                document.getElementById('vaccineName').setAttribute('required', 'required');
-                document.getElementById('doseNumber').setAttribute('required', 'required');
+            // Show relevant section
+            if (groomingServices.includes(selectedService)) {
+                if (groomingSection) groomingSection.classList.add('active');
             } else if (selectedService === 'Breeding Consultation') {
-                breedingSection.classList.add('active');
-            } else if (selectedService === 'Spay/Neuter') {
-                spayNeuterSection.classList.add('active');
+                if (breedingSection) breedingSection.classList.add('active');
             } else if (selectedService === 'Follow-up') {
-                referralSection.classList.add('active');
+                if (referralSection) referralSection.classList.add('active');
             }
         }
         
