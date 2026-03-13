@@ -201,9 +201,9 @@
                     <img src="{{ asset('newlogo.png') }}" alt="PAWser" style="height: 35px; object-fit: contain;">
                 </a>
                 <button onclick="goBack()" class="btn-back">← Back</button>
-                <h1>Import Patient Records</h1>
+                <h1>Import Pet Records</h1>
             </div>
-            <p class="subtitle">Bulk upload patient data from CSV or Excel file</p>
+            <p class="subtitle">Bulk upload pet data from CSV or Excel file</p>
 
             @if(session('success'))
             <div class="alert alert-success">
@@ -239,7 +239,7 @@
                 </ul>
             </div>
 
-            <form action="{{ route('patients.import') }}" method="POST" enctype="multipart/form-data" id="uploadForm">
+            <form action="{{ route('pets.import') }}" method="POST" enctype="multipart/form-data" id="uploadForm">
                 @csrf
                 
                 <div class="upload-area" id="uploadArea">
@@ -255,7 +255,7 @@
                 </div>
 
                 <div class="actions">
-                    <a href="{{ route('patients.index') }}" class="btn btn-secondary">Cancel</a>
+                    <a href="{{ route('pets.index') }}" class="btn btn-secondary">Cancel</a>
                     <button type="submit" class="btn btn-primary" id="uploadBtn" disabled>Import Pets</button>
                 </div>
             </form>
@@ -266,7 +266,7 @@
             <p style="color: #6b7280; margin-bottom: 16px;">
                 Download this template, fill in your pet data, and upload it above.
             </p>
-            <a href="{{ route('patients.download-template') }}" class="btn btn-download">Download CSV Template</a>
+            <a href="{{ route('pets.download-template') }}" class="btn btn-download">Download CSV Template</a>
 
             <div class="sample-table">
                 <p style="font-weight: 600; margin: 20px 0 12px; color: #374151;">Sample Format:</p>
@@ -318,7 +318,7 @@
             if (referrer && referrer.startsWith(currentDomain) && referrer !== window.location.href) {
                 window.history.back();
             } else {
-                window.location.href = '/patients';
+                window.location.href = '/pets';
             }
         }
 

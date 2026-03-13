@@ -345,7 +345,7 @@ class VisitController extends Controller
         $visit->delete();
 
         return redirect()
-            ->route('patients.show', $patientId)
+            ->route('pets.show', $patientId)
             ->with('success', 'Visit deleted successfully.');
     }
 

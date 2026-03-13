@@ -495,7 +495,7 @@
             <div class="header-top">
                 <div class="header-left">
                     <a href="{{ route('dashboard') }}" class="header-logo">
-                        <img src="/images/systemlogo.png" alt="PAWser" style="height: 35px; object-fit: contain;">
+                        <img src="{{ asset('newlogo.png') }}" alt="PAWser" style="height: 35px; object-fit: contain;">
                     </a>
                     <h1><i class="bi bi-clipboard2-check"></i> Today's Visits</h1>
                 </div>

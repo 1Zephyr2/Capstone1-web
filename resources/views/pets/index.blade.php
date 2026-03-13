@@ -1194,8 +1194,8 @@
                         </td>
                         <td>
                             <div class="actions">
-                                <a href="{{ route('patients.show', $patient) }}" class="btn btn-info btn-sm">View</a>
-                                <a href="{{ route('patients.edit', $patient) }}" class="btn btn-sm" style="background:#4f46e5;color:white;">Edit</a>
+                                <a href="{{ route('pets.show', $patient) }}" class="btn btn-info btn-sm">View</a>
+                                <a href="{{ route('pets.edit', $patient) }}" class="btn btn-sm" style="background:#4f46e5;color:white;">Edit</a>
                                 <button onclick="event.stopPropagation(); openVisitModal({{ $patient->id }}, '{{ addslashes($patient->full_name) }}', {{ $patient->age }}, '{{ $patient->sex }}')" class="btn btn-success btn-sm">+ Visit</button>
                             </div>
                         </td>
@@ -1239,7 +1239,7 @@
     <div id="patientQuickModal" class="patient-quick-modal">
         <div class="patient-quick-content">
             <div class="patient-quick-header">
-                <h2><i class="bi bi-person-circle"></i> Patient Details</h2>
+                <h2><i class="bi bi-person-circle"></i> Pet Details</h2>
                 <button class="patient-quick-close" onclick="closePatientQuickModal()">&times;</button>
             </div>
             <div class="patient-quick-body">
@@ -1302,7 +1302,7 @@
             }
 
             searchTimeout = setTimeout(() => {
-                fetch(`/api/patients/search?term=${encodeURIComponent(term)}`, {
+                fetch(`/api/pets/search?term=${encodeURIComponent(term)}`, {
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                         'Accept': 'application/json'
@@ -1311,10 +1311,10 @@
                 .then(response => response.json())
                 .then(patients => {
                     if (patients.length === 0) {
-                        autocompleteResults.innerHTML = '<div class="autocomplete-item">No patients found</div>';
+                        autocompleteResults.innerHTML = '<div class="autocomplete-item">No pets found</div>';
                     } else {
                         autocompleteResults.innerHTML = patients.map(patient => `
-                            <div class="autocomplete-item" onclick="window.location.href='/patients/${patient.id}'">
+                            <div class="autocomplete-item" onclick="window.location.href='/pets/${patient.id}'">
                                 <div class="name">${patient.name}</div>
                                 <div class="details">${patient.age} yrs • ${patient.sex} ${patient.contact ? '• ' + patient.contact : ''}</div>
                             </div>
@@ -1436,7 +1436,7 @@
             document.getElementById('quickPatientSex').textContent = patient.sex;
             document.getElementById('quickPatientContact').textContent = patient.contact || 'Not provided';
             document.getElementById('quickPatientAddress').textContent = patient.address || 'Not provided';
-            document.getElementById('quickViewFullBtn').href = `/patients/${patient.id}`;
+            document.getElementById('quickViewFullBtn').href = `/pets/${patient.id}`;
             document.getElementById('quickAddVisitBtn').href = `/visits/create?patient_id=${patient.id}`;
             document.getElementById('patientQuickModal').classList.add('active');
             autocompleteResults.classList.remove('show');
@@ -1545,7 +1545,7 @@
             submitBtn.disabled = true;
             submitBtn.textContent = 'Registering...';
             
-            fetch('{{ route("patients.store") }}', {
+            fetch('{{ route("pets.store") }}', {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -1669,7 +1669,7 @@
             submitBtn.disabled = true;
             submitBtn.textContent = 'Importing...';
             
-            fetch('{{ route("patients.import") }}', {
+            fetch('{{ route("pets.import") }}', {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -1976,13 +1976,13 @@
     <div id="importModal" class="import-modal">
         <div class="import-modal-content">
             <div class="import-modal-header">
-                <h2>Import Patient Records</h2>
+                <h2>Import Pet Records</h2>
                 <button class="modal-close" onclick="closeImportModal()" style="background: none; border: none; font-size: 28px; color: #6b7280; cursor: pointer; padding: 0; line-height: 1;">×</button>
             </div>
             <div class="import-modal-body">
                 <div id="importAlert" class="alert-modal" style="display: none;"></div>
                 
-                <p style="color: #6b7280; margin-bottom: 20px; font-size: 14px;">Bulk upload patient data from CSV file</p>
+                <p style="color: #6b7280; margin-bottom: 20px; font-size: 14px;">Bulk upload pet data from CSV file</p>
 
                 <div class="import-info-box">
                     <h3><i class="bi bi-file-earmark-text"></i> CSV File Requirements:</h3>
@@ -2012,7 +2012,7 @@
 
                     <div class="registration-modal-actions">
                         <button type="button" class="btn-modal-cancel" onclick="closeImportModal()">Cancel</button>
-                        <button type="submit" class="btn-modal-submit" id="importBtn" disabled>Import Patients</button>
+                        <button type="submit" class="btn-modal-submit" id="importBtn" disabled>Import Pets</button>
                     </div>
                 </form>
 
@@ -2021,7 +2021,7 @@
                     <p style="color: #6b7280; margin-bottom: 16px;">
                         Download this template, fill in your patient data, and upload it above.
                     </p>
-                    <a href="{{ route('patients.download-template') }}" class="btn btn-download" target="_blank">Download CSV Template</a>
+                    <a href="{{ route('pets.download-template') }}" class="btn btn-download" target="_blank">Download CSV Template</a>
 
                     <div class="sample-table">
                         <p style="font-weight: 600; margin: 20px 0 12px; color: #374151;">Sample Format:</p>

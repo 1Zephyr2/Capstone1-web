@@ -690,7 +690,7 @@
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-header">
-                    <div class="stat-title">Total Patients</div>
+                    <div class="stat-title">Total Pets</div>
                     <div class="stat-icon blue">
                         <i class="bi bi-people"></i>
                     </div>
@@ -772,7 +772,7 @@
                             </div>
                             <div class="action-btn-text">
                                 <div class="action-btn-title">Add User</div>
-                                <div class="action-btn-desc">Create new admin or provider account</div>
+                                <div class="action-btn-desc">Create new admin or staff account</div>
                             </div>
                         </a>
 
@@ -792,7 +792,7 @@
                             </div>
                             <div class="action-btn-text">
                                 <div class="action-btn-title">System Settings</div>
-                                <div class="action-btn-desc">Configure clinic information</div>
+                                <div class="action-btn-desc">Configure system information</div>
                             </div>
                         </a>
                     </div>

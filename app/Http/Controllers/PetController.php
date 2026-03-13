@@ -4,16 +4,43 @@ namespace App\Http\Controllers;
 
 use App\Models\Patient;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
-class PatientController extends Controller
+class PetController extends Controller
 {
+    /**
+     * Base query scoped to the current user (admins see all).
+     */
+    private function scopedQuery()
+    {
+        $query = Patient::query();
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        if (!$user->isAdmin()) {
+            $query->where('user_id', Auth::id());
+        }
+        return $query;
+    }
+
+    /**
+     * Ensure the authenticated user can access the given patient.
+     */
+    private function authorizePatient(Patient $patient): void
+    {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        if (!$user->isAdmin() && $patient->user_id !== Auth::id()) {
+            abort(403, 'You do not have access to this pet record.');
+        }
+    }
+
     /**
      * Display a listing of patients with search
      */
     public function index(Request $request)
     {
-        $query = Patient::with(['visits' => function($q) {
+        $query = $this->scopedQuery()->with(['visits' => function($q) {
             $q->latest()->limit(1);
         }]);
 
@@ -35,7 +62,7 @@ class PatientController extends Controller
         $term = $request->get('q', $request->get('term', ''));
         $birthday = $request->get('birthday', '');
         
-        $query = Patient::query();
+        $query = $this->scopedQuery();
         
         // Search by term (name, ID, contact)
         if (strlen($term) >= 2) {
@@ -133,7 +160,8 @@ class PatientController extends Controller
         ]);
 
         if ($isExistingOwner) {
-            $ownerRecord = Patient::where('owner_name', $request->owner_name)
+            $ownerRecord = $this->scopedQuery()
+                ->where('owner_name', $request->owner_name)
                 ->where(function ($q) {
                     $q->whereNotNull('address')
                       ->orWhereNotNull('owner_contact');
@@ -163,6 +191,7 @@ class PatientController extends Controller
             return back()->withErrors(['address' => $message])->withInput();
         }
 
+        $payload['user_id'] = Auth::id();
         $patient = Patient::create($payload);
 
         // Check if request is AJAX
@@ -175,8 +204,8 @@ class PatientController extends Controller
         }
 
         return redirect()
-            ->route('patients.show', $patient)
-            ->with('success', 'Patient registered successfully! Patient ID: ' . $patient->patient_id);
+            ->route('pets.show', $patient)
+            ->with('success', 'Pet registered successfully! Pet ID: ' . $patient->patient_id);
     }
 
     /**
@@ -184,6 +213,7 @@ class PatientController extends Controller
      */
     public function show(Patient $patient)
     {
+        $this->authorizePatient($patient);
         $patient->load(['visits.vitalSigns', 'vaccinations', 'breedingRecords', 'referrals']);
         
         return view('pets.show', compact('patient'));
@@ -194,6 +224,7 @@ class PatientController extends Controller
      */
     public function edit(Patient $patient)
     {
+        $this->authorizePatient($patient);
         return view('pets.edit', compact('patient'));
     }
 
@@ -202,6 +233,8 @@ class PatientController extends Controller
      */
     public function update(Request $request, Patient $patient)
     {
+        $this->authorizePatient($patient);
+
         $validator = Validator::make($request->all(), [
             'pet_name'                  => 'required|string|max:255',
             'species'                   => 'required|string|max:255',
@@ -236,7 +269,7 @@ class PatientController extends Controller
         $patient->update($data);
 
         return redirect()
-            ->route('patients.show', $patient)
+            ->route('pets.show', $patient)
             ->with('success', 'Pet information updated successfully!');
     }
 
@@ -245,11 +278,12 @@ class PatientController extends Controller
      */
     public function destroy(Patient $patient)
     {
+        $this->authorizePatient($patient);
         $patient->delete();
 
         return redirect()
-            ->route('patients.index')
-            ->with('success', 'Patient record archived successfully.');
+            ->route('pets.index')
+            ->with('success', 'Pet record archived successfully.');
     }
 
     /**
@@ -267,7 +301,7 @@ class PatientController extends Controller
     {
         $headers = [
             'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="patient_import_template.csv"',
+            'Content-Disposition' => 'attachment; filename="pet_import_template.csv"',
         ];
 
         $columns = ['first_name', 'last_name', 'middle_name', 'birthdate', 'sex', 'contact_number', 'address', 'philhealth_number'];
@@ -314,7 +348,7 @@ class PatientController extends Controller
                 }
                 
                 return redirect()
-                    ->route('patients.index')
+                    ->route('pets.index')
                     ->with('success', $result['message'])
                     ->with('import_errors', $result['errors']);
             } else {
@@ -390,6 +424,7 @@ class PatientController extends Controller
 
                 // Create patient
                 Patient::create([
+                    'user_id' => Auth::id(),
                     'first_name' => $patientData['first_name'],
                     'last_name' => $patientData['last_name'],
                     'middle_name' => $patientData['middle_name'] ?? null,
@@ -408,7 +443,7 @@ class PatientController extends Controller
 
         fclose($handle);
 
-        $message = "Successfully imported $imported patients.";
+        $message = "Successfully imported $imported pet records.";
         if (count($errors) > 0) {
             $message .= " " . count($errors) . " rows failed.";
         }
@@ -425,6 +460,7 @@ class PatientController extends Controller
      */
     public function getLastVitalSigns(Patient $patient)
     {
+        $this->authorizePatient($patient);
         $lastVitalSigns = $patient->lastVitalSigns;
 
         if (!$lastVitalSigns) {

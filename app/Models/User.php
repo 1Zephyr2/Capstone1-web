@@ -50,6 +50,11 @@ class User extends Authenticatable
         ];
     }
 
+    public function patients()
+    {
+        return $this->hasMany(\App\Models\Patient::class);
+    }
+
     /**
      * Check if user is an admin
      */

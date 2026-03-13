@@ -303,7 +303,7 @@
         </div>
         @endif
 
-        <form action="{{ route('patients.store') }}" method="POST">
+        <form action="{{ route('pets.store') }}" method="POST">
             @csrf
 
             <!-- Pet Information -->
@@ -437,7 +437,7 @@
             }
             
             searchTimeout = setTimeout(() => {
-                fetch(`/api/patients/search?q=${encodeURIComponent(query)}`)
+                fetch(`/api/pets/search?q=${encodeURIComponent(query)}`)
                     .then(res => res.json())
                     .then(patients => {
                         if (patients.length > 0) {
@@ -499,7 +499,7 @@
             }
             
             duplicateTimeout = setTimeout(() => {
-                fetch(`/api/patients/search?q=${encodeURIComponent(petName)}`)
+                fetch(`/api/pets/search?q=${encodeURIComponent(petName)}`)
                     .then(res => res.json())
                     .then(patients => {
                         const exactMatch = patients.find(p => 
@@ -531,7 +531,7 @@
             if (referrer && referrer.startsWith(currentDomain) && referrer !== window.location.href) {
                 window.history.back();
             } else {
-                window.location.href = '/patients';
+                window.location.href = '/pets';
             }
         }
     </script>

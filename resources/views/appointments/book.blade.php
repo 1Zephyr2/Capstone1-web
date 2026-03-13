@@ -535,7 +535,7 @@
 
                         {{-- hidden select keeps the real patient_id for form submission --}}
                         <select name="patient_id" id="patient_id" required style="display:none;">
-                            <option value="">Select patient</option>
+                            <option value="">Select pet</option>
                             @foreach($patients as $patientItem)
                                 <option value="{{ $patientItem->id }}"
                                     data-patient-id="{{ $patientItem->patient_id }}"
@@ -857,7 +857,7 @@
             autocompleteResults.classList.add('active');
 
             searchTimeout = setTimeout(() => {
-                fetch(`/api/patients/search?term=${encodeURIComponent(q)}`, {
+                fetch(`/api/pets/search?term=${encodeURIComponent(q)}`, {
                     headers: { 'X-CSRF-TOKEN': csrfToken, 'Accept': 'application/json' }
                 })
                 .then(r => r.json())
@@ -1007,7 +1007,7 @@
                 const data = await response.json();
                 if (data.count > 0) {
                     const list = data.appointments.map(app => `${app.time} (${app.status})`).join(', ');
-                    conflictDetails.textContent = `This patient already has ${data.count} appointment(s) on this date: ${list}.`;
+                    conflictDetails.textContent = `This pet already has ${data.count} appointment(s) on this date: ${list}.`;
                     conflictWarning.classList.remove('hidden');
                 } else {
                     conflictWarning.classList.add('hidden');

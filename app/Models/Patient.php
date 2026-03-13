@@ -11,6 +11,7 @@ class Patient extends Model
     use SoftDeletes;
 
     protected $fillable = [
+        'user_id',
         'patient_id',
         'pet_name',
         'species',
@@ -32,6 +33,11 @@ class Patient extends Model
     ];
 
     // Relationships
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function visits()
     {
         return $this->hasMany(Visit::class);

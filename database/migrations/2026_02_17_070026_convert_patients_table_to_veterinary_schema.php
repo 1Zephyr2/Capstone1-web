@@ -23,36 +23,59 @@ return new class extends Migration
             } catch (\Exception $e) {
                 // Indexes might not exist, continue
             }
-            
-            // SQLite doesn't support dropping/renaming columns easily, so we recreate the table
+
+            // Only drop columns that actually exist (guard for idempotency)
+            $toDrop = array_filter(
+                ['middle_name', 'philhealth_number', 'secondary_contact_name', 'secondary_contact_number'],
+                fn($col) => Schema::hasColumn('patients', $col)
+            );
+            if (!empty($toDrop)) {
+                Schema::table('patients', function (Blueprint $table) use ($toDrop) {
+                    $table->dropColumn(array_values($toDrop));
+                });
+            }
+
+            // Add new veterinary columns only if they don't already exist
             Schema::table('patients', function (Blueprint $table) {
-                $table->dropColumn([
-                    'middle_name',
-                    'philhealth_number',
-                    'secondary_contact_name',
-                    'secondary_contact_number',
-                ]);
+                if (!Schema::hasColumn('patients', 'pet_name')) {
+                    $table->string('pet_name')->after('patient_id')->nullable();
+                }
+                if (!Schema::hasColumn('patients', 'species')) {
+                    $table->string('species')->after('pet_name')->nullable();
+                }
+                if (!Schema::hasColumn('patients', 'breed')) {
+                    $table->string('breed')->after('species')->nullable();
+                }
+                if (!Schema::hasColumn('patients', 'color')) {
+                    $table->string('color')->after('breed')->nullable();
+                }
+                if (!Schema::hasColumn('patients', 'owner_name')) {
+                    $table->string('owner_name')->after('color')->nullable();
+                }
+                if (!Schema::hasColumn('patients', 'owner_contact')) {
+                    $table->string('owner_contact')->after('owner_name')->nullable();
+                }
+                if (!Schema::hasColumn('patients', 'microchip_number')) {
+                    $table->string('microchip_number')->after('owner_contact')->nullable();
+                }
             });
-            
-            // Add new veterinary columns
-            Schema::table('patients', function (Blueprint $table) {
-                $table->string('pet_name')->after('patient_id')->nullable();
-                $table->string('species')->after('pet_name')->nullable(); // Dog, Cat, Rabbit, etc.
-                $table->string('breed')->after('species')->nullable();
-                $table->string('color')->after('breed')->nullable();
-                $table->string('owner_name')->after('color')->nullable();
-                $table->string('owner_contact')->after('owner_name')->nullable();
-                $table->string('microchip_number')->after('owner_contact')->nullable();
-            });
-            
-            // Migrate data from old columns to new
-            DB::statement("UPDATE patients SET pet_name = first_name, owner_name = last_name, owner_contact = contact_number");
-            
-            // Now drop the old columns
-            Schema::table('patients', function (Blueprint $table) {
-                $table->dropColumn(['first_name', 'last_name', 'contact_number']);
-            });
-            
+
+            // Migrate data only if old columns exist
+            if (Schema::hasColumn('patients', 'first_name')) {
+                DB::statement("UPDATE patients SET pet_name = first_name, owner_name = last_name, owner_contact = contact_number");
+            }
+
+            // Drop old columns only if they exist
+            $oldColumns = array_filter(
+                ['first_name', 'last_name', 'contact_number'],
+                fn($col) => Schema::hasColumn('patients', $col)
+            );
+            if (!empty($oldColumns)) {
+                Schema::table('patients', function (Blueprint $table) use ($oldColumns) {
+                    $table->dropColumn(array_values($oldColumns));
+                });
+            }
+
             // Add indexes
             DB::statement('CREATE INDEX IF NOT EXISTS idx_patients_pet_species ON patients(pet_name, species)');
             DB::statement('CREATE INDEX IF NOT EXISTS idx_patients_owner_name ON patients(owner_name)');

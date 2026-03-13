@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Record Visit - Health Center</title>
+    <title>Record Visit - PAWser</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
@@ -554,7 +554,7 @@
         // Copy from last visit functionality
         function copyLastVitalSigns() {
             @if($patient)
-            fetch(`/api/patients/{{ $patient->id }}/vital-signs/last`, {
+            fetch(`/api/pets/{{ $patient->id }}/vital-signs/last`, {
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                     'Accept': 'application/json'

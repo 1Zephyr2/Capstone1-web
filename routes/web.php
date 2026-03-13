@@ -2,13 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\PatientController;
+use App\Http\Controllers\PetController;
 use App\Http\Controllers\VisitController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\GoogleCalendarController;
 use App\Http\Controllers\AdminController;
+use App\Models\Patient;
 
 // Redirect root to login
 Route::get('/', function () {
@@ -49,10 +50,39 @@ Route::middleware('auth')->group(function () {
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile/picture', [ProfileController::class, 'deleteProfilePicture'])->name('profile.delete-picture');
     
-    // Patient Management Routes
-    Route::resource('patients', PatientController::class);
-    Route::get('/api/patients/search', [PatientController::class, 'search'])->name('patients.search.api');
-    Route::get('/api/patients/{patient}/vital-signs/last', [PatientController::class, 'getLastVitalSigns'])->name('patients.vital-signs.last');
+    // Pet Management Routes
+    Route::get('/pets/import/form', [PetController::class, 'showImportForm'])->name('pets.import.form');
+    Route::post('/pets/import', [PetController::class, 'import'])->name('pets.import');
+    Route::get('/pets/import/template', [PetController::class, 'downloadTemplate'])->name('pets.download-template');
+    Route::resource('pets', PetController::class)
+        ->parameters(['pets' => 'patient'])
+        ->names('pets');
+    Route::get('/api/pets/search', [PetController::class, 'search'])->name('pets.search.api');
+    Route::get('/api/pets/{patient}/vital-signs/last', [PetController::class, 'getLastVitalSigns'])->name('pets.vital-signs.last');
+
+    // Legacy patient routes (kept for compatibility)
+    Route::get('/api/patients/search', [PetController::class, 'search'])->name('patients.search.api');
+    Route::get('/api/patients/{patient}/vital-signs/last', [PetController::class, 'getLastVitalSigns'])->name('patients.vital-signs.last');
+    Route::get('/patients/import/form', function () {
+        return redirect()->route('pets.import.form');
+    })->name('patients.import.form');
+    Route::post('/patients/import', [PetController::class, 'import'])->name('patients.import');
+    Route::get('/patients/import/template', [PetController::class, 'downloadTemplate'])->name('patients.download-template');
+    Route::get('/patients', function () {
+        return redirect()->route('pets.index');
+    })->name('patients.index');
+    Route::get('/patients/create', function () {
+        return redirect()->route('pets.create');
+    })->name('patients.create');
+    Route::post('/patients', [PetController::class, 'store'])->name('patients.store');
+    Route::get('/patients/{patient}', function (Patient $patient) {
+        return redirect()->route('pets.show', $patient);
+    })->name('patients.show');
+    Route::get('/patients/{patient}/edit', function (Patient $patient) {
+        return redirect()->route('pets.edit', $patient);
+    })->name('patients.edit');
+    Route::match(['put', 'patch'], '/patients/{patient}', [PetController::class, 'update'])->name('patients.update');
+    Route::delete('/patients/{patient}', [PetController::class, 'destroy'])->name('patients.destroy');
     
     // Visit Management Routes
     Route::resource('visits', VisitController::class);
@@ -69,40 +99,39 @@ Route::middleware('auth')->group(function () {
         Route::get('/reports/overdue-immunizations', [ReportController::class, 'overdueImmunizations'])->name('reports.overdue-immunizations');
         Route::get('/reports/high-risk-breeding', [ReportController::class, 'highRiskBreeding'])->name('reports.high-risk-breeding');
         
-        // Data Analytics (Admin only)
-        Route::get('/analytics', [\App\Http\Controllers\AnalyticsController::class, 'index'])->name('analytics.index');
+        // Insight Center (Admin only)
+        Route::get('/analytics', [\App\Http\Controllers\InsightCenterController::class, 'index'])->name('analytics.index');
         
-        // Automation Support (Admin only)
-        Route::get('/automation-support', [\App\Http\Controllers\AutomationController::class, 'index'])->name('automation.support');
+        // Action Hub (Admin only)
+        Route::get('/automation-support', [\App\Http\Controllers\ActionHubController::class, 'index'])->name('automation.support');
     });
 
-    // Patient Import (available to all authenticated users)
-    Route::get('/patients/import/form', [PatientController::class, 'showImportForm'])->name('patients.import.form');
-    Route::post('/patients/import', [PatientController::class, 'import'])->name('patients.import');
-    Route::get('/patients/import/template', [PatientController::class, 'downloadTemplate'])->name('patients.download-template');
-    
     // Legacy routes (keeping for compatibility)
     Route::get('/patients/new', function () {
-        return redirect()->route('patients.create');
+        return redirect()->route('pets.create');
     })->name('patients.new');
 
     Route::get('/patients/search', function () {
-        return redirect()->route('patients.index');
+        return redirect()->route('pets.index');
     })->name('patients.search');
 
     Route::get('/patients/all', function () {
-        return redirect()->route('patients.index');
+        return redirect()->route('pets.index');
     })->name('patients.all');
 
     Route::get('/patients/today', [VisitController::class, 'index'])->name('patients.today');
 
     Route::get('/patients/list', function () {
-        return redirect()->route('patients.index');
+        return redirect()->route('pets.index');
     })->name('patients.list');
 
+    Route::get('/pet-records', function () {
+        return view('pet-records');
+    })->name('pet.records');
+
     Route::get('/medical-records', function () {
-        return view('medical-records');
-    })->middleware('auth')->name('medical.records');
+        return redirect()->route('pet.records');
+    })->name('medical.records');
 
     // Appointment Routes
     Route::resource('appointments', AppointmentController::class);
@@ -143,7 +172,7 @@ Route::middleware('auth')->group(function () {
     })->name('wellness.exam');
 
     // Tools Routes
-    Route::get('/automation-support', [\App\Http\Controllers\AutomationController::class, 'index'])->name('automation.support');
-    Route::get('/analytics', [\App\Http\Controllers\AnalyticsController::class, 'index'])->name('analytics.index');
+    Route::get('/automation-support', [\App\Http\Controllers\ActionHubController::class, 'index'])->name('automation.support');
+    Route::get('/analytics', [\App\Http\Controllers\InsightCenterController::class, 'index'])->name('analytics.index');
 });
 

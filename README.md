@@ -1,6 +1,6 @@
-# CareSync - Health Center Management System
+# PAWser - Pet Appointment and Workflow Service & Records System
 
-**Capstone Project** - A comprehensive web-based health center management system built with Laravel, designed for rural health units and healthcare facilities in the Philippines. This system streamlines patient management, appointments, medical records, and administrative tasks.
+**Capstone Project** - A comprehensive web-based pet clinic management system built with Laravel. PAWser streamlines pet registration, owner records, appointments, visit documentation, clinic operations, and administrative tasks for veterinary and pet care teams.
 
 ## Table of Contents
 - [Features](#features)
@@ -14,42 +14,42 @@
 
 ## Features
 
-### **Patient Management**
-- Patient registration and profile management
-- Search and filter patients by name, ID, or birthday
-- Medical history tracking
-- Contact and emergency contact information
+### **Pet Records Management**
+- Pet registration and profile management
+- Search and filter pets by name, owner, ID, or birthday
+- Owner and emergency contact information
+- Pet history and visit tracking
 
 ### **Appointment System**
-- Schedule appointments for various services
+- Schedule appointments for clinic and grooming services
 - Calendar view for appointment management
-- Service-specific fields (immunization, prenatal care, family planning)
+- Service-specific scheduling and notes
 - Appointment status tracking (scheduled, confirmed, completed, cancelled)
 
-### **Healthcare Services**
-- **Immunizations**: Vaccine tracking and dose management
-- **Prenatal Care**: Gestational age and presentation tracking
-- **Family Planning**: Method and counseling records
-- **General Checkups**: Routine health assessments
+### **Clinic Services**
+- **General Checkups**: Routine pet assessments and consultation records
+- **Vaccination Tracking**: Immunization and follow-up monitoring
+- **Visit Records**: Notes, history, and previous visit reference
+- **Owner Support**: Linked owner details across multiple pets
 
-### **Reports & Analytics**
-- Patient statistics and demographics
-- Visit trends and patterns
-- Immunization coverage reports
-- High-risk patient identification
-- Monthly and custom reports
+### **Insight Center**
+- Pet and appointment statistics
+- Visit trends and service patterns
+- Owner and pet record insights
+- Operational summaries for staff and admins
+- Export-ready reports for clinic review
 
 ### **Administration**
-- User account management (Admin, Staff, Healthcare Providers)
+- User account management (Admin and Staff)
 - System settings and configuration
-- Data privacy compliant analytics
+- Data privacy conscious reporting
 - Audit logging and security
 
-### **Automation Support**
+### **Action Hub**
 - Alert system for incomplete records
-- Overdue immunization notifications
-- High-risk patient flagging
-- Automated report generation
+- Upcoming appointment monitoring
+- No-show and incomplete record alerts
+- Workflow-focused clinic reminders
 
 ## System Requirements
 
@@ -103,12 +103,12 @@
 
 2. **Create database:**
    - Go to http://localhost/phpmyadmin
-   - Create new database: `caresync_db`
+   - Create new database: `pawser_db`
 
 3. **Copy project to XAMPP:**
    ```bash
    # Copy entire project folder to:
-   C:\xampp\htdocs\caresync\
+   C:\xampp\htdocs\Capstone1-web\
    ```
 
 4. **Update environment:**
@@ -117,7 +117,7 @@
    DB_CONNECTION=mysql
    DB_HOST=127.0.0.1
    DB_PORT=3306
-   DB_DATABASE=caresync_db
+   DB_DATABASE=pawser_db
    DB_USERNAME=root
    DB_PASSWORD=
    ```
@@ -128,7 +128,7 @@
    php artisan migrate
    ```
 
-6. **Access the system:** http://localhost/caresync/public
+6. **Access the system:** http://localhost/Capstone1-web/public
 
 ## User Accounts
 
@@ -137,39 +137,38 @@
 | Role | Username | Password | Access Level |
 |------|----------|----------|-------------|
 | **Administrator** | `admin` | `admin123` | Full system access, user management |
-| **Healthcare Staff** | `staff` | `staff123` | Patient care, appointments, reports |
+| **Clinic Staff** | `staff` | `staff123` | Pet records, appointments, visit workflow |
 
 ### Role Permissions
 
 - **Administrator**: Complete system access, user management, system settings
-- **Healthcare Provider**: Patient management, appointments, medical records, reports
-- **Staff**: Basic patient management and appointment scheduling
+- **Staff**: Pet records, appointments, visit management, and reporting
 
 ## Usage Guide
 
-### For Healthcare Staff
+### For Clinic Staff
 
-1. **Patient Registration:**
-   - Navigate to "Patient List" → "Add New Patient"
-   - Fill in patient details (name, birthdate, contact info)
-   - Add medical history and emergency contacts
+1. **Pet Registration:**
+   - Navigate to "Pet List" → "Register New Pet"
+   - Fill in pet details (name, species, birthdate, sex)
+   - Add owner details and emergency contacts
 
 2. **Scheduling Appointments:**
    - Go to "Book Appointment"
-   - Select patient (or register new)
+   - Select pet (or register new)
    - Choose service type and date/time
-   - Add chief complaint and notes
+   - Add reason for visit and notes
 
 3. **Recording Visits:**
    - Access "Today's Visits"
-   - Document vital signs and observations
-   - Update medical records
+   - Document observations and visit notes
+   - Update pet records
    - Schedule follow-up appointments
 
-4. **Viewing Reports:**
-   - Navigate to "Monthly Reports"
-   - Generate immunization coverage reports
-   - View patient statistics
+4. **Viewing Insights:**
+   - Navigate to "Insight Center"
+   - Review pet and appointment statistics
+   - View visit trends and summaries
    - Export data for external use
 
 ### For Administrators
@@ -184,24 +183,24 @@
    - Update clinic information
    - Configure system settings
    - Manage data retention policies
-   - Set up automated alerts
+   - Review Action Hub alerts
 
 ## Demo Instructions
 
 ### Quick Demo Setup
 
 1. **Start XAMPP** (Apache + MySQL)
-2. **Access Application:** http://localhost/caresync/public
+2. **Access Application:** http://localhost/Capstone1-web/public
 3. **Login as Admin:** admin/admin123
 4. **Show phpMyAdmin:** http://localhost/phpmyadmin
 
 ### Demo Flow
 
 1. **Login Demo:** Show different user roles and dashboards
-2. **Patient Management:** Register new patient, search existing
-3. **Appointment Booking:** Schedule various service types
+2. **Pet Management:** Register new pet, search existing records
+3. **Appointment Booking:** Schedule various services
 4. **Database View:** Show data in phpMyAdmin tables
-5. **Reports:** Generate and view analytics
+5. **Insight Center:** Generate and view analytics
 6. **Admin Functions:** User management and system overview
 
 ### Reset Demo Data
@@ -218,7 +217,7 @@ TRUNCATE visits;
 ## Technical Details
 
 ### Built With
-- **Backend**: Laravel 10, PHP 8.1+
+- **Backend**: Laravel 12, PHP 8.3+
 - **Frontend**: Blade templates, Vanilla JavaScript, CSS3
 - **Database**: MySQL/SQLite with Eloquent ORM
 - **Security**: Laravel's built-in authentication and validation
@@ -252,14 +251,14 @@ routes/
 - CSRF protection
 
 ### Data Privacy Compliance
-- Patient data is restricted to authorized users
+- Pet and owner data is restricted to authorized users
 - Admin reports show only anonymized statistics
 - Audit logging for data access
 - Secure password policies
 
 ## License
 
-This project is developed as a **capstone project** for educational and healthcare improvement purposes. Please ensure compliance with local healthcare data regulations when deploying in production environments.
+This project is developed as a **capstone project** for educational and pet care operations improvement purposes. Please ensure compliance with applicable local data privacy regulations when deploying in production environments.
 
 ## Support
 
@@ -270,4 +269,4 @@ For technical support or questions:
 
 ---
 
-**CareSync Health Center System** - Streamlining healthcare management for better patient care.
+**PAWser** - Streamlining pet appointments, workflow support, and records management.

@@ -2185,7 +2185,7 @@
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <a href="{{ route('dashboard') }}" class="logo-container">
-                <img src="/images/systemlogo.png" alt="PAWser" class="sidebar-logo">
+                <img src="{{ asset('newlogo.png') }}" alt="PAWser" class="sidebar-logo">
             </a>
             <div class="sidebar-brand">
                 <div class="sidebar-title">PAWser</div>
@@ -2204,7 +2204,7 @@
 
             <div class="menu-section">
                 <div class="menu-label">Pet Management</div>
-                <a href="{{ route('patients.index') }}" class="menu-item">
+                <a href="{{ route('pets.index') }}" class="menu-item">
                     <span class="menu-icon"><i class="bi bi-heart-fill"></i></span>
                     <span class="menu-text">Pet List</span>
                 </a>
@@ -2223,11 +2223,11 @@
                 <div class="menu-label">Reports & Tools</div>
                 <a href="{{ route('analytics.index') }}" class="menu-item">
                     <span class="menu-icon"><i class="bi bi-graph-up-arrow"></i></span>
-                    <span class="menu-text">Data Analytics</span>
+                    <span class="menu-text">Insight Center</span>
                 </a>
                 <a href="{{ route('automation.support') }}" class="menu-item">
                     <span class="menu-icon"><i class="bi bi-cpu"></i></span>
-                    <span class="menu-text">Automation Support</span>
+                    <span class="menu-text">Action Hub</span>
                 </a>
             </div>
             @endif
@@ -2300,13 +2300,13 @@
                 </div>
             </div>
 
-            <!-- Automation Support Alerts (compact) -->
+            <!-- Action Hub Alerts (compact) -->
             @if(Auth::user()->hasStaffAccess())
             <div class="alerts-summary-section">
                 <div class="alerts-summary-card">
                     <div class="alerts-summary-header">
                         <div>
-                            <h2 style="margin: 0; font-size: 20px; color: #1f2937;"><i class="bi bi-cpu-fill"></i> Automation Support Alerts</h2>
+                            <h2 style="margin: 0; font-size: 20px; color: #1f2937;"><i class="bi bi-cpu-fill"></i> Action Hub Alerts</h2>
                             <p style="margin: 4px 0 0 0; font-size: 14px; color: #6b7280;">
                                 @if($totalAlerts > 0)
                                     {{ $totalAlerts }} active alert(s) requiring attention
@@ -2835,13 +2835,13 @@
     <div id="totalPatientsModal" class="ai-modal" onclick="closeModalOnBackdrop(event, 'totalPatients')">
         <div class="ai-modal-content">
             <div class="ai-modal-header" style="background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);">
-                <h2><i class="bi bi-bar-chart-fill"></i> Total Patients</h2>
+                <h2><i class="bi bi-bar-chart-fill"></i> Total Pets</h2>
                 <button class="ai-modal-close" onclick="closeModal('totalPatients')">x</button>
             </div>
             <div class="ai-modal-body">
                 <div class="ai-icon"><i class="bi bi-bar-chart-fill"></i></div>
-                <h3>1,247 Total Patients</h3>
-                <p>This feature is under development. View complete patient database with ↑ 8% growth this month.</p>
+                <h3>1,247 Total Pets</h3>
+                <p>This feature is under development. View complete pet database with ↑ 8% growth this month.</p>
             </div>
         </div>
     </div>
@@ -2850,7 +2850,7 @@
     <div id="medicalRecordsModal" class="ai-modal" onclick="closeModalOnBackdrop(event, 'medicalRecords')">
         <div class="ai-modal-content" style="max-width: 900px;">
             <div class="ai-modal-header">
-                <h2><i class="bi bi-clipboard2-check"></i> Medical Records</h2>
+                <h2><i class="bi bi-clipboard2-check"></i> Pet Records</h2>
                 <button class="ai-modal-close" onclick="closeModal('medicalRecords')">x</button>
             </div>
             <div class="ai-modal-body" style="padding: 0;">
@@ -2967,7 +2967,7 @@
                     </div>
                     
                     <div id="noRecordsMessage" class="no-patients" style="display: none;">
-                        <p>No medical records found.</p>
+                        <p>No pet records found.</p>
                     </div>
                 </div>
             </div>
@@ -3822,7 +3822,7 @@
             };
             
             // Send AJAX request to backend
-            fetch('{{ route("patients.store") }}', {
+            fetch('{{ route("pets.store") }}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -3853,10 +3853,10 @@
                     alert(`${data.message}\n\nName: ${fullName}`);
                     closeModal('newPatient');
                     
-                    // Refresh the page to show the new patient in lists
+                    // Refresh the page to show the new pet in lists
                     window.location.reload();
                 } else {
-                    let errorMsg = 'Failed to register patient.';
+                    let errorMsg = 'Failed to register pet.';
                     if (data.errors) {
                         errorMsg += '\n\n';
                         Object.values(data.errors).forEach(errors => {
@@ -3868,7 +3868,7 @@
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('An error occurred while registering the patient. Please try again.');
+                alert('An error occurred while registering the pet. Please try again.');
             });
         }
 
@@ -3877,10 +3877,10 @@
             const tbody = document.getElementById('patientTableBody');
             const noMessage = document.getElementById('noPatientsMessage');
             
-            tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">Loading patients...</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">Loading pets...</td></tr>';
             
             // Fetch real patient data from API
-            fetch('/patients')
+            fetch('/pets')
                 .then(response => {
                     if (!response.ok) throw new Error('Failed to fetch patients');
                     return response.text();
@@ -3911,7 +3911,7 @@
                             const sex = cells[3].textContent.trim();
                             const contact = cells[4].textContent.trim();
                             const lastVisit = cells[5] ? cells[5].textContent.trim() : '-';
-                            const viewLink = cells[6].querySelector('a[href*="patients/"]');
+                            const viewLink = cells[6].querySelector('a[href*="/pets/"]');
                             const patientIdNum = viewLink ? viewLink.href.split('/').pop() : '';
                             
                             const newRow = document.createElement('tr');
@@ -3924,7 +3924,7 @@
                                 <td>${lastVisit}</td>
                                 <td>
                                     <div class="table-actions">
-                                        <button class="btn-view" onclick="window.location.href='/patients/${patientIdNum}'">View</button>
+                                        <button class="btn-view" onclick="window.location.href='/pets/${patientIdNum}'">View</button>
                                         <button class="btn-view" onclick="window.location.href='/visits/create?patient_id=${patientIdNum}'" style="background: #10b981;">+ Visit</button>
                                     </div>
                                 </td>
@@ -3934,8 +3934,8 @@
                     });
                 })
                 .catch(error => {
-                    console.error('Error loading patients:', error);
-                    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px; color: #ef4444;">Error loading patients. Please try again.</td></tr>';
+                    console.error('Error loading pets:', error);
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px; color: #ef4444;">Error loading pets. Please try again.</td></tr>';
                 });
         }
 
@@ -3951,7 +3951,7 @@
             tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">Searching...</td></tr>';
             
             // Use the real search API
-            fetch(`/api/patients/search?term=${encodeURIComponent(searchTerm)}`)
+            fetch(`/api/pets/search?term=${encodeURIComponent(searchTerm)}`)
                 .then(response => response.json())
                 .then(patients => {
                     tbody.innerHTML = '';
@@ -3979,7 +3979,7 @@
                             <td>${lastVisit}</td>
                             <td>
                                 <div class="table-actions">
-                                    <button class="btn-view" onclick="window.location.href='/patients/${patient.id}'">View</button>
+                                    <button class="btn-view" onclick="window.location.href='/pets/${patient.id}'">View</button>
                                     <button class="btn-view" onclick="window.location.href='/visits/create?patient_id=${patient.id}'" style="background: #10b981;">+ Visit</button>
                                 </div>
                             </td>
@@ -4141,7 +4141,7 @@ Registered: ${new Date(patient.registeredDate).toLocaleString()}
             medicalRecords.push(record);
             console.log('Medical Record Saved:', record);
 
-            alert(`Medical record saved successfully!\n\nRecord ID: ${recordId}\nPatient: ${patient.fullName}\nDate: ${date}\nType: ${type}`);
+            alert(`Pet record saved successfully!\n\nRecord ID: ${recordId}\nPet: ${patient.fullName}\nDate: ${date}\nType: ${type}`);
             
             cancelAddRecord();
             renderMedicalRecords();
@@ -4280,10 +4280,10 @@ Created: ${new Date(record.createdAt).toLocaleString()}
 
         function deleteRecord(index) {
             const record = medicalRecords[index];
-            if (confirm(`Are you sure you want to delete this medical record?\n\nRecord ID: ${record.id}\nPatient: ${record.patientName}\nDate: ${record.date}`)) {
+            if (confirm(`Are you sure you want to delete this pet record?\n\nRecord ID: ${record.id}\nPet: ${record.patientName}\nDate: ${record.date}`)) {
                 medicalRecords.splice(index, 1);
                 renderMedicalRecords();
-                alert('Medical record deleted successfully.');
+                alert('Pet record deleted successfully.');
             }
         }
 
@@ -4305,7 +4305,7 @@ Created: ${new Date(record.createdAt).toLocaleString()}
             if (searchTerm) params.append('term', searchTerm);
             if (birthdayFilter) params.append('birthday', birthdayFilter);
             
-            fetch(`/api/patients/search?${params.toString()}`)
+            fetch(`/api/pets/search?${params.toString()}`)
                 .then(response => response.json())
                 .then(patients => {
                     resultsContainer.innerHTML = '';
@@ -4401,7 +4401,7 @@ Created: ${new Date(record.createdAt).toLocaleString()}
             modal.innerHTML = `
                 <div style="background: white; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: slideUp 0.3s ease;">
                     <div style="background: linear-gradient(135deg, #047857 0%, #059669 100%); color: white; padding: 16px 20px; border-radius: 12px 12px 0 0; display: flex; justify-content: space-between; align-items: center;">
-                        <h2 style="margin: 0; font-size: 18px; font-weight: 700;"><i class="bi bi-person-circle"></i> Patient Details</h2>
+                        <h2 style="margin: 0; font-size: 18px; font-weight: 700;"><i class="bi bi-person-circle"></i> Pet Details</h2>
                         <button onclick="this.closest('[style*=fixed]').remove(); document.body.style.overflow='auto'" style="background: rgba(255,255,255,0.2); border: none; color: white; font-size: 24px; cursor: pointer; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease;">&times;</button>
                     </div>
                     <div style="padding: 20px;">
@@ -4411,7 +4411,7 @@ Created: ${new Date(record.createdAt).toLocaleString()}
                                 <div style="font-size: 15px; color: #111827; font-weight: 500;">${patient.name}</div>
                             </div>
                             <div style="padding: 10px 12px; background: #f9fafb; border-radius: 6px; border-left: 3px solid #047857;">
-                                <label style="display: block; font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 4px; font-weight: 600;">Patient ID</label>
+                                <label style="display: block; font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 4px; font-weight: 600;">Pet ID</label>
                                 <div style="font-size: 15px; color: #111827; font-weight: 500;">${patient.patient_id}</div>
                             </div>
                             <div style="padding: 10px 12px; background: #f9fafb; border-radius: 6px; border-left: 3px solid #10b981;">
@@ -4437,7 +4437,7 @@ Created: ${new Date(record.createdAt).toLocaleString()}
                         </div>
                     </div>
                     <div style="display: flex; gap: 10px; padding: 16px 20px; border-top: 1px solid #e5e7eb; background: #f9fafb; border-radius: 0 0 12px 12px;">
-                        <a href="/patients/${patient.id}" style="flex: 1; padding: 10px 18px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; background: #047857; color: white; display: inline-flex; align-items: center; justify-content: center; gap: 6px;"><i class="bi bi-clipboard2-check"></i> View Full Record</a>
+                        <a href="/pets/${patient.id}" style="flex: 1; padding: 10px 18px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; background: #047857; color: white; display: inline-flex; align-items: center; justify-content: center; gap: 6px;"><i class="bi bi-clipboard2-check"></i> View Full Record</a>
                         <a href="/visits/create?patient_id=${patient.id}" style="flex: 1; padding: 10px 18px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; background: #3b82f6; color: white; display: inline-flex; align-items: center; justify-content: center; gap: 6px;"><i class="bi bi-hospital"></i> Add Visit</a>
                     </div>
                 </div>
@@ -4461,7 +4461,7 @@ Created: ${new Date(record.createdAt).toLocaleString()}
             const patientMedicalRecords = medicalRecords.filter(r => r.patientId === patientId);
             const recordsList = patientMedicalRecords.length > 0 
                 ? patientMedicalRecords.map(r => `  • ${new Date(r.date).toLocaleDateString()} - ${r.type}`).join('\n')
-                : '  No medical records found';
+                : '  No pet records found';
             
             const details = `
 PET DETAILS
@@ -4483,7 +4483,7 @@ Emergency Phone: ${patient.emergencyPhone || 'N/A'}
 Medical History/Allergies:
 ${patient.medicalHistory || 'None'}
 
-MEDICAL RECORDS (${patientMedicalRecords.length})
+PET RECORDS (${patientMedicalRecords.length})
 ${recordsList}
 
 Registered: ${new Date(patient.registeredDate).toLocaleString()}
@@ -4575,7 +4575,7 @@ Registered: ${new Date(patient.registeredDate).toLocaleString()}
                     }
                     
                     searchTimeout = setTimeout(() => {
-                        fetch(`/api/patients/search?q=${encodeURIComponent(query)}`)
+                        fetch(`/api/pets/search?q=${encodeURIComponent(query)}`)
                             .then(res => res.json())
                             .then(patients => {
                                 if (patients.length > 0) {
@@ -4626,7 +4626,7 @@ Registered: ${new Date(patient.registeredDate).toLocaleString()}
         // Dashboard Reschedule Modal Functions
         function openDashboardReschedule(aptId, patientName, currentDate, currentTime) {
             document.getElementById('dashboardRescheduleAppointmentId').value = aptId;
-            document.getElementById('dashboardReschedulePatientName').textContent = 'Patient: ' + patientName;
+            document.getElementById('dashboardReschedulePatientName').textContent = 'Pet: ' + patientName;
             document.getElementById('dashboardCurrentAppointmentInfo').innerHTML = 
                 '<strong>' + currentDate + '</strong><br>' + currentTime;
             
@@ -4795,7 +4795,7 @@ Registered: ${new Date(patient.registeredDate).toLocaleString()}
                     ? row('Missing Fields', `<span style="color:#ef4444;">${missing.join(', ')}</span>`, true)
                     : '');
 
-            viewBtn.href = '/patients/' + patient.id;
+            viewBtn.href = '/pets/' + patient.id;
             modal.style.display = 'flex';
             document.body.style.overflow = 'hidden';
         }

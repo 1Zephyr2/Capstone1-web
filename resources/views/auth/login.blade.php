@@ -42,7 +42,7 @@
 
         .login-right {
             flex: 1;
-            background: url('/images/login_bg.jpg') center/cover no-repeat;
+            background: url('/images/bgreplace.jpg') center/cover no-repeat;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -57,7 +57,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(16, 185, 129, 0.6);
+            background: linear-gradient(135deg, rgba(5, 150, 105, 0.42), rgba(6, 182, 212, 0.28));
             z-index: 0;
         }
 
@@ -66,22 +66,37 @@
             z-index: 1;
             text-align: center;
             color: white;
-            padding: 40px;
+            padding: 44px 40px;
+            width: min(620px, 92%);
+            border-radius: 24px;
+            background: rgba(15, 23, 42, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            box-shadow: 0 14px 36px rgba(0, 0, 0, 0.22);
         }
 
         .background-content h2 {
-            font-size: 48px;
-            margin-bottom: 20px;
+            font-size: 46px;
+            margin-bottom: 14px;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.45);
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
             font-weight: 700;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.35);
         }
 
         .background-content p {
-            font-size: 20px;
-            opacity: 1;
-            line-height: 1.6;
-            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+            font-size: 18px;
+            line-height: 1.65;
+            opacity: 0.96;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.35);
             font-weight: 500;
+            max-width: 540px;
+            margin: 0 auto;
         }
 
         .login-header {
@@ -264,7 +279,7 @@
         <div class="login-left">
             <div class="login-container">
                 <div class="login-header">
-                    <div class="logo"><img src="/images/systemlogo.png" alt="PAWSER Logo"></div>
+                    <div class="logo"><img src="{{ asset('newlogo.png') }}" alt="PAWSER Logo"></div>
                     <h1>PAWSER</h1>
                     <p>Pet Appointment and Workflow Service &amp; Records System</p>
                 </div>
@@ -324,7 +339,7 @@
                 </form>
 
                 <div class="footer-text">
-                    &copy; {{ date('Y') }} PAWSER. Designed for Veterinary Clinic Staff.
+                    &copy; {{ date('Y') }} PAWSER. Designed for Pet Grooming Clinic Staff.
                 </div>
             </div>
         </div>
@@ -333,8 +348,8 @@
         <div class="login-right">
             <div class="background-content">
                 <h2>Welcome to PAWSER</h2>
-                <p>Streamlining veterinary clinic operations<br>
-                for better pet care and efficient medical record management.</p>
+                <div class="hero-subtitle">Where every pet leaves fresh, happy, and cared for</div>
+                <p>Simplify grooming appointments, track pet profiles, and keep your daily workflow smooth from check-in to pick-up.</p>
             </div>
         </div>
     </div>

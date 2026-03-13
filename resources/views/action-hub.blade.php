@@ -691,7 +691,7 @@
             }
             
             modalBody.innerHTML = content;
-            viewBtn.href = '/patients/' + patient.id;
+            viewBtn.href = '/pets/' + patient.id;
             
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';

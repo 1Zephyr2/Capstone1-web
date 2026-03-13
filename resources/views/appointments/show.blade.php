@@ -69,7 +69,7 @@
                 <div class="info-row">
                     <label>Name:</label>
                     <span>
-                        <a href="{{ route('patients.show', $appointment->patient) }}" class="link">
+                        <a href="{{ route('pets.show', $appointment->patient) }}" class="link">
                             {{ $appointment->patient->full_name }}
                         </a>
                     </span>

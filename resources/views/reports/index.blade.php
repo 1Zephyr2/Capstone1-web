@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monthly Reports - Health Center</title>
+    <title>Monthly Reports - PAWser</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
@@ -286,7 +286,7 @@
         <a href="{{ route('dashboard') }}" class="back-button">← Back</a>
         <div class="header">
             <div class="header-top">
-                <h1>Monthly Health Center Reports</h1>
+                <h1>Monthly Clinic Reports</h1>
             </div>
             <div class="filters">
                 <div class="form-group">

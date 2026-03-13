@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reports - PAWser</title>
+    <title>Pet Records - PAWser</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
@@ -110,15 +110,15 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1><i class="bi bi-bar-chart-fill"></i> Reports</h1>
+            <h1><i class="bi bi-clipboard2-check"></i> Pet Records</h1>
             <a href="{{ route('dashboard') }}" class="back-btn">← Back to Dashboard</a>
         </div>
 
         <div class="content-card">
             <div class="coming-soon">
-                <div class="icon"><i class="bi bi-bar-chart-fill"></i></div>
-                <h2>Analytics & Reports</h2>
-                <p>This feature is under development. Generate and view clinic reports here.</p>
+                <div class="icon"><i class="bi bi-clipboard2-check" style="font-size: 48px;"></i></div>
+                <h2>Pet Records Management</h2>
+                <p>This feature is under development. View and manage all pet records here.</p>
             </div>
         </div>
     </div>
