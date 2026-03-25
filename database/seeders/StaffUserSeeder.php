@@ -23,13 +23,13 @@ class StaffUserSeeder extends Seeder
                 'username' => 'staff',
                 'email' => 'staff@healthcenter.com',
                 'phone' => '09123456789',
-                'password' => Hash::make('staff123'),
+                'password' => Hash::make('password123'),
                 'role' => 'staff',
             ]);
 
             $this->command->info('Staff user created successfully!');
             $this->command->info('Username: staff');
-            $this->command->info('Password: staff123');
+            $this->command->info('Password: password123');
         } else {
             $this->command->info('Staff user already exists.');
         }

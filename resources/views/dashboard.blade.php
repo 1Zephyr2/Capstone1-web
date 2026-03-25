@@ -14,7 +14,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f8fafc;
+            background: #f5f7fa;
             display: flex;
             min-height: 100vh;
         }
@@ -22,10 +22,10 @@
         /* Sidebar */
         .sidebar {
             width: 260px;
-            background: linear-gradient(180deg, #059669 0%, #047857 100%);
+            background: #1e293b;
             color: white;
             padding: 24px 0 0 0;
-            box-shadow: 2px 0 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 2px 0 8px rgba(0, 0, 0, 0.06);
             position: fixed;
             height: 100vh;
             overflow-y: auto;
@@ -81,7 +81,7 @@
         .logo-icon {
             width: 40px;
             height: 40px;
-            background: linear-gradient(135deg, #047857 0%, #059669 100%);
+            background: #14b8a6;
             border-radius: 8px;
             display: flex;
             align-items: center;
@@ -89,7 +89,7 @@
             font-size: 20px;
             font-weight: bold;
             flex-shrink: 0;
-            box-shadow: 0 2px 8px rgba(4, 120, 87, 0.3);
+            box-shadow: 0 2px 8px rgba(20, 184, 166, 0.2);
         }
 
         .logo-text {
@@ -139,15 +139,16 @@
         }
 
         .menu-item:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(20, 184, 166, 0.2);
             transform: translateX(4px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.15);
+            border-color: rgba(20, 184, 166, 0.4);
         }
 
         .menu-item.active {
-            background: rgba(255, 255, 255, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            background: rgba(20, 184, 166, 0.3);
+            border: 1px solid rgba(20, 184, 166, 0.5);
+            box-shadow: 0 4px 16px rgba(20, 184, 166, 0.2);
         }
 
         .menu-icon {
@@ -455,10 +456,10 @@
             height: 4px;
         }
 
-        .action-card:nth-child(1) { color: #3B82F6; }
-        .action-card:nth-child(2) { color: #10B981; }
-        .action-card:nth-child(3) { color: #8B5CF6; }
-        .action-card:nth-child(4) { color: #F59E0B; }
+        .action-card:nth-child(1) { color: #14b8a6; }
+        .action-card:nth-child(2) { color: #06b6d4; }
+        .action-card:nth-child(3) { color: #0f172a; }
+        .action-card:nth-child(4) { color: #f59e0b; }
 
         .action-card:hover {
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08), 0 8px 32px rgba(0, 0, 0, 0.08);
@@ -482,18 +483,18 @@
         }
 
         .action-icon.blue {
-            background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
-            color: #3B82F6;
+            background: linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%);
+            color: #14b8a6;
         }
 
         .action-icon.green {
-            background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
-            color: #10B981;
+            background: linear-gradient(135deg, #cffafe 0%, #a5f3fc 100%);
+            color: #06b6d4;
         }
 
         .action-icon.purple {
-            background: linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 100%);
-            color: #8B5CF6;
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+            color: #0f172a;
         }
 
         .action-icon.orange {
@@ -522,12 +523,12 @@
         }
 
         .alerts-summary-card {
-            background: linear-gradient(135deg, #ffffff 0%, #fef3f2 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #f0fdfa 100%);
             border-radius: 20px;
             padding: 28px;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
-            border: 1px solid rgba(249, 115, 22, 0.1);
-            border-top: 5px solid #f97316;
+            border: 1px solid rgba(20, 184, 166, 0.1);
+            border-top: 5px solid #14b8a6;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
@@ -543,7 +544,7 @@
         }
 
         .view-all-btn {
-            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            background: #14b8a6;
             color: white;
             padding: 10px 20px;
             border-radius: 12px;
@@ -554,13 +555,15 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            box-shadow: 0 2px 8px rgba(249, 115, 22, 0.2);
+            box-shadow: 0 1px 3px rgba(20, 184, 166, 0.3);
+            border: none;
+            cursor: pointer;
         }
 
         .view-all-btn:hover {
-            background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+            background: #0d9488;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(20, 184, 166, 0.4);
         }
 
         .alerts-grid {
@@ -595,8 +598,8 @@
         }
 
         .alert-info {
-            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-            border-color: #3b82f6;
+            background: linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%);
+            border-color: #14b8a6;
         }
 
         .alert-icon {
@@ -647,11 +650,11 @@
         }
         
         .calendar-summary {
-            background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
-            border-radius: 20px;
-            padding: 16px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
-            border: 1px solid rgba(16, 185, 129, 0.1);
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.05);
+            border: 1px solid #ccfbf1;
             display: flex;
             flex-direction: column;
             height: fit-content;
@@ -661,13 +664,14 @@
         }
         
         .calendar-summary:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.05);
+            border-color: #d1d5db;
         }
         
         .calendar-header {
-            border-bottom: 2px solid #d1fae5;
-            padding-bottom: 12px;
-            margin-bottom: 12px;
+            border-bottom: 2px solid #ccfbf1;
+            padding-bottom: 16px;
+            margin-bottom: 16px;
             flex-shrink: 0;
             display: flex;
             justify-content: space-between;
@@ -679,7 +683,7 @@
         }
         
         .calendar-btn {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: #14b8a6;
             color: white;
             border: none;
             padding: 8px 14px;
@@ -691,18 +695,18 @@
             align-items: center;
             gap: 6px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 1px 3px rgba(20, 184, 166, 0.3);
             flex-shrink: 0;
         }
         
         .calendar-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
-            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(20, 184, 166, 0.4);
+            background: #0d9488;
         }
         
         .calendar-date {
-            font-size: 20px;
+            font-size: 24px;
             font-weight: 800;
             color: #111827;
             margin-bottom: 4px;
@@ -710,8 +714,8 @@
         }
         
         .calendar-subtitle {
-            font-size: 12px;
-            color: #6B7280;
+            font-size: 13px;
+            color: #6b7280;
             margin-top: 2px;
             font-weight: 500;
         }
@@ -804,26 +808,26 @@
         }
         
         .mini-calendar-day.today {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: #14b8a6;
             color: white;
             font-weight: 700;
-            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 2px 8px rgba(20, 184, 166, 0.3);
         }
         
         .mini-calendar-day.today:hover {
-            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            background: #0d9488;
             transform: scale(1.1);
         }
         
         .mini-calendar-day.selected {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            background: #06b6d4;
             color: white;
             font-weight: 700;
-            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 2px 8px rgba(6, 182, 212, 0.3);
         }
         
         .mini-calendar-day.selected:hover {
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            background: #0891b2;
         }
         
         .mini-calendar-day.has-appointments {
@@ -1318,7 +1322,7 @@
 
         .status-completed { background: #dcfce7; color: #166534; }
         .status-pending { background: #fef3c7; color: #92400e; }
-        .status-scheduled { background: #dbeafe; color: #1e40af; }
+        .status-scheduled { background: #ccfbf1; color: #0891b2; }
 
         /* Floating AI Button */
         .floating-ai-button {
@@ -1438,13 +1442,13 @@
         }
 
         .ai-modal-header {
-            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             color: white;
             padding: 28px 32px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.2);
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.3);
         }
 
         .ai-modal-header h2 {
@@ -1602,8 +1606,8 @@
         }
 
         .calendar-day.has-appointment {
-            background: #dbeafe;
-            border-color: #3b82f6;
+            background: #ccfbf1;
+            border-color: #14b8a6;
         }
 
         .calendar-day.has-appointment::after {
@@ -1612,7 +1616,7 @@
             bottom: 4px;
             width: 6px;
             height: 6px;
-            background: #3b82f6;
+            background: #14b8a6;
             border-radius: 50%;
         }
 
@@ -1696,7 +1700,7 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
             color: white;
             border: none;
             padding: 12px 28px;
@@ -1705,15 +1709,15 @@
             font-size: 14px;
             font-weight: 600;
             transition: all 0.2s;
-            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
             letter-spacing: 0.02em;
             flex: 1;
         }
 
         .btn-primary:hover {
-            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            background: linear-gradient(135deg, #0d9488 0%, #06b6d4 100%);
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
+            box-shadow: 0 6px 16px rgba(20, 184, 166, 0.4);
         }
 
         .btn-secondary {
@@ -1854,7 +1858,7 @@
         }
 
         .btn-view:hover {
-            background: #2563eb;
+            background: #06b6d4;
         }
 
         .btn-edit {
@@ -2036,7 +2040,7 @@
         }
 
         .patient-result-card:hover {
-            border-color: #8b5cf6;
+            border-color: #14b8a6;
             box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15);
         }
 
@@ -2760,8 +2764,6 @@
                 </div>
                 
                 <div class="search-filters">
-                    <input type="date" id="searchBirthdayFilter" placeholder="Birthday" onchange="performQuickSearch()" style="padding:8px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:14px;color:#374151;">
-                    
                         <select id="searchSexFilter" onchange="performQuickSearch()">
                             <option value="">Any Sex</option>
                             <option value="Male">Male</option>
@@ -2977,7 +2979,7 @@
     <!-- Patient List Modal -->
     <div id="patientListModal" class="ai-modal" onclick="closeModalOnBackdrop(event, 'patientList')">
         <div class="ai-modal-content" style="max-width: 1000px;">
-            <div class="ai-modal-header" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
+            <div class="ai-modal-header" style="background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);">
                 <h2><i class="bi bi-people-fill"></i> Pet List</h2>
                 <button class="ai-modal-close" onclick="closeModal('patientList')">x</button>
             </div>
@@ -3083,7 +3085,7 @@
                     div.innerHTML = '' +
                         '<div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">' +
                         '<div style="font-size: 16px; font-weight: 700; color: #111827;"><i class="bi bi-person-circle" style="color: #10b981; margin-right: 6px;"></i>' + apt.patient + '</div>' +
-                        '<div style="background: #dbeafe; color: #1d4ed8; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase;">' + apt.type + '</div>' +
+                        '<div style="background: #ccfbf1; color: #0891b2; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase;">' + apt.type + '</div>' +
                         '</div>' +
                         '<div style="font-size: 14px; color: #6b7280; margin-bottom: 4px;"><i class="bi bi-clock" style="margin-right: 6px;"></i><strong>' + apt.time + '</strong></div>' +
                         (apt.status ? '<div style="font-size: 13px; color: #6b7280; margin-bottom: 4px;"><i class="bi bi-info-circle" style="margin-right: 6px;"></i>Status: <span style="text-transform: capitalize; font-weight: 600;">' + apt.status + '</span></div>' : '') +
@@ -3385,7 +3387,7 @@
                                     <i class="bi bi-clock" style="margin-right: 4px;"></i>${apt.time}
                                 </div>
                             </div>
-                            <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); color: #1d4ed8; padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
+                            <div style="background: linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%); color: #0891b2; padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
                                 ${apt.type}
                             </div>
                         </div>
@@ -3722,7 +3724,7 @@
                             <div style="font-size: 13px; color: #6b7280; margin-bottom: 4px;">
                                 <i class="bi bi-clock" style="margin-right: 4px;"></i>${apt.time}
                             </div>
-                            <div style="display: inline-block; background: #dbeafe; color: #1d4ed8; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">
+                            <div style="display: inline-block; background: #ccfbf1; color: #0891b2; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">
                                 ${apt.type}
                             </div>
                             ${apt.notes ? `<div style="margin-top: 8px; padding: 8px; background: white; border-radius: 4px; font-size: 12px; color: #6b7280;"><i class="bi bi-chat-left-text" style="margin-right: 4px;"></i>${apt.notes}</div>` : ''}
@@ -4290,7 +4292,6 @@ Created: ${new Date(record.createdAt).toLocaleString()}
         // Patient Search Functions
         function performQuickSearch() {
             const searchTerm = document.getElementById('quickSearchInput').value;
-            const birthdayFilter = document.getElementById('searchBirthdayFilter').value;
             const sexFilter = document.getElementById('searchSexFilter').value;
             const speciesFilter = document.getElementById('searchSpeciesFilter').value;
             const ageFilter = document.getElementById('searchAgeFilter').value;
@@ -4303,7 +4304,6 @@ Created: ${new Date(record.createdAt).toLocaleString()}
             // Use the real search API
             const params = new URLSearchParams();
             if (searchTerm) params.append('term', searchTerm);
-            if (birthdayFilter) params.append('birthday', birthdayFilter);
             
             fetch(`/api/pets/search?${params.toString()}`)
                 .then(response => response.json())
@@ -4312,9 +4312,6 @@ Created: ${new Date(record.createdAt).toLocaleString()}
                     
                     // Apply client-side filters
                     let filteredPatients = patients.filter(patient => {
-                        // Birthday filter
-                        const matchesBirthday = !birthdayFilter || patient.birthdate === birthdayFilter;
-                        
                         // Sex filter
                         const matchesSex = !sexFilter || patient.sex === sexFilter;
                         
@@ -4332,7 +4329,7 @@ Created: ${new Date(record.createdAt).toLocaleString()}
                             else if (ageFilter === '13+') matchesAge = age >= 13;
                         }
                         
-                        return matchesBirthday && matchesSex && matchesSpecies && matchesAge;
+                        return matchesSex && matchesSpecies && matchesAge;
                     });
                     
                     if (filteredPatients.length === 0) {
@@ -4438,7 +4435,7 @@ Created: ${new Date(record.createdAt).toLocaleString()}
                     </div>
                     <div style="display: flex; gap: 10px; padding: 16px 20px; border-top: 1px solid #e5e7eb; background: #f9fafb; border-radius: 0 0 12px 12px;">
                         <a href="/pets/${patient.id}" style="flex: 1; padding: 10px 18px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; background: #047857; color: white; display: inline-flex; align-items: center; justify-content: center; gap: 6px;"><i class="bi bi-clipboard2-check"></i> View Full Record</a>
-                        <a href="/visits/create?patient_id=${patient.id}" style="flex: 1; padding: 10px 18px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; background: #3b82f6; color: white; display: inline-flex; align-items: center; justify-content: center; gap: 6px;"><i class="bi bi-hospital"></i> Add Visit</a>
+                        <a href="/visits/create?patient_id=${patient.id}" style="flex: 1; padding: 10px 18px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; background: #14b8a6; color: white; display: inline-flex; align-items: center; justify-content: center; gap: 6px;"><i class="bi bi-hospital"></i> Add Visit</a>
                     </div>
                 </div>
             `;
@@ -4747,13 +4744,13 @@ Registered: ${new Date(patient.registeredDate).toLocaleString()}
     <!-- Automation Panel Patient Modal -->
     <div id="dashAutomationModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center;" onclick="if(event.target===this)closeDashAutomationModal()">
         <div style="background:#fff; border-radius:16px; width:90%; max-width:480px; box-shadow:0 20px 50px rgba(0,0,0,0.2); overflow:hidden;">
-            <div style="background:linear-gradient(135deg,#2563eb,#1d4ed8); padding:20px 24px; display:flex; justify-content:space-between; align-items:center;">
+            <div style="background:linear-gradient(135deg,#14b8a6,#0d9488); padding:20px 24px; display:flex; justify-content:space-between; align-items:center;">
                 <h2 id="dashAutoModalTitle" style="color:#fff; font-size:17px; font-weight:700; margin:0;"><i class="bi bi-person-circle"></i> Pet Information</h2>
                 <button onclick="closeDashAutomationModal()" style="background:rgba(255,255,255,0.2); border:none; color:#fff; border-radius:8px; padding:4px 10px; cursor:pointer; font-size:18px;">&times;</button>
             </div>
             <div id="dashAutoModalBody" style="padding:24px; max-height:70vh; overflow-y:auto;"></div>
             <div style="padding:16px 24px; background:#f9fafb; display:flex; gap:10px; justify-content:flex-end;">
-                <a id="dashAutoViewBtn" href="#" style="padding:9px 18px; background:#2563eb; color:#fff; border-radius:8px; text-decoration:none; font-size:14px; font-weight:600;">View Full Profile</a>
+                <a id="dashAutoViewBtn" href="#" style="padding:9px 18px; background:#14b8a6; color:#fff; border-radius:8px; text-decoration:none; font-size:14px; font-weight:600;">View Full Profile</a>
                 <button onclick="closeDashAutomationModal()" style="padding:9px 18px; background:#e5e7eb; color:#374151; border:none; border-radius:8px; cursor:pointer; font-size:14px; font-weight:600;">Close</button>
             </div>
         </div>

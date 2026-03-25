@@ -110,7 +110,7 @@
             height: 120px;
             border-radius: 50%;
             border: 4px solid white;
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            background: linear-gradient(135deg, #14b8a6 0%, #d97706 100%);
             display: flex;
             align-items: center;
             justify-content: center;

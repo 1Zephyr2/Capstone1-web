@@ -122,8 +122,8 @@
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            background: linear-gradient(135deg, 
-                {{ Auth::user()->role === 'admin' ? '#1e40af 0%, #3b82f6' : '#059669 0%, #f59e0b' }} 100%);
+            background: linear-gradient(135deg,
+                {{ Auth::user()->role === 'admin' ? '#14b8a6 0%, #0d9488' : '#0f172a 0%, #1e293b' }} 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -350,7 +350,7 @@
                         </div>
                         <div class="form-group">
                             <label for="phone">Phone Number *</label>
-                            <input type="tel" id="phone" name="phone" value="{{ old('phone', $user->phone) }}" pattern="[0-9]*" inputmode="numeric" placeholder="e.g., 09123456789" required>
+                            <input type="tel" id="phone" name="phone" value="{{ old('phone', $user->phone) }}" pattern="[0-9]*" inputmode="numeric" maxlength="11" placeholder="e.g., 09123456789" required>
                             <div class="help-text">Numbers only</div>
                             @error('phone')
                                 <div class="error-message">{{ $message }}</div>

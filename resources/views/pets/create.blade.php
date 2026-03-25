@@ -70,10 +70,10 @@
         .header-logo-text {
             font-size: 18px;
             font-weight: 600;
-            color: #047857;
+            color: #2563eb;
         }
         h1 {
-            color: #047857;
+            color: #2563eb;
             margin: 0;
             font-size: 28px;
             font-weight: 800;
@@ -128,8 +128,8 @@
         }
         input:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: #047857;
-            box-shadow: 0 0 0 3px rgba(4,120,87,0.1);
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
         }
         textarea {
             resize: vertical;
@@ -158,11 +158,14 @@
             transition: all 0.2s;
         }
         .btn-primary {
-            background: #047857;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
             color: white;
+            transition: all 0.2s ease;
         }
         .btn-primary:hover {
-            background: #059669;
+            background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
         }
         .btn-secondary {
             background: #e5e7eb;
@@ -219,7 +222,7 @@
             background: #f9fafb;
         }
         .autocomplete-item strong {
-            color: #047857;
+            color: #2563eb;
             display: block;
             margin-bottom: 4px;
         }
@@ -251,8 +254,8 @@
             display: inline-block;
             margin-left: 8px;
             padding: 4px 8px;
-            background: #ecfdf5;
-            color: #047857;
+            background: #eff6ff;
+            color: #2563eb;
             border-radius: 4px;
             font-size: 12px;
             font-weight: 600;

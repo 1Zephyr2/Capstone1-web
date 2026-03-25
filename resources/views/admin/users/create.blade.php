@@ -521,11 +521,13 @@
                             Phone Number
                         </label>
                         <input 
-                            type="text" 
+                            type="tel" 
                             name="phone" 
                             class="form-input" 
                             value="{{ old('phone') }}" 
                             placeholder="Enter phone number"
+                            inputmode="numeric"
+                            maxlength="11"
                         >
                         @error('phone')
                             <div class="error-message">{{ $message }}</div>

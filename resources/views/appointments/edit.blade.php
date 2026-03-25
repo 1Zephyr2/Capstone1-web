@@ -140,6 +140,8 @@
                         <label for="secondary_contact_number">Contact Number</label>
                         <input type="tel" name="secondary_contact_number" id="secondary_contact_number" class="form-control"
                                placeholder="09XX-XXX-XXXX"
+                               inputmode="numeric"
+                               maxlength="11"
                                value="{{ old('secondary_contact_number', $appointment->secondary_contact_number) }}">
                     </div>
                 </div>

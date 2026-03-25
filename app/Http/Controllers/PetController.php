@@ -10,16 +10,20 @@ use Illuminate\Support\Facades\Validator;
 class PetController extends Controller
 {
     /**
-     * Base query scoped to the current user (admins see all).
+     * Base query scoped to the current user (admins and staff see all, others see only theirs).
      */
     private function scopedQuery()
     {
         $query = Patient::query();
         /** @var \App\Models\User $user */
         $user = Auth::user();
-        if (!$user->isAdmin()) {
+        
+        // Admins and staff can see all pets
+        // Only restrict personal users to their own pets if that role existed
+        if (!$user->isAdmin() && !$user->isStaff()) {
             $query->where('user_id', Auth::id());
         }
+        
         return $query;
     }
 
@@ -30,7 +34,9 @@ class PetController extends Controller
     {
         /** @var \App\Models\User $user */
         $user = Auth::user();
-        if (!$user->isAdmin() && $patient->user_id !== Auth::id()) {
+        // Allow admins and staff to access all pets
+        // Only restrict personal users to their own pets
+        if (!$user->isAdmin() && !$user->isStaff() && $patient->user_id !== Auth::id()) {
             abort(403, 'You do not have access to this pet record.');
         }
     }

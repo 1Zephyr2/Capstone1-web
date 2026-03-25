@@ -459,7 +459,7 @@
     <!-- CALENDAR MODAL - SYNCHRONIZED WITH DASHBOARD -->
     <div id="visitsCalendarModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 10000; align-items: center; justify-content: center;" onclick="closeCalendarModal(event)">
         <div style="background: white; border-radius: 12px; max-width: 750px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);" onclick="event.stopPropagation()">
-            <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 20px; border-radius: 12px 12px 0 0; display: flex; justify-content: space-between; align-items: center;">
+            <div style="background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); padding: 20px; border-radius: 12px 12px 0 0; display: flex; justify-content: space-between; align-items: center;">
                 <h2 style="margin: 0; color: white; font-size: 20px;"><i class="bi bi-calendar-week"></i> Appointments Calendar</h2>
                 <button onclick="closeCalendarModal()" style="background: rgba(255,255,255,0.2); border: none; color: white; font-size: 24px; cursor: pointer; width: 36px; height: 36px; border-radius: 50%; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">×</button>
             </div>
@@ -786,7 +786,7 @@
                     text-align: center;
                     border-radius: 8px;
                     cursor: pointer;
-                    background: ${hasAppointments ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)' : (isToday ? '#f3f4f6' : 'white')};
+                    background: ${hasAppointments ? 'linear-gradient(135deg, #14b8a6 0%, #0d9488 100%)' : (isToday ? '#f3f4f6' : 'white')};
                     color: ${hasAppointments ? 'white' : '#374151'};
                     font-weight: ${hasAppointments ? '700' : (isToday ? '600' : '400')};
                     border: ${isToday && !hasAppointments ? '2px solid #10b981' : 'none'};
@@ -814,7 +814,7 @@
             const formattedDate = date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
             
             let html = `
-                <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 16px; border-radius: 8px; margin-bottom: 16px;">
+                <div style="background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); color: white; padding: 16px; border-radius: 8px; margin-bottom: 16px;">
                     <h3 style="margin: 0; font-size: 18px;">${formattedDate}</h3>
                     <p style="margin: 4px 0 0 0; font-size: 14px; opacity: 0.9;">${appointments.length} appointment${appointments.length > 1 ? 's' : ''}</p>
                 </div>
@@ -833,7 +833,7 @@
             appointments.forEach(apt => {
                 const statusColors = {
                     'scheduled': '#10b981',
-                    'completed': '#3b82f6',
+                    'completed': '#14b8a6',
                     'cancelled': '#ef4444',
                     'no-show': '#f59e0b'
                 };
@@ -894,7 +894,7 @@
     <!-- Appointments Calendar Modal -->
     <div id="appointmentsCalendarModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10000; align-items: center; justify-content: center; padding: 20px;">
         <div style="background: white; border-radius: 16px; max-width: 800px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);">
-            <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 24px; border-radius: 16px 16px 0 0; display: flex; justify-content: space-between; align-items: center;">
+            <div style="background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); color: white; padding: 24px; border-radius: 16px 16px 0 0; display: flex; justify-content: space-between; align-items: center;">
                 <div>
                     <h2 style="margin: 0; font-size: 24px; font-weight: 700;">Appointments Calendar</h2>
                     <p style="margin: 4px 0 0 0; font-size: 14px; opacity: 0.9;">View appointments by date</p>
@@ -914,7 +914,7 @@
                 <div id="calendarGrid"></div>
                 <div style="margin-top: 20px; padding: 16px; background: #f9fafb; border-radius: 8px; display: flex; gap: 16px; align-items: center; font-size: 13px; color: #6b7280;">
                     <div style="display: flex; align-items: center; gap: 6px;">
-                        <div style="width: 16px; height: 16px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 4px;"></div>
+                        <div style="width: 16px; height: 16px; background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); border-radius: 4px;"></div>
                         <span>Has Appointments</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 6px;">

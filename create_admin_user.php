@@ -10,14 +10,14 @@ $admin = User::updateOrCreate(
         'name' => 'System Administrator',
         'email' => 'admin@caresync.local',
         'phone' => '09123456789',
-        'password' => Hash::make('admin123'),
+        'password' => Hash::make('password123'),
         'role' => 'admin',
     ]
 );
 
 echo "Admin user created successfully!\n";
 echo "Username: admin\n";
-echo "Password: admin123\n\n";
+echo "Password: password123\n\n";
 
 // Update existing users to staff role if they don't have a role set
 $updated = User::whereNull('role')

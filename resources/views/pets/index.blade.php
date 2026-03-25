@@ -731,20 +731,23 @@
         }
         .btn-modal-submit {
             padding: 10px 20px;
-            background: #047857;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
             color: white;
             border: none;
             border-radius: 6px;
             font-weight: 600;
             cursor: pointer;
+            transition: all 0.2s ease;
         }
         .btn-modal-submit:hover {
-            background: #065f46;
+            background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
         }
         
         /* Registration Modal Styles */
         .registration-modal {
-            display: none;
+            display: none !important;
             position: fixed;
             top: 0;
             left: 0;
@@ -778,12 +781,12 @@
             align-items: center;
             position: sticky;
             top: 0;
-            background: white;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
             z-index: 10;
         }
         .registration-modal-header h2 {
             margin: 0;
-            color: #047857;
+            color: white;
             font-size: 20px;
         }
         .registration-modal-body {
@@ -837,8 +840,8 @@
         .registration-modal-body .modal-form-group select:focus,
         .registration-modal-body .modal-form-group textarea:focus {
             outline: none;
-            border-color: #047857;
-            box-shadow: 0 0 0 3px rgba(4,120,87,0.1);
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
         }
         .registration-modal-body .modal-form-group textarea {
             resize: vertical;
@@ -872,16 +875,19 @@
         }
         .registration-modal-actions .btn-modal-submit {
             padding: 10px 20px;
-            background: #047857;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
             color: white;
             border: none;
             border-radius: 6px;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
+            transition: all 0.2s ease;
         }
         .registration-modal-actions .btn-modal-submit:hover {
-            background: #059669;
+            background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
         }
         .alert-modal {
             padding: 12px 16px;
@@ -1102,7 +1108,7 @@
             </div>
             
             <div class="header-actions">
-                <button onclick="openRegistrationModal()" class="btn-new-patient">
+                <button onclick="window.location.href='{{ route('pets.create') }}'" class="btn-new-patient">
                     <i class="bi bi-plus-circle"></i> Register New Pet
                 </button>
                 <button onclick="openImportModal()" class="btn-import">
@@ -1206,13 +1212,11 @@
                     {{-- Add Pet row for this owner --}}
                     <tr class="pet-row add-pet-row" data-owner="{{ $ownerId }}">
                         <td colspan="5">
-                            <button
-                                class="btn-add-pet"
-                                onclick="event.stopPropagation(); openRegistrationModal('{{ addslashes($ownerName) }}', '{{ $ownerPets->first()->owner_contact }}', '{{ addslashes($ownerPets->first()->address) }}')">
+                            <a href="{{ route('pets.create') }}" class="btn-add-pet" style="text-decoration: none; display: inline-flex;">
                                 <span class="add-pet-icon"><i class="bi bi-plus"></i></span>
                                 Add pet for <strong style="margin:0 2px;">{{ $ownerName ?: 'this owner' }}</strong>
                                 <span class="add-pet-hint">· new pet, same owner</span>
-                            </button>
+                            </a>
                         </td>
                     </tr>
 
@@ -1458,47 +1462,10 @@
 
         // Registration Modal Functions
         function openRegistrationModal(ownerName = '', ownerContact = '', ownerAddress = '') {
-            const existingOwner = Boolean(ownerName);
-            const existingOwnerField = document.getElementById('regExistingOwner');
-            const ownerNotice = document.getElementById('existingOwnerNotice');
-            const ownerInfoSection = document.getElementById('ownerInfoSection');
-            const ownerNameField = document.getElementById('regOwnerName');
-            const ownerContactField = document.getElementById('regOwnerContact');
-            const ownerAddressField = document.getElementById('regAddress');
-
-            document.getElementById('registrationModal').classList.add('active');
-
-            if (existingOwnerField) {
-                existingOwnerField.value = existingOwner ? '1' : '0';
-            }
-
-            if (ownerNameField) {
-                ownerNameField.value = ownerName || '';
-                ownerNameField.readOnly = existingOwner;
-                ownerNameField.required = true;
-                ownerNameField.style.background = existingOwner ? '#f0fdf4' : '';
-            }
-
-            if (ownerContactField) {
-                ownerContactField.value = ownerContact || '';
-                ownerContactField.readOnly = existingOwner;
-                ownerContactField.style.background = existingOwner ? '#f0fdf4' : '';
-            }
-
-            if (ownerAddressField) {
-                ownerAddressField.value = ownerAddress || '';
-                ownerAddressField.readOnly = existingOwner;
-                ownerAddressField.required = !existingOwner;
-                ownerAddressField.style.background = existingOwner ? '#f0fdf4' : '';
-            }
-
-            if (ownerNotice) {
-                ownerNotice.style.display = existingOwner ? 'block' : 'none';
-            }
-
-            if (ownerInfoSection) {
-                ownerInfoSection.style.display = existingOwner ? 'none' : 'block';
-            }
+            // Disabled - use the dedicated create page instead
+            // Redirect to pets create page
+            window.location.href = '{{ route('pets.create') }}';
+            return false;
         }
 
         function closeRegistrationModal() {
@@ -1536,64 +1503,8 @@
         // Handle registration form submission via AJAX
         document.getElementById('registrationForm')?.addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            const formData = new FormData(this);
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const alertDiv = document.getElementById('registrationAlert');
-            
-            // Disable submit button
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Registering...';
-            
-            fetch('{{ route("pets.store") }}', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    'Accept': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Show success message
-                    alertDiv.className = 'alert-modal success';
-                    alertDiv.textContent = data.message || 'Patient registered successfully!';
-                    alertDiv.style.display = 'block';
-                    
-                    // Reset form
-                    this.reset();
-                    
-                    // Reload page after 1.5 seconds
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 1500);
-                } else {
-                    // Show error message
-                    alertDiv.className = 'alert-modal error';
-                    if (data.errors) {
-                        const errorList = Object.values(data.errors).flat().map(err => `<li>${err}</li>`).join('');
-                        alertDiv.innerHTML = '<strong>Please fix the following errors:</strong><ul style="margin-top: 8px; margin-left: 20px;">' + errorList + '</ul>';
-                    } else {
-                        alertDiv.textContent = data.message || 'An error occurred. Please try again.';
-                    }
-                    alertDiv.style.display = 'block';
-                    
-                    // Re-enable submit button
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Register Pet';
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alertDiv.className = 'alert-modal error';
-                alertDiv.textContent = 'An error occurred. Please try again.';
-                alertDiv.style.display = 'block';
-                
-                // Re-enable submit button
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Register Pet';
-            });
+            // Disabled - redirect to dedicated create page instead
+            window.location.href = '{{ route('pets.create') }}';
         });
 
         // Close registration modal when clicking outside
@@ -2068,8 +1979,8 @@
     <div id="registrationModal" class="registration-modal">
         <div class="registration-modal-content">
             <div class="registration-modal-header">
-                <h2>Register New Pet</h2>
-                <button class="modal-close" onclick="closeRegistrationModal()" style="background: none; border: none; font-size: 28px; color: #6b7280; cursor: pointer; padding: 0; line-height: 1;">×</button>
+                <h2><i class="bi bi-plus-circle" style="margin-right: 8px;"></i>New Pet Record</h2>
+                <button class="modal-close" onclick="closeRegistrationModal()" style="background: none; border: none; font-size: 28px; color: white; cursor: pointer; padding: 0; line-height: 1; opacity: 0.9;">×</button>
             </div>
             <div class="registration-modal-body">
                 <div id="registrationAlert" class="alert-modal" style="display: none;"></div>

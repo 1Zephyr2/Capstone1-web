@@ -8,4 +8,19 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+    
+    /* Navy and Teal Premium Theme */
+    --color-primary: #0f172a;              /* Deep Navy */
+    --color-primary-dark: #020617;         /* Darker Navy */
+    --color-primary-light: #1e293b;        /* Light Navy */
+    --color-secondary: #14b8a6;            /* Teal */
+    --color-secondary-dark: #0d9488;       /* Dark Teal */
+    --color-secondary-light: #2dd4bf;      /* Light Teal */
+    --color-accent: #06b6d4;               /* Cyan */
+    --color-success: #10b981;              /* Emerald */
+    --color-warning: #f59e0b;              /* Amber */
+    --color-danger: #ef4444;               /* Red */
+    --color-bg-light: #f8fafc;             /* Light Background */
+    --color-text-primary: #111827;         /* Dark Text */
+    --color-text-secondary: #6b7280;       /* Gray Text */
 }
