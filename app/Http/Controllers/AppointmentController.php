@@ -50,7 +50,10 @@ class AppointmentController extends Controller
             ->orderBy('appointment_time', 'desc')
             ->paginate(20);
 
-        return view('appointments.index', compact('appointments'));
+        // Get all patients for walk-in modal
+        $patients = Patient::orderBy('full_name')->get();
+
+        return view('appointments.index', compact('appointments', 'patients'));
     }
 
     /**
@@ -109,6 +112,7 @@ class AppointmentController extends Controller
             'health_worker' => 'nullable|string|max:255',
             'notes' => 'nullable|string',
             'status' => 'nullable|in:scheduled,confirmed,completed,cancelled,no-show',
+            'is_walk_in' => 'nullable|boolean',
             'vaccine_name' => 'nullable|string|max:255',
             'dose_number' => 'nullable|integer|min:1',
             'gestational_age' => 'nullable|integer|min:0',
@@ -126,6 +130,7 @@ class AppointmentController extends Controller
 
         $data = $request->all();
         $data['status'] = $data['status'] ?? 'scheduled';
+        $data['is_walk_in'] = $request->has('is_walk_in') ? true : false;
 
         $appointment = Appointment::create($data);
 
@@ -165,11 +170,9 @@ class AppointmentController extends Controller
             'health_worker' => 'nullable|string|max:255',
             'notes' => 'nullable|string',
             'status' => 'nullable|in:scheduled,confirmed,completed,cancelled,no-show',
+            'is_walk_in' => 'nullable|boolean',
             'vaccine_name' => 'nullable|string|max:255',
             'dose_number' => 'nullable|integer|min:1',
-            'gestational_age' => 'nullable|integer|min:0',
-            'presentation' => 'nullable|string',
-            'fp_method' => 'nullable|string',
             'referred_to' => 'nullable|string',
             'referral_urgency' => 'nullable|in:routine,urgent,emergency',
             'secondary_contact_name' => 'nullable|string|max:255',
@@ -182,7 +185,9 @@ class AppointmentController extends Controller
                 ->withInput();
         }
 
-        $appointment->update($request->all());
+        $data = $request->all();
+        $data['is_walk_in'] = $request->has('is_walk_in') ? true : false;
+        $appointment->update($data);
 
         return redirect()->route('appointments.index')
             ->with('success', 'Appointment updated successfully.');
@@ -297,4 +302,5 @@ class AppointmentController extends Controller
             default => '#6c757d',
         };
     }
+
 }

@@ -71,7 +71,7 @@ class VisitController extends Controller
     {
         $request->validate([
             'patient_id' => 'required|exists:patients,id',
-            'service_type' => 'required|in:Bath & Dry,Full Grooming,Haircut & Styling,Nail Trimming,Ear Cleaning,Teeth Brushing,De-shedding Treatment,Flea & Tick Treatment,Paw Treatment,Breeding Consultation,Boarding Checkup,Follow-up,Other,Wellness Exam,Vaccination,Surgery,Dental Cleaning,Emergency,Grooming,Diagnostics,Spay/Neuter,General Checkup,Immunization,Prenatal,Family Planning,Referral,Health Education',
+            'service_type' => 'required|in:Bath & Dry,Full Grooming,Haircut & Styling,Nail Trimming,Ear Cleaning,Teeth Brushing,De-shedding Treatment,Flea & Tick Treatment,Paw Treatment,Boarding Checkup,Follow-up,Other,Wellness Exam,Vaccination,Surgery,Dental Cleaning,Emergency,Grooming,Diagnostics,Spay/Neuter,General Checkup,Immunization',
             'chief_complaint' => 'nullable|string',
             'notes' => 'nullable|string',
             'health_worker' => 'nullable|string|max:255',
@@ -88,25 +88,10 @@ class VisitController extends Controller
             'dose_number' => 'required_if:service_type,Vaccination,Immunization|nullable|string|max:50',
             'batch_number' => 'nullable|string|max:100',
             'next_dose_date' => 'nullable|date',
-            // Prenatal fields
-            'gestational_age' => 'required_if:service_type,Prenatal|nullable|integer|min:1|max:42',
-            'fundal_height' => 'nullable|numeric|min:0',
-            'fetal_heart_rate' => 'nullable|integer|min:0|max:200',
-            'presentation' => 'nullable|in:Cephalic,Breech,Transverse',
-            'prenatal_notes' => 'nullable|string',
-            // Family Planning fields
-            'fp_method' => 'required_if:service_type,Spay/Neuter,Family Planning|nullable|string|max:255',
-            'fp_quantity' => 'nullable|string|max:100',
-            'fp_followup_date' => 'nullable|date',
             // Referral fields
             'referred_to' => 'required_if:service_type,Follow-up,Referral|nullable|string|max:255',
             'referral_reason' => 'required_if:service_type,Follow-up,Referral|nullable|string|max:255',
             'referral_urgency' => 'nullable|in:Routine,Urgent,Emergency',
-            // Breeding consultation additional fields
-            'animal_size' => 'nullable|in:Small,Big',
-            'behavior' => 'nullable|in:Calm,Aggressive',
-            'animal_photo' => 'nullable|image|max:5120',
-            'owner_photo' => 'nullable|image|max:5120',
         ]);
 
         DB::beginTransaction();
@@ -140,37 +125,9 @@ class VisitController extends Controller
                 $allNotes[] = "IMMUNIZATION:\n" . implode("\n", $immunizationNotes);
             }
             
-            if ($request->service_type === 'Prenatal') {
-                $prenatalNotes = [
-                    "Gestational Age: {$request->gestational_age} weeks"
-                ];
-                if ($request->filled('fundal_height')) {
-                    $prenatalNotes[] = "Fundal Height: {$request->fundal_height} cm";
-                }
-                if ($request->filled('fetal_heart_rate')) {
-                    $prenatalNotes[] = "FHR: {$request->fetal_heart_rate} bpm";
-                }
-                if ($request->filled('presentation')) {
-                    $prenatalNotes[] = "Presentation: {$request->presentation}";
-                }
-                if ($request->filled('prenatal_notes')) {
-                    $prenatalNotes[] = "Notes: {$request->prenatal_notes}";
-                }
-                $allNotes[] = "PRENATAL:\n" . implode("\n", $prenatalNotes);
-            }
+            // Prenatal support removed - not applicable to veterinary services
             
-            if (in_array($request->service_type, ['Spay/Neuter', 'Family Planning'])) {
-                $fpNotes = [
-                    "Method: {$request->fp_method}"
-                ];
-                if ($request->filled('fp_quantity')) {
-                    $fpNotes[] = "Quantity: {$request->fp_quantity}";
-                }
-                if ($request->filled('fp_followup_date')) {
-                    $fpNotes[] = "Follow-up: {$request->fp_followup_date}";
-                }
-                $allNotes[] = "FAMILY PLANNING:\n" . implode("\n", $fpNotes);
-            }
+            // Family Planning support removed - not applicable to veterinary services
             
             if (in_array($request->service_type, ['Follow-up', 'Referral'])) {
                 $referralNotes = [
@@ -217,35 +174,6 @@ class VisitController extends Controller
                     'notes' => $request->filled('batch_number') ? "Batch: {$request->batch_number}" : null,
                 ]);
             }
-            
-            // Create breeding record if service is breeding consultation
-            if ($request->service_type === 'Breeding Consultation') {
-                $animalPhotoPath = $request->hasFile('animal_photo')
-                    ? $request->file('animal_photo')->store('breeding-documentation/animals', 'public')
-                    : null;
-
-                $ownerPhotoPath = $request->hasFile('owner_photo')
-                    ? $request->file('owner_photo')->store('breeding-documentation/owners', 'public')
-                    : null;
-
-                \App\Models\BreedingRecord::create([
-                    'patient_id' => $request->patient_id,
-                    'checkup_date' => $visitData['visit_time'] ?? now(),
-                    'breeding_date' => $request->breeding_date,
-                    'sire' => $request->sire,
-                    'dam' => $request->dam,
-                    'heat_cycle_date' => $request->heat_cycle_date,
-                    'pregnancy_confirmed_date' => $request->pregnancy_confirmed_date,
-                    'breeding_status' => $request->breeding_status ?? 'Planned',
-                    'weight' => $request->weight,
-                    'animal_size' => $request->animal_size,
-                    'behavior' => $request->behavior,
-                    'animal_photo_path' => $animalPhotoPath,
-                    'owner_photo_path' => $ownerPhotoPath,
-                    'risk_factors' => $request->risk_factors,
-                    'notes' => $request->breeding_notes,
-                ]);
-            }
 
             DB::commit();
 
@@ -283,7 +211,7 @@ class VisitController extends Controller
     public function update(Request $request, Visit $visit)
     {
         $request->validate([
-            'service_type' => 'required|in:Bath & Dry,Full Grooming,Haircut & Styling,Nail Trimming,Ear Cleaning,Teeth Brushing,De-shedding Treatment,Flea & Tick Treatment,Paw Treatment,Breeding Consultation,Boarding Checkup,Follow-up,Other,Wellness Exam,Vaccination,Surgery,Dental Cleaning,Emergency,Grooming,Diagnostics,Spay/Neuter,General Checkup,Immunization,Prenatal,Family Planning,Referral,Health Education',
+            'service_type' => 'required|in:Bath & Dry,Full Grooming,Haircut & Styling,Nail Trimming,Ear Cleaning,Teeth Brushing,De-shedding Treatment,Flea & Tick Treatment,Paw Treatment,Boarding Checkup,Follow-up,Other,Wellness Exam,Vaccination,Surgery,Dental Cleaning,Emergency,Grooming,Diagnostics,Spay/Neuter,General Checkup,Immunization',
             'chief_complaint' => 'nullable|string',
             'notes' => 'nullable|string',
             'health_worker' => 'nullable|string|max:255',

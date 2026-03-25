@@ -274,12 +274,17 @@
                     </div>
                     <div class="form-group">
                         <label>Species <span class="req">*</span></label>
-                        <select name="species" required>
-                            @foreach(['Dog','Cat','Rabbit','Bird','Hamster','Guinea Pig','Fish','Reptile','Other'] as $sp)
-                                <option value="{{ $sp }}" {{ old('species', $patient->species) === $sp ? 'selected' : '' }}>{{ $sp }}</option>
+                        <select name="species_id" id="speciesSelect" required onchange="loadSpeciesCharacteristics()">
+                            <option value="">Select Species</option>
+                            @foreach($species as $sp)
+                                <option value="{{ $sp->id }}" {{ old('species_id', $patient->species_id) == $sp->id ? 'selected' : '' }}>{{ $sp->name }}</option>
                             @endforeach
                         </select>
-                        @error('species')<span class="error-msg">{{ $message }}</span>@enderror
+                        @error('species_id')<span class="error-msg">{{ $message }}</span>@enderror
+                        <div id="speciesCharacteristics" style="margin-top: 12px; padding: 12px; background: #eff6ff; border-left: 4px solid #2563eb; border-radius: 6px; display: none;">
+                            <strong style="color: #2563eb; display: block; margin-bottom: 8px;">Species Characteristics:</strong>
+                            <div id="characteristicsContent" style="color: #1e40af; font-size: 13px; line-height: 1.6;"></div>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>Breed</label>
@@ -347,6 +352,34 @@
             </div>
         </div>
 
+        {{-- Additional Information --}}
+        <div class="card">
+            <div class="card-header">
+                <div class="card-header-icon" style="background: linear-gradient(135deg,#a78bfa,#8b5cf6);">
+                    <i class="bi bi-info-circle-fill"></i>
+                </div>
+                <strong style="font-size:15px;">Additional Information</strong>
+            </div>
+            <div class="card-body">
+                <div class="form-grid">
+                    <div class="form-group" style="align-items: flex-start;">
+                        <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; margin-top: 4px;">
+                            <input type="checkbox" name="is_required" value="1" {{ old('is_required', $patient->is_required) ? 'checked' : '' }} style="width: auto; cursor: pointer;">
+                            <span style="font-weight: 500;">Requires Special Care</span>
+                        </label>
+                        <span class="hint">Check if this pet requires special care or attention</span>
+                    </div>
+                    <div class="form-group" style="align-items: flex-start;">
+                        <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; margin-top: 4px;">
+                            <input type="checkbox" name="privacy_consent" value="1" {{ old('privacy_consent', $patient->privacy_consent) ? 'checked' : '' }} style="width: auto; cursor: pointer;">
+                            <span style="font-weight: 500;">Privacy Consent Given</span>
+                        </label>
+                        <span class="hint">Data privacy and processing consent</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         {{-- Footer --}}
         <div class="card">
             <div class="form-footer">
@@ -361,6 +394,67 @@
 </div>
 
 <script>
+    // Form Progress Tracking
+    const petForm = document.querySelector('form');
+    const requiredFields = ['pet_name', 'species_id', 'breed', 'birthdate', 'sex', 'owner_name', 'owner_contact', 'address'];
+    
+    function updateFormProgress() {
+        let completed = 0;
+        requiredFields.forEach(fieldName => {
+            const field = document.querySelector(`[name="${fieldName}"]`);
+            if (field && field.value.trim()) {
+                completed++;
+            }
+        });
+        
+        const percent = Math.round((completed / requiredFields.length) * 100);
+        // Update the UI if progress element exists, otherwise skip
+        const progress = document.getElementById('progressFill');
+        const progressPercent = document.getElementById('progressPercent');
+        if (progress && progressPercent) {
+            progress.style.width = percent + '%';
+            progressPercent.textContent = percent;
+        }
+    }
+
+    // Species characteristics loader
+    async function loadSpeciesCharacteristics() {
+        const speciesId = document.getElementById('speciesSelect').value;
+        const characteristicsDiv = document.getElementById('speciesCharacteristics');
+        const characteristicsContent = document.getElementById('characteristicsContent');
+        
+        if (!speciesId) {
+            characteristicsDiv.style.display = 'none';
+            return;
+        }
+        
+        try {
+            const response = await fetch(`/api/species/${speciesId}`);
+            const data = await response.json();
+            
+            if (data && data.characteristics) {
+                let characteristics = data.characteristics;
+                if (typeof characteristics === 'string') {
+                    characteristics = JSON.parse(characteristics);
+                }
+                
+                let html = '';
+                for (const [key, value] of Object.entries(characteristics)) {
+                    html += `<div style="margin-bottom: 6px;"><strong>${key}:</strong> ${value}</div>`;
+                }
+                
+                characteristicsContent.innerHTML = html;
+                characteristicsDiv.style.display = 'block';
+            } else {
+                characteristicsDiv.style.display = 'none';
+            }
+        } catch (error) {
+            console.error('Error loading species characteristics:', error);
+            characteristicsDiv.style.display = 'none';
+        }
+        updateFormProgress();
+    }
+
     document.getElementById('pet_photo').addEventListener('change', function () {
         const file = this.files[0];
         if (!file) return;
@@ -373,6 +467,45 @@
             if (placeholder) placeholder.style.display = 'none';
         };
         reader.readAsDataURL(file);
+    });
+
+    // Form submission validation
+    document.querySelector('form').addEventListener('submit', function(e) {
+        let hasErrors = false;
+        const requiredFields = ['pet_name', 'species_id', 'breed', 'birthdate', 'sex', 'owner_name', 'address'];
+        
+        requiredFields.forEach(fieldName => {
+            const field = document.querySelector(`[name="${fieldName}"]`);
+            if (field && !field.value.trim()) {
+                hasErrors = true;
+                field.style.borderColor = '#ef4444';
+                field.style.backgroundColor = '#fef2f2';
+            }
+        });
+
+        if (hasErrors) {
+            e.preventDefault();
+            alert('Please fill in all required fields (marked with *)');
+            return false;
+        }
+    });
+
+    // Add form change tracking
+    document.querySelectorAll('input, select, textarea').forEach(field => {
+        field.addEventListener('change', function() {
+            updateFormProgress();
+        });
+        field.addEventListener('input', function() {
+            updateFormProgress();
+        });
+    });
+
+    // Load characteristics on page load if species is selected
+    window.addEventListener('DOMContentLoaded', function() {
+        if (document.getElementById('speciesSelect').value) {
+            loadSpeciesCharacteristics();
+        }
+        updateFormProgress();
     });
 </script>
 </body>

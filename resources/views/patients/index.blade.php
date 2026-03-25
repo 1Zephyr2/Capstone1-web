@@ -1411,8 +1411,6 @@
             // Show relevant section
             if (groomingServices.includes(serviceType) && groomingSection) {
                 groomingSection.style.display = 'block';
-            } else if (serviceType === 'Breeding Consultation' && breedingSection) {
-                breedingSection.style.display = 'block';
             } else if (serviceType === 'Follow-up' && referralSection) {
                 referralSection.style.display = 'block';
                 if (referredTo) referredTo.setAttribute('required', 'required');
@@ -1776,7 +1774,6 @@
                                     <option value="Paw Treatment">Paw Treatment</option>
                                 </optgroup>
                                 <optgroup label="Other Services">
-                                    <option value="Breeding Consultation">Breeding Consultation</option>
                                     <option value="Boarding Checkup">Boarding Checkup</option>
                                     <option value="Follow-up">Follow-up</option>
                                     <option value="Other">Other</option>
@@ -1842,45 +1839,6 @@
                             <div class="modal-form-group">
                                 <label>Grooming Notes</label>
                                 <textarea name="grooming_notes" placeholder="Special instructions, coat issues, client requests..."></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Breeding Consultation Section -->
-                    <div id="modalBreedingSection" class="modal-service-section" style="display: none;">
-                        <div class="modal-section-title" style="background: #fce7f3; color: #9f1239; padding: 12px; border-radius: 6px; margin-bottom: 16px;">
-                            <i class="bi bi-heart-pulse-fill"></i> Breeding Consultation Details
-                        </div>
-                        <div class="modal-form-row">
-                            <div class="modal-form-group">
-                                <label>Breeding Date</label>
-                                <input type="date" name="breeding_date" max="{{ date('Y-m-d') }}">
-                            </div>
-                            <div class="modal-form-group">
-                                <label>Breeding Status</label>
-                                <select name="breeding_status">
-                                    <option value="Planned">Planned</option>
-                                    <option value="Bred">Bred</option>
-                                    <option value="Confirmed Pregnant">Confirmed Pregnant</option>
-                                    <option value="Not Pregnant">Not Pregnant</option>
-                                    <option value="Delivered">Delivered</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="modal-form-row">
-                            <div class="modal-form-group">
-                                <label>Sire (Male Parent)</label>
-                                <input type="text" name="sire" placeholder="e.g., Max (Golden Retriever)">
-                            </div>
-                            <div class="modal-form-group">
-                                <label>Dam (Female Parent)</label>
-                                <input type="text" name="dam" placeholder="Usually the patient">
-                            </div>
-                        </div>
-                        <div class="modal-form-row full">
-                            <div class="modal-form-group">
-                                <label>Breeding Notes/Concerns</label>
-                                <textarea name="breeding_notes" placeholder="Any complications, concerns, or special notes..."></textarea>
                             </div>
                         </div>
                     </div>

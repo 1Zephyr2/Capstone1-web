@@ -201,17 +201,7 @@
             gap: 8px;
         }
 
-        .automation-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: #ecfdf5;
-            color: #047857;
-            padding: 6px 12px;
-            border-radius: 999px;
-            font-size: 12px;
-            font-weight: 700;
-        }
+
 
         .patient-summary {
             display: grid;
@@ -492,7 +482,6 @@
         <div class="header">
             <h1><i class="bi bi-calendar-plus"></i> Book Appointment</h1>
             <div class="header-actions">
-                <span class="automation-pill"><i class="bi bi-stars"></i> Automation Assist</span>
                 <a href="{{ route('appointments.index') }}" class="back-btn">← Back to Appointments</a>
             </div>
         </div>
@@ -699,32 +688,6 @@
                 </div>
             </div>
 
-            <div id="prenatal-fields" class="form-card hidden">
-                <div class="card-header">
-                    <h2><i class="bi bi-heart-pulse"></i> Prenatal Care Details</h2>
-                </div>
-                <div class="service-grid">
-                    <div class="form-group">
-                        <label for="gestational_age">Gestational Age (weeks)</label>
-                        <input type="number" name="gestational_age" id="gestational_age" class="form-control" min="0" value="{{ old('gestational_age') }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="presentation">Presentation</label>
-                        <input type="text" name="presentation" id="presentation" class="form-control" value="{{ old('presentation') }}">
-                    </div>
-                </div>
-            </div>
-
-            <div id="familyplanning-fields" class="form-card hidden">
-                <div class="card-header">
-                    <h2><i class="bi bi-people"></i> Family Planning Details</h2>
-                </div>
-                <div class="form-group full-width">
-                    <label for="fp_method">FP Method</label>
-                    <input type="text" name="fp_method" id="fp_method" class="form-control" value="{{ old('fp_method') }}">
-                </div>
-            </div>
-
             <div id="referral-fields" class="form-card hidden">
                 <div class="card-header">
                     <h2><i class="bi bi-hospital"></i> Referral Details</h2>
@@ -780,8 +743,6 @@
         const reminderNote     = document.getElementById('reminder_note');
         const notesField       = document.getElementById('notes');
         const appointmentForm  = document.getElementById('appointmentForm');
-        const prenatalFields      = document.getElementById('prenatal-fields');
-        const familyPlanningFields = document.getElementById('familyplanning-fields');
         const referralFields      = document.getElementById('referral-fields');
         const serviceType         = document.getElementById('service_type');
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -977,8 +938,6 @@
 
         const updateServiceFields = () => {
             const selected = serviceType.value;
-            prenatalFields.classList.toggle('hidden', selected !== 'Prenatal Care');
-            familyPlanningFields.classList.toggle('hidden', selected !== 'Family Planning');
             referralFields.classList.toggle('hidden', selected !== 'Referral');
         };
 

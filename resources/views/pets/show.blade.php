@@ -242,6 +242,7 @@
                 </thead>
                 <tbody>
                     @foreach($patient->visits as $visit)
+                    @if($visit->service_type !== 'Vaccination')
                     <tr>
                         <td>{{ $visit->visit_date->format('M d, Y') }}</td>
                         <td><span class="badge badge-success">{{ $visit->service_type }}</span></td>
@@ -259,6 +260,7 @@
                         <td>{{ $visit->health_worker ?: '-' }}</td>
                         <td>{{ Str::limit($visit->notes, 50) ?: '-' }}</td>
                     </tr>
+                    @endif
                     @endforeach
                 </tbody>
             </table>
@@ -268,82 +270,6 @@
             </div>
             @endif
         </div>
-
-        <!-- Vaccinations -->
-        @if($patient->vaccinations->count() > 0)
-        <div class="section">
-            <div class="section-header">
-                <h2>Vaccination Records</h2>
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Vaccine</th>
-                        <th>Dose</th>
-                        <th>Date Given</th>
-                        <th>Next Due</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($patient->vaccinations as $imm)
-                    <tr>
-                        <td>{{ $imm->vaccine_name }}</td>
-                        <td>{{ $imm->dose_number ? '#' . $imm->dose_number : '-' }}</td>
-                        <td>{{ $imm->date_given->format('M d, Y') }}</td>
-                        <td>{{ $imm->next_dose_due ? $imm->next_dose_due->format('M d, Y') : 'Completed' }}</td>
-                        <td>
-                            @if($imm->is_overdue)
-                                <span class="badge badge-warning">Overdue</span>
-                            @else
-                                <span class="badge badge-success">On Schedule</span>
-                            @endif
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-        @endif
-
-        <!-- Breeding Records -->
-        @if($patient->breedingRecords->count() > 0)
-        <div class="section">
-            <div class="section-header">
-                <h2>Breeding Records</h2>
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Visit Date</th>
-                        <th>Gestational Age</th>
-                        <th>Weight</th>
-                        <th>BP</th>
-                        <th>Fundal Height</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($patient->breedingRecords as $prenatal)
-                    <tr>
-                        <td>{{ $prenatal->visit_date->format('M d, Y') }}</td>
-                        <td>{{ $prenatal->gestational_age_weeks }} weeks</td>
-                        <td>{{ $prenatal->weight }}kg</td>
-                        <td>{{ $prenatal->blood_pressure }}</td>
-                        <td>{{ $prenatal->fundal_height }}cm</td>
-                        <td>
-                            @if($prenatal->is_high_risk)
-                                <span class="badge badge-warning">High Risk</span>
-                            @else
-                                <span class="badge badge-success">Normal</span>
-                            @endif
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-        @endif
 
         <!-- Referrals -->
         @if($patient->referrals->count() > 0)

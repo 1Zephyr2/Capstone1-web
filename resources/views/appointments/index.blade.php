@@ -14,7 +14,7 @@
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f5f5 0%, #f0f9ff 100%);
+            background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
             padding: 20px;
             min-height: 100vh;
         }
@@ -38,20 +38,31 @@
         }
         .back-button:hover {
             background: #f8f9fa;
-            border-color: #007bff;
-            color: #007bff;
+            border-color: #14b8a6;
+            color: #14b8a6;
         }
         .header {
             background: white;
-            padding: 24px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            margin-bottom: 24px;
+            padding: 28px;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
+            margin-bottom: 28px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .header:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
         }
         .header h1 {
-            color: #333;
-            font-size: 28px;
-            margin-bottom: 20px;
+            color: #0f172a;
+            font-size: 32px;
+            margin-bottom: 24px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
         .header-actions {
             display: flex;
@@ -71,11 +82,15 @@
             transition: all 0.3s;
         }
         .btn-primary {
-            background: #007bff;
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
             color: white;
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
+            border: none;
         }
         .btn-primary:hover {
-            background: #0056b3;
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+            box-shadow: 0 8px 20px rgba(20, 184, 166, 0.4);
+            transform: translateY(-2px);
         }
         .btn-secondary {
             background: #6c757d;
@@ -93,18 +108,29 @@
             gap: 12px;
         }
         .form-control {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
+            padding: 10px 14px;
+            border: 1.5px solid #d1d5db;
+            border-radius: 8px;
             font-size: 14px;
+            background: white;
+            transition: all 0.2s ease;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #14b8a6;
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
         }
         .btn-search {
-            background: #28a745;
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
             color: white;
             padding: 10px 24px;
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
         }
         .btn-search:hover {
-            background: #218838;
+            background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);
+            box-shadow: 0 8px 20px rgba(6, 182, 212, 0.4);
+            transform: translateY(-2px);
         }
         .alert {
             padding: 12px 20px;
@@ -123,25 +149,47 @@
         }
         .appointments-table {
             background: white;
-            border-radius: 12px;
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+        
+        .appointments-table:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
         }
         table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        tbody tr {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border-bottom: 1px solid #e5e7eb;
+        }
+        tbody tr:hover {
+            background-color: #f9fafb;
+        }
+        tbody tr:last-child {
+            border-bottom: none;
         }
         th {
-            background: #f8f9fa;
-            padding: 16px;
+            background: linear-gradient(135deg, #f0f9ff 0%, #f8fafc 100%);
+            padding: 18px 16px;
             text-align: left;
-            font-weight: 600;
-            color: #495057;
-            border-bottom: 2px solid #dee2e6;
+            font-weight: 700;
+            color: #0f172a;
+            border-bottom: 2px solid #e5e7eb;
+            letter-spacing: -0.01em;
+            font-size: 13px;
+            text-transform: uppercase;
         }
         td {
-            padding: 16px;
-            border-bottom: 1px solid #dee2e6;
+            padding: 18px 16px;
+            border-bottom: 1px solid #e5e7eb;
+            color: #374151;
+            font-size: 14px;
         }
         .badge {
             padding: 4px 12px;
@@ -149,23 +197,23 @@
             font-size: 12px;
             font-weight: 600;
         }
-        .badge-scheduled { background: #cce5ff; color: #004085; }
-        .badge-confirmed { background: #d4edda; color: #155724; }
-        .badge-completed { background: #d6d8db; color: #383d41; }
-        .badge-cancelled { background: #f8d7da; color: #721c24; }
-        .badge-no-show { background: #fff3cd; color: #856404; }
+        .badge-scheduled { background: #ccfbf1; color: #0d7377; border: 1px solid #99f6e4; }
+        .badge-confirmed { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+        .badge-completed { background: #e6e6e6; color: #292524; border: 1px solid #d4d4d4; }
+        .badge-cancelled { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+        .badge-no-show { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
         .row-today td {
-            background: #e6f0ff;
+            background: #f0fdf4;
         }
         .row-upcoming td {
-            background: #ecfdf3;
+            background: #f0f9ff;
         }
         .row-today td:first-child,
         .row-upcoming td:first-child {
-            border-left: 4px solid #2563eb;
+            border-left: 4px solid #14b8a6;
         }
         .row-upcoming td:first-child {
-            border-left-color: #16a34a;
+            border-left-color: #06b6d4;
         }
         .appt-owner-name {
             font-weight: 700;
@@ -200,26 +248,57 @@
             border-radius: 4px;
             border: 1px solid #e5e7eb;
         }
-        .legend-today { background: #e6f0ff; border-color: #2563eb; }
-        .legend-upcoming { background: #ecfdf3; border-color: #16a34a; }
+        .legend-today { background: #f0fdf4; border-color: #14b8a6; }
+        .legend-upcoming { background: #f0f9ff; border-color: #06b6d4; }
         .action-buttons {
             display: flex;
-            gap: 8px;
+            gap: 12px;
+            align-items: center;
         }
         .btn-action {
-            padding: 6px 10px;
-            border-radius: 6px;
-            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
             cursor: pointer;
-            transition: all 0.3s;
-            background: none;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            background: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            width: 36px;
+            height: 36px;
         }
-        .btn-view { color: #007bff; }
-        .btn-view:hover { background: #e7f1ff; }
-        .btn-edit { color: #28a745; }
-        .btn-edit:hover { background: #d4edda; }
-        .btn-delete { color: #dc3545; }
-        .btn-delete:hover { background: #f8d7da; }
+        .btn-view { 
+            color: #06b6d4;
+            border-color: #cffafe;
+        }
+        .btn-view:hover { 
+            background: #ecfdfd;
+            border-color: #06b6d4;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.15);
+        }
+        .btn-edit { 
+            color: #14b8a6;
+            border-color: #ccfbf1;
+        }
+        .btn-edit:hover { 
+            background: #ecfdfd;
+            border-color: #14b8a6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.15);
+        }
+        .btn-delete { 
+            color: #ef4444;
+            border-color: #fee2e2;
+        }
+        .btn-delete:hover { 
+            background: #fef2f2;
+            border-color: #ef4444;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+        }
         .pagination-wrapper {
             margin-top: 20px;
             display: flex;
@@ -244,8 +323,9 @@
             max-width: 640px;
             max-height: 90vh;
             overflow-y: auto;
-            box-shadow: 0 24px 60px rgba(0,0,0,0.22);
+            box-shadow: 0 24px 60px rgba(0,0,0,0.15);
             animation: qeSlideIn 0.22s ease;
+            border: 1px solid #e5e7eb;
         }
         @keyframes qeSlideIn {
             from { opacity:0; transform: translateY(24px); }
@@ -279,17 +359,22 @@
         .qe-field { display: flex; flex-direction: column; gap: 5px; }
         .qe-field label { font-size: 13px; font-weight: 600; color: #374151; }
         .qe-field input, .qe-field select, .qe-field textarea {
-            padding: 9px 11px;
+            padding: 10px 14px;
             border: 1.5px solid #d1d5db;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 14px;
             font-family: inherit;
-            transition: border-color 0.15s;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             background: white;
+            color: #374151;
         }
         .qe-field input:focus, .qe-field select:focus, .qe-field textarea:focus {
-            outline: none; border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59,130,246,0.12);
+            outline: none; 
+            border-color: #14b8a6;
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1), inset 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+        .qe-field input::placeholder, .qe-field textarea::placeholder {
+            color: #9ca3af;
         }
         .qe-field textarea { resize: vertical; min-height: 72px; }
         .qe-secondary-box {
@@ -309,14 +394,41 @@
             border-top: 1px solid #e5e7eb;
         }
         .qe-btn {
-            padding: 9px 22px; border-radius: 8px; border: none;
-            font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s;
+            padding: 10px 24px; 
+            border-radius: 10px; 
+            border: none;
+            font-size: 14px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
-        .qe-btn-save { background: #2563eb; color: white; }
-        .qe-btn-save:hover { background: #1d4ed8; }
-        .qe-btn-save:disabled { background: #93c5fd; cursor: not-allowed; }
-        .qe-btn-cancel { background: #f3f4f6; color: #374151; }
-        .qe-btn-cancel:hover { background: #e5e7eb; }
+        .qe-btn-save { 
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); 
+            color: white; 
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3); 
+        }
+        .qe-btn-save:hover { 
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%); 
+            box-shadow: 0 8px 20px rgba(20, 184, 166, 0.4); 
+            transform: translateY(-2px); 
+        }
+        .qe-btn-save:disabled { 
+            background: #a7f3d0; 
+            cursor: not-allowed; 
+            transform: none;
+        }
+        .qe-btn-cancel { 
+            background: #f3f4f6; 
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+        .qe-btn-cancel:hover { 
+            background: #e5e7eb;
+            border-color: #9ca3af;
+        }
         .qe-alert { padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 12px; display: none; }
         .qe-alert.success { background: #dcfce7; color: #166534; }
         .qe-alert.error   { background: #fee2e2; color: #991b1b; }
@@ -329,11 +441,11 @@
     </a>
     <div class="header">
         <div class="header-top">
-            <h1 style="display: flex; align-items: center; gap: 12px;"><i class="bi bi-calendar-check"></i> Scheduling</h1>
+            <h1>Scheduling</h1>
         </div>
         
         <div class="header-actions">
-            <a href="{{ route('appointments.create') }}" class="btn btn-primary" style="background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);">
+            <a href="{{ route('appointments.create') }}" class="btn btn-primary" style="background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); box-shadow: 0 2px 8px rgba(20, 184, 166, 0.3);">
                 <i class="bi bi-plus-circle"></i> New Appointment
             </a>
         </div>
@@ -363,7 +475,6 @@
                     <option value="De-shedding Treatment" {{ request('service_type') == 'De-shedding Treatment' ? 'selected' : '' }}>De-shedding Treatment</option>
                     <option value="Flea & Tick Treatment" {{ request('service_type') == 'Flea & Tick Treatment' ? 'selected' : '' }}>Flea &amp; Tick Treatment</option>
                     <option value="Paw Treatment" {{ request('service_type') == 'Paw Treatment' ? 'selected' : '' }}>Paw Treatment</option>
-                    <option value="Breeding Consultation" {{ request('service_type') == 'Breeding Consultation' ? 'selected' : '' }}>Breeding Consultation</option>
                     <option value="Boarding Checkup" {{ request('service_type') == 'Boarding Checkup' ? 'selected' : '' }}>Boarding Checkup</option>
                     <option value="Follow-up" {{ request('service_type') == 'Follow-up' ? 'selected' : '' }}>Follow-up</option>
                 </select>
@@ -515,7 +626,6 @@
                             <option value="Paw Treatment">Paw Treatment</option>
                         </optgroup>
                         <optgroup label="Other Services">
-                            <option value="Breeding Consultation">Breeding Consultation</option>
                             <option value="Boarding Checkup">Boarding Checkup</option>
                             <option value="Follow-up">Follow-up</option>
                             <option value="Other">Other</option>
@@ -570,12 +680,7 @@
         </div>
         <div class="qe-footer">
             <button class="qe-btn qe-btn-cancel" onclick="closeQuickEditBtn()">Cancel</button>
-            <button class="qe-btn qe-btn-save" id="qeSaveBtn" onclick="saveQuickEdit()">
-                <i class="bi bi-check-lg"></i> Save Changes
-            </button>
-        </div>
-    </div>
-</div>
+            <button class="qe-btn qe-btn-save" id="qeSaveBtn" onclick="saveQuickEdit()"></div>
 
 <script>
     let qeActiveId = null;
@@ -658,8 +763,6 @@
             saveBtn.innerHTML = '<i class="bi bi-check-lg"></i> Save Changes';
         });
     }
-
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeQuickEditBtn(); });
 </script>
 </body>
 </html>

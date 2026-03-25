@@ -52,12 +52,12 @@
         .header h1 {
             font-size: 26px;
             font-weight: 800;
-            color: #111827;
+            color: #0f172a;
             letter-spacing: -0.02em;
         }
 
         .back-btn {
-            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
             color: white;
             border: none;
             padding: 10px 20px;
@@ -67,13 +67,13 @@
             font-size: 14px;
             font-weight: 700;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 2px 8px rgba(20, 184, 166, 0.3);
         }
 
         .back-btn:hover {
-            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
             transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
+            box-shadow: 0 4px 16px rgba(20, 184, 166, 0.4);
         }
 
         .stats-row {
@@ -85,18 +85,18 @@
 
         .stat-card {
             background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
-            padding: 20px;
+            padding: 24px;
             border-radius: 14px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
-            border-left: 4px solid #f59e0b;
             border-top: 1px solid rgba(0, 0, 0, 0.06);
             border-right: 1px solid rgba(0, 0, 0, 0.06);
             border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
+            border-left: 5px solid #14b8a6;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .stat-card:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
         }
 
@@ -117,7 +117,7 @@
 
         .content-card {
             background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
-            padding: 24px;
+            padding: 28px;
             border-radius: 16px;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
             border: 1px solid rgba(0, 0, 0, 0.06);
@@ -129,11 +129,14 @@
         }
 
         .section-title {
-            font-size: 19px;
-            font-weight: 700;
+            font-size: 20px;
+            font-weight: 800;
             color: #111827;
-            margin-bottom: 16px;
-            letter-spacing: -0.01em;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .immunization-list {
@@ -142,15 +145,18 @@
         }
 
         .immunization-card {
-            background: #dcfce7;
-            border-radius: 10px;
-            padding: 16px;
-            border-left: 4px solid #10B981;
-            transition: transform 0.2s;
+            background: linear-gradient(135deg, #dcfce7 0%, #d1fae5 100%);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #a7f3d0;
+            border-left: 5px solid #10B981;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 1px 3px rgba(16, 185, 129, 0.1);
         }
 
         .immunization-card:hover {
-            transform: translateX(4px);
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15), 0 8px 24px rgba(16, 185, 129, 0.1);
         }
 
         .imm-header {
@@ -167,64 +173,73 @@
         }
 
         .patient-avatar {
-            width: 42px;
-            height: 42px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-weight: 600;
-            font-size: 16px;
+            font-weight: 700;
+            font-size: 20px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
         }
 
         .patient-details h4 {
-            font-size: 15px;
-            font-weight: 600;
+            font-size: 16px;
+            font-weight: 700;
             color: #111827;
-            margin-bottom: 2px;
+            margin-bottom: 4px;
+            letter-spacing: -0.01em;
         }
 
         .patient-details p {
-            font-size: 12px;
+            font-size: 13px;
             color: #6b7280;
         }
 
         .dose-badge {
-            background: #10b981;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             color: white;
-            padding: 4px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+            letter-spacing: -0.01em;
         }
 
         .vaccine-info {
-            background: white;
-            padding: 12px;
-            border-radius: 8px;
-            margin-top: 10px;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 14px 16px;
+            border-radius: 10px;
+            margin-top: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
         }
 
         .vaccine-name {
-            font-size: 14px;
-            font-weight: 600;
-            color: #92400e;
-            margin-bottom: 6px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #15803d;
+            margin-bottom: 8px;
+            letter-spacing: -0.01em;
         }
 
         .info-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 12px;
-            color: #78716c;
-            margin-top: 4px;
+            font-size: 13px;
+            color: #4a5568;
+            margin-top: 6px;
         }
 
         .info-row strong {
-            color: #57534e;
+            color: #2d3748;
+            font-weight: 600;
         }
 
         .empty-state {

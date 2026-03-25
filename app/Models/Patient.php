@@ -15,6 +15,7 @@ class Patient extends Model
         'patient_id',
         'pet_name',
         'species',
+        'species_id',
         'breed',
         'color',
         'birthdate',
@@ -22,10 +23,11 @@ class Patient extends Model
         'owner_name',
         'owner_contact',
         'address',
-        'microchip_number',
         'pet_photo_path',
         'emergency_contact_name',
         'emergency_contact_number',
+        'is_required',
+        'privacy_consent',
     ];
 
     protected $casts = [
@@ -38,19 +40,24 @@ class Patient extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function species()
+    {
+        return $this->belongsTo(Species::class);
+    }
+
     public function visits()
     {
         return $this->hasMany(Visit::class);
     }
 
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class);
+    }
+
     public function vaccinations()
     {
         return $this->hasMany(Immunization::class);
-    }
-
-    public function breedingRecords()
-    {
-        return $this->hasMany(BreedingRecord::class);
     }
 
     public function referrals()
@@ -92,8 +99,7 @@ class Patient extends Model
               ->orWhere('breed', 'like', "%{$term}%")
               ->orWhere('owner_name', 'like', "%{$term}%")
               ->orWhere('patient_id', 'like', "%{$term}%")
-              ->orWhere('owner_contact', 'like', "%{$term}%")
-              ->orWhere('microchip_number', 'like', "%{$term}%");
+              ->orWhere('owner_contact', 'like', "%{$term}%");
         });
     }
 

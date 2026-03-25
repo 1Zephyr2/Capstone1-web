@@ -249,6 +249,24 @@
             font-size: 13px;
         }
 
+        .register-text {
+            text-align: center;
+            margin-top: 16px;
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .register-text a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .register-text a:hover {
+            color: #2563eb;
+        }
+
         @media (max-width: 768px) {
             .login-wrapper {
                 flex-direction: column;
@@ -340,6 +358,10 @@
 
                 <div class="footer-text">
                     &copy; {{ date('Y') }} PAWSER. Designed for Pet Grooming Clinic Staff.
+                </div>
+
+                <div class="register-text">
+                    Are you a pet owner? <a href="{{ route('customer.register.show') }}">Create an account here</a>
                 </div>
             </div>
         </div>

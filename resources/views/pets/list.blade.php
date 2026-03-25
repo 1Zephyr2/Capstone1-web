@@ -15,12 +15,13 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #f8fafc;
-            padding: 40px;
+            padding: 60px 20px 20px 20px;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            padding: 20px;
         }
 
         .header {
@@ -29,6 +30,7 @@
             border-radius: 12px;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
             margin-bottom: 32px;
+            margin-top: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;

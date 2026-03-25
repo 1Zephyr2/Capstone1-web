@@ -55,7 +55,7 @@
         /* Sidebar */
         .sidebar {
             width: 260px;
-            background: linear-gradient(180deg, #1e40af 0%, #1e3a8a 100%);
+            background: #1e293b;
             color: white;
             padding: 24px 0 0 0;
             box-shadow: 2px 0 12px rgba(0, 0, 0, 0.1);
@@ -92,7 +92,7 @@
         .logo-icon {
             width: 40px;
             height: 40px;
-            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+            background: rgba(20, 184, 166, 0.2);
             border-radius: 8px;
             display: flex;
             align-items: center;
@@ -100,7 +100,7 @@
             font-size: 20px;
             font-weight: bold;
             flex-shrink: 0;
-            box-shadow: 0 2px 8px rgba(30, 64, 175, 0.3);
+            box-shadow: 0 2px 8px rgba(20, 184, 166, 0.15);
         }
 
         .logo-text {
@@ -260,7 +260,7 @@
             color: #1e293b;
             margin-bottom: 8px;
             letter-spacing: -0.02em;
-            background: linear-gradient(135deg, #1e293b 0%, #1e40af 100%);
+            background: linear-gradient(135deg, #1e293b 0%, #14b8a6 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;

@@ -167,6 +167,17 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
         }
+        .btn-primary:disabled, .btn-primary[disabled] {
+            background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+            cursor: not-allowed;
+            opacity: 0.5;
+            transform: none;
+            box-shadow: none;
+        }
+        .btn-primary:disabled:hover, .btn-primary[disabled]:hover {
+            background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+            transform: none;
+        }
         .btn-secondary {
             background: #e5e7eb;
             color: #374151;
@@ -260,6 +271,74 @@
             font-size: 12px;
             font-weight: 600;
         }
+        .field-valid {
+            border-color: #10b981 !important;
+            background-color: #f0fdf4 !important;
+        }
+        .field-invalid {
+            border-color: #ef4444 !important;
+            background-color: #fef2f2 !important;
+        }
+        .form-progress {
+            margin-bottom: 20px;
+            padding: 16px;
+            background: #f0f9ff;
+            border-radius: 8px;
+            border: 1px solid #bfdbfe;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2563eb, #1d4ed8);
+            transition: width 0.3s ease;
+            border-radius: 3px;
+        }
+        .progress-text {
+            font-size: 12px;
+            color: #2563eb;
+            font-weight: 600;
+        }
+        .field-error-inline {
+            color: #dc2626;
+            font-size: 12px;
+            margin-top: 4px;
+            display: block;
+        }
+        .field-success {
+            color: #10b981;
+            font-size: 12px;
+            margin-top: 4px;
+            display: block;
+        }
+        input:disabled, select:disabled {
+            background: #f9fafb;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        .form-loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        .loading-spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid #f3f4f6;
+            border-top-color: #2563eb;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 6px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -306,8 +385,16 @@
         </div>
         @endif
 
-        <form action="{{ route('pets.store') }}" method="POST">
+        <form action="{{ route('pets.store') }}" method="POST" id="petForm">
             @csrf
+
+            <!-- Form Progress Indicator -->
+            <div class="form-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+                </div>
+                <div class="progress-text"><span id="progressPercent">0</span>% Complete</div>
+            </div>
 
             <!-- Pet Information -->
             <div class="form-section">
@@ -320,16 +407,16 @@
                     </div>
                     <div class="form-group">
                         <label>Species <span class="required">*</span></label>
-                        <select name="species" required>
+                        <select name="species_id" id="speciesSelect" required onchange="loadSpeciesCharacteristics()">
                             <option value="">Select Species</option>
-                            <option value="Dog" {{ old('species') == 'Dog' ? 'selected' : '' }}>Dog</option>
-                            <option value="Cat" {{ old('species') == 'Cat' ? 'selected' : '' }}>Cat</option>
-                            <option value="Rabbit" {{ old('species') == 'Rabbit' ? 'selected' : '' }}>Rabbit</option>
-                            <option value="Bird" {{ old('species') == 'Bird' ? 'selected' : '' }}>Bird</option>
-                            <option value="Hamster" {{ old('species') == 'Hamster' ? 'selected' : '' }}>Hamster</option>
-                            <option value="Guinea Pig" {{ old('species') == 'Guinea Pig' ? 'selected' : '' }}>Guinea Pig</option>
-                            <option value="Other" {{ old('species') == 'Other' ? 'selected' : '' }}>Other</option>
+                            @foreach($species as $sp)
+                                <option value="{{ $sp->id }}" {{ old('species_id') == $sp->id ? 'selected' : '' }}>{{ $sp->name }}</option>
+                            @endforeach
                         </select>
+                        <div id="speciesCharacteristics" style="margin-top: 12px; padding: 12px; background: #eff6ff; border-left: 4px solid #2563eb; border-radius: 6px; display: none;">
+                            <strong style="color: #2563eb; display: block; margin-bottom: 8px;">Species Characteristics:</strong>
+                            <div id="characteristicsContent" style="color: #1e40af; font-size: 13px; line-height: 1.6;"></div>
+                        </div>
                     </div>
                 </div>
 
@@ -387,9 +474,25 @@
 
             <!-- Optional Information -->
             <div class="form-section">
-                <div class="section-title">Additional Information (Optional)</div>
+                <div class="section-title">Additional Information</div>
                 <div class="optional-section">
-                    <div class="form-row">
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
+                                <input type="checkbox" name="is_required" value="1" {{ old('is_required') ? 'checked' : '' }} style="width: auto; cursor: pointer;">
+                                <span style="color: #374151; font-weight: 500;">Mark as Requiring Special Care</span>
+                            </label>
+                            <span class="hint">Check this if the pet requires special care or attention</span>
+                        </div>
+                    </div>
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label style="display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox" name="privacy_consent" value="1" {{ old('privacy_consent') ? 'checked' : '' }} style="width: auto; cursor: pointer;">
+                                <span style="color: #374151; font-weight: 500;">I consent to data privacy and processing</span>
+                            </label>
+                            <span class="hint">Please review our <a href="#" style="color: #2563eb; text-decoration: underline;">privacy policy</a> before consent</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -403,6 +506,151 @@
     </div>
 
     <script>
+        // Form Progress Tracking
+        const petForm = document.getElementById('petForm');
+        const requiredFields = ['pet_name', 'species_id', 'breed', 'birthdate', 'sex', 'owner_name', 'owner_contact', 'address'];
+        const submitBtn = document.querySelector('.btn-primary');
+        
+        function areAllRequiredFieldsFilled() {
+            return requiredFields.every(fieldName => {
+                const field = document.querySelector(`[name="${fieldName}"]`);
+                return field && field.value.trim() !== '';
+            });
+        }
+
+        function updateSubmitButton() {
+            if (areAllRequiredFieldsFilled()) {
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = '1';
+                submitBtn.style.cursor = 'pointer';
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = '0.5';
+                submitBtn.style.cursor = 'not-allowed';
+            }
+        }
+        
+        function updateFormProgress() {
+            let completed = 0;
+            requiredFields.forEach(fieldName => {
+                const field = document.querySelector(`[name="${fieldName}"]`);
+                if (field && field.value.trim()) {
+                    completed++;
+                }
+            });
+            
+            const percent = Math.round((completed / requiredFields.length) * 100);
+            document.getElementById('progressFill').style.width = percent + '%';
+            document.getElementById('progressPercent').textContent = percent;
+            
+            // Update submit button state
+            updateSubmitButton();
+        }
+
+        // Real-time validation
+        function validateField(field) {
+            let isValid = true;
+            let errorMsg = '';
+
+            if (field.name === 'pet_name') {
+                isValid = field.value.trim().length > 0;
+                errorMsg = 'Pet name is required';
+            } else if (field.name === 'species_id') {
+                isValid = field.value !== '';
+                errorMsg = 'Please select a species';
+            } else if (field.name === 'breed') {
+                isValid = field.value.trim().length > 0;
+                errorMsg = 'Breed is required';
+            } else if (field.name === 'birthdate') {
+                isValid = field.value !== '';
+                errorMsg = 'Birthdate is required';
+            } else if (field.name === 'sex') {
+                isValid = field.value !== '';
+                errorMsg = 'Please select sex';
+            } else if (field.name === 'owner_name') {
+                isValid = field.value.trim().length > 0;
+                errorMsg = 'Owner name is required';
+            } else if (field.name === 'owner_contact') {
+                isValid = /^\d{10,}$/.test(field.value.replace(/\D/g, '')) || field.value === '';
+                errorMsg = 'Please enter a valid contact number';
+            } else if (field.name === 'address') {
+                isValid = field.value.trim().length > 0;
+                errorMsg = 'Address is required';
+            }
+
+            // Remove existing error
+            const existingError = field.parentElement.querySelector('.field-error-inline');
+            if (existingError) existingError.remove();
+
+            if (!isValid && field.value !== '') {
+                field.classList.add('field-invalid');
+                field.classList.remove('field-valid');
+                const errorEl = document.createElement('span');
+                errorEl.className = 'field-error-inline';
+                errorEl.textContent = errorMsg;
+                field.parentElement.appendChild(errorEl);
+            } else if (isValid && field.value !== '') {
+                field.classList.add('field-valid');
+                field.classList.remove('field-invalid');
+            } else {
+                field.classList.remove('field-valid', 'field-invalid');
+            }
+
+            return isValid || field.value === '';
+        }
+
+        // Add validation to all form fields
+        document.querySelectorAll('input[required], select[required]').forEach(field => {
+            field.addEventListener('blur', function() {
+                validateField(this);
+                updateFormProgress();
+            });
+            field.addEventListener('input', function() {
+                updateFormProgress();
+            });
+            field.addEventListener('change', function() {
+                updateFormProgress();
+            });
+        });
+
+        // Species characteristics loader
+        async function loadSpeciesCharacteristics() {
+            const speciesId = document.getElementById('speciesSelect').value;
+            const characteristicsDiv = document.getElementById('speciesCharacteristics');
+            const characteristicsContent = document.getElementById('characteristicsContent');
+            
+            if (!speciesId) {
+                characteristicsDiv.style.display = 'none';
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/species/${speciesId}`);
+                const data = await response.json();
+                
+                if (data && data.characteristics) {
+                    let characteristics = data.characteristics;
+                    if (typeof characteristics === 'string') {
+                        characteristics = JSON.parse(characteristics);
+                    }
+                    
+                    let html = '';
+                    for (const [key, value] of Object.entries(characteristics)) {
+                        html += `<div style="margin-bottom: 6px;"><strong>${key}:</strong> ${value}</div>`;
+                    }
+                    
+                    characteristicsContent.innerHTML = html;
+                    characteristicsDiv.style.display = 'block';
+                } else {
+                    characteristicsDiv.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Error loading species characteristics:', error);
+                characteristicsDiv.style.display = 'none';
+            }
+            updateFormProgress();
+        }
+
         // Auto-calculate age from birthdate
         const birthdateInput = document.getElementById('birthdate');
         const ageDisplay = document.getElementById('ageDisplay');
@@ -421,6 +669,7 @@
                 ageDisplay.textContent = `Age: ${age} years old`;
                 ageDisplay.style.display = 'inline-block';
             }
+            updateFormProgress();
         });
 
         // Patient search autocomplete
@@ -466,7 +715,7 @@
         function fillPatientData(patient) {
             // Fill form fields
             document.querySelector('[name="pet_name"]').value = patient.pet_name || '';
-            document.querySelector('[name="species"]').value = patient.species || '';
+            document.querySelector('[name="species_id"]').value = patient.species_id || '';
             document.querySelector('[name="breed"]').value = patient.breed || '';
             document.querySelector('[name="color"]').value = patient.color || '';
             document.getElementById('birthdate').value = patient.birthdate || '';
@@ -475,8 +724,9 @@
             document.querySelector('[name="owner_contact"]').value = patient.owner_contact || '';
             document.querySelector('[name="address"]').value = patient.address || '';
             
-            // Trigger age calculation
+            // Trigger age calculation and load characteristics
             birthdateInput.dispatchEvent(new Event('change'));
+            loadSpeciesCharacteristics();
             
             // Hide results
             resultsContainer.classList.remove('active');
@@ -485,6 +735,8 @@
             // Show duplicate warning
             duplicateWarning.style.display = 'flex';
             duplicateMessage.innerHTML = `This pet already exists: <strong>${patient.pet_name}</strong>. Data has been auto-filled. You can edit or cancel if this is a duplicate.`;
+            
+            updateFormProgress();
         }
         
         // Check for duplicate pet names on typing
@@ -519,6 +771,42 @@
         
         petNameInput.addEventListener('input', checkDuplicate);
         
+        // Form submission with validation
+        petForm.addEventListener('submit', function(e) {
+            // Double-check all required fields are filled
+            if (!areAllRequiredFieldsFilled()) {
+                e.preventDefault();
+                alert('Please fill in all required fields (marked with *)');
+                
+                // Scroll to first empty required field
+                requiredFields.forEach(fieldName => {
+                    const field = document.querySelector(`[name="${fieldName}"]`);
+                    if (field && !field.value.trim()) {
+                        field.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        field.focus();
+                        return;
+                    }
+                });
+                return false;
+            }
+
+            let allValid = true;
+            
+            document.querySelectorAll('input[required], select[required]').forEach(field => {
+                const isValid = validateField(field);
+                if (!isValid) {
+                    allValid = false;
+                    if (!field.offsetParent) field.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
+
+            if (!allValid) {
+                e.preventDefault();
+                alert('Please fix validation errors before submitting.');
+                return false;
+            }
+        });
+        
         // Hide autocomplete when clicking outside
         document.addEventListener('click', function(e) {
             if (!e.target.closest('.autocomplete-container')) {
@@ -537,6 +825,29 @@
                 window.location.href = '/pets';
             }
         }
+        
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            // Initially disable submit button
+            updateSubmitButton();
+            
+            // Add listeners to update button state on all required fields
+            requiredFields.forEach(fieldName => {
+                const field = document.querySelector(`[name="${fieldName}"]`);
+                if (field) {
+                    field.addEventListener('input', updateFormProgress);
+                    field.addEventListener('change', updateFormProgress);
+                    field.addEventListener('blur', updateFormProgress);
+                }
+            });
+            
+            // Load characteristics if species is already selected
+            if (document.getElementById('speciesSelect').value) {
+                loadSpeciesCharacteristics();
+            }
+            // Initial progress update
+            updateFormProgress();
+        });
     </script>
 </body>
 </html>

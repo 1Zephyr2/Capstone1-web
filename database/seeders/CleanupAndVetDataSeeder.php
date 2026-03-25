@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Patient;
 use App\Models\Visit;
 use App\Models\Immunization;
-use App\Models\BreedingRecord;
 use App\Models\VitalSign;
 use App\Models\Referral;
 use Carbon\Carbon;
@@ -30,7 +29,6 @@ class CleanupAndVetDataSeeder extends Seeder
             DB::statement('PRAGMA foreign_keys = OFF;');
         }
         
-        BreedingRecord::truncate();
         VitalSign::truncate();
         Immunization::truncate();
         Referral::truncate();
@@ -148,72 +146,12 @@ class CleanupAndVetDataSeeder extends Seeder
                 'blood_pressure' => rand(70, 120), // Heart rate for pets
                 'pulse_rate' => rand(70, 120),
             ]);
-
-            // Add vaccinations based on species
-            if ($pet->species === 'Dog') {
-                $vaccines = ['Rabies', 'DHPP', 'Bordetella', 'Leptospirosis'];
-            } elseif ($pet->species === 'Cat') {
-                $vaccines = ['FVRCP', 'Feline Rabies', 'FeLV'];
-            } else {
-                $vaccines = ['Rabies'];
-            }
-
-            foreach ($vaccines as $vaccine) {
-                Immunization::create([
-                    'patient_id' => $pet->id,
-                    'vaccine_name' => $vaccine,
-                    'date_given' => Carbon::now()->subMonths(rand(1, 6)),
-                    'next_dose_due' => Carbon::now()->addMonths(rand(6, 12)),
-                    'administered_by' => 'Dr. Veterinarian',
-                ]);
-            }
-
-            // Create vaccination visit
-            $vacVisit = Visit::create([
-                'patient_id' => $pet->id,
-                'visit_date' => Carbon::now()->subMonths(rand(1, 3)),
-                'service_type' => 'Vaccination',
-                'chief_complaint' => 'Scheduled vaccination',
-                'notes' => 'Healthy - vaccines administered: ' . implode(', ', array_slice($vaccines, 0, 2)) . '. No adverse reactions observed.',
-            ]);
-        }
-
-        // Add breeding records for female pets
-        $femalePets = Patient::where('sex', 'Female')->whereIn('species', ['Dog', 'Cat'])->get();
-        foreach ($femalePets->take(2) as $pet) {
-            BreedingRecord::create([
-                'patient_id' => $pet->id,
-                'checkup_date' => Carbon::now()->subDays(rand(5, 15)),
-                'weight' => $pet->species === 'Dog' ? rand(20, 30) : rand(3, 5),
-                'breeding_date' => Carbon::now()->subDays(rand(10, 40)),
-                'sire' => 'Champion ' . $pet->breed,
-                'dam' => $pet->pet_name,
-                'heat_cycle_date' => Carbon::now()->subDays(rand(45, 60)),
-                'pregnancy_confirmed_date' => Carbon::now()->subDays(rand(5, 25)),
-                'expected_delivery_date' => Carbon::now()->addDays(rand(20, 40)),
-                'litter_size' => null,
-                'breeding_status' => 'Confirmed Pregnant',
-                'notes' => 'Normal progression, monitoring closely',
-                'risk_factors' => 'None identified',
-                'referred' => false,
-            ]);
-
-            // Add breeding consultation visit
-            Visit::create([
-                'patient_id' => $pet->id,
-                'visit_date' => Carbon::now()->subDays(rand(5, 15)),
-                'service_type' => 'Breeding Consultation',
-                'chief_complaint' => 'Pregnancy checkup',
-                'notes' => 'Healthy pregnancy progression. Prenatal supplements prescribed. Next checkup in 2 weeks.',
-            ]);
         }
 
         $this->command->info('Veterinary demo data created.');
         $this->command->info('Summary:');
         $this->command->info('   - Pets: ' . Patient::count());
         $this->command->info('   - Visits: ' . Visit::count());
-        $this->command->info('   - Vaccinations: ' . Immunization::count());
-        $this->command->info('   - Breeding Records: ' . BreedingRecord::count());
         $this->command->info('   - Vital Signs: ' . VitalSign::count());
     }
 }

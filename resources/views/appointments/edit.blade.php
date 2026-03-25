@@ -1,20 +1,207 @@
-@extends('layouts.app')
-
-@section('title', 'Edit Appointment')
-
-@section('content')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Appointment - PAWser</title>
+    <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #333;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        .back-button:hover {
+            background: #f8f9fa;
+            border-color: #14b8a6;
+            color: #14b8a6;
+        }
+        .header {
+            background: white;
+            padding: 28px;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
+            margin-bottom: 28px;
+            border: 1px solid #e5e7eb;
+        }
+        .header h1 {
+            color: #0f172a;
+            font-size: 32px;
+            margin: 0;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .alert {
+            padding: 16px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #fca5a5;
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        .alert strong {
+            display: block;
+            margin-bottom: 8px;
+        }
+        .alert ul {
+            margin: 8px 0 0 20px;
+        }
+        .appointment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .form-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
+            border: 1px solid #e5e7eb;
+        }
+        .card-header {
+            background: #f8fafc;
+            padding: 18px 24px;
+            border-bottom: 1.5px solid #e5e7eb;
+        }
+        .card-header h2 {
+            font-size: 16px;
+            color: #0f172a;
+            margin: 0;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card-header i {
+            color: #14b8a6;
+        }
+        .card-body {
+            padding: 24px;
+        }
+        .card-body.secondary {
+            background: #fffbeb;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .form-row:last-child {
+            margin-bottom: 0;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        label {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .required {
+            color: #ef4444;
+        }
+        .form-control {
+            padding: 11px 14px;
+            border: 1.5px solid #d1d5db;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #14b8a6;
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+        }
+        textarea.form-control {
+            resize: vertical;
+            min-height: 90px;
+        }
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+        .btn {
+            padding: 11px 22px;
+            border-radius: 10px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
+        }
+        .btn-primary:hover {
+            box-shadow: 0 8px 20px rgba(20, 184, 166, 0.4);
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
 <div class="container">
+    <a href="{{ route('appointments.show', $appointment) }}" class="back-button">
+        <i class="bi bi-arrow-left"></i> Back to Appointment
+    </a>
     <div class="header">
-        <div class="header-top">
-            <a href="{{ route('appointments.show', $appointment) }}" class="btn-back">
-                <i class="bi bi-arrow-left"></i> Back to Appointment
-            </a>
-            <h1><i class="bi bi-pencil-square"></i> Edit Appointment</h1>
-        </div>
+        <h1><i class="bi bi-pencil-square"></i> Edit Appointment</h1>
     </div>
 
     @if ($errors->any())
-        <div class="alert alert-error">
+        <div class="alert">
             <strong>Please fix the following errors:</strong>
             <ul>
                 @foreach ($errors->all() as $error)
@@ -28,9 +215,10 @@
         @csrf
         @method('PUT')
         
+        <!-- Pet Information -->
         <div class="form-card">
             <div class="card-header">
-                <h2><i class="bi bi-person"></i> Pet Information</h2>
+                <h2><i class="bi bi-paw"></i> Pet Information</h2>
             </div>
             <div class="card-body">
                 <div class="form-row">
@@ -46,6 +234,7 @@
             </div>
         </div>
 
+        <!-- Appointment Details -->
         <div class="form-card">
             <div class="card-header">
                 <h2><i class="bi bi-calendar-check"></i> Appointment Details</h2>
@@ -81,7 +270,6 @@
                                 <option value="Paw Treatment" {{ old('service_type', $appointment->service_type) == 'Paw Treatment' ? 'selected' : '' }}>Paw Treatment</option>
                             </optgroup>
                             <optgroup label="Other Services">
-                                <option value="Breeding Consultation" {{ old('service_type', $appointment->service_type) == 'Breeding Consultation' ? 'selected' : '' }}>Breeding Consultation</option>
                                 <option value="Boarding Checkup" {{ old('service_type', $appointment->service_type) == 'Boarding Checkup' ? 'selected' : '' }}>Boarding Checkup</option>
                                 <option value="Follow-up" {{ old('service_type', $appointment->service_type) == 'Follow-up' ? 'selected' : '' }}>Follow-up</option>
                                 <option value="Other" {{ old('service_type', $appointment->service_type) == 'Other' ? 'selected' : '' }}>Other</option>
@@ -103,12 +291,12 @@
                 <div class="form-row">
                     <div class="form-group full-width">
                         <label for="chief_complaint">Chief Complaint</label>
-                        <textarea name="chief_complaint" id="chief_complaint" class="form-control" rows="3">{{ old('chief_complaint', $appointment->chief_complaint) }}</textarea>
+                        <textarea name="chief_complaint" id="chief_complaint" class="form-control">{{ old('chief_complaint', $appointment->chief_complaint) }}</textarea>
                     </div>
                 </div>
 
                 <div class="form-row">
-                    <div class="form-group">
+                    <div class="form-group full-width">
                         <label for="health_worker">Health Worker</label>
                         <input type="text" name="health_worker" id="health_worker" class="form-control" 
                                value="{{ old('health_worker', $appointment->health_worker) }}">
@@ -118,17 +306,18 @@
                 <div class="form-row">
                     <div class="form-group full-width">
                         <label for="notes">Notes</label>
-                        <textarea name="notes" id="notes" class="form-control" rows="3">{{ old('notes', $appointment->notes) }}</textarea>
+                        <textarea name="notes" id="notes" class="form-control">{{ old('notes', $appointment->notes) }}</textarea>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- Secondary Contact -->
         <div class="form-card">
             <div class="card-header">
-                <h2><i class="bi bi-person-lines-fill"></i> Pickup / Secondary Contact <span style="font-size:13px;font-weight:400;color:#6b7280;">(Optional — if someone else picks up the pet)</span></h2>
+                <h2><i class="bi bi-person-check"></i> Pickup / Secondary Contact (Optional)</h2>
             </div>
-            <div class="card-body" style="background:#fffbeb;">
+            <div class="card-body secondary">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="secondary_contact_name">Contact Person Name</label>
@@ -140,8 +329,6 @@
                         <label for="secondary_contact_number">Contact Number</label>
                         <input type="tel" name="secondary_contact_number" id="secondary_contact_number" class="form-control"
                                placeholder="09XX-XXX-XXXX"
-                               inputmode="numeric"
-                               maxlength="11"
                                value="{{ old('secondary_contact_number', $appointment->secondary_contact_number) }}">
                     </div>
                 </div>
@@ -149,7 +336,8 @@
         </div>
 
         <!-- Service-Specific Fields -->
-        <div id="vaccination-fields" class="form-card" style="display: none;">
+        @if($appointment->service_type == 'Immunization' || in_array($appointment->service_type, ['Bath & Dry', 'Full Grooming']))
+        <div id="vaccination-fields" class="form-card">
             <div class="card-header">
                 <h2><i class="bi bi-shield-check"></i> Vaccination Details</h2>
             </div>
@@ -168,43 +356,10 @@
                 </div>
             </div>
         </div>
+        @endif
 
-        <div id="breeding-fields" class="form-card" style="display: none;">
-            <div class="card-header">
-                <h2><i class="bi bi-heart-pulse"></i> Breeding Consultation Details</h2>
-            </div>
-            <div class="card-body">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="breeding_status">Breeding Status</label>
-                        <input type="text" name="breeding_status" id="breeding_status" class="form-control" 
-                               value="{{ old('breeding_status', $appointment->breeding_status) }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="expected_delivery">Expected Delivery Date</label>
-                        <input type="date" name="expected_delivery" id="expected_delivery" class="form-control" 
-                               value="{{ old('expected_delivery', $appointment->expected_delivery) }}">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="spayneuter-fields" class="form-card" style="display: none;">
-            <div class="card-header">
-                <h2><i class="bi bi-scissors"></i> Spay/Neuter Details</h2>
-            </div>
-            <div class="card-body">
-                <div class="form-row">
-                    <div class="form-group full-width">
-                        <label for="procedure_type">Procedure Type</label>
-                        <input type="text" name="procedure_type" id="procedure_type" class="form-control" 
-                               value="{{ old('procedure_type', $appointment->procedure_type) }}">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="referral-fields" class="form-card" style="display: none;">
+        @if($appointment->referred_to)
+        <div id="referral-fields" class="form-card">
             <div class="card-header">
                 <h2><i class="bi bi-hospital"></i> Referral Details</h2>
             </div>
@@ -227,6 +382,7 @@
                 </div>
             </div>
         </div>
+        @endif
 
         <div class="form-actions">
             <button type="submit" class="btn btn-primary">
@@ -238,182 +394,5 @@
         </div>
     </form>
 </div>
-
-<style>
-    .container {
-        max-width: 1000px;
-        margin: 0 auto;
-        padding: 20px;
-    }
-    .header {
-        background: white;
-        padding: 24px;
-        border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        margin-bottom: 24px;
-    }
-    .header h1 {
-        color: #333;
-        font-size: 28px;
-        margin: 12px 0 0 0;
-    }
-    .btn-back {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        color: #007bff;
-        text-decoration: none;
-        font-size: 14px;
-    }
-    .btn-back:hover {
-        text-decoration: underline;
-    }
-    .alert {
-        padding: 16px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-    }
-    .alert-error {
-        background: #f8d7da;
-        color: #721c24;
-        border: 1px solid #f5c6cb;
-    }
-    .alert ul {
-        margin: 8px 0 0 20px;
-    }
-    .form-card {
-        background: white;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        margin-bottom: 20px;
-    }
-    .card-header {
-        background: #f8f9fa;
-        padding: 16px 20px;
-        border-bottom: 1px solid #dee2e6;
-    }
-    .card-header h2 {
-        font-size: 18px;
-        color: #495057;
-        margin: 0;
-    }
-    .card-body {
-        padding: 24px;
-    }
-    .form-row {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
-        margin-bottom: 20px;
-    }
-    .form-row:last-child {
-        margin-bottom: 0;
-    }
-    .form-group {
-        display: flex;
-        flex-direction: column;
-    }
-    .form-group.full-width {
-        grid-column: 1 / -1;
-    }
-    label {
-        font-weight: 600;
-        color: #495057;
-        margin-bottom: 8px;
-        font-size: 14px;
-    }
-    .required {
-        color: #dc3545;
-    }
-    .form-control {
-        padding: 10px 12px;
-        border: 1px solid #ced4da;
-        border-radius: 6px;
-        font-size: 14px;
-        transition: all 0.3s;
-    }
-    .form-control:focus {
-        outline: none;
-        border-color: #007bff;
-        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
-    }
-    textarea.form-control {
-        resize: vertical;
-        font-family: inherit;
-    }
-    .form-actions {
-        display: flex;
-        gap: 12px;
-        margin-top: 24px;
-    }
-    .btn {
-        padding: 12px 24px;
-        border-radius: 8px;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        border: none;
-        cursor: pointer;
-        font-size: 14px;
-        font-weight: 600;
-        transition: all 0.3s;
-    }
-    .btn-primary {
-        background: #007bff;
-        color: white;
-    }
-    .btn-primary:hover {
-        background: #0056b3;
-    }
-    .btn-secondary {
-        background: #6c757d;
-        color: white;
-    }
-    .btn-secondary:hover {
-        background: #545b62;
-    }
-    @media (max-width: 768px) {
-        .form-row {
-            grid-template-columns: 1fr;
-        }
-    }
-</style>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const serviceTypeSelect = document.getElementById('service_type');
-        const vaccinationFields = document.getElementById('vaccination-fields');
-        const breedingFields = document.getElementById('breeding-fields');
-        const spayNeuterFields = document.getElementById('spayneuter-fields');
-        const referralFields = document.getElementById('referral-fields');
-
-        function toggleServiceFields() {
-            const serviceType = serviceTypeSelect.value;
-            
-            // Hide all service-specific fields
-            if (vaccinationFields) vaccinationFields.style.display = 'none';
-            if (breedingFields) breedingFields.style.display = 'none';
-            if (spayNeuterFields) spayNeuterFields.style.display = 'none';
-            if (referralFields) referralFields.style.display = 'none';
-
-            // Show relevant fields
-            if (serviceType === 'Vaccination') {
-                if (vaccinationFields) vaccinationFields.style.display = 'block';
-            } else if (serviceType === 'Breeding Consultation') {
-                if (breedingFields) breedingFields.style.display = 'block';
-            } else if (serviceType === 'Spay/Neuter') {
-                if (spayNeuterFields) spayNeuterFields.style.display = 'block';
-            } else if (serviceType === 'Referral') {
-                if (referralFields) referralFields.style.display = 'block';
-            }
-        }
-
-        serviceTypeSelect.addEventListener('change', toggleServiceFields);
-        
-        // Initialize on page load
-        toggleServiceFields();
-    });
-</script>
-@endsection
+</body>
+</html>

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Patient;
+use App\Models\Species;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 
 class PetController extends Controller
 {
@@ -99,9 +101,9 @@ class PetController extends Controller
                     'color' => $patient->color ?? '',
                     'owner_name' => $patient->owner_name ?? '',
                     'owner_contact' => $patient->owner_contact ?? '',
-                    'microchip_number' => $patient->microchip_number ?? '',
                     'emergency_contact_name' => $patient->emergency_contact_name,
                     'emergency_contact_number' => $patient->emergency_contact_number,
+                    'species_id' => $patient->species_id,
                 ];
             });
 
@@ -113,7 +115,16 @@ class PetController extends Controller
      */
     public function create()
     {
-        return view('pets.create');
+        $species = Species::all();
+        
+        // Check if this is a customer request
+        $isCustomer = Auth::user() && Auth::user()->role === 'customer';
+        
+        if ($isCustomer) {
+            return view('customer.pets.create', compact('species'));
+        }
+        
+        return view('pets.create', compact('species'));
     }
 
     /**
@@ -121,25 +132,44 @@ class PetController extends Controller
      */
     public function store(Request $request)
     {
-        $isExistingOwner = $request->boolean('existing_owner');
+        $user = Auth::user();
+        $isCustomer = $user && $user->role === 'customer';
 
-        $validator = Validator::make($request->all(), [
-            'pet_name' => 'required|string|max:255',
-            'species' => 'required|string|max:255',
-            'breed' => 'nullable|string|max:255',
-            'color' => 'nullable|string|max:255',
-            'birthdate' => 'required|date|before:today',
-            'sex' => 'required|in:Male,Female,Neutered Male,Spayed Female',
-            'owner_name' => 'required|string|max:255',
-            'owner_contact' => 'nullable|string|max:20',
-            'address' => ($isExistingOwner ? 'nullable' : 'required') . '|string',
-            'microchip_number' => 'nullable|string|max:50',
-            'emergency_contact_name' => 'nullable|string|max:255',
-            'emergency_contact_number' => 'nullable|string|max:20',
-        ]);
+        // For customers, use simplified validation rules
+        if ($isCustomer) {
+            $validator = Validator::make($request->all(), [
+                'pet_name' => 'required|string|max:255',
+                'species_id' => 'required|exists:species,id',
+                'breed' => 'nullable|string|max:255',
+                'color' => 'nullable|string|max:255',
+                'birthdate' => 'required|date|before:today',
+                'sex' => 'required|in:Male,Female,Neutered Male,Spayed Female',
+                'emergency_contact_name' => 'nullable|string|max:255',
+                'emergency_contact_number' => 'nullable|string|max:20',
+                'pet_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:4096',
+            ]);
+        } else {
+            // Staff version uses original validation
+            $isExistingOwner = $request->boolean('existing_owner');
+
+            $validator = Validator::make($request->all(), [
+                'pet_name' => 'required|string|max:255',
+                'species_id' => 'required|exists:species,id',
+                'breed' => 'nullable|string|max:255',
+                'color' => 'nullable|string|max:255',
+                'birthdate' => 'required|date|before:today',
+                'sex' => 'required|in:Male,Female,Neutered Male,Spayed Female',
+                'owner_name' => 'required|string|max:255',
+                'owner_contact' => 'nullable|string|max:20',
+                'address' => ($isExistingOwner ? 'nullable' : 'required') . '|string',
+                'is_required' => 'nullable|boolean',
+                'privacy_consent' => 'nullable|boolean',
+                'emergency_contact_name' => 'nullable|string|max:255',
+                'emergency_contact_number' => 'nullable|string|max:20',
+            ]);
+        }
 
         if ($validator->fails()) {
-            // Check if request is AJAX
             if ($request->wantsJson() || $request->ajax()) {
                 return response()->json([
                     'success' => false,
@@ -150,68 +180,126 @@ class PetController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
-        $payload = $request->only([
-            'pet_name',
-            'species',
-            'breed',
-            'color',
-            'birthdate',
-            'sex',
-            'owner_name',
-            'owner_contact',
-            'address',
-            'microchip_number',
-            'emergency_contact_name',
-            'emergency_contact_number',
-        ]);
+        if ($isCustomer) {
+            // For customers, auto-fill owner info from authenticated user
+            $payload = $request->only([
+                'pet_name',
+                'species_id',
+                'breed',
+                'color',
+                'birthdate',
+                'sex',
+                'emergency_contact_name',
+                'emergency_contact_number',
+            ]);
+            
+            $payload['owner_name'] = $user->name;
+            $payload['owner_contact'] = $user->email;
+            $payload['address'] = $user->address ?? 'Not provided';
+            $payload['user_id'] = $user->id;
+        } else {
+            // Staff version uses original logic
+            $payload = $request->only([
+                'pet_name',
+                'species_id',
+                'breed',
+                'color',
+                'birthdate',
+                'sex',
+                'owner_name',
+                'owner_contact',
+                'address',
+                'is_required',
+                'privacy_consent',
+                'emergency_contact_name',
+                'emergency_contact_number',
+            ]);
 
-        if ($isExistingOwner) {
-            $ownerRecord = $this->scopedQuery()
-                ->where('owner_name', $request->owner_name)
-                ->where(function ($q) {
-                    $q->whereNotNull('address')
-                      ->orWhereNotNull('owner_contact');
-                })
-                ->latest('id')
-                ->first();
+            if ($isExistingOwner) {
+                $ownerRecord = $this->scopedQuery()
+                    ->where('owner_name', $request->owner_name)
+                    ->where(function ($q) {
+                        $q->whereNotNull('address')
+                          ->orWhereNotNull('owner_contact');
+                    })
+                    ->latest('id')
+                    ->first();
 
-            if (empty($payload['owner_contact'])) {
-                $payload['owner_contact'] = $ownerRecord?->owner_contact;
+                if (empty($payload['owner_contact'])) {
+                    $payload['owner_contact'] = $ownerRecord?->owner_contact;
+                }
+
+                if (empty($payload['address'])) {
+                    $payload['address'] = $ownerRecord?->address;
+                }
             }
 
             if (empty($payload['address'])) {
-                $payload['address'] = $ownerRecord?->address;
+                $message = 'Owner address is required. Please provide owner details for this pet.';
+                if ($request->wantsJson() || $request->ajax()) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Validation failed',
+                        'errors' => ['address' => [$message]],
+                    ], 422);
+                }
+
+                return back()->withErrors(['address' => $message])->withInput();
+            }
+
+            $payload['user_id'] = Auth::id();
+        }
+
+        // Get species name from species_id to populate the species column
+        if (!empty($payload['species_id'])) {
+            $species = Species::find($payload['species_id']);
+            if ($species) {
+                $payload['species'] = $species->name;
             }
         }
 
-        if (empty($payload['address'])) {
-            $message = 'Owner address is required. Please provide owner details for this pet.';
+        // Handle pet photo upload for customers
+        if ($isCustomer && $request->hasFile('pet_photo')) {
+            $path = $request->file('pet_photo')->store('pet-photos', 'public');
+            $payload['pet_photo_path'] = $path;
+        }
+
+        try {
+            $patient = Patient::create($payload);
+
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Pet registered successfully! Pet ID: ' . $patient->patient_id,
+                    'patient' => $patient
+                ]);
+            }
+
+            $redirectRoute = $isCustomer ? 'customer.pets.index' : 'pets.show';
+            $redirectParam = $isCustomer ? [] : [$patient];
+
+            return redirect()
+                ->route($redirectRoute, $redirectParam)
+                ->with('success', 'Pet registered successfully! Pet ID: ' . $patient->patient_id);
+        } catch (\Exception $e) {
+            Log::error('Error creating patient: ' . $e->getMessage(), [
+                'exception' => $e,
+                'payload' => $payload,
+                'user_id' => Auth::id(),
+            ]);
+
             if ($request->wantsJson() || $request->ajax()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Validation failed',
-                    'errors' => ['address' => [$message]],
-                ], 422);
+                    'message' => 'Failed to create pet record: ' . $e->getMessage(),
+                    'errors' => ['error' => [$e->getMessage()]]
+                ], 500);
             }
 
-            return back()->withErrors(['address' => $message])->withInput();
+            return back()
+                ->withErrors(['error' => 'Failed to create pet record: ' . $e->getMessage()])
+                ->withInput();
         }
-
-        $payload['user_id'] = Auth::id();
-        $patient = Patient::create($payload);
-
-        // Check if request is AJAX
-        if ($request->wantsJson() || $request->ajax()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Patient registered successfully! Patient ID: ' . $patient->patient_id,
-                'patient' => $patient
-            ]);
-        }
-
-        return redirect()
-            ->route('pets.show', $patient)
-            ->with('success', 'Pet registered successfully! Pet ID: ' . $patient->patient_id);
     }
 
     /**
@@ -220,7 +308,7 @@ class PetController extends Controller
     public function show(Patient $patient)
     {
         $this->authorizePatient($patient);
-        $patient->load(['visits.vitalSigns', 'vaccinations', 'breedingRecords', 'referrals']);
+        $patient->load(['visits.vitalSigns', 'vaccinations', 'referrals']);
         
         return view('pets.show', compact('patient'));
     }
@@ -231,7 +319,16 @@ class PetController extends Controller
     public function edit(Patient $patient)
     {
         $this->authorizePatient($patient);
-        return view('pets.edit', compact('patient'));
+        $species = Species::all();
+        
+        $user = Auth::user();
+        $isCustomer = $user && $user->role === 'customer';
+        
+        if ($isCustomer) {
+            return view('customer.pets.edit', compact('patient', 'species'));
+        }
+        
+        return view('pets.edit', compact('patient', 'species'));
     }
 
     /**
@@ -241,21 +338,41 @@ class PetController extends Controller
     {
         $this->authorizePatient($patient);
 
-        $validator = Validator::make($request->all(), [
-            'pet_name'                  => 'required|string|max:255',
-            'species'                   => 'required|string|max:255',
-            'breed'                     => 'nullable|string|max:255',
-            'color'                     => 'nullable|string|max:255',
-            'birthdate'                 => 'required|date|before:today',
-            'sex'                       => 'required|in:Male,Female,Neutered Male,Spayed Female',
-            'owner_name'                => 'required|string|max:255',
-            'owner_contact'             => 'nullable|string|max:20',
-            'address'                   => 'required|string',
-            'microchip_number'          => 'nullable|string|max:50',
-            'emergency_contact_name'    => 'nullable|string|max:255',
-            'emergency_contact_number'  => 'nullable|string|max:20',
-            'pet_photo'                 => 'nullable|image|max:4096',
-        ]);
+        $user = Auth::user();
+        $isCustomer = $user && $user->role === 'customer';
+
+        // For customers, use simplified validation rules
+        if ($isCustomer) {
+            $validator = Validator::make($request->all(), [
+                'pet_name'                  => 'required|string|max:255',
+                'species_id'                => 'required|exists:species,id',
+                'breed'                     => 'nullable|string|max:255',
+                'color'                     => 'nullable|string|max:255',
+                'birthdate'                 => 'required|date|before:today',
+                'sex'                       => 'required|in:Male,Female,Neutered Male,Spayed Female',
+                'emergency_contact_name'    => 'nullable|string|max:255',
+                'emergency_contact_number'  => 'nullable|string|max:20',
+                'pet_photo'                 => 'nullable|image|max:4096',
+            ]);
+        } else {
+            // Staff version uses original validation
+            $validator = Validator::make($request->all(), [
+                'pet_name'                  => 'required|string|max:255',
+                'species_id'                => 'required|exists:species,id',
+                'breed'                     => 'nullable|string|max:255',
+                'color'                     => 'nullable|string|max:255',
+                'birthdate'                 => 'required|date|before:today',
+                'sex'                       => 'required|in:Male,Female,Neutered Male,Spayed Female',
+                'owner_name'                => 'required|string|max:255',
+                'owner_contact'             => 'nullable|string|max:20',
+                'address'                   => 'required|string',
+                'is_required'               => 'nullable|boolean',
+                'privacy_consent'           => 'nullable|boolean',
+                'emergency_contact_name'    => 'nullable|string|max:255',
+                'emergency_contact_number'  => 'nullable|string|max:20',
+                'pet_photo'                 => 'nullable|image|max:4096',
+            ]);
+        }
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
@@ -274,6 +391,13 @@ class PetController extends Controller
 
         $patient->update($data);
 
+        // Redirect based on user role
+        if ($isCustomer) {
+            return redirect()
+                ->route('customer.pets.index')
+                ->with('success', 'Pet information updated successfully!');
+        }
+
         return redirect()
             ->route('pets.show', $patient)
             ->with('success', 'Pet information updated successfully!');
@@ -290,6 +414,20 @@ class PetController extends Controller
         return redirect()
             ->route('pets.index')
             ->with('success', 'Pet record archived successfully.');
+    }
+
+    /**
+     * API endpoint: Get species characteristics
+     */
+    public function getSpeciesCharacteristics($speciesId)
+    {
+        $species = Species::find($speciesId);
+        
+        if (!$species) {
+            return response()->json(['error' => 'Species not found'], 404);
+        }
+        
+        return response()->json($species);
     }
 
     /**

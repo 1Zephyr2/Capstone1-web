@@ -16,6 +16,12 @@ class ProfileController extends Controller
     public function show()
     {
         $user = Auth::user();
+        
+        // Customer profile is accessed differently
+        if ($user->role === 'customer') {
+            return view('customer.profile.show', compact('user'));
+        }
+        
         return view('profile.show', compact('user'));
     }
 
@@ -25,6 +31,12 @@ class ProfileController extends Controller
     public function edit()
     {
         $user = Auth::user();
+        
+        // Customer profile is accessed differently
+        if ($user->role === 'customer') {
+            return view('customer.profile.edit', compact('user'));
+        }
+        
         return view('profile.edit', compact('user'));
     }
 
@@ -35,6 +47,30 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
 
+        // If only profile picture is being updated
+        if ($request->hasFile('profile_picture') && !$request->filled('name') && !$request->filled('email')) {
+            $validated = $request->validate([
+                'profile_picture' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            ]);
+
+            // Delete old profile picture if exists
+            if ($user->profile_picture && Storage::disk('public')->exists($user->profile_picture)) {
+                Storage::disk('public')->delete($user->profile_picture);
+            }
+
+            // Store new profile picture
+            $path = $request->file('profile_picture')->store('profile-pictures', 'public');
+            $user->profile_picture = $path;
+            $user->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Profile picture updated successfully!',
+                'profile_picture' => $path
+            ]);
+        }
+
+        // Full profile update
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
@@ -71,6 +107,11 @@ class ProfileController extends Controller
         }
 
         $user->save();
+
+        // Redirect based on user role
+        if ($user->role === 'customer') {
+            return redirect()->route('customer.dashboard')->with('success', 'Profile updated successfully!');
+        }
 
         return redirect()->route('profile.show')->with('success', 'Profile updated successfully!');
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Patient;
 use App\Models\Visit;
 use App\Models\Appointment;
+use App\Models\Species;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -168,6 +169,8 @@ class DashboardController extends Controller
                 })->sortBy('time')->values();
             });
         
+        $species = Species::all();
+        
         return view('dashboard', compact(
             'todayPatients',
             'totalPatients',
@@ -181,7 +184,8 @@ class DashboardController extends Controller
             'automationToday',
             'automationUpcoming',
             'automationMissed',
-            'automationStats'
+            'automationStats',
+            'species'
         ));
     }
 }

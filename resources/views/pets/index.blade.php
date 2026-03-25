@@ -10,16 +10,16 @@
         @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
         :root {
-            --bg: #f5f7fb;
-            --bg-alt: #eef2ff;
+            --bg: #f8fafc;
+            --bg-alt: #f0f9ff;
             --card: #ffffff;
-            --text: #111827;
+            --text: #0f172a;
             --muted: #6b7280;
             --line: #e5e7eb;
-            --primary: #2563eb;
-            --primary-strong: #1d4ed8;
-            --accent: #16a34a;
-            --accent-strong: #15803d;
+            --primary: #14b8a6;
+            --primary-strong: #0d9488;
+            --accent: #06b6d4;
+            --accent-strong: #0891b2;
             --shadow-sm: 0 4px 14px rgba(15, 23, 42, 0.08);
             --shadow-lg: 0 20px 40px rgba(15, 23, 42, 0.12);
             --radius: 14px;
@@ -106,17 +106,17 @@
             align-items: center;
             gap: 10px;
             transition: all 0.3s ease;
-            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+            box-shadow: 0 8px 20px rgba(20, 184, 166, 0.25);
         }
         .btn-new-patient:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 24px rgba(37, 99, 235, 0.32);
+            box-shadow: 0 12px 24px rgba(20, 184, 166, 0.32);
         }
         .btn-import {
             padding: 12px 20px;
             background: white;
             color: var(--primary);
-            border: 1px solid rgba(37, 99, 235, 0.25);
+            border: 1px solid rgba(20, 184, 166, 0.25);
             border-radius: 10px;
             cursor: pointer;
             font-size: 14px;
@@ -128,9 +128,9 @@
             transition: all 0.3s ease;
         }
         .btn-import:hover {
-            background: #eef2ff;
+            background: #ccfbf1;
             transform: translateY(-1px);
-            box-shadow: 0 8px 18px rgba(37, 99, 235, 0.15);
+            box-shadow: 0 8px 18px rgba(20, 184, 166, 0.15);
         }
         .btn-back {
             padding: 10px 16px;
@@ -178,142 +178,258 @@
         }
         .search-bar {
             display: flex;
-            gap: 14px;
-            margin-bottom: 18px;
+            gap: 10px;
             align-items: center;
+            flex-wrap: nowrap;
+            width: 100%;
         }
         .search-wrapper {
-            flex: 1;
+            flex: 0 1 350px;
             position: relative;
         }
-        input[type="search"] {
+        .search-wrapper input {
             width: 100%;
-            padding: 12px 44px 12px 16px;
+            padding: 10px 14px 10px 40px;
             border: 1px solid var(--line);
-            border-radius: 10px;
-            font-size: 14px;
-            transition: all 0.2s ease;
-            background: white;
+            border-radius: 8px;
+            font-size: 13px;
         }
-        input[type="search"]:focus {
+        .search-wrapper input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15);
         }
         .search-icon {
             position: absolute;
-            right: 12px;
+            left: 12px;
             top: 50%;
             transform: translateY(-50%);
             color: #9ca3af;
+            font-size: 14px;
         }
-        .btn {
-            padding: 10px 18px;
+        .filter-select {
+            padding: 10px 12px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            font-size: 13px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex: 0 0 130px;
+            white-space: nowrap;
+        }
+        .filter-select:hover {
+            border-color: var(--primary);
+        }
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15);
+        }
+        .btn-search {
+            padding: 10px 16px;
+            background: var(--primary);
+            color: white;
             border: none;
             border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
-            text-decoration: none;
-            display: inline-flex;
+            transition: all 0.2s ease;
+            display: flex;
             align-items: center;
-            justify-content: center;
             gap: 6px;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
-        .btn-primary {
-            background: var(--accent);
-            color: white;
+        .btn-search:hover {
+            background: var(--primary-strong);
+            transform: translateY(-1px);
         }
-        .btn-primary:hover {
-            background: var(--accent-strong);
+        /* Table Data Rows */
+        .data-row {
+            border-bottom: 1px solid #f1f5f9;
+            transition: background 0.15s ease;
         }
-        .btn-sm {
-            padding: 6px 12px;
-            font-size: 13px;
+        .data-row:hover {
+            background: #f8fbff;
         }
-        .btn-success {
-            background: #10b981;
-            color: white;
-        }
-        .btn-info {
-            background: #3b82f6;
-            color: white;
-        }
-        .alert {
-            padding: 12px 16px;
-            border-radius: 6px;
-            margin-bottom: 16px;
-        }
-        .alert-success {
-            background: #d1fae5;
-            color: #065f46;
-            border: 1px solid #a7f3d0;
-        }
-        /* ── Owner-grouped table ── */
-        .patients-table {
-            background: var(--card);
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--line);
-            animation: pageEnter 0.5s ease;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        thead {
-            background: #f8fafc;
-        }
-        th {
-            padding: 13px 20px;
-            text-align: left;
-            font-size: 11px;
-            font-weight: 700;
-            color: #64748b;
-            text-transform: uppercase;
-            letter-spacing: 0.9px;
-            border-bottom: 2px solid #e5e7eb;
-        }
-        td {
-            padding: 0;
-            color: #1f2937;
-        }
-        /* Owner row */
-        .owner-row {
-            cursor: pointer;
-            transition: background 0.15s;
-        }
-        .owner-row:hover { background: #eff6ff; }
-        .owner-row > td {
-            padding: 14px 20px;
-            border-top: 2px solid #e0e7ff;
-            background: #f5f8ff;
+        .data-row > td {
+            padding: 10px 16px;
             vertical-align: middle;
         }
-        .owner-row:first-child > td { border-top: none; }
-        .owner-name-cell {
+        .data-row:last-child > td {
+            border-bottom: none;
+        }
+        /* Pet name cell */
+        .pet-name-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .pet-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            flex-shrink: 0;
+            box-shadow: 0 2px 6px rgba(20, 184, 166, 0.3);
+        }
+        .pet-label {
+            font-weight: 600;
+            color: #1f2937;
+            font-size: 14px;
+        }
+        .pet-sub {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 2px;
+        }
+        /* Owner info cell */
+        .owner-info {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        .owner-label {
+            font-weight: 600;
+            color: #1f2937;
+            font-size: 14px;
+        }
+        .owner-sub {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+        /* Details cell */
+        .details-cell {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        .detail-main {
+            font-weight: 500;
+            color: #1f2937;
+            font-size: 14px;
+        }
+        .detail-sub {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+        /* Visit badges */
+        .visit-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background: #ccfbf1;
+            color: #0d7377;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .no-visit-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background: #f3f4f6;
+            color: #9ca3af;
+            border-radius: 6px;
+            font-size: 13px;
+            font-style: italic;
+        }
+        /* Actions column */
+        .actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            border: none;
+            background: #f3f4f6;
+            color: #1f2937;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 16px;
+        }
+        .action-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.05);
+        }
+        .owner-row {
+            background: #f8fafc;
+            border-top: 1px solid #e5e7eb;
+        }
+        .owner-row:hover {
+            background: #f1f5f9;
+        }
+        .owner-row td {
+            padding: 12px 16px;
+            vertical-align: middle;
+        }
+        .owner-row .owner-name-cell {
             display: flex;
             align-items: center;
             gap: 12px;
         }
+        .owner-row-contact {
+            font-size: 13px;
+            color: #6b7280;
+            font-weight: 600;
+        }
+        .owner-row-hint {
+            font-size: 12px;
+            color: #94a3b8;
+            font-style: italic;
+        }
+        .owner-row-chevron {
+            text-align: right;
+        }
+        .pet-row {
+            display: none;
+        }
+        .pet-row.visible {
+            display: table-row;
+        }
+        .pet-row.visible > td {
+            background: #ffffff;
+        }
+        .pet-row.visible > td:first-child {
+            padding-left: 34px;
+            position: relative;
+        }
+        .pet-row.visible > td:first-child::before {
+            content: '';
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 2px;
+            background: #cbd5e1;
+            border-radius: 2px;
+        }
         .owner-avatar {
-            width: 38px;
-            height: 38px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 15px;
-            font-weight: 800;
-            flex-shrink: 0;
-            box-shadow: 0 2px 6px rgba(99,102,241,0.35);
-        }
-        .owner-label {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
-            color: #1e1b4b;
+            flex-shrink: 0;
         }
         .pet-count-badge {
             display: inline-flex;
@@ -322,17 +438,9 @@
             background: #e0e7ff;
             color: #4338ca;
             border-radius: 20px;
-            padding: 4px 12px;
+            padding: 4px 10px;
             font-size: 12px;
             font-weight: 700;
-        }
-        .owner-contact {
-            font-size: 13px;
-            color: #6b7280;
-        }
-        .chevron-cell {
-            text-align: right;
-            width: 40px;
         }
         .chevron {
             font-size: 16px;
@@ -340,50 +448,9 @@
             transition: transform 0.22s ease;
             display: inline-block;
         }
-        .chevron.open { transform: rotate(180deg); }
-        /* Pet row */
-        .pet-row { display: none; }
-        .pet-row.visible { display: table-row; }
-        .pet-row > td {
-            padding: 11px 20px;
-            border-top: 1px solid #f1f5f9;
-            background: #fff;
-            vertical-align: middle;
+        .chevron.open {
+            transform: rotate(180deg);
         }
-        .pet-row.visible:last-of-type > td {
-            border-bottom: 2px solid #e0e7ff;
-        }
-        .pet-name-cell {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding-left: 50px;
-        }
-        .pet-icon {
-            width: 30px;
-            height: 30px;
-            border-radius: 8px;
-            background: linear-gradient(135deg, #fce7f3, #fbcfe8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            flex-shrink: 0;
-        }
-        .pet-label { font-weight: 600; color: #111827; font-size: 14px; }
-        .pet-sub   { font-size: 12px; color: #9ca3af; margin-top: 1px; }
-        .badge {
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.3px;
-        }
-        .badge-male   { background: #dbeafe; color: #1e40af; }
-        .badge-female { background: #fce7f3; color: #9f1239; }
-        .visit-date { font-size: 13px; color: #374151; }
-        .no-visit   { font-size: 12px; color: #d1d5db; font-style: italic; }
-        .actions { display: flex; gap: 6px; }
         .empty-state {
             text-align: center;
             padding: 60px 20px;
@@ -731,7 +798,7 @@
         }
         .btn-modal-submit {
             padding: 10px 20px;
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
             color: white;
             border: none;
             border-radius: 6px;
@@ -740,9 +807,9 @@
             transition: all 0.2s ease;
         }
         .btn-modal-submit:hover {
-            background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
         }
         
         /* Registration Modal Styles */
@@ -781,7 +848,7 @@
             align-items: center;
             position: sticky;
             top: 0;
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
             z-index: 10;
         }
         .registration-modal-header h2 {
@@ -840,8 +907,8 @@
         .registration-modal-body .modal-form-group select:focus,
         .registration-modal-body .modal-form-group textarea:focus {
             outline: none;
-            border-color: #2563eb;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+            border-color: #14b8a6;
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15);
         }
         .registration-modal-body .modal-form-group textarea {
             resize: vertical;
@@ -875,7 +942,7 @@
         }
         .registration-modal-actions .btn-modal-submit {
             padding: 10px 20px;
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
             color: white;
             border: none;
             border-radius: 6px;
@@ -885,9 +952,9 @@
             transition: all 0.2s ease;
         }
         .registration-modal-actions .btn-modal-submit:hover {
-            background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
         }
         .alert-modal {
             padding: 12px 16px;
@@ -1101,18 +1168,12 @@
         <a href="{{ route('dashboard') }}" class="btn-back" style="margin-bottom: 16px;">← Back to Dashboard</a>
         <div class="header">
             <div class="header-top">
-                <a href="{{ route('dashboard') }}" class="header-logo">
-                    <img src="{{ asset('newlogo.png') }}" alt="PAWser" style="height: 35px; object-fit: contain;">
-                </a>
-                <h1>Pet List</h1>
+                <h1>Pet Directory</h1>
             </div>
             
             <div class="header-actions">
                 <button onclick="window.location.href='{{ route('pets.create') }}'" class="btn-new-patient">
                     <i class="bi bi-plus-circle"></i> Register New Pet
-                </button>
-                <button onclick="openImportModal()" class="btn-import">
-                    <i class="bi bi-file-earmark-arrow-up"></i> Import from CSV
                 </button>
             </div>
             
@@ -1127,39 +1188,58 @@
                     <input 
                         type="search" 
                         id="patientSearch" 
-                        placeholder="Search by pet name, owner, ID, or contact..."
+                        placeholder="Search pet name..."
                         autocomplete="off"
                     >
                     <span class="search-icon"><i class="bi bi-search"></i></span>
                     <div id="autocompleteResults" class="autocomplete-results"></div>
                 </div>
+                <select id="speciesFilter" class="filter-select">
+                    <option value="">All Species</option>
+                    <option value="Dog">Dog</option>
+                    <option value="Cat">Cat</option>
+                    <option value="Rabbit">Rabbit</option>
+                    <option value="Bird">Bird</option>
+                    <option value="Other">Other</option>
+                </select>
+                <select id="statusFilter" class="filter-select">
+                    <option value="">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+                <button class="btn-search">
+                    <i class="bi bi-search"></i> Search
+                </button>
             </div>
         </div>
 
         <div class="patients-table">
             @if($patients->count() > 0)
-            @php $grouped = $patients->groupBy('owner_name'); @endphp
             <table>
                 <thead>
                     <tr>
-                        <th style="width:35%">Owner / Pet</th>
-                        <th style="width:15%">Details</th>
-                        <th style="width:18%">Last Visit</th>
-                        <th style="width:22%">Actions</th>
-                        <th style="width:10%"></th>
+                        <th style="width:20%">PET NAME</th>
+                        <th style="width:22%">OWNER / CONTACT</th>
+                        <th style="width:18%">SPECIES / BREED</th>
+                        <th style="width:18%">LAST VISIT</th>
+                        <th style="width:22%">ACTIONS</th>
                     </tr>
                 </thead>
                 <tbody>
+                    @php $grouped = $patients->groupBy('owner_name'); @endphp
                     @foreach($grouped as $ownerName => $ownerPets)
                     @php $ownerId = 'owner-' . $loop->index; @endphp
 
-                    {{-- Owner row --}}
-                    <tr class="owner-row" onclick="toggleOwner('{{ $ownerId }}', this)">
+                    {{-- Owner row - clickable to expand --}}
+                    <tr class="owner-row" onclick="toggleOwner('{{ $ownerId }}', this)" style="cursor: pointer;">
                         <td>
                             <div class="owner-name-cell">
                                 <div class="owner-avatar">{{ strtoupper(substr($ownerName ?: 'U', 0, 1)) }}</div>
-                                <span class="owner-label">{{ $ownerName ?: 'Unknown Owner' }}</span>
+                                <div style="font-weight: 700; color: #1e1b4b; font-size: 15px;">{{ $ownerName ?: 'Unknown Owner' }}</div>
                             </div>
+                        </td>
+                        <td>
+                            <div class="owner-row-contact">{{ $ownerPets->first()->owner_contact ?: 'No contact on file' }}</div>
                         </td>
                         <td>
                             <span class="pet-count-badge">
@@ -1167,59 +1247,60 @@
                                 {{ $ownerPets->count() }} {{ $ownerPets->count() === 1 ? 'pet' : 'pets' }}
                             </span>
                         </td>
-                        <td colspan="2">
-                            <span class="owner-contact">{{ $ownerPets->first()->owner_contact ?: 'No contact on file' }}</span>
+                        <td>
+                            <span class="owner-row-hint">Click to expand pets</span>
                         </td>
-                        <td class="chevron-cell">
+                        <td class="owner-row-chevron">
                             <i class="bi bi-chevron-down chevron" id="chevron-{{ $ownerId }}"></i>
                         </td>
                     </tr>
 
                     {{-- Pet rows (hidden by default) --}}
                     @foreach($ownerPets as $patient)
-                    <tr class="pet-row" data-owner="{{ $ownerId }}">
+                    <tr class="pet-row data-row" data-owner="{{ $ownerId }}">
                         <td>
                             <div class="pet-name-cell">
-                                <div class="pet-icon">🐾</div>
+                                <div class="pet-avatar">{{ strtoupper(substr($patient->pet_name ?? 'P', 0, 1)) }}</div>
                                 <div>
                                     <div class="pet-label">{{ $patient->pet_name }}</div>
-                                    <div class="pet-sub">{{ $patient->species }}{{ $patient->breed ? ' · ' . $patient->breed : '' }}</div>
+                                    <div class="pet-sub">ID: {{ $patient->id }}</div>
                                 </div>
                             </div>
                         </td>
                         <td>
-                            <span class="badge badge-{{ strtolower($patient->sex) }}">{{ $patient->sex }}</span>
-                            <span style="font-size:12px; color:#6b7280; margin-left:5px;">{{ $patient->age }} yrs</span>
+                            <div class="owner-info">
+                                <div class="owner-label">{{ $patient->owner_name ?: 'Unknown' }}</div>
+                                <div class="owner-sub">{{ $patient->owner_contact ?: 'No contact' }}</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="details-cell">
+                                <div class="detail-main">{{ $patient->species ?? 'Unknown' }}</div>
+                                <div class="detail-sub">{{ $patient->breed ?? 'No breed' }}</div>
+                            </div>
                         </td>
                         <td>
                             @if($patient->visits->first())
-                                <span class="visit-date">{{ $patient->visits->first()->visit_date->format('M d, Y') }}</span>
+                                <span class="visit-badge">{{ $patient->visits->first()->visit_date->format('M d, Y') }}</span>
                             @else
-                                <span class="no-visit">No visits yet</span>
+                                <span class="no-visit-badge">No visits yet</span>
                             @endif
                         </td>
                         <td>
                             <div class="actions">
-                                <a href="{{ route('pets.show', $patient) }}" class="btn btn-info btn-sm">View</a>
-                                <a href="{{ route('pets.edit', $patient) }}" class="btn btn-sm" style="background:#4f46e5;color:white;">Edit</a>
-                                <button onclick="event.stopPropagation(); openVisitModal({{ $patient->id }}, '{{ addslashes($patient->full_name) }}', {{ $patient->age }}, '{{ $patient->sex }}')" class="btn btn-success btn-sm">+ Visit</button>
+                                <a href="{{ route('pets.show', $patient) }}" class="action-btn" title="View Details">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="{{ route('pets.edit', $patient) }}" class="action-btn" title="Edit Pet">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <button onclick="event.stopPropagation(); openVisitModal({{ $patient->id }}, '{{ addslashes($patient->pet_name) }}', '{{ $patient->owner_name }}')" class="action-btn" title="Add Visit">
+                                    <i class="bi bi-plus"></i>
+                                </button>
                             </div>
                         </td>
-                        <td></td>
                     </tr>
                     @endforeach
-
-                    {{-- Add Pet row for this owner --}}
-                    <tr class="pet-row add-pet-row" data-owner="{{ $ownerId }}">
-                        <td colspan="5">
-                            <a href="{{ route('pets.create') }}" class="btn-add-pet" style="text-decoration: none; display: inline-flex;">
-                                <span class="add-pet-icon"><i class="bi bi-plus"></i></span>
-                                Add pet for <strong style="margin:0 2px;">{{ $ownerName ?: 'this owner' }}</strong>
-                                <span class="add-pet-hint">· new pet, same owner</span>
-                            </a>
-                        </td>
-                    </tr>
-
                     @endforeach
                 </tbody>
             </table>
@@ -1233,7 +1314,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                 </svg>
                 <h3>No pets found</h3>
-                <p>Start by registering a new pet</p>
+                <p>Start by registering a new pet or adjust your filters</p>
             </div>
             @endif
         </div>
@@ -1282,13 +1363,86 @@
     </div>
 
     <script>
-        // Owner-expand toggle
-        function toggleOwner(ownerId, row) {
+        function toggleOwner(ownerId) {
             const petRows = document.querySelectorAll(`.pet-row[data-owner="${ownerId}"]`);
-            const chevron = document.getElementById('chevron-' + ownerId);
-            const isOpen = chevron.classList.contains('open');
-            petRows.forEach(r => r.classList.toggle('visible', !isOpen));
-            chevron.classList.toggle('open', !isOpen);
+            const chevron = document.getElementById(`chevron-${ownerId}`);
+            const isOpen = chevron?.classList.contains('open');
+
+            petRows.forEach(row => {
+                row.classList.toggle('visible', !isOpen);
+            });
+
+            chevron?.classList.toggle('open', !isOpen);
+        }
+
+        // Add filter functionality
+        document.getElementById('speciesFilter')?.addEventListener('change', function() {
+            filterTable();
+        });
+
+        document.getElementById('statusFilter')?.addEventListener('change', function() {
+            filterTable();
+        });
+
+        document.querySelector('.btn-search')?.addEventListener('click', function() {
+            filterTable();
+        });
+
+        function filterTable() {
+            const searchTerm = document.getElementById('patientSearch').value.toLowerCase();
+            const speciesFilter = document.getElementById('speciesFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+            const ownerRows = document.querySelectorAll('.owner-row');
+
+            ownerRows.forEach(ownerRow => {
+                const ownerMatchText = ownerRow.textContent.toLowerCase();
+                const chevron = ownerRow.querySelector('.chevron');
+                const ownerId = chevron ? chevron.id.replace('chevron-', '') : null;
+                const petRows = ownerId ? document.querySelectorAll(`.pet-row[data-owner="${ownerId}"]`) : [];
+
+                let ownerHasVisiblePets = false;
+
+                petRows.forEach(row => {
+                    let show = true;
+
+                    const petName = row.querySelector('.pet-label')?.textContent.toLowerCase() ?? '';
+                    const ownerName = row.querySelector('.owner-label')?.textContent.toLowerCase() ?? '';
+                    const species = row.querySelector('.detail-main')?.textContent.trim() ?? '';
+                    const hasVisit = row.querySelector('.visit-badge') !== null;
+
+                    if (searchTerm) {
+                        show = petName.includes(searchTerm) || ownerName.includes(searchTerm) || ownerMatchText.includes(searchTerm);
+                    }
+
+                    if (show && speciesFilter) {
+                        show = species === speciesFilter;
+                    }
+
+                    if (show && statusFilter) {
+                        show = statusFilter === 'active' ? hasVisit : !hasVisit;
+                    }
+
+                    row.style.display = show ? '' : 'none';
+                    if (show) {
+                        ownerHasVisiblePets = true;
+                    }
+                });
+
+                ownerRow.style.display = ownerHasVisiblePets ? '' : 'none';
+
+                if (!searchTerm && !speciesFilter && !statusFilter) {
+                    petRows.forEach(row => row.style.display = '');
+                    petRows.forEach(row => row.classList.remove('visible'));
+                    chevron?.classList.remove('open');
+                } else if (ownerHasVisiblePets) {
+                    petRows.forEach(row => {
+                        if (row.style.display !== 'none') {
+                            row.classList.add('visible');
+                        }
+                    });
+                    chevron?.classList.add('open');
+                }
+            });
         }
 
         // Type-ahead search functionality
@@ -1296,7 +1450,7 @@
         const autocompleteResults = document.getElementById('autocompleteResults');
         let searchTimeout;
 
-        searchInput.addEventListener('input', function() {
+        searchInput?.addEventListener('input', function() {
             clearTimeout(searchTimeout);
             const term = this.value.trim();
 
@@ -1332,8 +1486,8 @@
 
         // Close autocomplete when clicking outside
         document.addEventListener('click', function(e) {
-            if (!searchInput.contains(e.target) && !autocompleteResults.contains(e.target)) {
-                autocompleteResults.classList.remove('show');
+            if (!searchInput?.contains(e.target) && !autocompleteResults?.contains(e.target)) {
+                autocompleteResults?.classList.remove('show');
             }
         });
 
@@ -1341,7 +1495,6 @@
             const referrer = document.referrer;
             const currentDomain = window.location.origin;
             
-            // Check if we have a referrer from the same domain and it's not the current page
             if (referrer && referrer.startsWith(currentDomain) && referrer !== window.location.href) {
                 window.history.back();
             } else {
@@ -1350,25 +1503,24 @@
         }
 
         // Visit Modal Functions
-        function openVisitModal(patientId, patientName, age, sex) {
+        function openVisitModal(petId, petName, ownerName) {
             document.getElementById('visitModal').classList.add('active');
-            document.getElementById('modalPatientName').textContent = patientName;
-            document.getElementById('modalPatientAge').textContent = age;
-            document.getElementById('modalPatientSex').textContent = sex;
-            document.getElementById('visitPatientId').value = patientId;
+            document.getElementById('modalPatientName').textContent = petName;
+            document.getElementById('modalOwnerName').textContent = ownerName;
+            document.getElementById('visitPatientId').value = petId;
             updateServiceSection();
         }
 
         function closeVisitModal() {
             document.getElementById('visitModal').classList.remove('active');
             document.getElementById('visitForm').reset();
-            updateServiceSection(); // Reset service section visibility
+            updateServiceSection();
         }
 
         // Auto-calculate BMI
         function calculateBMI() {
             const weight = parseFloat(document.getElementById('modalWeight').value);
-            const height = parseFloat(document.getElementById('modalHeight').value) / 100; // convert cm to m
+            const height = parseFloat(document.getElementById('modalHeight').value) / 100;
             
             if (weight > 0 && height > 0) {
                 const bmi = (weight / (height * height)).toFixed(1);
@@ -1378,13 +1530,12 @@
             }
         }
 
-        // Handle service type changes to show/hide relevant sections
+        // Handle service type changes
         function updateServiceSection() {
             const serviceTypeSelect = document.getElementById('modalServiceType');
             const breedingSection = document.getElementById('modalBreedingSection');            
             const referralSection = document.getElementById('modalReferralSection');
             
-            // Get all field elements
             const referredTo = document.getElementById('modalReferredTo');
             const referralReason = document.getElementById('modalReferralReason');
             
@@ -1394,8 +1545,7 @@
             }
             
             const serviceType = serviceTypeSelect.value;
-            console.log('Service type changed to:', serviceType);
-            
+
             const groomingServices = [
                 'Bath & Dry', 'Full Grooming', 'Haircut & Styling', 'Nail Trimming',
                 'Ear Cleaning', 'Teeth Brushing', 'De-shedding Treatment',
@@ -1403,7 +1553,6 @@
             ];
             const groomingSection = document.getElementById('modalGroomingSection');
 
-            // Hide all sections
             [groomingSection, breedingSection, referralSection].forEach(function(section) {
                 if (section) section.style.display = 'none';
             });
@@ -1412,238 +1561,19 @@
                 if (field) field.removeAttribute('required');
             });
 
-            // Show relevant section
             if (groomingServices.includes(serviceType) && groomingSection) {
                 groomingSection.style.display = 'block';
-            } else if (serviceType === 'Breeding Consultation' && breedingSection) {
-                breedingSection.style.display = 'block';
             } else if (serviceType === 'Follow-up' && referralSection) {
                 referralSection.style.display = 'block';
                 if (referredTo) referredTo.setAttribute('required', 'required');
                 if (referralReason) referralReason.setAttribute('required', 'required');
             }
         }
-        
-        // No need for DOMContentLoaded since we're using inline onchange
 
         // Close modal when clicking outside
         document.getElementById('visitModal')?.addEventListener('click', function(e) {
             if (e.target === this) {
                 closeVisitModal();
-            }
-        });
-        
-        // Quick View Modal Functions
-        function showPatientQuickModal(patient) {
-            document.getElementById('quickPatientName').textContent = patient.name;
-            document.getElementById('quickPatientAge').textContent = `${patient.age} years old`;
-            document.getElementById('quickPatientSex').textContent = patient.sex;
-            document.getElementById('quickPatientContact').textContent = patient.contact || 'Not provided';
-            document.getElementById('quickPatientAddress').textContent = patient.address || 'Not provided';
-            document.getElementById('quickViewFullBtn').href = `/pets/${patient.id}`;
-            document.getElementById('quickAddVisitBtn').href = `/visits/create?patient_id=${patient.id}`;
-            document.getElementById('patientQuickModal').classList.add('active');
-            autocompleteResults.classList.remove('show');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closePatientQuickModal() {
-            document.getElementById('patientQuickModal').classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        document.getElementById('patientQuickModal')?.addEventListener('click', function(e) {
-            if (e.target === this) closePatientQuickModal();
-        });
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') closePatientQuickModal();
-        });
-
-        // Registration Modal Functions
-        function openRegistrationModal(ownerName = '', ownerContact = '', ownerAddress = '') {
-            // Disabled - use the dedicated create page instead
-            // Redirect to pets create page
-            window.location.href = '{{ route('pets.create') }}';
-            return false;
-        }
-
-        function closeRegistrationModal() {
-            document.getElementById('registrationModal').classList.remove('active');
-            document.getElementById('registrationForm').reset();
-            document.getElementById('registrationAlert').style.display = 'none';
-
-            const existingOwnerField = document.getElementById('regExistingOwner');
-            const ownerNotice = document.getElementById('existingOwnerNotice');
-            const ownerInfoSection = document.getElementById('ownerInfoSection');
-            const ownerNameField = document.getElementById('regOwnerName');
-            const ownerContactField = document.getElementById('regOwnerContact');
-            const ownerAddressField = document.getElementById('regAddress');
-
-            if (existingOwnerField) existingOwnerField.value = '0';
-            if (ownerNotice) ownerNotice.style.display = 'none';
-            if (ownerInfoSection) ownerInfoSection.style.display = 'block';
-
-            if (ownerNameField) {
-                ownerNameField.readOnly = false;
-                ownerNameField.required = true;
-                ownerNameField.style.background = '';
-            }
-            if (ownerContactField) {
-                ownerContactField.readOnly = false;
-                ownerContactField.style.background = '';
-            }
-            if (ownerAddressField) {
-                ownerAddressField.readOnly = false;
-                ownerAddressField.required = true;
-                ownerAddressField.style.background = '';
-            }
-        }
-
-        // Handle registration form submission via AJAX
-        document.getElementById('registrationForm')?.addEventListener('submit', function(e) {
-            e.preventDefault();
-            // Disabled - redirect to dedicated create page instead
-            window.location.href = '{{ route('pets.create') }}';
-        });
-
-        // Close registration modal when clicking outside
-        document.getElementById('registrationModal')?.addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeRegistrationModal();
-            }
-        });
-        
-        // Import Modal Functions
-        function openImportModal() {
-            document.getElementById('importModal').classList.add('active');
-        }
-
-        function closeImportModal() {
-            document.getElementById('importModal').classList.remove('active');
-            document.getElementById('importForm').reset();
-            document.getElementById('importFileInfo').classList.remove('show');
-            document.getElementById('importBtn').disabled = true;
-            document.getElementById('importAlert').style.display = 'none';
-        }
-
-        // File upload handling
-        const importFileInput = document.getElementById('importFileInput');
-        const uploadArea = document.getElementById('uploadArea');
-        const fileInfo = document.getElementById('importFileInfo');
-        const fileName = document.getElementById('importFileName');
-        const importBtn = document.getElementById('importBtn');
-
-        importFileInput?.addEventListener('change', function(e) {
-            if (this.files.length > 0) {
-                fileName.textContent = this.files[0].name;
-                fileInfo.classList.add('show');
-                importBtn.disabled = false;
-            }
-        });
-
-        // Drag and drop
-        uploadArea?.addEventListener('click', function() {
-            importFileInput.click();
-        });
-
-        uploadArea?.addEventListener('dragover', function(e) {
-            e.preventDefault();
-            this.classList.add('dragover');
-        });
-
-        uploadArea?.addEventListener('dragleave', function() {
-            this.classList.remove('dragover');
-        });
-
-        uploadArea?.addEventListener('drop', function(e) {
-            e.preventDefault();
-            this.classList.remove('dragover');
-            
-            if (e.dataTransfer.files.length > 0) {
-                importFileInput.files = e.dataTransfer.files;
-                fileName.textContent = e.dataTransfer.files[0].name;
-                fileInfo.classList.add('show');
-                importBtn.disabled = false;
-            }
-        });
-
-        // Handle import form submission
-        document.getElementById('importForm')?.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const submitBtn = importBtn;
-            const alertDiv = document.getElementById('importAlert');
-            
-            // Disable submit button
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Importing...';
-            
-            fetch('{{ route("pets.import") }}', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    'Accept': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Show success message
-                    alertDiv.className = 'alert-modal success';
-                    let message = data.message;
-                    if (data.errors && data.errors.length > 0) {
-                        message += '<br><br><strong>Some rows failed:</strong><ul style="margin-top: 8px; margin-left: 20px;">';
-                        data.errors.forEach(err => {
-                            message += `<li>${err}</li>`;
-                        });
-                        message += '</ul>';
-                    }
-                    alertDiv.innerHTML = message;
-                    alertDiv.style.display = 'block';
-                    
-                    // Reset form
-                    this.reset();
-                    fileInfo.classList.remove('show');
-                    
-                    // Reload page after 2 seconds
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 2000);
-                } else {
-                    // Show error message
-                    alertDiv.className = 'alert-modal error';
-                    if (data.errors) {
-                        const errorList = Object.values(data.errors).flat().map(err => `<li>${err}</li>`).join('');
-                        alertDiv.innerHTML = '<strong>Please fix the following errors:</strong><ul style="margin-top: 8px; margin-left: 20px;">' + errorList + '</ul>';
-                    } else {
-                        alertDiv.textContent = data.message || 'Import failed. Please check your file and try again.';
-                    }
-                    alertDiv.style.display = 'block';
-                    
-                    // Re-enable submit button
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Import Pets';
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alertDiv.className = 'alert-modal error';
-                alertDiv.textContent = 'An error occurred during import. Please try again.';
-                alertDiv.style.display = 'block';
-                
-                // Re-enable submit button
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Import Pets';
-            });
-        });
-
-        // Close import modal when clicking outside
-        document.getElementById('importModal')?.addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeImportModal();
             }
         });
     </script>
@@ -1687,7 +1617,6 @@
                                     <option value="Paw Treatment">Paw Treatment</option>
                                 </optgroup>
                                 <optgroup label="Other Services">
-                                    <option value="Breeding Consultation">Breeding Consultation</option>
                                     <option value="Boarding Checkup">Boarding Checkup</option>
                                     <option value="Follow-up">Follow-up</option>
                                     <option value="Other">Other</option>
@@ -1753,45 +1682,6 @@
                             <div class="modal-form-group">
                                 <label>Grooming Notes</label>
                                 <textarea name="grooming_notes" placeholder="Special instructions, coat issues, client requests..."></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Breeding Consultation Section -->
-                    <div id="modalBreedingSection" class="modal-service-section" style="display: none;">
-                        <div class="modal-section-title" style="background: #fce7f3; color: #9f1239; padding: 12px; border-radius: 6px; margin-bottom: 16px;">
-                            <i class="bi bi-heart-pulse-fill"></i> Breeding Consultation Details
-                        </div>
-                        <div class="modal-form-row">
-                            <div class="modal-form-group">
-                                <label>Breeding Date</label>
-                                <input type="date" name="breeding_date" max="{{ date('Y-m-d') }}">
-                            </div>
-                            <div class="modal-form-group">
-                                <label>Breeding Status</label>
-                                <select name="breeding_status">
-                                    <option value="Planned">Planned</option>
-                                    <option value="Bred">Bred</option>
-                                    <option value="Confirmed Pregnant">Confirmed Pregnant</option>
-                                    <option value="Not Pregnant">Not Pregnant</option>
-                                    <option value="Delivered">Delivered</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="modal-form-row">
-                            <div class="modal-form-group">
-                                <label>Sire (Male Parent)</label>
-                                <input type="text" name="sire" placeholder="e.g., Max (Golden Retriever)">
-                            </div>
-                            <div class="modal-form-group">
-                                <label>Dam (Female Parent)</label>
-                                <input type="text" name="dam" placeholder="Usually the patient">
-                            </div>
-                        </div>
-                        <div class="modal-form-row full">
-                            <div class="modal-form-group">
-                                <label>Breeding Notes/Concerns</label>
-                                <textarea name="breeding_notes" placeholder="Any complications, concerns, or special notes..."></textarea>
                             </div>
                         </div>
                     </div>
@@ -1975,122 +1865,5 @@
         </div>
     </div>
     
-    <!-- Registration Modal -->
-    <div id="registrationModal" class="registration-modal">
-        <div class="registration-modal-content">
-            <div class="registration-modal-header">
-                <h2><i class="bi bi-plus-circle" style="margin-right: 8px;"></i>New Pet Record</h2>
-                <button class="modal-close" onclick="closeRegistrationModal()" style="background: none; border: none; font-size: 28px; color: white; cursor: pointer; padding: 0; line-height: 1; opacity: 0.9;">×</button>
-            </div>
-            <div class="registration-modal-body">
-                <div id="registrationAlert" class="alert-modal" style="display: none;"></div>
-                
-                <p style="color: #6b7280; margin-bottom: 20px; font-size: 14px;">Fill in essential patient information.</p>
-
-                <form id="registrationForm">
-                    @csrf
-                    <input type="hidden" id="regExistingOwner" name="existing_owner" value="0">
-
-                    <!-- Pet Information -->
-                    <div class="modal-section-title">Pet Information</div>
-
-                    <div class="modal-form-row">
-                        <div class="modal-form-group">
-                            <label>Pet Name <span class="required">*</span></label>
-                            <input type="text" name="pet_name" required placeholder="e.g. Buddy">
-                        </div>
-                        <div class="modal-form-group">
-                            <label>Species <span class="required">*</span></label>
-                            <select name="species" required>
-                                <option value="">Select species</option>
-                                <option value="Dog">Dog</option>
-                                <option value="Cat">Cat</option>
-                                <option value="Rabbit">Rabbit</option>
-                                <option value="Bird">Bird</option>
-                                <option value="Hamster">Hamster</option>
-                                <option value="Guinea Pig">Guinea Pig</option>
-                                <option value="Fish">Fish</option>
-                                <option value="Reptile">Reptile</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="modal-form-row">
-                        <div class="modal-form-group">
-                            <label>Breed</label>
-                            <input type="text" name="breed" placeholder="e.g. Labrador">
-                        </div>
-                        <div class="modal-form-group">
-                            <label>Color / Markings</label>
-                            <input type="text" name="color" placeholder="e.g. Golden, white paws">
-                        </div>
-                    </div>
-
-                    <div class="modal-form-row">
-                        <div class="modal-form-group">
-                            <label>Date of Birth <span class="required">*</span></label>
-                            <input type="date" name="birthdate" required max="{{ date('Y-m-d') }}">
-                        </div>
-                        <div class="modal-form-group">
-                            <label>Sex <span class="required">*</span></label>
-                            <select name="sex" required>
-                                <option value="">Select</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Neutered Male">Neutered Male</option>
-                                <option value="Spayed Female">Spayed Female</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Owner Information -->
-                    <div id="existingOwnerNotice" class="alert-modal success" style="display:none; margin-bottom: 12px;">
-                        Using existing owner information. No need to re-enter owner details.
-                    </div>
-                    <div id="ownerInfoSection">
-                    <div class="modal-section-title" style="margin-top:16px;">Owner Information</div>
-
-                    <div class="modal-form-row">
-                        <div class="modal-form-group">
-                            <label>Owner Name <span class="required">*</span></label>
-                            <input type="text" id="regOwnerName" name="owner_name" required placeholder="Full name of owner">
-                        </div>
-                        <div class="modal-form-group">
-                            <label>Contact Number</label>
-                            <input type="tel" id="regOwnerContact" name="owner_contact" placeholder="09XX-XXX-XXXX">
-                        </div>
-                    </div>
-
-                    <div class="modal-form-row full">
-                        <div class="modal-form-group">
-                            <label>Address <span class="required">*</span></label>
-                            <textarea id="regAddress" name="address" required placeholder="House No., Street, Barangay, City"></textarea>
-                        </div>
-                    </div>
-                    </div>
-
-                    <!-- Optional -->
-                    <div class="modal-section-title" style="margin-top:16px;">Emergency Contact <span style="font-weight:400;color:#9ca3af;">(Optional)</span></div>
-                    <div class="modal-form-row">
-                        <div class="modal-form-group">
-                            <label>Emergency Contact Name</label>
-                            <input type="text" name="emergency_contact_name">
-                        </div>
-                        <div class="modal-form-group">
-                            <label>Emergency Contact Number</label>
-                            <input type="tel" name="emergency_contact_number">
-                        </div>
-                    </div>
-
-                    <!-- Actions -->
-                    <div class="registration-modal-actions">
-                        <button type="button" class="btn-modal-cancel" onclick="closeRegistrationModal()">Cancel</button>
-                        <button type="submit" class="btn-modal-submit">Register Pet</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 </body>
 </html>

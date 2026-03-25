@@ -65,33 +65,48 @@
             letter-spacing: -0.02em;
         }
         .patient-info {
-            background: #f0fdf4;
-            padding: 16px;
-            border-radius: 6px;
-            margin-bottom: 24px;
-            border-left: 4px solid #047857;
+            background: linear-gradient(135deg, #ecfdf5 0%, #dbeafe 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 28px;
+            border: 2px solid #a7f3d0;
+            border-left: 5px solid #047857;
+            box-shadow: 0 2px 8px rgba(4, 120, 87, 0.1);
         }
         .patient-info h3 {
-            color: #047857;
-            margin-bottom: 8px;
+            color: #064e3b;
+            margin-bottom: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
         }
         .patient-details {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 12px;
+            gap: 16px;
             font-size: 14px;
             color: #374151;
         }
+        .patient-details div {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .patient-details strong {
+            color: #064e3b;
+            font-weight: 700;
+        }
         .section-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #374151;
-            margin: 24px 0 16px;
-            padding-bottom: 8px;
+            font-size: 18px;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 28px 0 20px;
+            padding-bottom: 12px;
             border-bottom: 2px solid #e5e7eb;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            letter-spacing: -0.01em;
         }
         .form-row {
             display: grid;
@@ -116,16 +131,22 @@
             color: #dc2626;
         }
         input, select, textarea {
-            padding: 10px 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
+            padding: 12px 14px;
+            border: 1.5px solid #d1d5db;
+            border-radius: 10px;
             font-size: 14px;
             font-family: inherit;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            background: white;
+            color: #374151;
         }
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: #047857;
-            box-shadow: 0 0 0 3px rgba(4,120,87,0.1);
+            box-shadow: 0 0 0 3px rgba(4, 120, 87, 0.1), inset 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+        input::placeholder, textarea::placeholder {
+            color: #9ca3af;
         }
         textarea {
             min-height: 80px;
@@ -148,28 +169,36 @@
             gap: 16px;
         }
         .btn {
-            padding: 12px 24px;
+            padding: 12px 28px;
             border: none;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 600;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
             cursor: pointer;
             text-decoration: none;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .btn-primary {
-            background: #047857;
+            background: linear-gradient(135deg, #047857 0%, #065f46 100%);
             color: white;
+            box-shadow: 0 4px 12px rgba(4, 120, 87, 0.3);
         }
         .btn-primary:hover {
-            background: #059669;
+            background: linear-gradient(135deg, #065f46 0%, #064e3b 100%);
+            box-shadow: 0 8px 20px rgba(4, 120, 87, 0.4);
+            transform: translateY(-2px);
         }
         .btn-secondary {
-            background: #e5e7eb;
+            background: #f3f4f6;
             color: #374151;
+            border: 1px solid #d1d5db;
         }
         .btn-secondary:hover {
-            background: #d1d5db;
+            background: #e5e7eb;
+            border-color: #9ca3af;
         }
         .btn-copy {
             background: #3b82f6;
@@ -289,7 +318,6 @@
                             <option value="Paw Treatment">Paw Treatment</option>
                         </optgroup>
                         <optgroup label="Other Services">
-                            <option value="Breeding Consultation">Breeding Consultation</option>
                             <option value="Boarding Checkup">Boarding Checkup</option>
                             <option value="Follow-up">Follow-up</option>
                             <option value="Other">Other</option>
@@ -355,59 +383,6 @@
                     <div class="form-group">
                         <label>Grooming Notes</label>
                         <textarea name="grooming_notes" placeholder="Special instructions, coat issues, client requests..."></textarea>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Breeding Consultation Section -->
-            <div id="breedingSection" class="service-section">
-                <h3><i class="bi bi-heart-pulse-fill"></i> Breeding Consultation Details</h3>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Breeding Date</label>
-                        <input type="date" name="breeding_date" max="{{ date('Y-m-d') }}">
-                    </div>
-                    <div class="form-group">
-                        <label>Breeding Status <span class="required">*</span></label>
-                        <select name="breeding_status">
-                            <option value="Planned">Planned</option>
-                            <option value="Bred">Bred</option>
-                            <option value="Confirmed Pregnant">Confirmed Pregnant</option>
-                            <option value="Not Pregnant">Not Pregnant</option>
-                            <option value="Delivered">Delivered</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Sire (Male Parent)</label>
-                        <input type="text" name="sire" placeholder="e.g., Max (Golden Retriever)">
-                    </div>
-                    <div class="form-group">
-                        <label>Dam (Female Parent)</label>
-                        <input type="text" name="dam" placeholder="Usually the patient">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Heat Cycle Date</label>
-                        <input type="date" name="heat_cycle_date" max="{{ date('Y-m-d') }}">
-                    </div>
-                    <div class="form-group">
-                        <label>Pregnancy Confirmed Date</label>
-                        <input type="date" name="pregnancy_confirmed_date" max="{{ date('Y-m-d') }}">
-                    </div>
-                </div>
-                <div class="form-row full">
-                    <div class="form-group">
-                        <label>Breeding Notes/Concerns</label>
-                        <textarea name="breeding_notes" placeholder="Any complications, concerns, or special notes about the breeding..."></textarea>
-                    </div>
-                </div>
-                <div class="form-row full">
-                    <div class="form-group">
-                        <label>Risk Factors</label>
-                        <textarea name="risk_factors" placeholder="Any known complications or risk factors..."></textarea>
                     </div>
                 </div>
             </div>
@@ -509,7 +484,6 @@
         // Service type handler - show/hide specific sections
         const serviceTypeSelect = document.getElementById('serviceType');
         const groomingSection = document.getElementById('groomingSection');
-        const breedingSection = document.getElementById('breedingSection');
         const referralSection = document.getElementById('referralSection');
 
         const groomingServices = [
@@ -522,13 +496,11 @@
             const selectedService = serviceTypeSelect.value;
             
             // Hide all sections first
-            [groomingSection, breedingSection, referralSection].forEach(s => { if(s) s.classList.remove('active'); });
+            [groomingSection, referralSection].forEach(s => { if(s) s.classList.remove('active'); });
             
             // Show relevant section
             if (groomingServices.includes(selectedService)) {
                 if (groomingSection) groomingSection.classList.add('active');
-            } else if (selectedService === 'Breeding Consultation') {
-                if (breedingSection) breedingSection.classList.add('active');
             } else if (selectedService === 'Follow-up') {
                 if (referralSection) referralSection.classList.add('active');
             }

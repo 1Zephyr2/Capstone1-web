@@ -14,23 +14,192 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f7fa;
+            background: #f8fafc;
             display: flex;
+            flex-direction: column;
             min-height: 100vh;
         }
 
-        /* Sidebar */
-        .sidebar {
-            width: 260px;
+        /* Top Navigation Bar */
+        .navbar {
             background: #1e293b;
             color: white;
-            padding: 24px 0 0 0;
-            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 2px 0 8px rgba(0, 0, 0, 0.06);
-            position: fixed;
-            height: 100vh;
-            overflow-y: auto;
+            padding: 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            height: 72px;
+        }
+
+        .navbar-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0 24px;
+            gap: 24px;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: inherit;
+            transition: opacity 0.2s;
+            flex-shrink: 0;
+        }
+
+        .navbar-brand:hover {
+            opacity: 0.8;
+        }
+
+        .navbar-logo {
+            height: 40px;
+            width: 40px;
+            object-fit: contain;
+        }
+
+        .navbar-brand-text {
             display: flex;
             flex-direction: column;
+            gap: 2px;
+        }
+
+        .navbar-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .navbar-subtitle {
+            font-size: 11px;
+            opacity: 0.8;
+            margin: 0;
+        }
+
+        .navbar-menu {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .navbar-item {
+            padding: 8px 14px;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 13px;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .navbar-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .navbar-item.active {
+            background: rgba(20, 184, 166, 0.15);
+            color: #14b8a6;
+        }
+
+        .navbar-end {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-shrink: 0;
+        }
+
+        .navbar-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            overflow: hidden;
+        }
+
+        .navbar-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .navbar-user-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .navbar-user-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .navbar-user-role {
+            font-size: 11px;
+            opacity: 0.7;
+        }
+
+        .navbar-profile-btn {
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .navbar-profile-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .navbar-logout-btn {
+            padding: 6px 12px;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .navbar-logout-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        /* Sidebar - Hidden */
+        .sidebar {
+            display: none;
         }
 
         .sidebar-header {
@@ -233,17 +402,15 @@
 
         /* Main Content */
         .main-content {
-            margin-left: 260px;
             flex: 1;
             display: flex;
             flex-direction: column;
+            background: #f8fafc;
         }
 
-        /* Sidebar Activities */
+        /* Sidebar Activities - Hidden */
         .sidebar-activities {
-            padding: 16px;
-            margin-top: 16px;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            display: none;
         }
 
         .activities-header {
@@ -412,8 +579,69 @@
 
         /* Dashboard Content */
         .dashboard-content {
-            padding: 32px;
+            padding: 40px;
             flex: 1;
+        }
+
+        .top-nav {
+            display: none;
+        }
+
+        .top-nav-left h1 {
+            display: none;
+        }
+
+        .top-nav-left p {
+            display: none;
+        }
+
+        .top-nav-right {
+            display: none;
+        }
+
+        .user-info {
+            display: none;
+        }
+
+        @media (max-width: 1200px) {
+            .navbar-subtitle {
+                display: none;
+            }
+
+            .navbar-menu {
+                gap: 4px;
+            }
+
+            .navbar-item {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar-container {
+                padding: 0 16px;
+            }
+
+            .navbar-menu {
+                display: none;
+            }
+
+            .navbar-user-text {
+                display: none;
+            }
+
+            .navbar-profile-btn {
+                padding: 6px;
+            }
+
+            .navbar-logout-btn {
+                padding: 6px;
+            }
+
+            .dashboard-content {
+                padding: 20px;
+            }
         }
 
         /* Quick Actions - Modern & Clean */
@@ -683,7 +911,7 @@
         }
         
         .calendar-btn {
-            background: #14b8a6;
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
             color: white;
             border: none;
             padding: 8px 14px;
@@ -695,14 +923,14 @@
             align-items: center;
             gap: 6px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 1px 3px rgba(20, 184, 166, 0.3);
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
             flex-shrink: 0;
         }
         
         .calendar-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 2px 6px rgba(20, 184, 166, 0.4);
-            background: #0d9488;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(20, 184, 166, 0.4);
+            background: linear-gradient(135deg, #0d9488 0%, #06b6d4 100%);
         }
         
         .calendar-date {
@@ -724,7 +952,7 @@
         .mini-calendar {
             background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
             border-radius: 12px;
-            padding: 16px;
+            padding: 12px;
             margin-bottom: 12px;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
             border: 1px solid rgba(0, 0, 0, 0.06);
@@ -734,11 +962,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
         
         .mini-calendar-month {
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 700;
             color: #111827;
             letter-spacing: -0.01em;
@@ -750,9 +978,9 @@
             color: #6b7280;
             cursor: pointer;
             padding: 6px 10px;
-            border-radius: 8px;
+            border-radius: 6px;
             transition: all 0.2s ease;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 600;
         }
         
@@ -774,26 +1002,27 @@
             font-size: 10px;
             font-weight: 700;
             color: #9ca3af;
-            padding: 6px 0;
+            padding: 3px 0;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
         
         .mini-calendar-day {
-            aspect-ratio: 1;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 12px;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             color: #374151;
             padding: 0;
-            border: 1px solid transparent;
+            border: 1px solid #f0f0f0;
             background: white;
             font-weight: 500;
-        }
+            height: 28px;
+            min-width: 28px;
+        }}
         
         .mini-calendar-day:hover {
             background: #f3f4f6;
@@ -1506,6 +1735,52 @@
             line-height: 1.6;
         }
 
+        /* Error Message Styles */
+        .form-error-message {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border: 1px solid #fca5a5;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin: 16px;
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            box-shadow: 0 2px 8px rgba(220, 38, 38, 0.1);
+        }
+
+        .form-error-message::before {
+            content: '⚠';
+            color: #dc2626;
+            font-size: 20px;
+            flex-shrink: 0;
+            line-height: 1.2;
+        }
+
+        #newPatientErrorText {
+            color: #7f1d1d;
+            font-size: 14px;
+            line-height: 1.5;
+            flex: 1;
+        }
+
+        .form-error-close {
+            background: none;
+            border: none;
+            color: #dc2626;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+            flex-shrink: 0;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .form-error-close:hover {
+            opacity: 1;
+        }
+
         /* Calendar Styles */
         .calendar-container {
             padding: 20px;
@@ -2185,85 +2460,74 @@
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <a href="{{ route('dashboard') }}" class="logo-container">
-                <img src="{{ asset('newlogo.png') }}" alt="PAWser" class="sidebar-logo">
-            </a>
-            <div class="sidebar-brand">
-                <div class="sidebar-title">PAWser</div>
-                <div class="sidebar-subtitle">Pet Appointment &amp; Workflow Service</div>
-            </div>
-        </div>
-
-        <nav class="sidebar-menu">
-            <div class="menu-section">
-                <div class="menu-label">Main</div>
-                <a href="{{ route('dashboard') }}" class="menu-item active">
-                    <span class="menu-icon"><i class="bi bi-speedometer2"></i></span>
-                    <span class="menu-text">Dashboard</span>
-                </a>
-            </div>
-
-            <div class="menu-section">
-                <div class="menu-label">Pet Management</div>
-                <a href="{{ route('pets.index') }}" class="menu-item">
-                    <span class="menu-icon"><i class="bi bi-heart-fill"></i></span>
-                    <span class="menu-text">Pet List</span>
-                </a>
-                <a href="{{ route('appointments.index') }}" class="menu-item">
-                    <span class="menu-icon"><i class="bi bi-calendar-check"></i></span>
-                    <span class="menu-text">Manage Appointments</span>
-                </a>
-                <a href="{{ route('visits.today') }}" class="menu-item">
-                    <span class="menu-icon"><i class="bi bi-clock-history"></i></span>
-                    <span class="menu-text">Visit History</span>
-                </a>
-            </div>
-
-            @if(Auth::user()->hasStaffAccess())
-            <div class="menu-section">
-                <div class="menu-label">Reports & Tools</div>
-                <a href="{{ route('analytics.index') }}" class="menu-item">
-                    <span class="menu-icon"><i class="bi bi-graph-up-arrow"></i></span>
-                    <span class="menu-text">Insight Center</span>
-                </a>
-                <a href="{{ route('automation.support') }}" class="menu-item">
-                    <span class="menu-icon"><i class="bi bi-cpu"></i></span>
-                    <span class="menu-text">Action Hub</span>
-                </a>
-            </div>
-            @endif
-        </nav>
-
-        <div class="user-section">
-            <div class="user-info-sidebar">
-                @if(Auth::user()->profile_picture)
-                    <div class="user-avatar-sidebar">
-                        <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="{{ Auth::user()->name }}">
-                    </div>
-                @else
-                    <div class="user-avatar-sidebar">
-                        <i class="bi bi-person-fill" style="font-size: 24px;"></i>
-                    </div>
-                @endif
-                <div class="user-details-sidebar">
-                    <div class="user-name-sidebar">{{ Auth::user()->name }}</div>
-                    <div class="user-role-sidebar">{{ Auth::user()->role_name }}</div>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="{{ route('dashboard') }}" class="navbar-brand">
+                <img src="{{ asset('newlogo.png') }}" alt="PAWser" class="navbar-logo">
+                <div class="navbar-brand-text">
+                    <div class="navbar-title">PAWser</div>
+                    <div class="navbar-subtitle">Staff Dashboard</div>
                 </div>
-            </div>
-            <a href="{{ route('profile.show') }}" class="logout-btn-sidebar" style="text-decoration: none; margin-bottom: 8px;">
-                <i class="bi bi-person-circle"></i> My Profile
             </a>
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit" class="logout-btn-sidebar">
-                    <i class="bi bi-box-arrow-right"></i> Logout
-                </button>
-            </form>
+
+            <div class="navbar-menu">
+                <a href="{{ route('dashboard') }}" class="navbar-item active">
+                    <i class="bi bi-speedometer2"></i>
+                    Dashboard
+                </a>
+                <a href="{{ route('pets.index') }}" class="navbar-item">
+                    <i class="bi bi-heart-fill"></i>
+                    Pets
+                </a>
+                <a href="{{ route('appointments.index') }}" class="navbar-item">
+                    <i class="bi bi-calendar-check"></i>
+                    Appointments
+                </a>
+                <a href="{{ route('visits.today') }}" class="navbar-item">
+                    <i class="bi bi-clock-history"></i>
+                    Visits
+                </a>
+                @if(Auth::user()->hasStaffAccess())
+                <a href="{{ route('analytics.index') }}" class="navbar-item">
+                    <i class="bi bi-graph-up-arrow"></i>
+                    Insights
+                </a>
+                <a href="{{ route('automation.support') }}" class="navbar-item">
+                    <i class="bi bi-cpu"></i>
+                    Actions
+                </a>
+                @endif
+            </div>
+
+            <div class="navbar-end">
+                <div class="navbar-user">
+                    @if(Auth::user()->profile_picture)
+                        <div class="navbar-avatar">
+                            <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="{{ Auth::user()->name }}">
+                        </div>
+                    @else
+                        <div class="navbar-avatar">
+                            <i class="bi bi-person-fill" style="font-size: 18px;"></i>
+                        </div>
+                    @endif
+                    <div class="navbar-user-text">
+                        <div class="navbar-user-name">{{ Auth::user()->name }}</div>
+                        <div class="navbar-user-role">{{ Auth::user()->role_name }}</div>
+                    </div>
+                </div>
+                <a href="{{ route('profile.show') }}" class="navbar-profile-btn" title="My Profile">
+                    <i class="bi bi-person-circle"></i>
+                </a>
+                <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                    @csrf
+                    <button type="submit" class="navbar-logout-btn" title="Logout">
+                        <i class="bi bi-box-arrow-right"></i>
+                    </button>
+                </form>
+            </div>
         </div>
-    </aside>
+    </nav>
 
     <!-- Main Content -->
     <div class="main-content" id="mainContent">
@@ -2418,6 +2682,11 @@
                 <button class="ai-modal-close" onclick="closeModal('newPatient')">x</button>
             </div>
             <div class="ai-modal-body" style="padding: 0;">
+                <!-- Error Message Container -->
+                <div id="newPatientErrorMessage" class="form-error-message" style="display: none; margin: 0; border-radius: 0; margin-bottom: 0;">
+                    <button type="button" class="form-error-close" onclick="document.getElementById('newPatientErrorMessage').style.display = 'none';">&times;</button>
+                    <div id="newPatientErrorText"></div>
+                </div>
                 <div class="calendar-container">
                     <div class="appointment-form" style="margin-top: 0;">
                         <h4>Pet Information</h4>
@@ -2429,17 +2698,12 @@
                             </div>
                             
                             <div class="form-group">
-                                <label for="patientFirstName">Species <span style="color: #dc2626;">*</span></label>
-                                <select id="patientFirstName" required>
+                                <label for="patientSpeciesId">Species <span style="color: #dc2626;">*</span></label>
+                                <select id="patientSpeciesId" required>
                                     <option value="">Select species</option>
-                                    <option value="Dog">Dog</option>
-                                    <option value="Cat">Cat</option>
-                                    <option value="Bird">Bird</option>
-                                    <option value="Rabbit">Rabbit</option>
-                                    <option value="Hamster">Hamster</option>
-                                    <option value="Guinea Pig">Guinea Pig</option>
-                                    <option value="Reptile">Reptile</option>
-                                    <option value="Other">Other</option>
+                                    @foreach($species as $sp)
+                                        <option value="{{ $sp->id }}">{{ $sp->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -2493,29 +2757,21 @@
                             </div>
                             
                             <div class="form-group">
-                                <label for="patientSecondaryPhone">Microchip Number</label>
-                                <input type="text" id="patientSecondaryPhone" placeholder="Enter microchip number">
+                                <label for="patientEmail">Owner Email Address</label>
+                                <input type="email" id="patientEmail" placeholder="email@example.com">
                             </div>
                         </div>
                         
-                        <div class="form-group">
-                            <label for="patientEmergencyContact">Emergency Contact Name</label>
-                            <input type="text" id="patientEmergencyContact" placeholder="Name of emergency contact">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="patientEmergencyPhone">Emergency Contact Number</label>
-                            <input type="tel" id="patientEmergencyPhone" placeholder="09XX XXX XXXX" oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="11">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="patientMedicalHistory">Chief Complaint / Reason for Visit</label>
-                            <textarea id="patientMedicalHistory" placeholder="Enter reason for veterinary visit..."></textarea>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="patientEmail">Owner Email Address</label>
-                            <input type="email" id="patientEmail" placeholder="email@example.com">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                            <div class="form-group">
+                                <label for="patientEmergencyContact">Emergency Contact Name</label>
+                                <input type="text" id="patientEmergencyContact" placeholder="Name of emergency contact">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="patientEmergencyPhone">Emergency Contact Number</label>
+                                <input type="tel" id="patientEmergencyPhone" placeholder="09XX XXX XXXX" oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="11">
+                            </div>
                         </div>
                         
                         <!-- Data Privacy Consent -->
@@ -2664,14 +2920,15 @@
                             <i class="bi bi-person-badge-fill" style="color: #10b981;"></i>
                             Assigned Health Worker
                         </label>
-                        <input type="text" name="health_worker" placeholder="Enter health worker name" style="padding: 12px 14px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 14px; transition: all 0.2s;">
+                        <input type="text" name="health_worker" value="{{ auth()->user()->name }}" style="padding: 12px 14px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 14px; transition: all 0.2s;">
                     </div>
 
-                    <!-- Data Privacy Consent -->
-                    <div style="display: flex; gap: 12px; padding: 18px; background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 2px solid #10b981; border-radius: 12px; margin-top: 4px; box-shadow: 0 2px 4px rgba(16, 185, 129, 0.1);">
-                        <input type="checkbox" id="appointmentDataPrivacyConsent" name="data_privacy_consent" required style="margin-top: 2px; width: 20px; height: 20px; cursor: pointer; accent-color: #10b981; flex-shrink: 0;">
-                        <label for="appointmentDataPrivacyConsent" style="font-size: 13px; color: #047857; line-height: 1.6; cursor: pointer;">
-                            <span style="font-weight: 700; display: flex; align-items: center; gap: 6px; margin-bottom: 4px;"><i class="bi bi-shield-filllock"></i> Data Privacy Consent:</span> I consent to the collection, processing, and storage of my personal and medical information for healthcare purposes only. I understand that my data will be protected and will not be shared with unauthorized parties or leaked. <span style="color: #dc2626; font-weight: 700;">*</span>
+                    <!-- Walk-in Checkbox -->
+                    <div style="display: flex; gap: 12px; padding: 18px; background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: 2px solid #fcd34d; border-radius: 12px; align-items: flex-start; box-shadow: 0 2px 4px rgba(217, 119, 6, 0.1);">
+                        <input type="checkbox" id="appointmentWalkIn" name="is_walk_in" style="margin-top: 2px; width: 20px; height: 20px; cursor: pointer; accent-color: #d97706; flex-shrink: 0;">
+                        <label for="appointmentWalkIn" style="font-size: 13px; color: #78350f; line-height: 1.6; cursor: pointer; font-weight: 500;">
+                            <span style="font-weight: 700; display: flex; align-items: center; gap: 6px; margin-bottom: 4px;"><i class="bi bi-clock-history"></i> Walk-in Customer</span>
+                            Check this if the customer walked in without a pre-booked appointment.
                         </label>
                     </div>
 
@@ -2759,7 +3016,7 @@
                 <div class="search-container">
                     <div class="search-header">
                         <div class="search-box">
-                        <input type="text" id="quickSearchInput" placeholder="Search by pet name, ID, owner, contact, or microchip..." oninput="performQuickSearch()">
+                        <input type="text" id="quickSearchInput" placeholder="Search by pet name, ID, owner, or contact..." oninput="performQuickSearch()">
                     </div>
                 </div>
                 
@@ -3763,63 +4020,147 @@
             renderCalendar();
         });
 
+        // Toast notification helper
+        function showSuccessToast(message) {
+            // Create toast container if it doesn't exist
+            let toastContainer = document.getElementById('toastNotifications');
+            if (!toastContainer) {
+                toastContainer = document.createElement('div');
+                toastContainer.id = 'toastNotifications';
+                toastContainer.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 10000; display: flex; flex-direction: column; gap: 12px;';
+                document.body.appendChild(toastContainer);
+            }
+
+            // Create toast element
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+                border: 1px solid #6ee7b7;
+                border-radius: 8px;
+                padding: 16px 20px;
+                box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+                color: #065f46;
+                font-size: 14px;
+                line-height: 1.5;
+                max-width: 350px;
+                animation: slideIn 0.3s ease-out;
+                white-space: pre-wrap;
+                word-wrap: break-word;
+            `;
+            
+            toast.innerHTML = message;
+            toastContainer.appendChild(toast);
+
+            // Auto-remove after 4 seconds
+            setTimeout(() => {
+                toast.style.animation = 'slideOut 0.3s ease-out';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        // Add styles for toast animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from {
+                    transform: translateX(400px);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            @keyframes slideOut {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(400px);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Helper function to display error message
+        function showNewPatientError(message) {
+            const errorContainer = document.getElementById('newPatientErrorMessage');
+            const errorText = document.getElementById('newPatientErrorText');
+            
+            if (typeof message === 'object') {
+                // Handle validation errors object
+                let errorList = '<strong>Registration failed:</strong><ul style="margin: 8px 0 0 20px; font-size: 13px;">';
+                Object.values(message).forEach(errors => {
+                    errors.forEach(error => {
+                        errorList += `<li>${error}</li>`;
+                    });
+                });
+                errorList += '</ul>';
+                errorText.innerHTML = errorList;
+            } else {
+                // Handle string message
+                errorText.innerHTML = message;
+            }
+            
+            errorContainer.style.display = 'block';
+            errorContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
         // New Patient Registration Function
         function saveNewPatient() {
-            const lastName = document.getElementById('patientLastName').value.trim();
-            const firstName = document.getElementById('patientFirstName').value.trim();
-            const middleInitial = document.getElementById('patientMiddleInitial').value.trim();
-            const suffix = document.getElementById('patientSuffix').value;
-            const dob = document.getElementById('patientDOB').value;
-            const gender = document.getElementById('patientGender').value;
-            const address = document.getElementById('patientAddress').value.trim();
-            const phone = document.getElementById('patientPhone').value.trim();
-            const email = document.getElementById('patientEmail').value.trim();
-            const emergencyContact = document.getElementById('patientEmergencyContact').value.trim();
-            const emergencyPhone = document.getElementById('patientEmergencyPhone').value.trim();
-            const secondaryPhone = document.getElementById('patientSecondaryPhone').value.trim();
-            const medicalHistory = document.getElementById('patientMedicalHistory').value.trim();
-            const dataPrivacyConsent = document.getElementById('patientDataPrivacyConsent').checked;
+            // Clear any previous errors
+            document.getElementById('newPatientErrorMessage').style.display = 'none';
             
-            // Build full name from components
-            let fullName = lastName + ', ' + firstName;
-            if (middleInitial) {
-                fullName += ' ' + middleInitial.toUpperCase() + '.';
-            }
-            if (suffix) {
-                fullName += ' ' + suffix;
-            }
+            const petName = document.getElementById('patientLastName').value.trim();
+            const speciesId = document.getElementById('patientSpeciesId').value.trim();
+            const breed = document.getElementById('patientMiddleInitial').value.trim();
+            const color = document.getElementById('patientSuffix').value.trim();
+            const birthdate = document.getElementById('patientDOB').value;
+            const sex = document.getElementById('patientGender').value;
+            const ownerName = document.getElementById('ownerName').value.trim();
+            const address = document.getElementById('patientAddress').value.trim();
+            const ownerContact = document.getElementById('patientPhone').value.trim();
+            const ownerEmail = document.getElementById('patientEmail').value.trim();
+            const emergencyContactName = document.getElementById('patientEmergencyContact').value.trim();
+            const emergencyContactNumber = document.getElementById('patientEmergencyPhone').value.trim();
+            const dataPrivacyConsent = document.getElementById('patientDataPrivacyConsent').checked;
             
             // Validate Data Privacy Consent FIRST
             if (!dataPrivacyConsent) {
-                alert('You must accept the Data Privacy Consent to register a patient.\n\nPlease check the consent checkbox to proceed.');
+                showNewPatientError('✓ You must accept the <strong>Data Privacy Consent</strong> to register a pet. Please check the consent checkbox to proceed.');
                 return;
             }
             
             // Validate required fields
-            if (!lastName || !firstName || !dob || !gender || !address || !phone) {
-                alert('Please fill in all required fields marked with *');
+            if (!petName || !speciesId || !birthdate || !sex || !address || !ownerName || !ownerContact) {
+                showNewPatientError('✓ Please fill in all required fields marked with <strong>*</strong>');
                 return;
             }
             
             // Validate phone format (basic validation)
             const phonePattern = /^[0-9]{10,11}$/;
-            const cleanPhone = phone.replace(/\s+/g, '');
+            const cleanPhone = ownerContact.replace(/\s+/g, '');
             if (!phonePattern.test(cleanPhone)) {
-                alert('Please enter a valid phone number (10-11 digits)');
+                showNewPatientError('✓ Please enter a valid phone number (10-11 digits)');
                 return;
             }
             
             // Prepare data for backend
             const formData = {
-                first_name: firstName,
-                last_name: lastName,
-                middle_name: middleInitial.toUpperCase() || null,
-                birthdate: dob,
-                sex: gender.charAt(0).toUpperCase() + gender.slice(1), // Capitalize: male -> Male
+                pet_name: petName,
+                species_id: parseInt(speciesId),
+                breed: breed || null,
+                color: color || null,
+                birthdate: birthdate,
+                sex: sex,
+                owner_name: ownerName,
                 address: address,
-                contact_number: phone,
-                emergency_contact_name: emergencyContact || null,
-                emergency_contact_number: emergencyPhone || null,
+                owner_contact: ownerContact,
+                emergency_contact_name: emergencyContactName || null,
+                emergency_contact_number: emergencyContactNumber || null,
+                privacy_consent: true,
                 _token: '{{ csrf_token() }}'
             };
             
@@ -3833,44 +4174,59 @@
                 },
                 body: JSON.stringify(formData)
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(data => {
+                        throw { status: response.status, data: data };
+                    });
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
                     // Clear form
                     document.getElementById('patientLastName').value = '';
-                    document.getElementById('patientFirstName').value = '';
+                    document.getElementById('patientSpeciesId').value = '';
                     document.getElementById('patientMiddleInitial').value = '';
                     document.getElementById('patientSuffix').value = '';
                     document.getElementById('patientDOB').value = '';
                     document.getElementById('patientGender').value = '';
+                    document.getElementById('ownerName').value = '';
                     document.getElementById('patientAddress').value = '';
                     document.getElementById('patientPhone').value = '';
-                    document.getElementById('patientSecondaryPhone').value = '';
                     document.getElementById('patientEmergencyContact').value = '';
                     document.getElementById('patientEmergencyPhone').value = '';
-                    document.getElementById('patientMedicalHistory').value = '';
                     document.getElementById('patientEmail').value = '';
                     document.getElementById('patientDataPrivacyConsent').checked = false;
                     
-                    alert(`${data.message}\n\nName: ${fullName}`);
-                    closeModal('newPatient');
+                    // Show success toast notification
+                    showSuccessToast(`✓ Pet registered successfully!\n\nPet: ${petName}\nID: ${data.patient.patient_id}`);
                     
-                    // Refresh the page to show the new pet in lists
-                    window.location.reload();
+                    // Close modal after brief delay
+                    setTimeout(() => {
+                        closeModal('newPatient');
+                        window.location.reload();
+                    }, 1500);
                 } else {
-                    let errorMsg = 'Failed to register pet.';
-                    if (data.errors) {
-                        errorMsg += '\n\n';
-                        Object.values(data.errors).forEach(errors => {
-                            errorMsg += errors.join('\n') + '\n';
-                        });
-                    }
-                    alert(errorMsg);
+                    showNewPatientError(data.errors || ('Failed to register pet: ' + (data.message || 'Unknown error')));
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while registering the pet. Please try again.');
+                console.error('Full error object:', error);
+                
+                // Handle thrown error with status and data
+                if (error.data) {
+                    if (error.data.errors) {
+                        showNewPatientError(error.data.errors);
+                    } else if (error.data.message) {
+                        showNewPatientError('✓ ' + error.data.message);
+                    } else {
+                        showNewPatientError('✓ Server error (Status ' + error.status + '). Please try again.');
+                    }
+                } else {
+                    // Network or parsing error
+                    showNewPatientError('✓ Network error: ' + (error.message || 'Unable to connect to server. Please try again.'));
+                }
             });
         }
 

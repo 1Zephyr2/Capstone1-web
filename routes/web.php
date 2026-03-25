@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\CustomerRegisterController;
 use App\Http\Controllers\PetController;
 use App\Http\Controllers\VisitController;
 use App\Http\Controllers\ReportController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\GoogleCalendarController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CustomerDashboardController;
 use App\Models\Patient;
 
 // Redirect root to login
@@ -20,6 +22,10 @@ Route::get('/', function () {
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+// Customer Registration Routes
+Route::get('/register', [CustomerRegisterController::class, 'show'])->name('customer.register.show');
+Route::post('/register', [CustomerRegisterController::class, 'store'])->name('customer.register.store');
 
 // Password Reset Routes (placeholder for now)
 Route::get('/password/reset', function () {
@@ -41,13 +47,26 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
 });
 
+// Customer Routes
+Route::middleware(['auth', 'customer'])->prefix('customer')->name('customer.')->group(function () {
+    Route::get('/dashboard', [CustomerDashboardController::class, 'dashboard'])->name('dashboard');
+    Route::get('/pets', [CustomerDashboardController::class, 'pets'])->name('pets.index');
+    Route::get('/pets/create', [PetController::class, 'create'])->name('pets.create');
+    Route::post('/pets', [PetController::class, 'store'])->name('pets.store');
+    Route::get('/pets/{patient}', [CustomerDashboardController::class, 'showPet'])->name('pets.show');
+    Route::get('/pets/{patient}/edit', [PetController::class, 'edit'])->name('pets.edit');
+    Route::match(['put', 'patch'], '/pets/{patient}', [PetController::class, 'update'])->name('pets.update');
+    Route::get('/appointments', [CustomerDashboardController::class, 'appointments'])->name('appointments.index');
+    Route::get('/appointments/{appointment}', [CustomerDashboardController::class, 'showAppointment'])->name('appointments.show');
+});
+
 // Protected routes group
 Route::middleware('auth')->group(function () {
     
     // Profile Routes
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::match(['put', 'post'], '/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile/picture', [ProfileController::class, 'deleteProfilePicture'])->name('profile.delete-picture');
     
     // Pet Management Routes
@@ -59,6 +78,7 @@ Route::middleware('auth')->group(function () {
         ->names('pets');
     Route::get('/api/pets/search', [PetController::class, 'search'])->name('pets.search.api');
     Route::get('/api/pets/{patient}/vital-signs/last', [PetController::class, 'getLastVitalSigns'])->name('pets.vital-signs.last');
+    Route::get('/api/species/{speciesId}', [PetController::class, 'getSpeciesCharacteristics'])->name('api.species.characteristics');
 
     // Legacy patient routes (kept for compatibility)
     Route::get('/api/patients/search', [PetController::class, 'search'])->name('patients.search.api');
@@ -140,6 +160,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/appointments-today', [AppointmentController::class, 'today'])->name('appointments.today');
     Route::get('/appointments/conflicts', [AppointmentController::class, 'conflicts'])->name('appointments.conflicts');
     
+    // Appointment Request Routes
+    Route::get('/appointment-requests', [\App\Http\Controllers\AppointmentRequestController::class, 'index'])->name('appointment-requests.index');
+    Route::get('/appointment-requests/create', [\App\Http\Controllers\AppointmentRequestController::class, 'create'])->name('appointment-requests.create');
+    Route::post('/appointment-requests', [\App\Http\Controllers\AppointmentRequestController::class, 'store'])->name('appointment-requests.store');
+    Route::get('/appointment-requests/{appointmentRequest}', [\App\Http\Controllers\AppointmentRequestController::class, 'show'])->name('appointment-requests.show');
+    Route::patch('/appointment-requests/{appointmentRequest}/approve', [\App\Http\Controllers\AppointmentRequestController::class, 'approve'])->name('appointment-requests.approve');
+    Route::patch('/appointment-requests/{appointmentRequest}/reject', [\App\Http\Controllers\AppointmentRequestController::class, 'reject'])->name('appointment-requests.reject');
+    Route::patch('/appointment-requests/{appointmentRequest}/cancel', [\App\Http\Controllers\AppointmentRequestController::class, 'cancel'])->name('appointment-requests.cancel');
+    
     // Legacy appointment routes for backward compatibility
     Route::get('/appointments/book', [AppointmentController::class, 'create'])->name('appointments.book');
     Route::get('/appointments/schedule', function () {
@@ -162,14 +191,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/immunizations', function () {
         return view('immunizations.index');
     })->name('immunizations.index');
-
-    Route::get('/breeding-program', function () {
-        return view('breeding-program');
-    })->name('breeding.program');
-
-    Route::get('/wellness-exam', function () {
-        return view('wellness-exam');
-    })->name('wellness.exam');
 
     // Tools Routes
     Route::get('/automation-support', [\App\Http\Controllers\ActionHubController::class, 'index'])->name('automation.support');

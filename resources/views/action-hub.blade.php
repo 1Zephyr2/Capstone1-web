@@ -9,16 +9,16 @@
         @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
         :root {
-            --bg: #f5f7fb;
-            --bg-alt: #eef2ff;
+            --bg: #f8fafc;
+            --bg-alt: #f0f9ff;
             --card: #ffffff;
-            --text: #111827;
+            --text: #0f172a;
             --muted: #6b7280;
             --line: #e5e7eb;
-            --primary: #2563eb;
-            --primary-strong: #1d4ed8;
-            --accent: #16a34a;
-            --accent-strong: #15803d;
+            --primary: #14b8a6;
+            --primary-strong: #0d9488;
+            --accent: #06b6d4;
+            --accent-strong: #0891b2;
             --shadow-sm: 0 4px 14px rgba(15, 23, 42, 0.08);
             --shadow-lg: 0 20px 40px rgba(15, 23, 42, 0.12);
             --radius: 14px;

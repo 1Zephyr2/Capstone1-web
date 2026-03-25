@@ -9,19 +9,19 @@
         @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
         :root {
-            --bg: #f5f7fb;
-            --bg-alt: #eef2ff;
+            --bg: #f8fafc;
+            --bg-alt: #f0f9ff;
             --card: #ffffff;
-            --text: #111827;
+            --text: #0f172a;
             --muted: #6b7280;
             --line: #e5e7eb;
-            --primary: #2563eb;
-            --primary-strong: #1d4ed8;
-            --accent: #16a34a;
-            --accent-strong: #15803d;
+            --primary: #14b8a6;
+            --primary-strong: #0d9488;
+            --accent: #06b6d4;
+            --accent-strong: #0891b2;
             --shadow-sm: 0 4px 14px rgba(15, 23, 42, 0.08);
             --shadow-lg: 0 20px 40px rgba(15, 23, 42, 0.12);
-            --radius: 14px;
+            --radius: 12px;
         }
         * {
             margin: 0;
@@ -31,7 +31,7 @@
         body {
             font-family: 'Manrope', sans-serif;
             background: linear-gradient(135deg, var(--bg) 0%, var(--bg-alt) 100%);
-            padding: 20px;
+            padding: 40px;
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
@@ -51,7 +51,7 @@
             height: 420px;
             top: -140px;
             right: -120px;
-            background: radial-gradient(circle, rgba(37, 99, 235, 0.18) 0%, rgba(37, 99, 235, 0) 70%);
+            background: radial-gradient(circle, rgba(20, 184, 166, 0.18) 0%, rgba(20, 184, 166, 0) 70%);
         }
 
         body::after {
@@ -59,11 +59,12 @@
             height: 360px;
             bottom: -160px;
             left: -100px;
-            background: radial-gradient(circle, rgba(22, 163, 74, 0.16) 0%, rgba(22, 163, 74, 0) 70%);
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.16) 0%, rgba(6, 182, 212, 0) 70%);
         }
         .container {
             max-width: 1400px;
             margin: 0 auto;
+            padding: 20px;
         }
         .header {
             background: var(--card);
@@ -109,7 +110,7 @@
         .header-logo-text {
             font-size: 18px;
             font-weight: 600;
-            color: #047857;
+            color: #14b8a6;
         }
         .btn-back {
             padding: 10px 16px;
@@ -494,10 +495,7 @@
         <div class="header">
             <div class="header-top">
                 <div class="header-left">
-                    <a href="{{ route('dashboard') }}" class="header-logo">
-                        <img src="{{ asset('newlogo.png') }}" alt="PAWser" style="height: 35px; object-fit: contain;">
-                    </a>
-                    <h1><i class="bi bi-clipboard2-check"></i> Today's Visits</h1>
+                    <h1>Today's Visits</h1>
                 </div>
                 <div class="header-actions">
                     <button onclick="openAppointmentsCalendar()" class="btn-calendar" style="padding: 8px 16px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3); transition: all 0.2s; display: flex; align-items: center; gap: 6px;" onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 6px rgba(16, 185, 129, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(16, 185, 129, 0.3)'">
@@ -521,13 +519,9 @@
                 <div class="stat-value" id="generalCheckupsToday">0</div>
                 <div class="stat-label">Wellness Exams</div>
             </div>
-            <div class="stat-item">
-                <div class="stat-value" id="vaccinationsToday">0</div>
-                <div class="stat-label">Vaccinations</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value" id="breedingConsultToday">0</div>
-                <div class="stat-label">Breeding Consultations</div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-color: #fcd34d;">
+                <div class="stat-value" id="walkInsToday" style="color: #d97706;">0</div>
+                <div class="stat-label" style="color: #92400e;">Walk-ins Today</div>
             </div>
         </div>
 
@@ -552,7 +546,12 @@
                         @foreach($ownerVisits as $visit)
                         <div class="pet-visit-row" onclick="openVisitModal({{ $visit->id }})">
                             <div class="pet-visit-left">
-                                <div class="patient-name">{{ $visit->patient->full_name }}</div>
+                                <div class="patient-name">
+                                    {{ $visit->patient->full_name }}
+                                    @if($visit->is_walk_in)
+                                    <span style="display: inline-block; background: #fde68a; color: #d97706; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-left: 8px; border: 1px solid #fcd34d;">[WALK-IN]</span>
+                                    @endif
+                                </div>
                                 <div class="patient-info">
                                     <span><strong>ID:</strong> {{ $visit->patient->patient_id }}</span>
                                     <span><strong>Age:</strong> {{ $visit->patient->age }} years</span>
@@ -619,6 +618,14 @@
                     <span class="health-worker-label"><i class="bi bi-person-badge"></i> Veterinarian:</span>
                     <span class="health-worker-name" id="modalHealthWorkerName"></span>
                 </div>
+
+                <div id="modalWalkInStatus" style="display: none; margin-top: 16px; padding: 12px; background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 6px; border-left: 3px solid #d97706; display: flex; align-items: center; gap: 8px;">
+                    <i class="bi bi-exclamation-circle-fill" style="color: #d97706; font-size: 18px;"></i>
+                    <div>
+                        <div style="font-size: 13px; color: #92400e; font-weight: 600;">Walk-in Appointment</div>
+                        <div style="font-size: 12px; color: #b45309;">This is an unscheduled walk-in customer</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -626,6 +633,30 @@
     <script>
         const visitsData = @json($visits);
         const visits = visitsData.data || visitsData;
+
+        // Calculate and display statistics
+        function calculateStats() {
+            if (!visits || visits.length === 0) {
+                document.getElementById('totalVisitsToday').textContent = '0';
+                document.getElementById('totalAbsentToday').textContent = '0';
+                document.getElementById('generalCheckupsToday').textContent = '0';
+                document.getElementById('walkInsToday').textContent = '0';
+                return;
+            }
+
+            const totalVisits = visits.length;
+            const rescheduledCount = visits.filter(v => v.status === 'rescheduled' || v.status === 'cancelled').length;
+            const wellnessCount = visits.filter(v => v.service_type && v.service_type.toLowerCase().includes('wellness')).length;
+            const walkInsCount = visits.filter(v => v.is_walk_in === true || v.is_walk_in === 1).length;
+
+            document.getElementById('totalVisitsToday').textContent = totalVisits;
+            document.getElementById('totalAbsentToday').textContent = rescheduledCount;
+            document.getElementById('generalCheckupsToday').textContent = wellnessCount;
+            document.getElementById('walkInsToday').textContent = walkInsCount;
+        }
+
+        // Calculate stats when page loads
+        calculateStats();
 
         function toggleOwnerGroup(header) {
             header.classList.toggle('open');
@@ -704,6 +735,13 @@
                 document.getElementById('modalHealthWorker').style.display = 'flex';
             } else {
                 document.getElementById('modalHealthWorker').style.display = 'none';
+            }
+
+            // Set walk-in status
+            if (visit.is_walk_in === true || visit.is_walk_in === 1) {
+                document.getElementById('modalWalkInStatus').style.display = 'flex';
+            } else {
+                document.getElementById('modalWalkInStatus').style.display = 'none';
             }
 
             // Show modal
