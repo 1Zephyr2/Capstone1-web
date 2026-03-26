@@ -2484,6 +2484,12 @@
                     <i class="bi bi-calendar-check"></i>
                     Appointments
                 </a>
+                @if(Auth::user()->hasStaffAccess())
+                <a href="{{ route('appointment-requests.index') }}" class="navbar-item">
+                    <i class="bi bi-inbox-fill"></i>
+                    Requests
+                </a>
+                @endif
                 <a href="{{ route('visits.today') }}" class="navbar-item">
                     <i class="bi bi-clock-history"></i>
                     Visits
@@ -2566,6 +2572,16 @@
                         <p>Find pet records</p>
                     </div>
                 </div>
+
+                @if(Auth::user()->hasStaffAccess())
+                <a href="{{ route('appointment-requests.index') }}" class="action-card" style="text-decoration: none; color: inherit;">
+                    <div class="action-icon orange"><i class="bi bi-inbox-fill"></i></div>
+                    <div class="action-details">
+                        <h3>Appointment Requests</h3>
+                        <p>Review pending requests</p>
+                    </div>
+                </a>
+                @endif
             </div>
 
             <!-- Action Hub Alerts (compact) -->
@@ -2762,18 +2778,6 @@
                             </div>
                         </div>
                         
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
-                            <div class="form-group">
-                                <label for="patientEmergencyContact">Emergency Contact Name</label>
-                                <input type="text" id="patientEmergencyContact" placeholder="Name of emergency contact">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="patientEmergencyPhone">Emergency Contact Number</label>
-                                <input type="tel" id="patientEmergencyPhone" placeholder="09XX XXX XXXX" oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="11">
-                            </div>
-                        </div>
-                        
                         <!-- Data Privacy Consent -->
                         <div style="display: flex; gap: 12px; padding: 18px; background: linear-gradient(135deg, #fef3c7 0%, #fef3c7 100%); border: 2px solid #fbbf24; border-radius: 10px; margin: 20px 0; box-shadow: 0 2px 8px rgba(251, 191, 36, 0.15);">
                             <input type="checkbox" id="patientDataPrivacyConsent" required style="margin-top: 2px; width: 20px; height: 20px; cursor: pointer; accent-color: #f59e0b; flex-shrink: 0;">
@@ -2843,7 +2847,7 @@
                             <i class="bi bi-briefcase-fill" style="color: #10b981;"></i>
                             Service Type <span style="color: #dc2626;">*</span>
                         </label>
-                        <select name="service_type" id="appointmentServiceType" required style="padding: 12px 14px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 14px; transition: all 0.2s; cursor: pointer; background-color: white;">
+                        <select name="service_type" id="appointmentServiceType" required onchange="updateAppointmentServiceSection()" style="padding: 12px 14px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 14px; transition: all 0.2s; cursor: pointer; background-color: white;">
                             <option value="">Select service</option>
                             <optgroup label="Grooming Services">
                                 <option value="Bath & Dry">Bath &amp; Dry</option>
@@ -2865,8 +2869,8 @@
                     </div>
 
                     <!-- Grooming Details Section -->
-                    <div id="appointmentVaccination" style="display: none; background: linear-gradient(135deg, #fdf4ff 0%, #fae8ff 100%); padding: 18px; border-radius: 12px; gap: 12px; flex-direction: column; border: 2px solid #d8b4fe; box-shadow: 0 2px 4px rgba(168, 85, 247, 0.1);">
-                        <h4 style="margin: 0 0 12px 0; color: #6b21a8; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px;"><i class="bi bi-scissors"></i> Grooming Service Details</h4>
+                    <div id="appointmentGroomingSection" style="display: none; background: linear-gradient(135deg, #fdf4ff 0%, #fae8ff 100%); padding: 18px; border-radius: 12px; gap: 12px; flex-direction: column; border: 2px solid #d8b4fe; box-shadow: 0 2px 4px rgba(168, 85, 247, 0.1);">
+                        <h4 style="margin: 0 0 12px 0; color: #6b21a8; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px;"><i class="bi bi-scissors"></i> <span id="appointmentServiceTitle">Grooming Service Details</span></h4>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                             <div style="display: flex; flex-direction: column; gap: 6px;">
                                 <label style="font-weight: 600; color: #374151; font-size: 12px;">Coat Condition</label>
@@ -3710,28 +3714,62 @@
         function markAttendance(event, appointmentId, status) {
             event.stopPropagation();
             
-            // Save to localStorage for sync with Today's Visits page
-            const storageKey = 'apt-status-' + appointmentId;
-            localStorage.setItem(storageKey, status);
-            console.log('Saved to localStorage:', storageKey, '=', status);
-            
-            const appointmentItem = event.target.closest('.appointment-item');
-            if (!appointmentItem) return;
-            
-            const statusElement = appointmentItem.querySelector('.appointment-status');
-            const buttons = appointmentItem.querySelector('.attendance-buttons');
-            
-            if (status === 'attended') {
-                if (statusElement) {
-                    statusElement.innerHTML = '<span class="badge-attended" style="display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 10px; background: #D1FAE5; color: #065F46;">Attended</span>';
+            // Send to backend to update the appointment status
+            fetch(`/appointments/${appointmentId}/quick-update`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    status: status
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => Promise.reject(err));
                 }
-                if (buttons) buttons.style.display = 'none';
-            } else if (status === 'rescheduled') {
-                if (statusElement) {
-                    statusElement.innerHTML = '<span class="badge-rescheduled" style="display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 10px; background: #FEF3C7; color: #92400E;"><i class="bi bi-arrow-clockwise"></i> Rescheduled</span>';
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    // Save to localStorage for sync with Today's Visits page
+                    const storageKey = 'apt-status-' + appointmentId;
+                    localStorage.setItem(storageKey, status);
+                    console.log('Appointment marked as ' + status);
+                    
+                    const appointmentItem = event.target.closest('.appointment-item');
+                    if (!appointmentItem) {
+                        // If item not found, reload page to update
+                        setTimeout(() => window.location.reload(), 500);
+                        return;
+                    }
+                    
+                    const statusElement = appointmentItem.querySelector('.appointment-status');
+                    const buttons = appointmentItem.querySelector('.attendance-buttons');
+                    
+                    if (status === 'attended') {
+                        if (statusElement) {
+                            statusElement.innerHTML = '<span class="badge-attended" style="display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 10px; background: #D1FAE5; color: #065F46;">Attended</span>';
+                        }
+                        if (buttons) buttons.style.display = 'none';
+                        showNotification('Appointment marked as attended', 'success');
+                    } else if (status === 'rescheduled') {
+                        if (statusElement) {
+                            statusElement.innerHTML = '<span class="badge-rescheduled" style="display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 10px; background: #FEF3C7; color: #92400E;"><i class="bi bi-arrow-clockwise"></i> Rescheduled</span>';
+                        }
+                        if (buttons) buttons.style.display = 'none';
+                        showNotification('Appointment rescheduled', 'success');
+                    }
+                } else {
+                    alert('Failed to update appointment status. Please try again.');
                 }
-                if (buttons) buttons.style.display = 'none';
-            }
+            })
+            .catch(error => {
+                console.error('Error marking attendance:', error);
+                alert('An error occurred while updating the appointment. Please try again.');
+            });
         }
         
         function showNotification(message, type) {
@@ -4123,8 +4161,6 @@
             const address = document.getElementById('patientAddress').value.trim();
             const ownerContact = document.getElementById('patientPhone').value.trim();
             const ownerEmail = document.getElementById('patientEmail').value.trim();
-            const emergencyContactName = document.getElementById('patientEmergencyContact').value.trim();
-            const emergencyContactNumber = document.getElementById('patientEmergencyPhone').value.trim();
             const dataPrivacyConsent = document.getElementById('patientDataPrivacyConsent').checked;
             
             // Validate Data Privacy Consent FIRST
@@ -4158,8 +4194,7 @@
                 owner_name: ownerName,
                 address: address,
                 owner_contact: ownerContact,
-                emergency_contact_name: emergencyContactName || null,
-                emergency_contact_number: emergencyContactNumber || null,
+                owner_email: ownerEmail || null,
                 privacy_consent: true,
                 _token: '{{ csrf_token() }}'
             };
@@ -4194,8 +4229,6 @@
                     document.getElementById('ownerName').value = '';
                     document.getElementById('patientAddress').value = '';
                     document.getElementById('patientPhone').value = '';
-                    document.getElementById('patientEmergencyContact').value = '';
-                    document.getElementById('patientEmergencyPhone').value = '';
                     document.getElementById('patientEmail').value = '';
                     document.getElementById('patientDataPrivacyConsent').checked = false;
                     
@@ -4976,6 +5009,43 @@ Registered: ${new Date(patient.registeredDate).toLocaleString()}
             };
         });
 
+        // Update appointment service section based on selected service
+        function updateAppointmentServiceSection() {
+            const serviceTypeSelect = document.getElementById('appointmentServiceType');
+            const groomingSection = document.getElementById('appointmentGroomingSection');
+            const serviceTitle = document.getElementById('appointmentServiceTitle');
+            
+            if (!serviceTypeSelect || !groomingSection) {
+                console.log('Service elements not found');
+                return;
+            }
+            
+            const serviceType = serviceTypeSelect.value;
+
+            const groomingServices = [
+                'Bath & Dry', 'Full Grooming', 'Haircut & Styling', 'Nail Trimming',
+                'Ear Cleaning', 'Teeth Brushing', 'De-shedding Treatment',
+                'Flea & Tick Treatment', 'Paw Treatment'
+            ];
+
+            if (groomingServices.includes(serviceType)) {
+                groomingSection.style.display = 'flex';
+                
+                // Update title based on service type
+                if (serviceType === 'Flea & Tick Treatment') {
+                    serviceTitle.textContent = 'Flea & Tick Treatment Details';
+                } else if (serviceType === 'De-shedding Treatment') {
+                    serviceTitle.textContent = 'De-shedding Treatment Details';
+                } else if (serviceType === 'Paw Treatment') {
+                    serviceTitle.textContent = 'Paw Treatment Details';
+                } else {
+                    serviceTitle.textContent = 'Grooming Service Details';
+                }
+            } else {
+                groomingSection.style.display = 'none';
+            }
+        }
+
         // Dashboard Reschedule Modal Functions
         function openDashboardReschedule(aptId, patientName, currentDate, currentTime) {
             document.getElementById('dashboardRescheduleAppointmentId').value = aptId;
@@ -5002,6 +5072,11 @@ Registered: ${new Date(patient.registeredDate).toLocaleString()}
                     const aptId = document.getElementById('dashboardRescheduleAppointmentId').value;
                     const newDate = document.getElementById('dashboardNewAppointmentDate').value;
                     const newTime = document.getElementById('dashboardNewAppointmentTime').value;
+                    
+                    if (!aptId || !newDate || !newTime) {
+                        alert('Please fill in all required fields.');
+                        return;
+                    }
                     
                     // Format the time for display
                     const timeObj = new Date('2000-01-01 ' + newTime);
@@ -5030,12 +5105,17 @@ Registered: ${new Date(patient.registeredDate).toLocaleString()}
                         body: JSON.stringify({
                             appointment_date: newDate,
                             appointment_time: newTime,
-                            status: 'scheduled'
+                            status: 'rescheduled'
                         })
                     })
-                    .then(response => response.json())
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.json().then(err => Promise.reject(err));
+                        }
+                        return response.json();
+                    })
                     .then(data => {
-                        if (data.success || data.message) {
+                        if (data.success) {
                             // Mark as rescheduled in local storage
                             localStorage.setItem('apt-status-' + aptId, 'rescheduled');
                             
@@ -5043,13 +5123,15 @@ Registered: ${new Date(patient.registeredDate).toLocaleString()}
                             closeDashboardRescheduleModal();
                             
                             // Reload the page to show updated calendar
-                            window.location.reload();
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 500);
                         } else {
-                            alert('Failed to reschedule appointment. Please try again.');
+                            alert('Failed to reschedule appointment. Please try again.' + (data.message ? '\n' + data.message : ''));
                         }
                     })
                     .catch(error => {
-                        console.error('Error:', error);
+                        console.error('Reschedule error:', error);
                         alert('An error occurred while rescheduling. Please try again.');
                     });
                 });

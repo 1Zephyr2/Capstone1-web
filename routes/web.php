@@ -160,14 +160,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/appointments-today', [AppointmentController::class, 'today'])->name('appointments.today');
     Route::get('/appointments/conflicts', [AppointmentController::class, 'conflicts'])->name('appointments.conflicts');
     
-    // Appointment Request Routes
-    Route::get('/appointment-requests', [\App\Http\Controllers\AppointmentRequestController::class, 'index'])->name('appointment-requests.index');
+    // Appointment Request Routes - Customers (must come first before wildcard routes)
     Route::get('/appointment-requests/create', [\App\Http\Controllers\AppointmentRequestController::class, 'create'])->name('appointment-requests.create');
     Route::post('/appointment-requests', [\App\Http\Controllers\AppointmentRequestController::class, 'store'])->name('appointment-requests.store');
+    Route::patch('/appointment-requests/{appointmentRequest}/cancel', [\App\Http\Controllers\AppointmentRequestController::class, 'cancel'])->name('appointment-requests.cancel');
+
+    // Appointment Request Routes - Staff/Admin Only
+    Route::get('/appointment-requests', [\App\Http\Controllers\AppointmentRequestController::class, 'index'])->name('appointment-requests.index');
     Route::get('/appointment-requests/{appointmentRequest}', [\App\Http\Controllers\AppointmentRequestController::class, 'show'])->name('appointment-requests.show');
     Route::patch('/appointment-requests/{appointmentRequest}/approve', [\App\Http\Controllers\AppointmentRequestController::class, 'approve'])->name('appointment-requests.approve');
     Route::patch('/appointment-requests/{appointmentRequest}/reject', [\App\Http\Controllers\AppointmentRequestController::class, 'reject'])->name('appointment-requests.reject');
-    Route::patch('/appointment-requests/{appointmentRequest}/cancel', [\App\Http\Controllers\AppointmentRequestController::class, 'cancel'])->name('appointment-requests.cancel');
     
     // Legacy appointment routes for backward compatibility
     Route::get('/appointments/book', [AppointmentController::class, 'create'])->name('appointments.book');

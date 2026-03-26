@@ -575,17 +575,6 @@
                     <input type="date" name="birthdate" required value="{{ old('birthdate', $patient->birthdate ? $patient->birthdate->format('Y-m-d') : '') }}" max="{{ date('Y-m-d') }}">
                 </div>
 
-                <!-- Emergency Contact -->
-                <div class="form-group">
-                    <label>Emergency Contact Name</label>
-                    <input type="text" name="emergency_contact_name" value="{{ old('emergency_contact_name', $patient->emergency_contact_name) }}" placeholder="Name of emergency contact">
-                </div>
-
-                <div class="form-group">
-                    <label>Emergency Contact Number</label>
-                    <input type="text" name="emergency_contact_number" value="{{ old('emergency_contact_number', $patient->emergency_contact_number) }}" placeholder="Emergency contact phone number">
-                </div>
-
                 <!-- Buttons -->
                 <div class="buttons">
                     <a href="{{ route('customer.pets.index') }}" class="btn btn-cancel">

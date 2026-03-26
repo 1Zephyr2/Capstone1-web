@@ -338,17 +338,6 @@
                     </div>
                 </div>
 
-                <div class="section-label" style="margin-top:20px;">Emergency Contact</div>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label>Emergency Contact Name</label>
-                        <input type="text" name="emergency_contact_name" value="{{ old('emergency_contact_name', $patient->emergency_contact_name) }}">
-                    </div>
-                    <div class="form-group">
-                        <label>Emergency Contact Number</label>
-                        <input type="text" name="emergency_contact_number" value="{{ old('emergency_contact_number', $patient->emergency_contact_number) }}">
-                    </div>
-                </div>
             </div>
         </div>
 

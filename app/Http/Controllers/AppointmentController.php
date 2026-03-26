@@ -161,6 +161,36 @@ class AppointmentController extends Controller
      */
     public function update(Request $request, Appointment $appointment)
     {
+        // Handle reschedule (dashboard modal) - only date and time
+        if ($request->has('appointment_date') && !$request->has('patient_id')) {
+            $validator = Validator::make($request->all(), [
+                'appointment_date' => 'required|date',
+                'appointment_time' => 'required',
+                'status' => 'nullable|in:scheduled,confirmed,completed,cancelled,no-show,rescheduled,attended',
+            ]);
+
+            if ($validator->fails()) {
+                if ($request->expectsJson()) {
+                    return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
+                }
+                return back()->withErrors($validator)->withInput();
+            }
+
+            $appointment->update($request->only(['appointment_date', 'appointment_time', 'status']));
+
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Appointment rescheduled successfully.',
+                    'appointment' => $appointment
+                ]);
+            }
+
+            return redirect()->route('appointments.index')
+                ->with('success', 'Appointment rescheduled successfully.');
+        }
+
+        // Handle full update (appointment form)
         $validator = Validator::make($request->all(), [
             'patient_id' => 'required|exists:patients,id',
             'appointment_date' => 'required|date',
@@ -169,7 +199,7 @@ class AppointmentController extends Controller
             'chief_complaint' => 'nullable|string',
             'health_worker' => 'nullable|string|max:255',
             'notes' => 'nullable|string',
-            'status' => 'nullable|in:scheduled,confirmed,completed,cancelled,no-show',
+            'status' => 'nullable|in:scheduled,confirmed,completed,cancelled,no-show,rescheduled,attended',
             'is_walk_in' => 'nullable|boolean',
             'vaccine_name' => 'nullable|string|max:255',
             'dose_number' => 'nullable|integer|min:1',
@@ -198,11 +228,27 @@ class AppointmentController extends Controller
      */
     public function quickUpdate(Request $request, Appointment $appointment)
     {
+        // Handle status-only updates (mark as attended, etc.)
+        if ($request->has('status') && !$request->has('appointment_date')) {
+            $validated = $request->validate([
+                'status' => 'required|in:scheduled,confirmed,completed,cancelled,no-show,attended,rescheduled',
+            ]);
+
+            $appointment->update($validated);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Appointment status updated.',
+                'appointment' => $appointment,
+            ]);
+        }
+
+        // Handle full appointment updates
         $validated = $request->validate([
             'appointment_date'        => 'required|date',
             'appointment_time'        => 'required',
             'service_type'            => 'required|string',
-            'status'                  => 'required|in:scheduled,confirmed,completed,cancelled,no-show',
+            'status'                  => 'required|in:scheduled,confirmed,completed,cancelled,no-show,attended,rescheduled',
             'chief_complaint'         => 'nullable|string',
             'health_worker'           => 'nullable|string|max:255',
             'notes'                   => 'nullable|string',

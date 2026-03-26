@@ -70,6 +70,11 @@ class AppointmentRequestController extends Controller
      */
     public function index()
     {
+        // Only staff/admin can view all requests
+        if (!Auth::user()->hasStaffAccess()) {
+            abort(403, 'Unauthorized access. Admin or staff privileges required.');
+        }
+
         $requests = AppointmentRequest::with(['user', 'patient', 'approvedBy'])
             ->orderBy('created_at', 'desc')
             ->paginate(20);
@@ -82,6 +87,11 @@ class AppointmentRequestController extends Controller
      */
     public function show(AppointmentRequest $request)
     {
+        // Only staff/admin can view all requests
+        if (!Auth::user()->hasStaffAccess()) {
+            abort(403, 'Unauthorized access. Admin or staff privileges required.');
+        }
+
         $request->load(['user', 'patient', 'approvedBy']);
         return view('appointment-requests.show', compact('request'));
     }
@@ -91,6 +101,11 @@ class AppointmentRequestController extends Controller
      */
     public function approve(Request $request, AppointmentRequest $appointmentRequest)
     {
+        // Only staff/admin can approve requests
+        if (!Auth::user()->hasStaffAccess()) {
+            abort(403, 'Unauthorized access. Admin or staff privileges required.');
+        }
+
         if ($appointmentRequest->status !== 'pending') {
             return back()->with('error', 'This request has already been processed.');
         }
@@ -121,6 +136,11 @@ class AppointmentRequestController extends Controller
      */
     public function reject(Request $request, AppointmentRequest $appointmentRequest)
     {
+        // Only staff/admin can reject requests
+        if (!Auth::user()->hasStaffAccess()) {
+            abort(403, 'Unauthorized access. Admin or staff privileges required.');
+        }
+
         $validator = Validator::make($request->all(), [
             'rejection_reason' => 'required|string|max:500',
         ]);

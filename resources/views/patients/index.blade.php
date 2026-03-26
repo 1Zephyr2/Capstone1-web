@@ -2117,19 +2117,6 @@
                     </div>
                     </div>
 
-                    <!-- Optional -->
-                    <div class="modal-section-title" style="margin-top:16px;">Emergency Contact <span style="font-weight:400;color:#9ca3af;">(Optional)</span></div>
-                    <div class="modal-form-row">
-                        <div class="modal-form-group">
-                            <label>Emergency Contact Name</label>
-                            <input type="text" name="emergency_contact_name">
-                        </div>
-                        <div class="modal-form-group">
-                            <label>Emergency Contact Number</label>
-                            <input type="tel" name="emergency_contact_number">
-                        </div>
-                    </div>
-
                     <!-- Actions -->
                     <div class="registration-modal-actions">
                         <button type="button" class="btn-modal-cancel" onclick="closeRegistrationModal()">Cancel</button>

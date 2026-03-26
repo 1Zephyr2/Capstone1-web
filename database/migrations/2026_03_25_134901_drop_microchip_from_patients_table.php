@@ -20,10 +20,17 @@ return new class extends Migration
             } catch (\Exception $e) {
                 // Index might not exist with that name, continue
             }
+            try {
+                DB::statement('DROP INDEX IF EXISTS patients_microchip_number_index');
+            } catch (\Exception $e) {
+                // Index might not exist, continue
+            }
         }
         
         Schema::table('patients', function (Blueprint $table) {
-            $table->dropColumn('microchip_number');
+            if (Schema::hasColumn('patients', 'microchip_number')) {
+                $table->dropColumn('microchip_number');
+            }
         });
     }
 
