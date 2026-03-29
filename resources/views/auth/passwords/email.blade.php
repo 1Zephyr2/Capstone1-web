@@ -96,13 +96,19 @@
             display: block;
             text-align: center;
             margin-top: 20px;
-            color: #3b82f6;
+            color: #111827;
+            border: 1px solid #111827;
+            background: white;
+            padding: 10px 16px;
+            border-radius: 10px;
             text-decoration: none;
             font-size: 14px;
         }
 
         .back-link:hover {
-            color: #2563eb;
+            color: #14b8a6;
+            border-color: #14b8a6;
+            background: #f0fdfa;
         }
 
         .alert {

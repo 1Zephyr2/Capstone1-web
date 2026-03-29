@@ -308,7 +308,7 @@ class PetController extends Controller
     public function show(Patient $patient)
     {
         $this->authorizePatient($patient);
-        $patient->load(['visits.vitalSigns', 'vaccinations', 'referrals']);
+        $patient->load(['visits']);
         
         return view('pets.show', compact('patient'));
     }
@@ -599,31 +599,6 @@ class PetController extends Controller
         ];
     }
 
-    /**
-     * Get last vital signs for a patient (for copy feature)
-     */
-    public function getLastVitalSigns(Patient $patient)
-    {
-        $this->authorizePatient($patient);
-        $lastVitalSigns = $patient->lastVitalSigns;
 
-        if (!$lastVitalSigns) {
-            return response()->json([
-                'success' => false,
-                'message' => 'No previous vital signs found'
-            ]);
-        }
-
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'blood_pressure' => $lastVitalSigns->blood_pressure,
-                'temperature' => $lastVitalSigns->temperature,
-                'pulse_rate' => $lastVitalSigns->pulse_rate,
-                'weight' => $lastVitalSigns->weight,
-                'height' => $lastVitalSigns->height,
-            ]
-        ]);
-    }
 }
 

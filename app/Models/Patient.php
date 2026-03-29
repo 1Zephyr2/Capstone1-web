@@ -55,16 +55,6 @@ class Patient extends Model
         return $this->hasMany(Appointment::class);
     }
 
-    public function vaccinations()
-    {
-        return $this->hasMany(Immunization::class);
-    }
-
-    public function referrals()
-    {
-        return $this->hasMany(Referral::class);
-    }
-
     // Auto-calculate age from birthdate (Smart Default)
     public function getAgeAttribute()
     {
@@ -81,13 +71,6 @@ class Patient extends Model
     public function getLastVisitAttribute()
     {
         return $this->visits()->latest('visit_date')->first();
-    }
-
-    // Get last vital signs for auto-fill
-    public function getLastVitalSignsAttribute()
-    {
-        $lastVisit = $this->lastVisit;
-        return $lastVisit ? $lastVisit->vitalSigns : null;
     }
 
     // Search scope for type-ahead search

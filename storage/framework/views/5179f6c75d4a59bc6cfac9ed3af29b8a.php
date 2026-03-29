@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Appointment Requests - PAWser</title>
-    <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('bootstrap-icons/bootstrap-icons.min.css')); ?>">
     <style>
 
         :root {
@@ -544,37 +544,57 @@
     </style>
 </head>
 <body>
-    <x-staff-navbar />
+    <?php if (isset($component)) { $__componentOriginal17611e3b8decae96c78f7c1ff2705ab1 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal17611e3b8decae96c78f7c1ff2705ab1 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.staff-navbar','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('staff-navbar'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal17611e3b8decae96c78f7c1ff2705ab1)): ?>
+<?php $attributes = $__attributesOriginal17611e3b8decae96c78f7c1ff2705ab1; ?>
+<?php unset($__attributesOriginal17611e3b8decae96c78f7c1ff2705ab1); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal17611e3b8decae96c78f7c1ff2705ab1)): ?>
+<?php $component = $__componentOriginal17611e3b8decae96c78f7c1ff2705ab1; ?>
+<?php unset($__componentOriginal17611e3b8decae96c78f7c1ff2705ab1); ?>
+<?php endif; ?>
     <div class="container">
         <div class="header">
             <h1>Appointment Requests</h1>
             <p>Review and manage customer appointment requests</p>
         </div>
 
-        @if (session('success'))
+        <?php if(session('success')): ?>
             <div class="alert alert-success">
                 <i class="bi bi-check-circle"></i>
-                {{ session('success') }}
+                <?php echo e(session('success')); ?>
+
             </div>
-        @endif
+        <?php endif; ?>
 
         <div class="stats">
             <div class="stat-card">
-                <div class="stat-value">{{ $requests->where('status', 'pending')->count() }}</div>
+                <div class="stat-value"><?php echo e($requests->where('status', 'pending')->count()); ?></div>
                 <div class="stat-label">Pending Requests</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value" style="color: #059669;">{{ $requests->where('status', 'approved')->count() }}</div>
+                <div class="stat-value" style="color: #059669;"><?php echo e($requests->where('status', 'approved')->count()); ?></div>
                 <div class="stat-label" style="color: #047857;">Approved</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value" style="color: #e11d48;">{{ $requests->where('status', 'rejected')->count() }}</div>
+                <div class="stat-value" style="color: #e11d48;"><?php echo e($requests->where('status', 'rejected')->count()); ?></div>
                 <div class="stat-label" style="color: #831843;">Rejected</div>
             </div>
         </div>
 
         <div class="table-container">
-            @if ($requests->count() > 0)
+            <?php if($requests->count() > 0): ?>
                 <table>
                     <thead>
                         <tr>
@@ -588,59 +608,61 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($requests as $request)
+                        <?php $__currentLoopData = $requests; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $request): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr>
                                 <td>
-                                    <div style="font-weight: 600;">{{ $request->user?->name ?? 'N/A' }}</div>
-                                    <div style="font-size: 12px; color: #6b7280;">{{ $request->user?->email ?? 'N/A' }}</div>
+                                    <div style="font-weight: 600;"><?php echo e($request->user?->name ?? 'N/A'); ?></div>
+                                    <div style="font-size: 12px; color: #6b7280;"><?php echo e($request->user?->email ?? 'N/A'); ?></div>
                                 </td>
-                                <td>{{ $request->patient?->pet_name ?? 'N/A' }} ({{ $request->patient?->species ?? 'N/A' }})</td>
-                                <td>{{ $request->requested_date?->format('M d, Y') ?? 'N/A' }}</td>
-                                <td>{{ $request->requested_time ?? 'N/A' }}</td>
-                                <td>{{ $request->service_type ?? 'General' }}</td>
+                                <td><?php echo e($request->patient?->pet_name ?? 'N/A'); ?> (<?php echo e($request->patient?->species ?? 'N/A'); ?>)</td>
+                                <td><?php echo e($request->requested_date?->format('M d, Y') ?? 'N/A'); ?></td>
+                                <td><?php echo e($request->requested_time ?? 'N/A'); ?></td>
+                                <td><?php echo e($request->service_type ?? 'General'); ?></td>
                                 <td>
-                                    @if ($request->status === 'pending')
+                                    <?php if($request->status === 'pending'): ?>
                                         <span class="badge badge-pending">Pending</span>
-                                    @elseif ($request->status === 'approved')
+                                    <?php elseif($request->status === 'approved'): ?>
                                         <span class="badge badge-approved">Approved</span>
-                                    @elseif ($request->status === 'rejected')
+                                    <?php elseif($request->status === 'rejected'): ?>
                                         <span class="badge badge-rejected">Rejected</span>
-                                    @else
-                                        <span class="badge">{{ ucfirst($request->status) }}</span>
-                                    @endif
+                                    <?php else: ?>
+                                        <span class="badge"><?php echo e(ucfirst($request->status)); ?></span>
+                                    <?php endif; ?>
                                 </td>
                                 <td>
                                     <div class="action-buttons">
-                                        <a href="{{ route('appointment-requests.show', $request) }}" class="btn btn-view">
+                                        <a href="<?php echo e(route('appointment-requests.show', $request)); ?>" class="btn btn-view">
                                             View
                                         </a>
-                                        @if ($request->status === 'pending')
-                                            <form action="{{ route('appointment-requests.approve', $request) }}" method="POST">
-                                                @csrf
-                                                @method('PATCH')
+                                        <?php if($request->status === 'pending'): ?>
+                                            <form action="<?php echo e(route('appointment-requests.approve', $request)); ?>" method="POST">
+                                                <?php echo csrf_field(); ?>
+                                                <?php echo method_field('PATCH'); ?>
                                                 <button type="submit" class="btn btn-approve" onclick="return confirm('Approve this request?')">
                                                     Approve
                                                 </button>
                                             </form>
-                                        @endif
+                                        <?php endif; ?>
                                     </div>
                                 </td>
                             </tr>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>
                 </table>
 
                 <div class="pagination">
-                    {{ $requests->links() }}
+                    <?php echo e($requests->links()); ?>
+
                 </div>
-            @else
+            <?php else: ?>
                 <div class="empty-state">
                     <i class="bi bi-inbox"></i>
                     <h3>No Requests</h3>
                     <p>All appointment requests have been processed.</p>
                 </div>
-            @endif
+            <?php endif; ?>
         </div>
     </div>
 </body>
 </html>
+<?php /**PATH C:\Users\Lei\Capstone1-web\resources\views/appointment-requests/index.blade.php ENDPATH**/ ?>

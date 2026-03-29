@@ -17,7 +17,7 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #ffffff;
             display: flex;
         }
@@ -64,7 +64,11 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            color: #6b7280;
+            color: #111827;
+            border: 1px solid #111827;
+            background: white;
+            padding: 10px 16px;
+            border-radius: 10px;
             text-decoration: none;
             font-size: 14px;
             margin-bottom: 32px;
@@ -73,6 +77,8 @@
 
         .back-link:hover {
             color: #14b8a6;
+            border-color: #14b8a6;
+            background: #f0fdfa;
             gap: 10px;
         }
 
@@ -663,12 +669,6 @@
                             <i class="bi bi-calendar-check"></i>
                         </div>
                         <div class="benefit-text">Manage appointments and reminders</div>
-                    </div>
-                    <div class="benefit-item">
-                        <div class="benefit-icon">
-                            <i class="bi bi-shield-check"></i>
-                        </div>
-                        <div class="benefit-text">Track vaccinations and immunizations</div>
                     </div>
                     <div class="benefit-item">
                         <div class="benefit-icon">

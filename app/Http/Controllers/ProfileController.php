@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -15,6 +16,7 @@ class ProfileController extends Controller
      */
     public function show()
     {
+        /** @var User $user */
         $user = Auth::user();
         
         // Customer profile is accessed differently
@@ -30,6 +32,7 @@ class ProfileController extends Controller
      */
     public function edit()
     {
+        /** @var User $user */
         $user = Auth::user();
         
         // Customer profile is accessed differently
@@ -45,6 +48,7 @@ class ProfileController extends Controller
      */
     public function update(Request $request)
     {
+        /** @var User $user */
         $user = Auth::user();
 
         // If only profile picture is being updated
@@ -121,6 +125,7 @@ class ProfileController extends Controller
      */
     public function deleteProfilePicture()
     {
+        /** @var User $user */
         $user = Auth::user();
 
         if ($user->profile_picture && Storage::disk('public')->exists($user->profile_picture)) {

@@ -28,6 +28,11 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .navbar i.bi {
+            font-family: bootstrap-icons;
         }
 
         .navbar-container {
@@ -521,15 +526,15 @@
             </a>
             <div class="navbar-center">
                 <a href="{{ route('customer.dashboard') }}" class="nav-item">
-                    <i class="bi bi-house"></i>
+                    <i class="bi bi-speedometer2"></i>
                     Dashboard
                 </a>
                 <a href="{{ route('customer.pets.index') }}" class="nav-item">
-                    <i class="bi bi-paw"></i>
+                    <i class="bi bi-heart-pulse"></i>
                     My Pets
                 </a>
                 <a href="{{ route('customer.appointments.index') }}" class="nav-item active">
-                    <i class="bi bi-calendar-check"></i>
+                    <i class="bi bi-calendar2-check"></i>
                     Appointments
                 </a>
             </div>

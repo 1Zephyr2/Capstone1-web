@@ -7,7 +7,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
         :root {
             --bg: #f8fafc;
@@ -30,13 +29,16 @@
             box-sizing: border-box;
         }
         body {
-            font-family: 'Manrope', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, var(--bg) 0%, var(--bg-alt) 100%);
-            padding: 20px;
+            padding: 0;
+            padding-top: 72px;
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
             color: var(--text);
+            display: flex;
+            flex-direction: column;
         }
 
         body::before,
@@ -66,6 +68,9 @@
         .container {
             max-width: 1400px;
             margin: 0 auto;
+            padding: 40px 20px;
+            flex: 1;
+            width: 100%;
         }
         .header {
             background: var(--card);
@@ -245,6 +250,48 @@
             background: var(--primary-strong);
             transform: translateY(-1px);
         }
+        .patients-table {
+            width: 100%;
+            max-width: 1400px;
+            margin: 24px auto 0;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
+            border: 1px solid #e5e7eb;
+            animation: pageEnter 0.5s ease;
+        }
+        .patients-table table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        .patients-table thead th {
+            background: linear-gradient(135deg, #f0f9ff 0%, #f8fafc 100%);
+            padding: 18px 16px;
+            text-align: left;
+            font-weight: 700;
+            color: #0f172a;
+            border-bottom: 2px solid #e5e7eb;
+            letter-spacing: -0.01em;
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+        .patients-table tbody tr {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .patients-table tbody tr:hover {
+            background-color: #f9fafb;
+        }
+        .patients-table td {
+            padding: 18px 16px;
+            border-bottom: 1px solid #e5e7eb;
+            color: #374151;
+            font-size: 14px;
+            vertical-align: middle;
+        }
         /* Table Data Rows */
         .data-row {
             border-bottom: 1px solid #f1f5f9;
@@ -368,6 +415,7 @@
         .owner-row {
             background: #f8fafc;
             border-top: 1px solid #e5e7eb;
+            cursor: pointer;
         }
         .owner-row:hover {
             background: #f1f5f9;
@@ -422,7 +470,7 @@
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1161,11 +1209,231 @@
             margin-left: 4px;
             font-weight: 400;
         }
+
+        /* Top Navigation Bar Styles */
+        .navbar {
+            background: #1e293b;
+            color: white;
+            padding: 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            align-items: center;
+            height: 72px;
+        }
+
+        .navbar i.bi {
+            font-family: bootstrap-icons;
+        }
+
+        .navbar-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0 24px;
+            gap: 24px;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .navbar-brand:hover {
+            opacity: 0.8;
+            transform: translateY(-2px);
+        }
+
+        .navbar-logo {
+            height: 40px;
+            width: 40px;
+            object-fit: contain;
+        }
+
+        .navbar-brand-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .navbar-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .navbar-subtitle {
+            font-size: 11px;
+            opacity: 0.8;
+            margin: 0;
+        }
+
+        .navbar-menu {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .navbar-item {
+            padding: 8px 14px;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 13px;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .navbar-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .navbar-item.active {
+            background: rgba(20, 184, 166, 0.15);
+            color: #14b8a6;
+            border-bottom: 2px solid #14b8a6;
+        }
+
+        .navbar-end {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-shrink: 0;
+        }
+
+        .navbar-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-avatar:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.08);
+        }
+
+        .navbar-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .navbar-user-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .navbar-user-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .navbar-user-role {
+            font-size: 11px;
+            opacity: 0.7;
+        }
+
+        .navbar-profile-btn {
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+        }
+
+        .navbar-profile-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .navbar-logout-btn {
+            padding: 6px 12px;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .navbar-logout-btn:hover {
+            background: rgba(239, 68, 68, 0.25);
+            border-color: rgba(239, 68, 68, 0.5);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 1024px) {
+            .navbar-menu span {
+                display: none;
+            }
+            .navbar-item {
+                padding: 8px 8px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar-container {
+                padding: 0 16px;
+                gap: 12px;
+            }
+            .navbar-menu {
+                display: none;
+            }
+            .navbar-end {
+                gap: 8px;
+            }
+        }
     </style>
 </head>
 <body>
+    <x-staff-navbar />
     <div class="container">
-        <a href="{{ route('dashboard') }}" class="btn-back" style="margin-bottom: 16px;">← Back to Dashboard</a>
         <div class="header">
             <div class="header-top">
                 <h1>Pet Directory</h1>
@@ -1218,28 +1486,39 @@
             <table>
                 <thead>
                     <tr>
-                        <th style="width:20%">PET NAME</th>
-                        <th style="width:22%">OWNER / CONTACT</th>
-                        <th style="width:18%">SPECIES / BREED</th>
-                        <th style="width:18%">LAST VISIT</th>
-                        <th style="width:22%">ACTIONS</th>
+                        <th style="width:28%">Owner / Pet</th>
+                        <th style="width:24%">Contact</th>
+                        <th style="width:18%">Pets</th>
+                        <th style="width:18%">Last Visit</th>
+                        <th style="width:12%">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @php $grouped = $patients->groupBy('owner_name'); @endphp
-                    @foreach($grouped as $ownerName => $ownerPets)
-                    @php $ownerId = 'owner-' . $loop->index; @endphp
+                    @php
+                        $groupedPets = $patients->groupBy(function ($patient) {
+                            return ($patient->owner_name ?: 'Unknown Owner') . '|' . ($patient->owner_contact ?: 'No contact');
+                        });
+                    @endphp
 
-                    {{-- Owner row - clickable to expand --}}
-                    <tr class="owner-row" onclick="toggleOwner('{{ $ownerId }}', this)" style="cursor: pointer;">
+                    @foreach($groupedPets as $groupKey => $ownerPets)
+                    @php
+                        $ownerPet = $ownerPets->first();
+                        $ownerId = 'owner-' . $loop->index;
+                        $ownerLabel = $ownerPet->owner_name ?: 'Unknown Owner';
+                        $ownerContact = $ownerPet->owner_contact ?: 'No contact';
+                    @endphp
+                    <tr class="owner-row" data-owner-id="{{ $ownerId }}" onclick="toggleOwner('{{ $ownerId }}')">
                         <td>
                             <div class="owner-name-cell">
-                                <div class="owner-avatar">{{ strtoupper(substr($ownerName ?: 'U', 0, 1)) }}</div>
-                                <div style="font-weight: 700; color: #1e1b4b; font-size: 15px;">{{ $ownerName ?: 'Unknown Owner' }}</div>
+                                <div class="owner-avatar">{{ strtoupper(substr($ownerLabel ?: 'U', 0, 1)) }}</div>
+                                <div>
+                                    <div class="owner-label">{{ $ownerLabel }}</div>
+                                    <div class="owner-row-hint">{{ $ownerPets->count() }} {{ $ownerPets->count() === 1 ? 'pet' : 'pets' }}</div>
+                                </div>
                             </div>
                         </td>
                         <td>
-                            <div class="owner-row-contact">{{ $ownerPets->first()->owner_contact ?: 'No contact on file' }}</div>
+                            <div class="owner-row-contact">{{ $ownerContact }}</div>
                         </td>
                         <td>
                             <span class="pet-count-badge">
@@ -1255,9 +1534,8 @@
                         </td>
                     </tr>
 
-                    {{-- Pet rows (hidden by default) --}}
                     @foreach($ownerPets as $patient)
-                    <tr class="pet-row data-row" data-owner="{{ $ownerId }}">
+                    <tr class="pet-row" data-owner-id="{{ $ownerId }}" data-pet-name="{{ strtolower($patient->pet_name) }}" data-owner-name="{{ strtolower($patient->owner_name ?? '') }}" data-species="{{ $patient->species ?? '' }}" data-has-visit="{{ $patient->visits->first() ? '1' : '0' }}">
                         <td>
                             <div class="pet-name-cell">
                                 <div class="pet-avatar">{{ strtoupper(substr($patient->pet_name ?? 'P', 0, 1)) }}</div>
@@ -1269,7 +1547,7 @@
                         </td>
                         <td>
                             <div class="owner-info">
-                                <div class="owner-label">{{ $patient->owner_name ?: 'Unknown' }}</div>
+                                <div class="owner-label">{{ $patient->owner_name ?: 'Unknown Owner' }}</div>
                                 <div class="owner-sub">{{ $patient->owner_contact ?: 'No contact' }}</div>
                             </div>
                         </td>
@@ -1294,7 +1572,7 @@
                                 <a href="{{ route('pets.edit', $patient) }}" class="action-btn" title="Edit Pet">
                                     <i class="bi bi-pencil"></i>
                                 </a>
-                                <button onclick="event.stopPropagation(); openVisitModal({{ $patient->id }}, '{{ addslashes($patient->pet_name) }}', '{{ $patient->owner_name }}')" class="action-btn" title="Add Visit">
+                                <button type="button" onclick="event.stopPropagation(); openVisitModal({{ $patient->id }}, '{{ addslashes($patient->pet_name) }}', '{{ addslashes($patient->owner_name ?? '') }}')" class="action-btn" title="Add Visit">
                                     <i class="bi bi-plus"></i>
                                 </button>
                             </div>
@@ -1358,13 +1636,12 @@
                         <i class="bi bi-hospital"></i> Add Visit
                     </a>
                 </div>
-            </div>
         </div>
     </div>
 
     <script>
         function toggleOwner(ownerId) {
-            const petRows = document.querySelectorAll(`.pet-row[data-owner="${ownerId}"]`);
+            const petRows = document.querySelectorAll(`.pet-row[data-owner-id="${ownerId}"]`);
             const chevron = document.getElementById(`chevron-${ownerId}`);
             const isOpen = chevron?.classList.contains('open');
 
@@ -1395,23 +1672,23 @@
             const ownerRows = document.querySelectorAll('.owner-row');
 
             ownerRows.forEach(ownerRow => {
-                const ownerMatchText = ownerRow.textContent.toLowerCase();
-                const chevron = ownerRow.querySelector('.chevron');
-                const ownerId = chevron ? chevron.id.replace('chevron-', '') : null;
-                const petRows = ownerId ? document.querySelectorAll(`.pet-row[data-owner="${ownerId}"]`) : [];
-
-                let ownerHasVisiblePets = false;
+                const ownerId = ownerRow.dataset.ownerId;
+                const petRows = document.querySelectorAll(`.pet-row[data-owner-id="${ownerId}"]`);
+                const chevron = document.getElementById(`chevron-${ownerId}`);
+                const filterActive = Boolean(searchTerm || speciesFilter || statusFilter);
+                let visiblePets = 0;
 
                 petRows.forEach(row => {
+                    const petName = row.dataset.petName ?? '';
+                    const ownerName = row.dataset.ownerName ?? '';
+                    const species = row.dataset.species ?? '';
+                    const hasVisit = row.dataset.hasVisit === '1';
+                    const rowText = row.textContent.toLowerCase();
+
                     let show = true;
 
-                    const petName = row.querySelector('.pet-label')?.textContent.toLowerCase() ?? '';
-                    const ownerName = row.querySelector('.owner-label')?.textContent.toLowerCase() ?? '';
-                    const species = row.querySelector('.detail-main')?.textContent.trim() ?? '';
-                    const hasVisit = row.querySelector('.visit-badge') !== null;
-
                     if (searchTerm) {
-                        show = petName.includes(searchTerm) || ownerName.includes(searchTerm) || ownerMatchText.includes(searchTerm);
+                        show = petName.includes(searchTerm) || ownerName.includes(searchTerm) || rowText.includes(searchTerm);
                     }
 
                     if (show && speciesFilter) {
@@ -1422,25 +1699,20 @@
                         show = statusFilter === 'active' ? hasVisit : !hasVisit;
                     }
 
-                    row.style.display = show ? '' : 'none';
+                    row.style.display = filterActive ? (show ? 'table-row' : 'none') : 'none';
+                    row.classList.toggle('visible', filterActive && show);
+
                     if (show) {
-                        ownerHasVisiblePets = true;
+                        visiblePets += 1;
                     }
                 });
 
-                ownerRow.style.display = ownerHasVisiblePets ? '' : 'none';
+                ownerRow.style.display = visiblePets > 0 || !filterActive ? '' : 'none';
 
-                if (!searchTerm && !speciesFilter && !statusFilter) {
-                    petRows.forEach(row => row.style.display = '');
-                    petRows.forEach(row => row.classList.remove('visible'));
+                if (!filterActive) {
                     chevron?.classList.remove('open');
-                } else if (ownerHasVisiblePets) {
-                    petRows.forEach(row => {
-                        if (row.style.display !== 'none') {
-                            row.classList.add('visible');
-                        }
-                    });
-                    chevron?.classList.add('open');
+                } else {
+                    chevron?.classList.toggle('open', visiblePets > 0);
                 }
             });
         }

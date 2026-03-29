@@ -6,6 +6,12 @@
     <title>Edit Pet – {{ $patient->pet_name }}</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
+        :root {
+            --primary: #14b8a6;
+            --primary-strong: #0d9488;
+            --text: #1f2937;
+            --line: #e5e7eb;
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -18,27 +24,29 @@
 
         /* Header */
         .page-header {
-            display: flex;
-            align-items: center;
-            gap: 16px;
             margin-bottom: 28px;
         }
         .btn-back {
-            padding: 9px 18px;
-            background: linear-gradient(135deg, #6b7280, #4b5563);
-            color: white;
-            border: none;
+            padding: 10px 16px;
+            background: white;
+            color: var(--text);
+            border: 1px solid var(--line);
             border-radius: 10px;
+            cursor: pointer;
             font-size: 14px;
-            font-weight: 700;
+            font-weight: 600;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            box-shadow: 0 2px 8px rgba(107,114,128,0.3);
-            transition: all 0.2s;
+            gap: 8px;
+            transition: all 0.2s ease;
+            margin-bottom: 16px;
         }
-        .btn-back:hover { background: linear-gradient(135deg, #4b5563, #374151); transform: translateY(-1px); }
+        .btn-back:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-1px);
+        }
         .page-title { font-size: 26px; font-weight: 800; color: #1e1b4b; }
         .page-sub   { font-size: 13px; color: #6b7280; margin-top: 2px; }
 
@@ -87,13 +95,13 @@
             overflow: hidden;
         }
         .photo-preview img { width: 100%; height: 100%; object-fit: cover; }
-        .photo-placeholder { font-size: 40px; }
+        .photo-placeholder { font-size: 32px; color: #cbd5e1; }
         .photo-upload-info h3 { font-size: 15px; font-weight: 700; color: #111827; margin-bottom: 4px; }
         .photo-upload-info p  { font-size: 13px; color: #6b7280; margin-bottom: 12px; }
         .btn-upload-photo {
             display: inline-flex; align-items: center; gap: 6px;
             padding: 8px 16px;
-            background: #4f46e5;
+            background: #14b8a6;
             color: white;
             border-radius: 8px;
             font-size: 13px;
@@ -102,7 +110,7 @@
             border: none;
             transition: background 0.2s;
         }
-        .btn-upload-photo:hover { background: #4338ca; }
+        .btn-upload-photo:hover { background: #0d9488; }
         #pet_photo { display: none; }
 
         /* Form grid */
@@ -133,8 +141,8 @@
         .form-group select:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: #6366f1;
-            box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
+            border-color: #14b8a6;
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.12);
         }
         .form-group .error-msg {
             font-size: 12px;
@@ -173,7 +181,7 @@
         }
         .btn-save {
             padding: 11px 28px;
-            background: linear-gradient(135deg, #4f46e5, #4338ca);
+            background: linear-gradient(135deg, #14b8a6, #0d9488);
             color: white;
             border: none;
             border-radius: 10px;
@@ -181,10 +189,10 @@
             font-weight: 700;
             cursor: pointer;
             display: inline-flex; align-items: center; gap: 7px;
-            box-shadow: 0 2px 10px rgba(79,70,229,0.35);
+            box-shadow: 0 2px 10px rgba(20, 184, 166, 0.35);
             transition: all 0.2s;
         }
-        .btn-save:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(79,70,229,0.45); }
+        .btn-save:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(20, 184, 166, 0.45); }
         .btn-cancel {
             padding: 11px 22px;
             background: #f3f4f6;
@@ -206,10 +214,8 @@
         <a href="{{ route('pets.show', $patient) }}" class="btn-back">
             <i class="bi bi-arrow-left"></i> Back
         </a>
-        <div>
-            <div class="page-title">Edit Pet Profile</div>
-            <div class="page-sub">Last updated {{ $patient->updated_at->format('M d, Y') }}</div>
-        </div>
+        <div class="page-title">Edit Pet Profile</div>
+        <div class="page-sub">Last updated {{ $patient->updated_at->format('M d, Y') }}</div>
     </div>
 
     @if($errors->any())
@@ -230,7 +236,7 @@
         {{-- ── Pet Photo ── --}}
         <div class="card">
             <div class="card-header">
-                <div class="card-header-icon" style="background: linear-gradient(135deg,#f472b6,#ec4899);">
+                <div class="card-header-icon" style="background: linear-gradient(135deg,#14b8a6,#0d9488);">
                     <i class="bi bi-camera-fill"></i>
                 </div>
                 <strong style="font-size:15px;">Pet Photo</strong>
@@ -240,7 +246,7 @@
                     @if($patient->pet_photo_path)
                         <img id="photoPreviewImg" src="{{ asset('storage/' . $patient->pet_photo_path) }}" alt="Pet photo">
                     @else
-                        <span class="photo-placeholder" id="photoPlaceholder">🐾</span>
+                        <i class="bi bi-image photo-placeholder" id="photoPlaceholder"></i>
                         <img id="photoPreviewImg" src="" alt="" style="display:none;">
                     @endif
                 </div>
@@ -259,7 +265,7 @@
         {{-- ── Pet Information ── --}}
         <div class="card">
             <div class="card-header">
-                <div class="card-header-icon" style="background: linear-gradient(135deg,#34d399,#059669);">
+                <div class="card-header-icon" style="background: linear-gradient(135deg,#14b8a6,#0d9488);">
                     <i class="bi bi-heart-pulse-fill"></i>
                 </div>
                 <strong style="font-size:15px;">Pet Information</strong>
@@ -315,7 +321,7 @@
         {{-- ── Owner Information ── --}}
         <div class="card">
             <div class="card-header">
-                <div class="card-header-icon" style="background: linear-gradient(135deg,#60a5fa,#2563eb);">
+                <div class="card-header-icon" style="background: linear-gradient(135deg,#14b8a6,#0d9488);">
                     <i class="bi bi-person-fill"></i>
                 </div>
                 <strong style="font-size:15px;">Owner Information</strong>
@@ -344,7 +350,7 @@
         {{-- Additional Information --}}
         <div class="card">
             <div class="card-header">
-                <div class="card-header-icon" style="background: linear-gradient(135deg,#a78bfa,#8b5cf6);">
+                <div class="card-header-icon" style="background: linear-gradient(135deg,#14b8a6,#0d9488);">
                     <i class="bi bi-info-circle-fill"></i>
                 </div>
                 <strong style="font-size:15px;">Additional Information</strong>

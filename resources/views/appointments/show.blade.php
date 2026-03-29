@@ -27,15 +27,15 @@
             gap: 8px;
             padding: 10px 16px;
             background: white;
-            border: 1px solid #ddd;
+            border: 1px solid #111827;
             border-radius: 8px;
             text-decoration: none;
-            color: #333;
+            color: #111827;
             margin-bottom: 20px;
             transition: all 0.3s;
         }
         .back-button:hover {
-            background: #f8f9fa;
+            background: #f0fdfa;
             border-color: #14b8a6;
             color: #14b8a6;
         }
@@ -188,7 +188,7 @@
         <i class="bi bi-arrow-left"></i> Back to Appointments
     </a>
     <div class="header">
-        <h1><i class="bi bi-calendar-check"></i> Appointment Details</h1>
+        <h1>Appointment Details</h1>
         <div class="header-actions">
             <a href="{{ route('appointments.edit', $appointment) }}" class="btn btn-primary">
                 <i class="bi bi-pencil"></i> Edit Appointment
@@ -207,7 +207,7 @@
         <!-- Appointment Information -->
         <div class="card">
             <div class="card-header">
-                <h2><i class="bi bi-info-circle"></i> Appointment Information</h2>
+                <h2>Appointment Information</h2>
             </div>
             <div class="card-body">
                 <div class="info-row">
@@ -236,7 +236,7 @@
         <!-- Pet Information -->
         <div class="card">
             <div class="card-header">
-                <h2><i class="bi bi-person"></i> Pet Information</h2>
+                <h2>Pet Information</h2>
             </div>
             <div class="card-body">
                 <div class="info-row">
@@ -269,7 +269,7 @@
         <!-- Chief Complaint & Notes -->
         <div class="card full-width">
             <div class="card-header">
-                <h2><i class="bi bi-chat-left-text"></i> Chief Complaint & Notes</h2>
+                <h2>Chief Complaint & Notes</h2>
             </div>
             <div class="card-body">
                 <div class="info-row">
@@ -285,48 +285,7 @@
             </div>
         </div>
 
-        <!-- Service-Specific Details -->
-        @if($appointment->service_type == 'Immunization' && $appointment->vaccine_name)
-        <div class="card full-width">
-            <div class="card-header">
-                <h2><i class="bi bi-shield-check"></i> Immunization Details</h2>
-            </div>
-            <div class="card-body">
-                <div class="info-row">
-                    <label>Vaccine Name:</label>
-                    <span>{{ $appointment->vaccine_name }}</span>
-                </div>
-                @if($appointment->dose_number)
-                <div class="info-row">
-                    <label>Dose Number:</label>
-                    <span>{{ $appointment->dose_number }}</span>
-                </div>
-                @endif
-            </div>
-        </div>
-        @endif
 
-        @if($appointment->referred_to)
-        <div class="card full-width">
-            <div class="card-header">
-                <h2><i class="bi bi-hospital"></i> Referral Information</h2>
-            </div>
-            <div class="card-body">
-                <div class="info-row">
-                    <label>Referred To:</label>
-                    <span>{{ $appointment->referred_to }}</span>
-                </div>
-                @if($appointment->referral_urgency)
-                <div class="info-row">
-                    <label>Urgency:</label>
-                    <span class="badge badge-{{ $appointment->referral_urgency }}">
-                        {{ ucfirst($appointment->referral_urgency) }}
-                    </span>
-                </div>
-                @endif
-            </div>
-        </div>
-        @endif
     </div>
 </div>
 </body>

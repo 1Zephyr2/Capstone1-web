@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\AppointmentRequest;
 use App\Models\Patient;
 use App\Models\Appointment;
+use App\Models\User;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -71,7 +73,9 @@ class AppointmentRequestController extends Controller
     public function index()
     {
         // Only staff/admin can view all requests
-        if (!Auth::user()->hasStaffAccess()) {
+        /** @var User $user */
+        $user = Auth::user();
+        if (!$user->hasStaffAccess()) {
             abort(403, 'Unauthorized access. Admin or staff privileges required.');
         }
 
@@ -85,15 +89,17 @@ class AppointmentRequestController extends Controller
     /**
      * Show details of a specific request
      */
-    public function show(AppointmentRequest $request)
+    public function show(AppointmentRequest $appointmentRequest)
     {
         // Only staff/admin can view all requests
-        if (!Auth::user()->hasStaffAccess()) {
+        /** @var User $user */
+        $user = Auth::user();
+        if (!$user->hasStaffAccess()) {
             abort(403, 'Unauthorized access. Admin or staff privileges required.');
         }
 
-        $request->load(['user', 'patient', 'approvedBy']);
-        return view('appointment-requests.show', compact('request'));
+        $appointmentRequest->load(['user', 'patient', 'approvedBy']);
+        return view('appointment-requests.show', compact('appointmentRequest'));
     }
 
     /**
@@ -102,7 +108,9 @@ class AppointmentRequestController extends Controller
     public function approve(Request $request, AppointmentRequest $appointmentRequest)
     {
         // Only staff/admin can approve requests
-        if (!Auth::user()->hasStaffAccess()) {
+        /** @var User $user */
+        $user = Auth::user();
+        if (!$user->hasStaffAccess()) {
             abort(403, 'Unauthorized access. Admin or staff privileges required.');
         }
 
@@ -128,6 +136,21 @@ class AppointmentRequestController extends Controller
             'approved_at' => now(),
         ]);
 
+        // Create notification for pet owner
+        Notification::create([
+            'user_id' => $appointmentRequest->user_id,
+            'type' => 'request_approved',
+            'title' => 'Appointment Request Approved! ✓',
+            'message' => "Your appointment request for {$appointmentRequest->patient->pet_name} on {$appointmentRequest->requested_date->format('M d, Y')} at " . \Carbon\Carbon::parse($appointmentRequest->requested_time)->format('g:i A') . " has been approved.",
+            'appointment_request_id' => $appointmentRequest->id,
+            'data' => [
+                'pet_name' => $appointmentRequest->patient->pet_name,
+                'date' => $appointmentRequest->requested_date->format('M d, Y'),
+                'time' => \Carbon\Carbon::parse($appointmentRequest->requested_time)->format('g:i A'),
+                'service_type' => $appointmentRequest->service_type ?? 'General',
+            ],
+        ]);
+
         return back()->with('success', 'Appointment request approved and appointment created!');
     }
 
@@ -137,7 +160,9 @@ class AppointmentRequestController extends Controller
     public function reject(Request $request, AppointmentRequest $appointmentRequest)
     {
         // Only staff/admin can reject requests
-        if (!Auth::user()->hasStaffAccess()) {
+        /** @var User $user */
+        $user = Auth::user();
+        if (!$user->hasStaffAccess()) {
             abort(403, 'Unauthorized access. Admin or staff privileges required.');
         }
 
@@ -158,6 +183,20 @@ class AppointmentRequestController extends Controller
             'rejection_reason' => $request->rejection_reason,
             'approved_by' => Auth::id(),
             'approved_at' => now(),
+        ]);
+
+        // Create notification for pet owner
+        Notification::create([
+            'user_id' => $appointmentRequest->user_id,
+            'type' => 'request_rejected',
+            'title' => 'Appointment Request Declined',
+            'message' => "Your appointment request for {$appointmentRequest->patient->pet_name} on {$appointmentRequest->requested_date->format('M d, Y')} has been declined. Reason: {$request->rejection_reason}",
+            'appointment_request_id' => $appointmentRequest->id,
+            'data' => [
+                'pet_name' => $appointmentRequest->patient->pet_name,
+                'date' => $appointmentRequest->requested_date->format('M d, Y'),
+                'reason' => $request->rejection_reason,
+            ],
         ]);
 
         return back()->with('success', 'Appointment request rejected.');

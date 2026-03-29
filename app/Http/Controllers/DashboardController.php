@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Patient;
 use App\Models\Visit;
 use App\Models\Appointment;
+use App\Models\AppointmentRequest;
 use App\Models\Species;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -66,6 +67,9 @@ class DashboardController extends Controller
                   ->orWhere('owner_name', '');
         })->count();
 
+        // Get pending appointment requests
+        $pendingAppointmentRequests = AppointmentRequest::where('status', 'pending')->count();
+
         // Today's appointments
         $todayAppointments = Appointment::whereDate('appointment_date', now()->toDateString())
             ->where('status', 'scheduled')
@@ -77,10 +81,21 @@ class DashboardController extends Controller
             ->count();
 
         // Total alerts count
-        $totalAlerts = $incompleteRecords + $todayAppointments + $noShowAppointments;
+        $totalAlerts = $incompleteRecords + $todayAppointments + $noShowAppointments + $pendingAppointmentRequests;
 
         // Top alerts for dashboard (limit 4)
         $topAlerts = [];
+
+        if ($pendingAppointmentRequests > 0) {
+            $topAlerts[] = [
+                'type'    => 'info',
+                'icon'    => 'bi-inbox-fill',
+                'title'   => 'Pending Requests',
+                'count'   => $pendingAppointmentRequests,
+                'message' => "$pendingAppointmentRequests appointment request(s) awaiting approval",
+                'route'   => 'appointment-requests.index',
+            ];
+        }
 
         if ($todayAppointments > 0) {
             $topAlerts[] = [

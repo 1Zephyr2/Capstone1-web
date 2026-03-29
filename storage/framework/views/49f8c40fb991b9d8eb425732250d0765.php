@@ -4,21 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Action Hub - PAWser</title>
-    <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('bootstrap-icons/bootstrap-icons.min.css')); ?>">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
         :root {
-            --bg: #f5f7fb;
-            --bg-alt: #eef2ff;
+            --bg: #f8fafc;
+            --bg-alt: #f0f9ff;
             --card: #ffffff;
-            --text: #111827;
+            --text: #0f172a;
             --muted: #6b7280;
             --line: #e5e7eb;
-            --primary: #2563eb;
-            --primary-strong: #1d4ed8;
-            --accent: #16a34a;
-            --accent-strong: #15803d;
+            --primary: #14b8a6;
+            --primary-strong: #0d9488;
+            --accent: #06b6d4;
+            --accent-strong: #0891b2;
             --shadow-sm: 0 4px 14px rgba(15, 23, 42, 0.08);
             --shadow-lg: 0 20px 40px rgba(15, 23, 42, 0.12);
             --radius: 14px;
@@ -30,13 +29,16 @@
         }
 
         body {
-            font-family: 'Manrope', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, var(--bg) 0%, var(--bg-alt) 100%);
-            padding: 40px;
+            padding: 0;
+            padding-top: 72px;
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
             color: var(--text);
+            display: flex;
+            flex-direction: column;
         }
 
         body::before,
@@ -66,6 +68,9 @@
         .container {
             max-width: 1400px;
             margin: 0 auto;
+            padding: 40px 20px;
+            flex: 1;
+            width: 100%;
         }
 
         .header {
@@ -129,8 +134,8 @@
 
         .back-btn {
             background: white;
-            color: var(--text);
-            border: 1px solid var(--line);
+            color: #111827;
+            border: 1px solid #111827;
             padding: 12px 20px;
             border-radius: 10px;
             cursor: pointer;
@@ -147,8 +152,9 @@
         }
 
         .back-btn:hover {
-            border-color: var(--primary);
-            color: var(--primary);
+            background: #f0fdfa;
+            border-color: #14b8a6;
+            color: #14b8a6;
             transform: translateY(-1px);
         }
 
@@ -322,7 +328,8 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
             animation: fadeIn 0.2s ease;
         }
 
@@ -334,49 +341,53 @@
 
         .modal-content {
             background: white;
-            border-radius: 12px;
+            border-radius: 16px;
             width: 90%;
-            max-width: 480px;
+            max-width: 500px;
             max-height: 75vh;
             overflow-y: auto;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             animation: slideUp 0.3s ease;
+            border: none;
         }
 
         .modal-header {
-            background: linear-gradient(135deg, #047857 0%, #059669 100%);
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
             color: white;
-            padding: 14px 18px;
-            border-radius: 12px 12px 0 0;
+            padding: 24px;
+            border-radius: 16px 16px 0 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.2);
         }
 
         .modal-header h2 {
             margin: 0;
-            font-size: 17px;
+            font-size: 20px;
             font-weight: 700;
+            letter-spacing: -0.01em;
         }
 
         .modal-close {
             background: rgba(255, 255, 255, 0.2);
             border: none;
             color: white;
-            font-size: 22px;
+            font-size: 24px;
             cursor: pointer;
-            width: 28px;
-            height: 28px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.2s ease;
+            font-weight: 600;
         }
 
         .modal-close:hover {
             background: rgba(255, 255, 255, 0.3);
-            transform: rotate(90deg);
+            transform: scale(1.1);
         }
 
         .modal-body {
@@ -384,21 +395,27 @@
         }
 
         .patient-detail-row {
-            padding: 10px 12px;
-            margin-bottom: 8px;
-            background: #f9fafb;
-            border-radius: 6px;
-            border-left: 3px solid #047857;
+            padding: 12px 14px;
+            margin-bottom: 10px;
+            background: #f0fdf9;
+            border-radius: 8px;
+            border-left: 4px solid #14b8a6;
+            transition: all 0.2s ease;
+        }
+
+        .patient-detail-row:hover {
+            background: #e0fdf8;
+            border-left-color: #0d9488;
         }
 
         .patient-detail-row label {
             display: block;
-            font-size: 10px;
-            color: #6b7280;
+            font-size: 11px;
+            color: #0d9488;
             text-transform: uppercase;
-            letter-spacing: 0.3px;
-            margin-bottom: 3px;
-            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+            font-weight: 700;
         }
 
         .patient-detail-row .value {
@@ -431,14 +448,13 @@
         }
 
         .modal-btn-primary {
-            background: #047857;
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
             color: white;
         }
 
         .modal-btn-primary:hover {
-            background: #059669;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(4, 120, 87, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(20, 184, 166, 0.35);
         }
 
         .modal-btn-secondary {
@@ -471,13 +487,308 @@
         .alert-item {
             cursor: pointer;
         }
+
+        /* Top Navigation Bar */
+        .navbar {
+            background: #1e293b;
+            color: white;
+            padding: 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1001;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            align-items: center;
+            height: 72px;
+        }
+
+        .navbar i.bi {
+            font-family: bootstrap-icons;
+        }
+
+        .navbar-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0 24px;
+            gap: 24px;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .navbar-brand:hover {
+            opacity: 0.8;
+            transform: translateY(-2px);
+        }
+
+        .navbar-logo {
+            height: 40px;
+            width: 40px;
+            object-fit: contain;
+        }
+
+        .navbar-brand-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .navbar-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .navbar-subtitle {
+            font-size: 11px;
+            opacity: 0.8;
+            margin: 0;
+        }
+
+        .navbar-menu {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .navbar-item {
+            padding: 8px 14px;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 13px;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .navbar-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .navbar-item.active {
+            background: rgba(20, 184, 166, 0.15);
+            color: #14b8a6;
+            border-bottom: 2px solid #14b8a6;
+        }
+
+        .navbar-end {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-shrink: 0;
+        }
+
+        .navbar-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-avatar:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.08);
+        }
+
+        .navbar-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .navbar-user-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .navbar-user-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .navbar-user-role {
+            font-size: 11px;
+            opacity: 0.7;
+        }
+
+        .navbar-profile-btn {
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+        }
+
+        .navbar-profile-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .navbar-logout-btn {
+            padding: 6px 12px;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .navbar-logout-btn:hover {
+            background: rgba(239, 68, 68, 0.25);
+            border-color: rgba(239, 68, 68, 0.5);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .navbar-menu {
+                gap: 4px;
+            }
+
+            .navbar-item {
+                padding: 6px 10px;
+                font-size: 12px;
+                gap: 4px;
+            }
+
+            .navbar-item span {
+                display: none;
+            }
+
+            .navbar-user-text {
+                display: none;
+            }
+
+            .navbar-container {
+                padding: 0 12px;
+                gap: 12px;
+            }
+
+            .navbar-item i {
+                font-size: 18px;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="page-actions">
-            <a href="{{ route('dashboard') }}" class="back-btn">← Back to Dashboard</a>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="<?php echo e(route('dashboard')); ?>" class="navbar-brand">
+                <img src="<?php echo e(asset('newlogo.png')); ?>" alt="PAWser" class="navbar-logo" onerror="this.style.display='none'">
+                <div class="navbar-brand-text">
+                    <p class="navbar-title">PAWser</p>
+                    <p class="navbar-subtitle">Staff Dashboard</p>
+                </div>
+            </a>
+            <div class="navbar-menu">
+                <a href="<?php echo e(route('dashboard')); ?>" class="navbar-item <?php echo e(request()->routeIs('dashboard') ? 'active' : ''); ?>">
+                    <i class="bi bi-speedometer2"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="<?php echo e(route('pets.index')); ?>" class="navbar-item <?php echo e(request()->routeIs('pets.*') ? 'active' : ''); ?>">
+                    <i class="bi bi-heart-fill"></i>
+                    <span>Pets</span>
+                </a>
+                <a href="<?php echo e(route('appointments.index')); ?>" class="navbar-item <?php echo e(request()->routeIs('appointments.*') ? 'active' : ''); ?>">
+                    <i class="bi bi-calendar-check"></i>
+                    <span>Appointments</span>
+                </a>
+                <?php if(Auth::user()->hasStaffAccess()): ?>
+                <a href="<?php echo e(route('appointment-requests.index')); ?>" class="navbar-item <?php echo e(request()->routeIs('appointment-requests.*') ? 'active' : ''); ?>">
+                    <i class="bi bi-inbox-fill"></i>
+                    <span>Requests</span>
+                </a>
+                <?php endif; ?>
+                <a href="<?php echo e(route('visits.today')); ?>" class="navbar-item <?php echo e(request()->routeIs('visits.*') ? 'active' : ''); ?>">
+                    <i class="bi bi-clock-history"></i>
+                    <span>Visits</span>
+                </a>
+                <?php if(Auth::user()->hasStaffAccess()): ?>
+                <a href="<?php echo e(route('analytics.index')); ?>" class="navbar-item <?php echo e(request()->routeIs('analytics.*') ? 'active' : ''); ?>">
+                    <i class="bi bi-graph-up-arrow"></i>
+                    <span>Insights</span>
+                </a>
+                <a href="<?php echo e(route('automation.support')); ?>" class="navbar-item <?php echo e(request()->routeIs('automation.*') ? 'active' : ''); ?>">
+                    <i class="bi bi-cpu"></i>
+                    <span>Actions</span>
+                </a>
+                <?php endif; ?>
+            </div>
+            <div class="navbar-end">
+                <div class="navbar-user">
+                    <?php if(Auth::user()->profile_picture): ?>
+                        <div class="navbar-avatar">
+                            <img src="<?php echo e(asset('storage/' . Auth::user()->profile_picture)); ?>" alt="<?php echo e(Auth::user()->name); ?>">
+                        </div>
+                    <?php else: ?>
+                        <div class="navbar-avatar">
+                            <i class="bi bi-person-fill" style="font-size: 18px;"></i>
+                        </div>
+                    <?php endif; ?>
+                    <div class="navbar-user-text">
+                        <div class="navbar-user-name"><?php echo e(Auth::user()->name); ?></div>
+                        <div class="navbar-user-role"><?php echo e(Auth::user()->role_name ?? ucfirst(Auth::user()->role)); ?></div>
+                    </div>
+                </div>
+                <a href="<?php echo e(route('profile.show')); ?>" class="navbar-profile-btn" title="My Profile">
+                    <i class="bi bi-person-circle"></i>
+                </a>
+                <form action="<?php echo e(route('logout')); ?>" method="POST" style="display: inline;">
+                    <?php echo csrf_field(); ?>
+                    <button type="submit" class="navbar-logout-btn" title="Logout">
+                        <i class="bi bi-box-arrow-right"></i>
+                    </button>
+                </form>
+            </div>
         </div>
+    </nav>
+    <div class="container">
         <div class="header">
             <h1>
                 Action Hub
@@ -492,23 +803,23 @@
         <div class="stats-grid">
             <div class="stat-card">
                 <h3>Total Pets</h3>
-                <div class="number">{{ $stats['total_patients'] }}</div>
+                <div class="number"><?php echo e($stats['total_patients']); ?></div>
             </div>
             <div class="stat-card" style="border-top-color:#f59e0b;">
                 <h3>Today's Appointments</h3>
-                <div class="number" style="color:#d97706;">{{ $stats['today_appointments'] }}</div>
+                <div class="number" style="color:#d97706;"><?php echo e($stats['today_appointments']); ?></div>
             </div>
             <div class="stat-card" style="border-top-color:#8b5cf6;">
                 <h3>Upcoming (7 Days)</h3>
-                <div class="number" style="color:#7c3aed;">{{ $stats['upcoming_week'] }}</div>
+                <div class="number" style="color:#7c3aed;"><?php echo e($stats['upcoming_week']); ?></div>
             </div>
             <div class="stat-card" style="border-top-color:#ef4444;">
                 <h3>No-Shows (7 Days)</h3>
-                <div class="number" style="color:#dc2626;">{{ $stats['no_shows'] }}</div>
+                <div class="number" style="color:#dc2626;"><?php echo e($stats['no_shows']); ?></div>
             </div>
             <div class="stat-card">
                 <h3>Visits This Week</h3>
-                <div class="number">{{ $stats['visits_this_week'] }}</div>
+                <div class="number"><?php echo e($stats['visits_this_week']); ?></div>
             </div>
         </div>
 
@@ -516,78 +827,88 @@
         <div class="alerts-grid">
             <!-- Incomplete Records -->
             <div class="alert-card">
-                <h2><i class="bi bi-exclamation-triangle-fill"></i> Incomplete Pet Records<span class="badge warning">{{ $incompleteRecords->count() }}</span></h2>
-                @forelse($incompleteRecords as $patient)
-                    <div class="alert-item" onclick="showPatientModal({{ json_encode($patient) }}, 'incomplete')">
-                        <strong>{{ $patient->pet_name ?? $patient->full_name }} ({{ $patient->patient_id }})</strong>
+                <h2>Incomplete Pet Records<span class="badge warning"><?php echo e($incompleteRecords->count()); ?></span></h2>
+                <?php $__empty_1 = true; $__currentLoopData = $incompleteRecords; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $patient): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                    <div class="alert-item" onclick="showPatientModal(<?php echo e(json_encode($patient)); ?>, 'incomplete')">
+                        <strong><?php echo e($patient->pet_name ?? $patient->full_name); ?> (<?php echo e($patient->patient_id); ?>)</strong>
                         <small>
                             Missing:
-                            @if(!$patient->owner_name) <span style="color:#ef4444;">Owner Name</span> @endif
-                            @if(!$patient->owner_contact) <span style="color:#ef4444;">Owner Contact</span> @endif
+                            <?php if(!$patient->owner_name): ?> <span style="color:#ef4444;">Owner Name</span> <?php endif; ?>
+                            <?php if(!$patient->owner_contact): ?> <span style="color:#ef4444;">Owner Contact</span> <?php endif; ?>
                         </small>
                     </div>
-                @empty
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                     <div class="empty-state">All pet records are complete.</div>
-                @endforelse
+                <?php endif; ?>
             </div>
 
             <!-- Today's Appointments -->
             <div class="alert-card" style="border-left-color:#f59e0b;">
-                <h2 style="color:#d97706;"><i class="bi bi-calendar-check-fill"></i> Today's Appointments<span class="badge warning">{{ $todayAppointments->count() }}</span></h2>
-                @forelse($todayAppointments as $appt)
-                    <div class="alert-item {{ $appt->status === 'completed' ? 'success' : ($appt->status === 'cancelled' ? '' : '') }}"
-                         style="border-left-color: {{ $appt->status === 'completed' ? '#10b981' : ($appt->status === 'cancelled' ? '#6b7280' : '#f59e0b') }}; background: {{ $appt->status === 'completed' ? '#ecfdf5' : ($appt->status === 'cancelled' ? '#f9fafb' : '#fffbeb') }};">
-                        <strong>{{ $appt->patient->owner_name ?? 'Unknown Owner' }} &mdash; {{ $appt->patient->pet_name }}</strong>
+                <h2 style="color:#d97706;"><i class="bi bi-calendar-check-fill"></i> Today's Appointments<span class="badge warning"><?php echo e($todayAppointments->count()); ?></span></h2>
+                <?php $__empty_1 = true; $__currentLoopData = $todayAppointments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $appt): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                    <div class="alert-item <?php echo e($appt->status === 'completed' ? 'success' : ($appt->status === 'cancelled' ? '' : '')); ?>"
+                         style="border-left-color: <?php echo e($appt->status === 'completed' ? '#10b981' : ($appt->status === 'cancelled' ? '#6b7280' : '#f59e0b')); ?>; background: <?php echo e($appt->status === 'completed' ? '#ecfdf5' : ($appt->status === 'cancelled' ? '#f9fafb' : '#fffbeb')); ?>;">
+                        <strong><?php echo e($appt->patient->owner_name ?? 'Unknown Owner'); ?> &mdash; <?php echo e($appt->patient->pet_name); ?></strong>
                         <small>
-                            <i class="bi bi-clock"></i> {{ \Carbon\Carbon::parse($appt->appointment_time)->format('g:i A') }}
-                            &nbsp;&bull;&nbsp; {{ $appt->service_type }}
-                            &nbsp;&bull;&nbsp; <span style="text-transform:capitalize;">{{ $appt->status }}</span>
-                            @if($appt->chief_complaint)
-                                <br><i class="bi bi-chat-dots"></i> {{ $appt->chief_complaint }}
-                            @endif
+                            <i class="bi bi-clock"></i> <?php echo e(\Carbon\Carbon::parse($appt->appointment_time)->format('g:i A')); ?>
+
+                            &nbsp;&bull;&nbsp; <?php echo e($appt->service_type); ?>
+
+                            &nbsp;&bull;&nbsp; <span style="text-transform:capitalize;"><?php echo e($appt->status); ?></span>
+                            <?php if($appt->chief_complaint): ?>
+                                <br><i class="bi bi-chat-dots"></i> <?php echo e($appt->chief_complaint); ?>
+
+                            <?php endif; ?>
                         </small>
                     </div>
-                @empty
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                     <div class="empty-state"><i class="bi bi-calendar2-x" style="font-size:28px;display:block;margin-bottom:8px;"></i>No appointments scheduled for today.</div>
-                @endforelse
+                <?php endif; ?>
             </div>
 
             <!-- Upcoming Appointments (next 7 days) -->
             <div class="alert-card" style="border-left-color:#8b5cf6;">
-                <h2 style="color:#7c3aed;"><i class="bi bi-calendar-week-fill"></i> Upcoming This Week<span class="badge" style="background:#ede9fe;color:#5b21b6;">{{ $upcomingAppointments->count() }}</span></h2>
-                @forelse($upcomingAppointments as $appt)
+                <h2 style="color:#7c3aed;"><i class="bi bi-calendar-week-fill"></i> Upcoming This Week<span class="badge" style="background:#ede9fe;color:#5b21b6;"><?php echo e($upcomingAppointments->count()); ?></span></h2>
+                <?php $__empty_1 = true; $__currentLoopData = $upcomingAppointments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $appt): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                     <div class="alert-item info">
-                        <strong>{{ $appt->patient->owner_name ?? 'Unknown Owner' }} &mdash; {{ $appt->patient->pet_name }}</strong>
+                        <strong><?php echo e($appt->patient->owner_name ?? 'Unknown Owner'); ?> &mdash; <?php echo e($appt->patient->pet_name); ?></strong>
                         <small>
-                            <i class="bi bi-calendar"></i> {{ $appt->appointment_date->format('M d, Y') }}
-                            &nbsp;&bull;&nbsp; <i class="bi bi-clock"></i> {{ \Carbon\Carbon::parse($appt->appointment_time)->format('g:i A') }}
-                            <br><i class="bi bi-scissors"></i> {{ $appt->service_type }}
+                            <i class="bi bi-calendar"></i> <?php echo e($appt->appointment_date->format('M d, Y')); ?>
+
+                            &nbsp;&bull;&nbsp; <i class="bi bi-clock"></i> <?php echo e(\Carbon\Carbon::parse($appt->appointment_time)->format('g:i A')); ?>
+
+                            <br><i class="bi bi-scissors"></i> <?php echo e($appt->service_type); ?>
+
                         </small>
                     </div>
-                @empty
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                     <div class="empty-state"><i class="bi bi-calendar2-check" style="font-size:28px;display:block;margin-bottom:8px;"></i>No upcoming appointments this week.</div>
-                @endforelse
+                <?php endif; ?>
             </div>
 
             <!-- Missed / No-Show Appointments -->
             <div class="alert-card" style="border-left-color:#ef4444;">
-                <h2 style="color:#dc2626;"><i class="bi bi-person-x-fill"></i> No-Shows &amp; Missed (7 Days)<span class="badge danger">{{ $missedAppointments->count() }}</span></h2>
-                @forelse($missedAppointments as $appt)
+                <h2 style="color:#dc2626;"><i class="bi bi-person-x-fill"></i> No-Shows &amp; Missed (7 Days)<span class="badge danger"><?php echo e($missedAppointments->count()); ?></span></h2>
+                <?php $__empty_1 = true; $__currentLoopData = $missedAppointments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $appt): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                     <div class="alert-item danger">
-                        <strong>{{ $appt->patient->owner_name ?? 'Unknown Owner' }} &mdash; {{ $appt->patient->pet_name }}</strong>
+                        <strong><?php echo e($appt->patient->owner_name ?? 'Unknown Owner'); ?> &mdash; <?php echo e($appt->patient->pet_name); ?></strong>
                         <small>
-                            <i class="bi bi-calendar"></i> {{ $appt->appointment_date->format('M d, Y') }}
-                            &nbsp;&bull;&nbsp; {{ $appt->service_type }}
-                            @if($appt->secondary_contact_name)
-                                <br><i class="bi bi-telephone"></i> Secondary: {{ $appt->secondary_contact_name }} {{ $appt->secondary_contact_number }}
-                            @elseif($appt->patient->owner_contact)
-                                <br><i class="bi bi-telephone"></i> {{ $appt->patient->owner_contact }}
-                            @endif
+                            <i class="bi bi-calendar"></i> <?php echo e($appt->appointment_date->format('M d, Y')); ?>
+
+                            &nbsp;&bull;&nbsp; <?php echo e($appt->service_type); ?>
+
+                            <?php if($appt->secondary_contact_name): ?>
+                                <br><i class="bi bi-telephone"></i> Secondary: <?php echo e($appt->secondary_contact_name); ?> <?php echo e($appt->secondary_contact_number); ?>
+
+                            <?php elseif($appt->patient->owner_contact): ?>
+                                <br><i class="bi bi-telephone"></i> <?php echo e($appt->patient->owner_contact); ?>
+
+                            <?php endif; ?>
                         </small>
                     </div>
-                @empty
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                     <div class="empty-state success"><i class="bi bi-check-circle-fill" style="font-size:28px;display:block;margin-bottom:8px;"></i>No missed appointments in the last 7 days.</div>
-                @endforelse
+                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -691,7 +1012,7 @@
             }
             
             modalBody.innerHTML = content;
-            viewBtn.href = '/patients/' + patient.id;
+            viewBtn.href = '/pets/' + patient.id;
             
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -740,3 +1061,4 @@
     </script>
 </body>
 </html>
+<?php /**PATH C:\Users\Lei\Capstone1-web\resources\views/action-hub.blade.php ENDPATH**/ ?>

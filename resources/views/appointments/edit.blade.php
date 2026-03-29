@@ -27,15 +27,15 @@
             gap: 8px;
             padding: 10px 16px;
             background: white;
-            border: 1px solid #ddd;
+            border: 1px solid #111827;
             border-radius: 8px;
             text-decoration: none;
-            color: #333;
+            color: #111827;
             margin-bottom: 20px;
             transition: all 0.3s;
         }
         .back-button:hover {
-            background: #f8f9fa;
+            background: #f0fdfa;
             border-color: #14b8a6;
             color: #14b8a6;
         }
@@ -197,7 +197,7 @@
         <i class="bi bi-arrow-left"></i> Back to Appointment
     </a>
     <div class="header">
-        <h1><i class="bi bi-pencil-square"></i> Edit Appointment</h1>
+        <h1>Edit Appointment</h1>
     </div>
 
     @if ($errors->any())
@@ -218,7 +218,7 @@
         <!-- Pet Information -->
         <div class="form-card">
             <div class="card-header">
-                <h2><i class="bi bi-paw"></i> Pet Information</h2>
+                <h2>Pet Information</h2>
             </div>
             <div class="card-body">
                 <div class="form-row">
@@ -237,7 +237,7 @@
         <!-- Appointment Details -->
         <div class="form-card">
             <div class="card-header">
-                <h2><i class="bi bi-calendar-check"></i> Appointment Details</h2>
+                <h2>Appointment Details</h2>
             </div>
             <div class="card-body">
                 <div class="form-row">
@@ -315,7 +315,7 @@
         <!-- Secondary Contact -->
         <div class="form-card">
             <div class="card-header">
-                <h2><i class="bi bi-person-check"></i> Pickup / Secondary Contact (Optional)</h2>
+                <h2>Pickup / Secondary Contact (Optional)</h2>
             </div>
             <div class="card-body secondary">
                 <div class="form-row">
@@ -335,61 +335,15 @@
             </div>
         </div>
 
-        <!-- Service-Specific Fields -->
-        @if($appointment->service_type == 'Immunization' || in_array($appointment->service_type, ['Bath & Dry', 'Full Grooming']))
-        <div id="vaccination-fields" class="form-card">
-            <div class="card-header">
-                <h2><i class="bi bi-shield-check"></i> Vaccination Details</h2>
-            </div>
-            <div class="card-body">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="vaccine_name">Vaccine Name</label>
-                        <input type="text" name="vaccine_name" id="vaccine_name" class="form-control" 
-                               value="{{ old('vaccine_name', $appointment->vaccine_name) }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="dose_number">Dose Number</label>
-                        <input type="number" name="dose_number" id="dose_number" class="form-control" min="1" 
-                               value="{{ old('dose_number', $appointment->dose_number) }}">
-                    </div>
-                </div>
-            </div>
-        </div>
-        @endif
 
-        @if($appointment->referred_to)
-        <div id="referral-fields" class="form-card">
-            <div class="card-header">
-                <h2><i class="bi bi-hospital"></i> Referral Details</h2>
-            </div>
-            <div class="card-body">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="referred_to">Referred To</label>
-                        <input type="text" name="referred_to" id="referred_to" class="form-control" 
-                               value="{{ old('referred_to', $appointment->referred_to) }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="referral_urgency">Urgency</label>
-                        <select name="referral_urgency" id="referral_urgency" class="form-control">
-                            <option value="">Select Urgency</option>
-                            <option value="routine" {{ old('referral_urgency', $appointment->referral_urgency) == 'routine' ? 'selected' : '' }}>Routine</option>
-                            <option value="urgent" {{ old('referral_urgency', $appointment->referral_urgency) == 'urgent' ? 'selected' : '' }}>Urgent</option>
-                            <option value="emergency" {{ old('referral_urgency', $appointment->referral_urgency) == 'emergency' ? 'selected' : '' }}>Emergency</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-        @endif
+
 
         <div class="form-actions">
             <button type="submit" class="btn btn-primary">
-                <i class="bi bi-check-circle"></i> Update Appointment
+                Update Appointment
             </button>
             <a href="{{ route('appointments.show', $appointment) }}" class="btn btn-secondary">
-                <i class="bi bi-x-circle"></i> Cancel
+                Cancel
             </a>
         </div>
     </form>

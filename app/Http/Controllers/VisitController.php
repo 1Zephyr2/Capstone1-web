@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Visit;
+use App\Models\VisitPhoto;
 use App\Models\Patient;
-use App\Models\VitalSign;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class VisitController extends Controller
 {
@@ -16,7 +17,7 @@ class VisitController extends Controller
      */
     public function index()
     {
-        $query = Visit::with(['patient', 'vitalSigns']);
+        $query = Visit::with(['patient']);
 
         // Search by patient name or ID
         if (request('search')) {
@@ -71,27 +72,20 @@ class VisitController extends Controller
     {
         $request->validate([
             'patient_id' => 'required|exists:patients,id',
-            'service_type' => 'required|in:Bath & Dry,Full Grooming,Haircut & Styling,Nail Trimming,Ear Cleaning,Teeth Brushing,De-shedding Treatment,Flea & Tick Treatment,Paw Treatment,Boarding Checkup,Follow-up,Other,Wellness Exam,Vaccination,Surgery,Dental Cleaning,Emergency,Grooming,Diagnostics,Spay/Neuter,General Checkup,Immunization',
-            'chief_complaint' => 'nullable|string',
-            'notes' => 'nullable|string',
+            'service_type' => 'required|in:Bath & Dry,Full Grooming,Haircut & Styling,Nail Trimming,Ear Cleaning,Teeth Brushing,De-shedding Treatment,Flea & Tick Treatment,Paw Treatment,Boarding Checkup,Follow-up,Other',
             'health_worker' => 'nullable|string|max:255',
-            'visit_date' => 'nullable|date',
-            'visit_time_input' => 'nullable|date_format:H:i',
-            // Vital signs
-            'blood_pressure' => 'nullable|string|max:20',
-            'temperature' => 'nullable|numeric|min:30|max:45',
-            'pulse_rate' => 'nullable|numeric|min:30|max:200',
-            'weight' => 'nullable|numeric|min:0|max:500',
-            'height' => 'nullable|numeric|min:0|max:300',
-            // Immunization fields
-            'vaccine_name' => 'required_if:service_type,Vaccination,Immunization|nullable|string|max:255',
-            'dose_number' => 'required_if:service_type,Vaccination,Immunization|nullable|string|max:50',
-            'batch_number' => 'nullable|string|max:100',
-            'next_dose_date' => 'nullable|date',
-            // Referral fields
-            'referred_to' => 'required_if:service_type,Follow-up,Referral|nullable|string|max:255',
-            'referral_reason' => 'required_if:service_type,Follow-up,Referral|nullable|string|max:255',
-            'referral_urgency' => 'nullable|in:Routine,Urgent,Emergency',
+            'coat_condition' => 'nullable|string',
+            'behavior' => 'nullable|string',
+            'grooming_notes' => 'nullable|string',
+            'flea_tick_product' => 'nullable|string',
+            'flea_tick_area' => 'nullable|string',
+            'nail_condition_before' => 'nullable|string',
+            'nail_condition_after' => 'nullable|string',
+            'dental_notes' => 'nullable|string',
+            'shedding_amount' => 'nullable|string',
+            'hair_removed' => 'nullable|string',
+            'boarding_observations' => 'nullable|string',
+            'visit_photos.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
         ]);
 
         DB::beginTransaction();
@@ -100,79 +94,33 @@ class VisitController extends Controller
             $visitData = $request->only([
                 'patient_id',
                 'service_type',
-                'chief_complaint',
                 'health_worker',
+                'coat_condition',
+                'behavior',
+                'grooming_notes',
+                'flea_tick_product',
+                'flea_tick_area',
+                'nail_condition_before',
+                'nail_condition_after',
+                'dental_notes',
+                'shedding_amount',
+                'hair_removed',
+                'boarding_observations',
             ]);
-            
-            // Build comprehensive notes from all sources
-            $allNotes = [];
-            if ($request->filled('notes')) {
-                $allNotes[] = $request->notes;
-            }
-            
-            // Add service-specific data to notes
-            if (in_array($request->service_type, ['Vaccination', 'Immunization'])) {
-                $immunizationNotes = [
-                    "Vaccine: {$request->vaccine_name}",
-                    "Dose: {$request->dose_number}"
-                ];
-                if ($request->filled('batch_number')) {
-                    $immunizationNotes[] = "Batch: {$request->batch_number}";
-                }
-                if ($request->filled('next_dose_date')) {
-                    $immunizationNotes[] = "Next Dose: {$request->next_dose_date}";
-                }
-                $allNotes[] = "IMMUNIZATION:\n" . implode("\n", $immunizationNotes);
-            }
-            
-            // Prenatal support removed - not applicable to veterinary services
-            
-            // Family Planning support removed - not applicable to veterinary services
-            
-            if (in_array($request->service_type, ['Follow-up', 'Referral'])) {
-                $referralNotes = [
-                    "Referred To: {$request->referred_to}",
-                    "Reason: {$request->referral_reason}"
-                ];
-                if ($request->filled('referral_urgency')) {
-                    $referralNotes[] = "Urgency: {$request->referral_urgency}";
-                }
-                $allNotes[] = "REFERRAL:\n" . implode("\n", $referralNotes);
-            }
-            
-            $visitData['notes'] = implode("\n\n", $allNotes);
-            
-            // Handle custom visit time if provided
-            if ($request->filled('visit_date') && $request->filled('visit_time_input')) {
-                $visitData['visit_time'] = $request->visit_date . ' ' . $request->visit_time_input;
-            }
             
             // Create visit
             $visit = Visit::create($visitData);
 
-            // Create vital signs if any provided
-            if ($request->filled(['blood_pressure', 'temperature', 'pulse_rate', 'weight', 'height'])) {
-                VitalSign::create([
-                    'visit_id' => $visit->id,
-                    'blood_pressure' => $request->blood_pressure,
-                    'temperature' => $request->temperature,
-                    'pulse_rate' => $request->pulse_rate,
-                    'weight' => $request->weight,
-                    'height' => $request->height,
-                ]);
-            }
-            
-            // Create immunization record if service is immunization
-            if ($request->service_type === 'Vaccination') {
-                \App\Models\Immunization::create([
-                    'patient_id' => $request->patient_id,
-                    'vaccine_name' => $request->vaccine_name,
-                    'dose_number' => $request->dose_number,
-                    'date_given' => $visitData['visit_time'] ?? now(),
-                    'next_dose_date' => $request->next_dose_date,
-                    'administered_by' => $request->health_worker,
-                    'notes' => $request->filled('batch_number') ? "Batch: {$request->batch_number}" : null,
-                ]);
+            // Handle photo uploads
+            if ($request->hasFile('visit_photos')) {
+                foreach ($request->file('visit_photos') as $photo) {
+                    $path = $photo->store('visits', 'public');
+                    VisitPhoto::create([
+                        'visit_id' => $visit->id,
+                        'photo_path' => $path,
+                        'original_name' => $photo->getClientOriginalName(),
+                    ]);
+                }
             }
 
             DB::commit();
@@ -188,11 +136,49 @@ class VisitController extends Controller
     }
 
     /**
+     * Get visit details via AJAX for modal display
+     */
+    public function getDetails(Visit $visit)
+    {
+        $visit->load('patient', 'photos');
+        
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'id' => $visit->id,
+                'service_type' => $visit->service_type,
+                'visit_date' => $visit->visit_date->format('M d, Y'),
+                'visit_time' => $visit->visit_time ?? 'N/A',
+                'pet_name' => $visit->patient->pet_name,
+                'owner_name' => $visit->patient->owner_name,
+                'health_worker' => $visit->health_worker,
+                'coat_condition' => $visit->coat_condition,
+                'behavior' => $visit->behavior,
+                'grooming_notes' => $visit->grooming_notes,
+                'flea_tick_product' => $visit->flea_tick_product,
+                'flea_tick_area' => $visit->flea_tick_area,
+                'nail_condition_before' => $visit->nail_condition_before,
+                'nail_condition_after' => $visit->nail_condition_after,
+                'dental_notes' => $visit->dental_notes,
+                'shedding_amount' => $visit->shedding_amount,
+                'hair_removed' => $visit->hair_removed,
+                'boarding_observations' => $visit->boarding_observations,
+                'photos' => $visit->photos->map(function($photo) {
+                    return [
+                        'url' => Storage::url($photo->photo_path),
+                        'name' => $photo->original_name,
+                    ];
+                }),
+            ]
+        ]);
+    }
+
+    /**
      * Display the specified visit
      */
     public function show(Visit $visit)
     {
-        $visit->load(['patient', 'vitalSigns']);
+        $visit->load(['patient']);
         return view('visits.show', compact('visit'));
     }
 
@@ -201,7 +187,6 @@ class VisitController extends Controller
      */
     public function edit(Visit $visit)
     {
-        $visit->load('vitalSigns');
         return view('visits.edit', compact('visit'));
     }
 
@@ -211,16 +196,10 @@ class VisitController extends Controller
     public function update(Request $request, Visit $visit)
     {
         $request->validate([
-            'service_type' => 'required|in:Bath & Dry,Full Grooming,Haircut & Styling,Nail Trimming,Ear Cleaning,Teeth Brushing,De-shedding Treatment,Flea & Tick Treatment,Paw Treatment,Boarding Checkup,Follow-up,Other,Wellness Exam,Vaccination,Surgery,Dental Cleaning,Emergency,Grooming,Diagnostics,Spay/Neuter,General Checkup,Immunization',
+            'service_type' => 'required|in:Bath & Dry,Full Grooming,Haircut & Styling,Nail Trimming,Ear Cleaning,Teeth Brushing,De-shedding Treatment,Flea & Tick Treatment,Paw Treatment,Boarding Checkup,Follow-up,Other',
             'chief_complaint' => 'nullable|string',
             'notes' => 'nullable|string',
             'health_worker' => 'nullable|string|max:255',
-            // Vital signs
-            'blood_pressure' => 'nullable|string|max:20',
-            'temperature' => 'nullable|numeric|min:30|max:45',
-            'pulse_rate' => 'nullable|numeric|min:30|max:200',
-            'weight' => 'nullable|numeric|min:0|max:500',
-            'height' => 'nullable|numeric|min:0|max:300',
         ]);
 
         DB::beginTransaction();
@@ -231,26 +210,6 @@ class VisitController extends Controller
                 'notes',
                 'health_worker',
             ]));
-
-            // Update or create vital signs
-            if ($visit->vitalSigns) {
-                $visit->vitalSigns->update($request->only([
-                    'blood_pressure',
-                    'temperature',
-                    'pulse_rate',
-                    'weight',
-                    'height',
-                ]));
-            } else {
-                VitalSign::create([
-                    'visit_id' => $visit->id,
-                    'blood_pressure' => $request->blood_pressure,
-                    'temperature' => $request->temperature,
-                    'pulse_rate' => $request->pulse_rate,
-                    'weight' => $request->weight,
-                    'height' => $request->height,
-                ]);
-            }
 
             DB::commit();
 
@@ -292,7 +251,7 @@ class VisitController extends Controller
     {
         $date = $request->get('date');
         
-        $visits = Visit::with(['patient', 'vitalSigns'])
+        $visits = Visit::with(['patient'])
             ->whereDate('visit_date', $date)
             ->orderBy('visit_time', 'asc')
             ->get();

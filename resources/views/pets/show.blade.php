@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $patient->full_name }} - Patient Profile</title>
+    <title>{{ $patient->pet_name ?? $patient->full_name }} - Pet Profile</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
@@ -11,132 +11,370 @@
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
-            padding: 20px;
+            background: #f8fafc;
+            padding: 24px;
             min-height: 100vh;
         }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .header-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            gap: 12px;
-        }
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 14px;
-        }
-        .btn-back {
-            padding: 10px 20px;
-            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+
+        .main-content {
+
+        .pet-header {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+            border-radius: 12px;
+            padding: 24px;
             color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 700;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            justify-content: space-between;
+        }
+
+        .pet-header-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex: 1;
+        }
+
+        .pet-icon-large {
+            font-size: 60px;
+            min-width: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pet-photo {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            flex-shrink: 0;
+        }
+
+        .pet-header-content h1 {
+            font-size: 32px;
+            margin: 0 0 8px 0;
+        }
+
+        .pet-header-content p {
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        .pet-header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-edit-pet {
+            padding: 10px 16px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 8px rgba(107, 114, 128, 0.3);
-        }
-        
-        .btn-back:hover {
-            background: linear-gradient(135deg, #4b5563 0%, #374151 100());
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(107, 114, 128, 0.4);
-        }
-        .btn-primary {
-            background: #047857;
-            color: white;
-        }
-        .btn-secondary {
-            background: #6b7280;
-            color: white;
-        }
-        .patient-header {
-            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
-            padding: 28px;
-            border-radius: 16px;
-            margin-bottom: 24px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
-            border: 1px solid rgba(0, 0, 0, 0.06);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .patient-header:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
 
-        .patient-header h1 {
-            color: #047857;
-            margin-bottom: 8px;
-            font-size: 32px;
-            font-weight: 800;
-            letter-spacing: -0.02em;
+        .btn-edit-pet:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
         }
-        .patient-id {
-            color: #6b7280;
-            font-family: monospace;
+
+        .btn-action {
+            padding: 10px 16px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
             font-size: 14px;
-            margin-bottom: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
-        .patient-grid {
+
+        .btn-action:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Cards Grid */
+        .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 24px;
         }
-        .info-item {
-            padding: 12px;
-            background: #f9fafb;
-            border-radius: 6px;
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
         }
-        .info-label {
-            font-size: 12px;
-            color: #6b7280;
-            text-transform: uppercase;
-            margin-bottom: 4px;
+
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
-        .info-value {
+
+        .card-title {
             font-size: 16px;
             font-weight: 600;
-            color: #111827;
+            color: #1f2937;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .section {
-            background: white;
-            padding: 24px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        .section-header {
+
+        .info-item {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
+            padding: 8px 0;
         }
-        .section h2 {
-            color: #374151;
+
+        .info-label {
+            color: #9ca3af;
+            font-weight: 500;
+        }
+
+        .info-value {
+            color: #1f2937;
+            font-weight: 600;
+        }
+
+        /* Sections */
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e2e8f0;
+            margin-bottom: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .section:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
             font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
+
+        .records-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .record-item {
+            padding: 12px;
+            background: #f9fafb;
+            border-left: 4px solid #14b8a6;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .record-item:hover {
+            background: #f3f4f6;
+        }
+
+        .record-title {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+
+        .record-info {
+            font-size: 13px;
+            color: #9ca3af;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #9ca3af;
+        }
+
+        .empty-state i {
+            font-size: 40px;
+            color: #d1d5db;
+            margin-bottom: 12px;
+        }
+
+        /* Photo Gallery */
+        .photo-gallery-section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e2e8f0;
+            margin-bottom: 24px;
+        }
+
+        .gallery-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            aspect-ratio: 1;
+            cursor: pointer;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.2);
+            border-color: #14b8a6;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-item-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 32px;
+            color: #d1d5db;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-item-icon {
+            opacity: 1;
+        }
+
+        /* Photo Modal */
+        .photo-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .photo-modal.active {
+            display: flex;
+        }
+
+        .photo-modal-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90vh;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .photo-modal-image {
+            max-width: 100%;
+            max-height: 90vh;
+            width: auto;
+            height: auto;
+            display: block;
+        }
+
+        .photo-modal-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .photo-modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
         }
+
         th {
             background: #f9fafb;
             padding: 12px;
@@ -144,183 +382,260 @@
             font-size: 13px;
             font-weight: 600;
             color: #374151;
-            border-bottom: 2px solid #e5e7eb;
+            border-bottom: 2px solid #e2e8f0;
         }
+
         td {
             padding: 12px;
-            border-bottom: 1px solid #f3f4f6;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 14px;
+            color: #111827;
         }
-        .badge {
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
+
+        tbody tr {
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
-        .badge-success {
-            background: #d1fae5;
-            color: #065f46;
+
+        tbody tr:hover {
+            background: #f0fdf4;
+            box-shadow: inset 0 0 8px rgba(20, 184, 166, 0.1);
         }
-        .badge-warning {
-            background: #fef3c7;
-            color: #92400e;
-        }
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            color: #9ca3af;
-        }
+
         .alert {
             padding: 12px 16px;
-            border-radius: 6px;
+            border-radius: 8px;
             margin-bottom: 16px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            border: 1px solid;
         }
+
         .alert-success {
             background: #d1fae5;
-            color: #065f46;
+            color: #166534;
+            border-color: #86efac;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px 16px;
+            }
+
+            .pet-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .pet-header-info {
+                flex-direction: column;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header-actions">
-            <a href="{{ route('pets.index') }}" class="btn btn-secondary">← Back to Pets</a>
-            <div style="display:flex; gap:8px;">
-                <a href="{{ route('pets.edit', $patient) }}" class="btn" style="background:#4f46e5; color:white;"><i class="bi bi-pencil-fill"></i> Edit Pet</a>
-                <a href="{{ route('visits.create', ['patient_id' => $patient->id]) }}" class="btn btn-primary">+ Record Visit</a>
-            </div>
-        </div>
-
+    <!-- Main Content -->
+    <div class="main-content">
         @if(session('success'))
         <div class="alert alert-success">
-            {{ session('success') }}
+            <i class="bi bi-check-circle"></i>
+            <div>{{ session('success') }}</div>
         </div>
         @endif
 
-        <div class="patient-header">
-            <h1>{{ $patient->full_name }}</h1>
-            
-            <div class="patient-grid">
-                <div class="info-item">
-                    <div class="info-label">Age</div>
-                    <div class="info-value">{{ $patient->age }} years</div>
+        <!-- Pet Header -->
+        <div class="pet-header">
+            <div class="pet-header-info">
+                @if($patient->pet_photo_path)
+                    <img src="{{ asset('storage/' . $patient->pet_photo_path) }}" alt="{{ $patient->pet_name ?? $patient->full_name }}" class="pet-photo">
+                @else
+                    <div class="pet-icon-large">
+                        <i class="bi bi-paw"></i>
+                    </div>
+                @endif
+                <div class="pet-header-content">
+                    <h1>{{ $patient->pet_name ?? $patient->full_name }}</h1>
+                    <p>{{ $patient->species ?? 'Unknown Species' }} • {{ $patient->breed ?? 'Unknown Breed' }}</p>
+                </div>
+            </div>
+            <div class="pet-header-actions">
+                <a href="{{ route('pets.edit', $patient) }}" class="btn-edit-pet">
+                    <i class="bi bi-pencil-square"></i>
+                    Edit Pet
+                </a>
+                <a href="{{ route('visits.create', ['patient_id' => $patient->id]) }}" class="btn-action">
+                    <i class="bi bi-plus-circle"></i>
+                    Record Visit
+                </a>
+            </div>
+        </div>
+
+        <!-- Photo Gallery -->
+        @php
+            $petPhotos = [];
+            if ($patient->pet_photo_path) {
+                $petPhotos[] = [
+                    'path' => $patient->pet_photo_path,
+                    'alt' => ($patient->pet_name ?? $patient->full_name) . ' - Main Photo'
+                ];
+            }
+        @endphp
+
+        @if(!empty($petPhotos))
+        <div class="photo-gallery-section">
+            <div class="gallery-title">
+                <i class="bi bi-images"></i>
+                Pet Photos
+            </div>
+            <div class="gallery-grid">
+                @foreach($petPhotos as $photo)
+                <div class="gallery-item" onclick="openPhotoModal('{{ asset('storage/' . $photo['path']) }}')">
+                    <img src="{{ asset('storage/' . $photo['path']) }}" alt="{{ $photo['alt'] }}">
+                    <div class="gallery-item-icon">
+                        <i class="bi bi-eye-fill"></i>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
+
+        <!-- Photo Modal -->
+        <div class="photo-modal" id="photoModal" onclick="if(event.target.id === 'photoModal') closePhotoModal()">
+            <div class="photo-modal-content">
+                <button class="photo-modal-close" onclick="closePhotoModal()">&times;</button>
+                <img id="modalPhotoImage" class="photo-modal-image" src="" alt="Pet Photo">
+            </div>
+        </div>
+
+        <!-- Quick Info Cards -->
+        <div class="cards-grid">
+            <div class="card">
+                <div class="card-title">
+                    <i class="bi bi-person"></i>
+                    Owner Information
                 </div>
                 <div class="info-item">
-                    <div class="info-label">Sex</div>
-                    <div class="info-value">{{ $patient->sex }}</div>
+                    <span class="info-label">Name</span>
+                    <span class="info-value">{{ $patient->owner_name ?? 'Unknown' }}</span>
                 </div>
                 <div class="info-item">
-                    <div class="info-label">Birthdate</div>
-                    <div class="info-value">{{ $patient->birthdate->format('F d, Y') }}</div>
+                    <span class="info-label">Contact</span>
+                    <span class="info-value">{{ $patient->owner_contact ?? 'Not provided' }}</span>
                 </div>
                 <div class="info-item">
-                    <div class="info-label">Contact Number</div>
-                    <div class="info-value">{{ $patient->contact_number ?: 'Not provided' }}</div>
+                    <span class="info-label">Address</span>
+                    <span class="info-value">{{ Str::limit($patient->address ?? 'Unknown', 40) }}</span>
                 </div>
-                <div class="info-item" style="grid-column: 1 / -1;">
-                    <div class="info-label">Address</div>
-                    <div class="info-value">{{ $patient->address }}</div>
+                @if($patient->email)
+                <div class="info-item">
+                    <span class="info-label">Email</span>
+                    <span class="info-value">{{ Str::limit($patient->email, 35) }}</span>
+                </div>
+                @endif
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <i class="bi bi-calendar3"></i>
+                    Birth & Sex
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Date of Birth</span>
+                    <span class="info-value">{{ $patient->birthdate ? $patient->birthdate->format('M d, Y') : 'Unknown' }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Sex</span>
+                    <span class="info-value">{{ ucfirst($patient->sex ?? 'Unknown') }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Age</span>
+                    <span class="info-value">{{ $patient->age ?? 'Unknown' }} years</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <i class="bi bi-palette"></i>
+                    Appearance
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Color</span>
+                    <span class="info-value">{{ $patient->color ?? 'Unknown' }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Breed</span>
+                    <span class="info-value">{{ $patient->breed ?? 'Unknown' }}</span>
                 </div>
             </div>
         </div>
 
         <!-- Visit History -->
         <div class="section">
-            <div class="section-header">
-                <h2>Visit History</h2>
+            <div class="section-title">
+                <i class="bi bi-clipboard-check"></i>
+                Visit History
             </div>
-            
-            @if($patient->visits->count() > 0)
-            <table>
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Service Type</th>
-                        <th>Vital Signs</th>
-                        <th>Health Worker</th>
-                        <th>Notes</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($patient->visits as $visit)
-                    @if($visit->service_type !== 'Vaccination')
-                    <tr>
-                        <td>{{ $visit->visit_date->format('M d, Y') }}</td>
-                        <td><span class="badge badge-success">{{ $visit->service_type }}</span></td>
-                        <td>
-                            @if($visit->vitalSigns)
-                                <small>
-                                    BP: {{ $visit->vitalSigns->blood_pressure ?: '-' }} | 
-                                    Temp: {{ $visit->vitalSigns->temperature ?: '-' }}°C | 
-                                    Weight: {{ $visit->vitalSigns->weight ?: '-' }}kg
-                                </small>
-                            @else
-                                <small style="color: #9ca3af;">No vital signs recorded</small>
-                            @endif
-                        </td>
-                        <td>{{ $visit->health_worker ?: '-' }}</td>
-                        <td>{{ Str::limit($visit->notes, 50) ?: '-' }}</td>
-                    </tr>
-                    @endif
-                    @endforeach
-                </tbody>
-            </table>
+
+            @if($patient->visits->where('service_type', '!=', 'Vaccination')->isEmpty())
+                <div class="empty-state">
+                    <i class="bi bi-inbox"></i>
+                    <p>No visits recorded yet.</p>
+                </div>
             @else
-            <div class="empty-state">
-                <p>No visits recorded yet</p>
-            </div>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Service Type</th>
+                                <th>Health Worker</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($patient->visits as $visit)
+                            @if($visit->service_type !== 'Vaccination')
+                            <tr onclick="window.location.href='{{ route('visits.show', $visit) }}'">
+                                <td>{{ $visit->visit_date->format('M d, Y') }}</td>
+                                <td><span class="badge badge-success">{{ $visit->service_type }}</span></td>
+                                <td>{{ $visit->health_worker ?? '-' }}</td>
+                                <td>{{ Str::limit($visit->notes ?? '-', 50) }}</td>
+                            </tr>
+                            @endif
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             @endif
         </div>
 
-        <!-- Referrals -->
-        @if($patient->referrals->count() > 0)
-        <div class="section">
-            <div class="section-header">
-                <h2>Referrals</h2>
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Referred To</th>
-                        <th>Reason</th>
-                        <th>Urgency</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($patient->referrals as $referral)
-                    <tr>
-                        <td>{{ $referral->referral_date->format('M d, Y') }}</td>
-                        <td>{{ $referral->referred_to }}</td>
-                        <td>{{ Str::limit($referral->reason, 40) }}</td>
-                        <td>{{ $referral->urgency }}</td>
-                        <td>
-                            @if($referral->completed)
-                                <span class="badge badge-success">Completed</span>
-                            @else
-                                <span class="badge badge-warning">Pending</span>
-                            @endif
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-        @endif
-    </div>
-
     <script>
-        function goBack() {
-            const referrer = document.referrer;
-            const currentDomain = window.location.origin;
-            
-            // Check if we have a referrer from the same domain and it's not the current page
-            if (referrer && referrer.startsWith(currentDomain) && referrer !== window.location.href) {
-                window.history.back();
-            } else {
-                window.location.href = '/pets';
-            }
+        function openPhotoModal(imagePath) {
+            const modal = document.getElementById('photoModal');
+            const image = document.getElementById('modalPhotoImage');
+            image.src = imagePath;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
+
+        function closePhotoModal() {
+            const modal = document.getElementById('photoModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal on escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closePhotoModal();
+            }
+        });
     </script>
 </body>
 </html>

@@ -34,9 +34,9 @@
         }
         .btn-back {
             padding: 8px 16px;
-            background: #6b7280;
-            color: white;
-            border: none;
+            background: white;
+            color: var(--text);
+            border: 1px solid var(--line);
             border-radius: 6px;
             cursor: pointer;
             font-size: 14px;
@@ -45,9 +45,11 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            transition: all 0.2s;
         }
         .btn-back:hover {
-            background: #4b5563;
+            border-color: var(--primary);
+            color: var(--primary);
         }
         .header-logo {
             display: flex;

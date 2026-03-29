@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - PAWser</title>
-    <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('bootstrap-icons/bootstrap-icons.min.css')); ?>">
     <style>
         * {
             margin: 0;
@@ -2502,8 +2502,8 @@
     <!-- Top Navigation Bar -->
     <nav class="navbar">
         <div class="navbar-container">
-            <a href="{{ route('dashboard') }}" class="navbar-brand">
-                <img src="{{ asset('newlogo.png') }}" alt="PAWSER" class="navbar-logo">
+            <a href="<?php echo e(route('dashboard')); ?>" class="navbar-brand">
+                <img src="<?php echo e(asset('newlogo.png')); ?>" alt="PAWSER" class="navbar-logo">
                 <div class="navbar-brand-text">
                     <div class="navbar-title">PAWSER</div>
                     <div class="navbar-subtitle">Staff Dashboard</div>
@@ -2511,61 +2511,61 @@
             </a>
 
             <div class="navbar-menu">
-                <a href="{{ route('dashboard') }}" class="navbar-item active">
+                <a href="<?php echo e(route('dashboard')); ?>" class="navbar-item active">
                     <i class="bi bi-speedometer2"></i>
                     Dashboard
                 </a>
-                <a href="{{ route('pets.index') }}" class="navbar-item">
+                <a href="<?php echo e(route('pets.index')); ?>" class="navbar-item">
                     <i class="bi bi-heart-fill"></i>
                     Pets
                 </a>
-                <a href="{{ route('appointments.index') }}" class="navbar-item">
+                <a href="<?php echo e(route('appointments.index')); ?>" class="navbar-item">
                     <i class="bi bi-calendar-check"></i>
                     Appointments
                 </a>
-                @if(Auth::user()->hasStaffAccess())
-                <a href="{{ route('appointment-requests.index') }}" class="navbar-item">
+                <?php if(Auth::user()->hasStaffAccess()): ?>
+                <a href="<?php echo e(route('appointment-requests.index')); ?>" class="navbar-item">
                     <i class="bi bi-inbox-fill"></i>
                     Requests
                 </a>
-                @endif
-                <a href="{{ route('visits.today') }}" class="navbar-item">
+                <?php endif; ?>
+                <a href="<?php echo e(route('visits.today')); ?>" class="navbar-item">
                     <i class="bi bi-clock-history"></i>
                     Visits
                 </a>
-                @if(Auth::user()->hasStaffAccess())
-                <a href="{{ route('analytics.index') }}" class="navbar-item">
+                <?php if(Auth::user()->hasStaffAccess()): ?>
+                <a href="<?php echo e(route('analytics.index')); ?>" class="navbar-item">
                     <i class="bi bi-graph-up-arrow"></i>
                     Insights
                 </a>
-                <a href="{{ route('automation.support') }}" class="navbar-item">
+                <a href="<?php echo e(route('automation.support')); ?>" class="navbar-item">
                     <i class="bi bi-cpu"></i>
                     Actions
                 </a>
-                @endif
+                <?php endif; ?>
             </div>
 
             <div class="navbar-end">
                 <div class="navbar-user">
-                    @if(Auth::user()->profile_picture)
+                    <?php if(Auth::user()->profile_picture): ?>
                         <div class="navbar-avatar">
-                            <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="{{ Auth::user()->name }}">
+                            <img src="<?php echo e(asset('storage/' . Auth::user()->profile_picture)); ?>" alt="<?php echo e(Auth::user()->name); ?>">
                         </div>
-                    @else
+                    <?php else: ?>
                         <div class="navbar-avatar">
                             <i class="bi bi-person-fill" style="font-size: 18px;"></i>
                         </div>
-                    @endif
+                    <?php endif; ?>
                     <div class="navbar-user-text">
-                        <div class="navbar-user-name">{{ Auth::user()->name }}</div>
-                        <div class="navbar-user-role">{{ Auth::user()->role_name }}</div>
+                        <div class="navbar-user-name"><?php echo e(Auth::user()->name); ?></div>
+                        <div class="navbar-user-role"><?php echo e(Auth::user()->role_name); ?></div>
                     </div>
                 </div>
-                <a href="{{ route('profile.show') }}" class="navbar-profile-btn" title="My Profile">
+                <a href="<?php echo e(route('profile.show')); ?>" class="navbar-profile-btn" title="My Profile">
                     <i class="bi bi-person-circle"></i>
                 </a>
-                <form action="{{ route('logout') }}" method="POST" style="display: inline;">
-                    @csrf
+                <form action="<?php echo e(route('logout')); ?>" method="POST" style="display: inline;">
+                    <?php echo csrf_field(); ?>
                     <button type="submit" class="navbar-logout-btn" title="Logout">
                         <i class="bi bi-box-arrow-right"></i>
                     </button>
@@ -2579,8 +2579,8 @@
         <!-- Top Navigation -->
         <header class="top-nav">
             <div class="top-nav-left">
-                <h1>Welcome back, {{ Auth::user()->name }}!</h1>
-                <p>{{ date('l, F j, Y') }}</p>
+                <h1>Welcome back, <?php echo e(Auth::user()->name); ?>!</h1>
+                <p><?php echo e(date('l, F j, Y')); ?></p>
             </div>
         </header>
 
@@ -2612,69 +2612,69 @@
                     </div>
                 </div>
 
-                @if(Auth::user()->hasStaffAccess())
-                <a href="{{ route('appointment-requests.index') }}" class="action-card" style="text-decoration: none; color: inherit;">
+                <?php if(Auth::user()->hasStaffAccess()): ?>
+                <a href="<?php echo e(route('appointment-requests.index')); ?>" class="action-card" style="text-decoration: none; color: inherit;">
                     <div class="action-icon orange"><i class="bi bi-inbox-fill"></i></div>
                     <div class="action-details">
                         <h3>Appointment Requests</h3>
                         <p>Review pending requests</p>
                     </div>
                 </a>
-                @endif
+                <?php endif; ?>
             </div>
 
             <!-- Action Hub Alerts (compact) -->
-            @if(Auth::user()->hasStaffAccess())
+            <?php if(Auth::user()->hasStaffAccess()): ?>
             <div class="alerts-summary-section">
                 <div class="alerts-summary-card">
                     <div class="alerts-summary-header">
                         <div>
                             <h2 style="margin: 0; font-size: 20px; color: #1f2937;"><i class="bi bi-cpu-fill"></i> Action Hub Alerts</h2>
                             <p style="margin: 4px 0 0 0; font-size: 14px; color: #6b7280;">
-                                @if($totalAlerts > 0)
-                                    {{ $totalAlerts }} active alert(s) requiring attention
-                                @else
+                                <?php if($totalAlerts > 0): ?>
+                                    <?php echo e($totalAlerts); ?> active alert(s) requiring attention
+                                <?php else: ?>
                                     All clear — no active alerts
-                                @endif
+                                <?php endif; ?>
                             </p>
                         </div>
-                        <a href="{{ route('automation.support') }}" class="view-all-btn">View All →</a>
+                        <a href="<?php echo e(route('automation.support')); ?>" class="view-all-btn">View All →</a>
                     </div>
-                    @if(count($topAlerts) > 0)
+                    <?php if(count($topAlerts) > 0): ?>
                     <div class="alerts-grid">
-                        @foreach($topAlerts as $alert)
-                        @if(isset($alert['route']))
-                        <a href="{{ route($alert['route']) }}" style="text-decoration: none; color: inherit;">
-                            <div class="alert-item alert-{{ $alert['type'] }}" style="cursor: pointer;">
-                                <div class="alert-icon"><i class="bi {{ $alert['icon'] }}"></i></div>
+                        <?php $__currentLoopData = $topAlerts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $alert): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php if(isset($alert['route'])): ?>
+                        <a href="<?php echo e(route($alert['route'])); ?>" style="text-decoration: none; color: inherit;">
+                            <div class="alert-item alert-<?php echo e($alert['type']); ?>" style="cursor: pointer;">
+                                <div class="alert-icon"><i class="bi <?php echo e($alert['icon']); ?>"></i></div>
                                 <div class="alert-content">
-                                    <h4>{{ $alert['title'] }}</h4>
-                                    <p>{{ $alert['message'] }}</p>
+                                    <h4><?php echo e($alert['title']); ?></h4>
+                                    <p><?php echo e($alert['message']); ?></p>
                                 </div>
-                                <div class="alert-badge">{{ $alert['count'] }}</div>
+                                <div class="alert-badge"><?php echo e($alert['count']); ?></div>
                             </div>
                         </a>
-                        @else
-                        <div class="alert-item alert-{{ $alert['type'] }}">
-                            <div class="alert-icon"><i class="bi {{ $alert['icon'] }}"></i></div>
+                        <?php else: ?>
+                        <div class="alert-item alert-<?php echo e($alert['type']); ?>">
+                            <div class="alert-icon"><i class="bi <?php echo e($alert['icon']); ?>"></i></div>
                             <div class="alert-content">
-                                <h4>{{ $alert['title'] }}</h4>
-                                <p>{{ $alert['message'] }}</p>
+                                <h4><?php echo e($alert['title']); ?></h4>
+                                <p><?php echo e($alert['message']); ?></p>
                             </div>
-                            <div class="alert-badge">{{ $alert['count'] }}</div>
+                            <div class="alert-badge"><?php echo e($alert['count']); ?></div>
                         </div>
-                        @endif
-                        @endforeach
+                        <?php endif; ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
-                    @else
+                    <?php else: ?>
                     <div style="padding: 20px; text-align: center; color: #6b7280; font-size: 14px;">
                         <i class="bi bi-check-circle-fill" style="color: #10b981; font-size: 28px; display: block; margin-bottom: 8px;"></i>
                         No active alerts right now. Everything looks good!
                     </div>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </div>
-            @endif
+            <?php endif; ?>
 
             <!-- Statistics -->
             <div class="stats-grid">
@@ -2685,8 +2685,8 @@
                             <span class="stat-title">Today's Pets</span>
                             <div class="stat-icon" style="background: #ECFDF5; color: #10B981;"><i class="bi bi-heart-fill"></i></div>
                         </div>
-                        <div class="stat-value">{{ $todayPatients }}</div>
-                        <div class="stat-change">{{ $patientChangePercent > 0 ? '↑' : '↓' }} {{ abs($patientChangePercent) }}% from yesterday</div>
+                        <div class="stat-value"><?php echo e($todayPatients); ?></div>
+                        <div class="stat-change"><?php echo e($patientChangePercent > 0 ? '↑' : '↓'); ?> <?php echo e(abs($patientChangePercent)); ?>% from yesterday</div>
                     </div>
 
                     <div class="stat-card" onclick="openModal('totalPatients')" style="cursor: pointer;">
@@ -2694,8 +2694,8 @@
                             <span class="stat-title">Total Pets</span>
                             <div class="stat-icon" style="background: #FEF3C7; color: #F59E0B;"><i class="bi bi-bar-chart-fill"></i></div>
                         </div>
-                        <div class="stat-value">{{ $totalPatients }}</div>
-                        <div class="stat-change">{{ $monthChangePercent > 0 ? '↑' : '↓' }} {{ abs($monthChangePercent) }}% this month</div>
+                        <div class="stat-value"><?php echo e($totalPatients); ?></div>
+                        <div class="stat-change"><?php echo e($monthChangePercent > 0 ? '↑' : '↓'); ?> <?php echo e(abs($monthChangePercent)); ?>% this month</div>
                     </div>
 
                 </div>
@@ -2705,7 +2705,7 @@
                     <div class="calendar-header">
                         <div class="calendar-header-left">
                             <div class="calendar-date"><i class="bi bi-calendar-event"></i> Appointments</div>
-                            <div class="calendar-subtitle" id="selectedDateDisplay">{{ now()->format('l, F j, Y') }}</div>
+                            <div class="calendar-subtitle" id="selectedDateDisplay"><?php echo e(now()->format('l, F j, Y')); ?></div>
                         </div>
                     </div>
                     
@@ -2769,9 +2769,9 @@
                                 <label for="patientSpeciesId">Species <span style="color: #dc2626;">*</span></label>
                                 <select id="patientSpeciesId" required>
                                     <option value="">Select species</option>
-                                    @foreach($species as $sp)
-                                        <option value="{{ $sp->id }}">{{ $sp->name }}</option>
-                                    @endforeach
+                                    <?php $__currentLoopData = $species; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sp): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($sp->id); ?>"><?php echo e($sp->name); ?></option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </select>
                             </div>
                         </div>
@@ -2856,8 +2856,8 @@
                 <button class="ai-modal-close" onclick="closeModal('bookAppointment')">x</button>
             </div>
             <div class="ai-modal-body" style="padding: 28px; max-height: calc(85vh - 80px);">
-                <form id="appointmentForm" action="{{ route('appointments.store') }}" method="POST" style="display: flex; flex-direction: column; gap: 20px;">
-                    @csrf
+                <form id="appointmentForm" action="<?php echo e(route('appointments.store')); ?>" method="POST" style="display: flex; flex-direction: column; gap: 20px;">
+                    <?php echo csrf_field(); ?>
                     
                     <!-- Patient Selection -->
                     <div style="display: flex; flex-direction: column; gap: 8px; position: relative;">
@@ -2882,7 +2882,7 @@
                                 <i class="bi bi-calendar3" style="color: #10b981;"></i>
                                 Date <span style="color: #dc2626;">*</span>
                             </label>
-                            <input type="date" name="appointment_date" required min="{{ date('Y-m-d') }}" value="{{ date('Y-m-d') }}" style="padding: 12px 14px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 14px; transition: all 0.2s; cursor: pointer;">
+                            <input type="date" name="appointment_date" required min="<?php echo e(date('Y-m-d')); ?>" value="<?php echo e(date('Y-m-d')); ?>" style="padding: 12px 14px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 14px; transition: all 0.2s; cursor: pointer;">
                         </div>
                         <div style="display: flex; flex-direction: column; gap: 8px;">
                             <label style="font-weight: 600; color: #1f2937; font-size: 13px; display: flex; align-items: center; gap: 6px;">
@@ -2957,7 +2957,7 @@
                             <i class="bi bi-person-badge-fill" style="color: #10b981;"></i>
                             Assigned Health Worker
                         </label>
-                        <input type="text" name="health_worker" value="{{ auth()->user()->name }}" style="padding: 12px 14px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 14px; transition: all 0.2s;">
+                        <input type="text" name="health_worker" value="<?php echo e(auth()->user()->name); ?>" style="padding: 12px 14px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 14px; transition: all 0.2s;">
                     </div>
 
                     <!-- Walk-in Checkbox -->
@@ -3348,7 +3348,7 @@
     <script>
     // SCHEDULE MODAL - DIRECT IMPLEMENTATION (NO CACHE ISSUES)
     (function() {
-        const SCHEDULE_APPOINTMENTS = @json($appointments ?? []);
+        const SCHEDULE_APPOINTMENTS = <?php echo json_encode($appointments ?? [], 15, 512) ?>;
         let scheduleCurrentDate = new Date();
         
         console.log('SCHEDULE MODAL INITIALIZED WITH DATA:', SCHEDULE_APPOINTMENTS);
@@ -3535,7 +3535,7 @@
         // ============================================================
         // This data comes from the backend and contains all appointments
         // Both the mini calendar and schedule modal read from this
-        const appointmentsData = @json($appointments ?? []);
+        const appointmentsData = <?php echo json_encode($appointments ?? [], 15, 512) ?>;
         
         console.log('=== UNIFIED CALENDAR SYSTEM INITIALIZED ===');
         console.log('Total appointment dates:', Object.keys(appointmentsData).length);
@@ -3752,7 +3752,7 @@
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
                     'Accept': 'application/json'
                 },
                 body: JSON.stringify({
@@ -3831,7 +3831,7 @@
 
         function openCalendarView() {
             // Redirect to calendar view page or appointments page
-            window.location.href = '{{ route("visits.today") }}';
+            window.location.href = '<?php echo e(route("visits.today")); ?>';
         }
 
         function openModal(modalType) {
@@ -4229,15 +4229,15 @@
                 owner_contact: ownerContact,
                 owner_email: ownerEmail || null,
                 privacy_consent: true,
-                _token: '{{ csrf_token() }}'
+                _token: '<?php echo e(csrf_token()); ?>'
             };
             
             // Send AJAX request to backend
-            fetch('{{ route("pets.store") }}', {
+            fetch('<?php echo e(route("pets.store")); ?>', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
                     'Accept': 'application/json'
                 },
                 body: JSON.stringify(formData)
@@ -5125,7 +5125,7 @@ Registered: ${new Date(patient.registeredDate).toLocaleString()}
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
                             'Accept': 'application/json'
                         },
                         body: JSON.stringify({
@@ -5176,8 +5176,8 @@ Registered: ${new Date(patient.registeredDate).toLocaleString()}
                 <p id="dashboardReschedulePatientName" style="margin:8px 0 0 0;color:#6b7280;font-size:14px;"></p>
             </div>
             <form id="dashboardRescheduleForm" method="POST" style="padding:24px;">
-                @csrf
-                @method('PUT')
+                <?php echo csrf_field(); ?>
+                <?php echo method_field('PUT'); ?>
                 <input type="hidden" id="dashboardRescheduleAppointmentId" name="appointment_id">
                 
                 <div style="margin-bottom:20px;">
@@ -5189,7 +5189,7 @@ Registered: ${new Date(patient.registeredDate).toLocaleString()}
 
                 <div style="margin-bottom:20px;">
                     <label for="dashboardNewAppointmentDate" style="display:block;font-weight:500;color:#374151;margin-bottom:8px;font-size:14px;">New Date <span style="color:#ef4444;">*</span></label>
-                    <input type="date" id="dashboardNewAppointmentDate" name="appointment_date" required style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:6px;font-size:14px;" min="{{ date('Y-m-d') }}">
+                    <input type="date" id="dashboardNewAppointmentDate" name="appointment_date" required style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:6px;font-size:14px;" min="<?php echo e(date('Y-m-d')); ?>">
                 </div>
 
                 <div style="margin-bottom:24px;">
@@ -5270,3 +5270,4 @@ Registered: ${new Date(patient.registeredDate).toLocaleString()}
     </script>
 </body>
 </html>
+<?php /**PATH C:\Users\Lei\Capstone1-web\resources\views/dashboard.blade.php ENDPATH**/ ?>

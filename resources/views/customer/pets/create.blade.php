@@ -28,6 +28,11 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .navbar i.bi {
+            font-family: bootstrap-icons;
         }
 
         .navbar-container {
@@ -162,9 +167,9 @@
             gap: 8px;
             padding: 10px 16px;
             background: white;
-            color: #14b8a6;
+            color: #111827;
             text-decoration: none;
-            border: 1px solid #cbd5e1;
+            border: 1px solid #111827;
             border-radius: 8px;
             margin-bottom: 16px;
             font-size: 14px;
@@ -173,9 +178,9 @@
         }
 
         .back-link:hover {
-            color: #0d9488;
+            color: #14b8a6;
             border-color: #14b8a6;
-            background: #f0fdf4;
+            background: #f0fdfa;
         }
 
         .page-title {
@@ -420,7 +425,7 @@
                     Dashboard
                 </a>
                 <a href="{{ route('customer.pets.index') }}" class="nav-item active">
-                    <i class="bi bi-paw"></i>
+                    <i class="bi bi-heart-pulse"></i>
                     My Pets
                 </a>
                 <a href="{{ route('customer.appointments.index') }}" class="nav-item">

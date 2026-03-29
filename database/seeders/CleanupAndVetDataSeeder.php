@@ -6,9 +6,6 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use App\Models\Patient;
 use App\Models\Visit;
-use App\Models\Immunization;
-use App\Models\VitalSign;
-use App\Models\Referral;
 use Carbon\Carbon;
 
 class CleanupAndVetDataSeeder extends Seeder
@@ -29,9 +26,6 @@ class CleanupAndVetDataSeeder extends Seeder
             DB::statement('PRAGMA foreign_keys = OFF;');
         }
         
-        VitalSign::truncate();
-        Immunization::truncate();
-        Referral::truncate();
         Visit::truncate();
         Patient::truncate();
         
@@ -137,21 +131,11 @@ class CleanupAndVetDataSeeder extends Seeder
                 'chief_complaint' => 'Annual wellness checkup',
                 'notes' => 'Healthy, all vitals normal. Continue regular diet and exercise. Overall condition excellent.',
             ]);
-
-            // Add vital signs
-            VitalSign::create([
-                'visit_id' => $visit->id,
-                'weight' => $pet->species === 'Dog' ? rand(20, 35) : ($pet->species === 'Cat' ? rand(3, 6) : rand(2, 4)),
-                'temperature' => rand(380, 392) / 10,
-                'blood_pressure' => rand(70, 120), // Heart rate for pets
-                'pulse_rate' => rand(70, 120),
-            ]);
         }
 
         $this->command->info('Veterinary demo data created.');
         $this->command->info('Summary:');
         $this->command->info('   - Pets: ' . Patient::count());
         $this->command->info('   - Visits: ' . Visit::count());
-        $this->command->info('   - Vital Signs: ' . VitalSign::count());
     }
 }

@@ -15,12 +15,16 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #f5f5f5 0%, #f0f9ff 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
         }
         .container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
+            flex: 1;
+            width: 100%;
         }
         .back-button {
             display: inline-flex;
@@ -28,17 +32,17 @@
             gap: 8px;
             padding: 10px 16px;
             background: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            color: #111827;
+            border: 1px solid #111827;
+            border-radius: 10px;
+            cursor: pointer;
             text-decoration: none;
-            color: #333;
-            margin-bottom: 20px;
-            transition: all 0.3s;
+            transition: all 0.2s ease;
         }
         .back-button:hover {
-            background: #f8f9fa;
-            border-color: #007bff;
-            color: #007bff;
+            background: #f0fdfa;
+            border-color: #14b8a6;
+            color: #14b8a6;
         }
         .header {
             background: white;
@@ -282,6 +286,7 @@
     </style>
 </head>
 <body>
+    @include('components.staff-navbar')
     <div class="container">
         <a href="{{ route('dashboard') }}" class="back-button">← Back</a>
         <div class="header">
@@ -293,40 +298,40 @@
                     <label>Select Month</label>
                     <input type="month" id="monthSelector" value="{{ $month }}" onchange="loadReport()">
                 </div>
-                <button class="btn btn-primary" onclick="window.print()"><i class="bi bi-printer"></i> Print Report</button>
+                <button class="btn btn-primary" onclick="window.print()">Print Report</button>
             </div>
         </div>
 
         <div class="stats-grid">
             <div class="stat-card">
                 <span class="stat-icon"><i class="bi bi-people-fill"></i></span>
-                <div class="stat-label">New Patients</div>
-                <div class="stat-value">{{ $stats['new_patients'] }}</div>
+                <div class="stat-label">New Pets</div>
+                <div class="stat-value">{{ $stats['new_pets'] ?? 0 }}</div>
             </div>
             <div class="stat-card">
                 <span class="stat-icon"><i class="bi bi-hospital"></i></span>
                 <div class="stat-label">Total Visits</div>
-                <div class="stat-value">{{ $stats['total_visits'] }}</div>
+                <div class="stat-value">{{ $stats['total_visits'] ?? 0 }}</div>
             </div>
             <div class="stat-card">
-                <span class="stat-icon"><i class="bi bi-shield-fill-check"></i></span>
-                <div class="stat-label">Vaccinations</div>
-                <div class="stat-value">{{ $stats['immunizations'] }}</div>
+                <span class="stat-icon"><i class="bi bi-calendar3"></i></span>
+                <div class="stat-label">Total Appointments</div>
+                <div class="stat-value">{{ $stats['total_appointments'] ?? 0 }}</div>
             </div>
             <div class="stat-card">
                 <span class="stat-icon"><i class="bi bi-heart-pulse-fill"></i></span>
-                <div class="stat-label">Breeding Checkups</div>
-                <div class="stat-value">{{ $stats['breeding_checkups'] }}</div>
+                <div class="stat-label">Total Pets</div>
+                <div class="stat-value">{{ $stats['total_pets'] ?? 0 }}</div>
             </div>
             <div class="stat-card">
                 <span class="stat-icon"><i class="bi bi-clipboard2-check"></i></span>
                 <div class="stat-label">Referrals</div>
-                <div class="stat-value">{{ $stats['referrals'] }}</div>
+                <div class="stat-value">{{ $stats['referrals'] ?? 0 }}</div>
             </div>
             <div class="stat-card">
                 <span class="stat-icon"><i class="bi bi-bar-chart-fill"></i></span>
                 <div class="stat-label">Total Registered</div>
-                <div class="stat-value">{{ $stats['total_patients'] }}</div>
+                <div class="stat-value">{{ $stats['total_pets'] ?? 0 }}</div>
             </div>
         </div>
 
@@ -370,7 +375,7 @@
 
         <div class="section">
             <h2>Vaccines Administered</h2>
-            @if($vaccineBreakdown->count() > 0)
+            @if(isset($vaccineBreakdown) && $vaccineBreakdown->count() > 0)
             <table>
                 <thead>
                     <tr>
@@ -386,7 +391,8 @@
                         <td><strong>{{ $vaccine->count }}</strong></td>
                         <td>
                             @php
-                                $percentage = $stats['immunizations'] > 0 ? round(($vaccine->count / $stats['immunizations']) * 100) : 0;
+                                $immunizations = $stats['immunizations'] ?? $stats['total_appointments'] ?? 0;
+                                $percentage = $immunizations > 0 ? round(($vaccine->count / $immunizations) * 100) : 0;
                             @endphp
                             <div class="progress-bar">
                                 <div class="progress-fill" style="width: {{ $percentage }}%">

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Today's Visits - PAWser</title>
-    <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('bootstrap-icons/bootstrap-icons.min.css')); ?>">
     <style>
 
         :root {
@@ -685,7 +685,26 @@
     </style>
 </head>
 <body>
-    <x-staff-navbar />
+    <?php if (isset($component)) { $__componentOriginal17611e3b8decae96c78f7c1ff2705ab1 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal17611e3b8decae96c78f7c1ff2705ab1 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.staff-navbar','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('staff-navbar'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal17611e3b8decae96c78f7c1ff2705ab1)): ?>
+<?php $attributes = $__attributesOriginal17611e3b8decae96c78f7c1ff2705ab1; ?>
+<?php unset($__attributesOriginal17611e3b8decae96c78f7c1ff2705ab1); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal17611e3b8decae96c78f7c1ff2705ab1)): ?>
+<?php $component = $__componentOriginal17611e3b8decae96c78f7c1ff2705ab1; ?>
+<?php unset($__componentOriginal17611e3b8decae96c78f7c1ff2705ab1); ?>
+<?php endif; ?>
     <!-- CALENDAR MODAL - SYNCHRONIZED WITH DASHBOARD -->
     <div id="visitsCalendarModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 10000; align-items: center; justify-content: center;" onclick="closeCalendarModal(event)">
         <div style="background: white; border-radius: 12px; max-width: 750px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);" onclick="event.stopPropagation()">
@@ -731,7 +750,7 @@
                     </button>
                 </div>
             </div>
-            <p style="color: #6b7280; font-size: 14px;">{{ now()->format('l, F j, Y') }}</p>
+            <p style="color: #6b7280; font-size: 14px;"><?php echo e(now()->format('l, F j, Y')); ?></p>
         </div>
 
         <div class="stats">
@@ -754,53 +773,56 @@
         </div>
 
         <div class="visits-container">
-            @if($visits->count() > 0)
-                @php
+            <?php if($visits->count() > 0): ?>
+                <?php
                     $groupedVisits = $visits->getCollection()->groupBy(fn($v) => $v->patient->owner_name ?: 'Unknown Owner');
-                @endphp
-                @foreach($groupedVisits as $ownerName => $ownerVisits)
+                ?>
+                <?php $__currentLoopData = $groupedVisits; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $ownerName => $ownerVisits): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="owner-group-card">
                     <div class="owner-group-header open" onclick="toggleOwnerGroup(this)">
                         <div class="owner-group-left">
                             <div class="owner-icon"><i class="bi bi-person-fill"></i></div>
                             <div>
-                                <div class="owner-group-name">{{ $ownerName }}</div>
-                                <div class="owner-group-meta">{{ $ownerVisits->count() }} pet visit{{ $ownerVisits->count() > 1 ? 's' : '' }} today</div>
+                                <div class="owner-group-name"><?php echo e($ownerName); ?></div>
+                                <div class="owner-group-meta"><?php echo e($ownerVisits->count()); ?> pet visit<?php echo e($ownerVisits->count() > 1 ? 's' : ''); ?> today</div>
                             </div>
                         </div>
                         <i class="bi bi-chevron-down owner-chevron"></i>
                     </div>
                     <div class="owner-pets-list open">
-                        @foreach($ownerVisits as $visit)
-                        <div class="pet-visit-row" onclick="openVisitModal({{ $visit->id }})">
+                        <?php $__currentLoopData = $ownerVisits; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $visit): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <div class="pet-visit-row" onclick="openVisitModal(<?php echo e($visit->id); ?>)">
                             <div class="pet-visit-left">
                                 <div class="patient-name">
-                                    {{ $visit->patient->full_name }}
-                                    @if($visit->is_walk_in)
+                                    <?php echo e($visit->patient->full_name); ?>
+
+                                    <?php if($visit->is_walk_in): ?>
                                     <span style="display: inline-block; background: #fde68a; color: #d97706; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-left: 8px; border: 1px solid #fcd34d;">[WALK-IN]</span>
-                                    @endif
+                                    <?php endif; ?>
                                 </div>
                                 <div class="patient-info">
-                                    <span><strong>ID:</strong> {{ $visit->patient->patient_id }}</span>
-                                    <span><strong>Age:</strong> {{ $visit->patient->age }} years</span>
-                                    <span><strong>Sex:</strong> {{ $visit->patient->sex }}</span>
+                                    <span><strong>ID:</strong> <?php echo e($visit->patient->patient_id); ?></span>
+                                    <span><strong>Age:</strong> <?php echo e($visit->patient->age); ?> years</span>
+                                    <span><strong>Sex:</strong> <?php echo e($visit->patient->sex); ?></span>
                                 </div>
                                 <div class="click-hint">Click to view full details</div>
                             </div>
                             <div class="pet-visit-right">
-                                <span class="service-badge service-{{ strtolower(str_replace(' ', '-', $visit->service_type)) }}">
-                                    {{ $visit->service_type }}
+                                <span class="service-badge service-<?php echo e(strtolower(str_replace(' ', '-', $visit->service_type))); ?>">
+                                    <?php echo e($visit->service_type); ?>
+
                                 </span>
                                 <div class="visit-time">
-                                    <i class="bi bi-clock"></i> {{ \Carbon\Carbon::parse($visit->visit_time)->format('h:i A') }}
+                                    <i class="bi bi-clock"></i> <?php echo e(\Carbon\Carbon::parse($visit->visit_time)->format('h:i A')); ?>
+
                                 </div>
                             </div>
                         </div>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
                 </div>
-                @endforeach
-            @else
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php else: ?>
             <div class="empty-state">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -808,7 +830,7 @@
                 <h3>No visits recorded today</h3>
                 <p>Visit records will appear here as patients are seen</p>
             </div>
-            @endif
+            <?php endif; ?>
         </div>
     </div>
 
@@ -866,7 +888,7 @@
     </div>
 
     <script>
-        const visitsData = @json($visits);
+        const visitsData = <?php echo json_encode($visits, 15, 512) ?>;
         const visits = visitsData.data || visitsData;
 
         // Calculate and display statistics
@@ -1052,7 +1074,7 @@
         }
 
         function loadAppointmentsCalendar() {
-            fetch('{{ route("appointments.calendar.data") }}')
+            fetch('<?php echo e(route("appointments.calendar.data")); ?>')
                 .then(response => response.json())
                 .then(data => {
                     appointmentsCalendarData = data;
@@ -1268,7 +1290,7 @@
     <script>
     (function() {
         // Get appointments from backend (same structure as dashboard)
-        const VISITS_APPOINTMENTS = @json($appointments ?? []);
+        const VISITS_APPOINTMENTS = <?php echo json_encode($appointments ?? [], 15, 512) ?>;
         let visitsCurrentDate = new Date();
         
         console.log('VISITS PAGE: Appointments loaded:', VISITS_APPOINTMENTS);
@@ -1435,3 +1457,4 @@
     </script>
 </body>
 </html>
+<?php /**PATH C:\Users\Lei\Capstone1-web\resources\views/visits/index.blade.php ENDPATH**/ ?>

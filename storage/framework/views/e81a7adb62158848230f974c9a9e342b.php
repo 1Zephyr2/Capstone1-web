@@ -4,22 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pets - PAWser</title>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('bootstrap-icons/bootstrap-icons.min.css')); ?>">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
         :root {
-            --bg: #f5f7fb;
-            --bg-alt: #eef2ff;
+            --bg: #f8fafc;
+            --bg-alt: #f0f9ff;
             --card: #ffffff;
-            --text: #111827;
+            --text: #0f172a;
             --muted: #6b7280;
             --line: #e5e7eb;
-            --primary: #2563eb;
-            --primary-strong: #1d4ed8;
-            --accent: #16a34a;
-            --accent-strong: #15803d;
+            --primary: #14b8a6;
+            --primary-strong: #0d9488;
+            --accent: #06b6d4;
+            --accent-strong: #0891b2;
             --shadow-sm: 0 4px 14px rgba(15, 23, 42, 0.08);
             --shadow-lg: 0 20px 40px rgba(15, 23, 42, 0.12);
             --radius: 14px;
@@ -30,13 +29,16 @@
             box-sizing: border-box;
         }
         body {
-            font-family: 'Manrope', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, var(--bg) 0%, var(--bg-alt) 100%);
-            padding: 20px;
+            padding: 0;
+            padding-top: 72px;
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
             color: var(--text);
+            display: flex;
+            flex-direction: column;
         }
 
         body::before,
@@ -66,6 +68,9 @@
         .container {
             max-width: 1400px;
             margin: 0 auto;
+            padding: 40px 20px;
+            flex: 1;
+            width: 100%;
         }
         .header {
             background: var(--card);
@@ -106,17 +111,17 @@
             align-items: center;
             gap: 10px;
             transition: all 0.3s ease;
-            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+            box-shadow: 0 8px 20px rgba(20, 184, 166, 0.25);
         }
         .btn-new-patient:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 24px rgba(37, 99, 235, 0.32);
+            box-shadow: 0 12px 24px rgba(20, 184, 166, 0.32);
         }
         .btn-import {
             padding: 12px 20px;
             background: white;
             color: var(--primary);
-            border: 1px solid rgba(37, 99, 235, 0.25);
+            border: 1px solid rgba(20, 184, 166, 0.25);
             border-radius: 10px;
             cursor: pointer;
             font-size: 14px;
@@ -128,9 +133,9 @@
             transition: all 0.3s ease;
         }
         .btn-import:hover {
-            background: #eef2ff;
+            background: #ccfbf1;
             transform: translateY(-1px);
-            box-shadow: 0 8px 18px rgba(37, 99, 235, 0.15);
+            box-shadow: 0 8px 18px rgba(20, 184, 166, 0.15);
         }
         .btn-back {
             padding: 10px 16px;
@@ -178,142 +183,301 @@
         }
         .search-bar {
             display: flex;
-            gap: 14px;
-            margin-bottom: 18px;
+            gap: 10px;
             align-items: center;
+            flex-wrap: nowrap;
+            width: 100%;
         }
         .search-wrapper {
-            flex: 1;
+            flex: 0 1 350px;
             position: relative;
         }
-        input[type="search"] {
+        .search-wrapper input {
             width: 100%;
-            padding: 12px 44px 12px 16px;
+            padding: 10px 14px 10px 40px;
             border: 1px solid var(--line);
-            border-radius: 10px;
-            font-size: 14px;
-            transition: all 0.2s ease;
-            background: white;
+            border-radius: 8px;
+            font-size: 13px;
         }
-        input[type="search"]:focus {
+        .search-wrapper input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15);
         }
         .search-icon {
             position: absolute;
-            right: 12px;
+            left: 12px;
             top: 50%;
             transform: translateY(-50%);
             color: #9ca3af;
+            font-size: 14px;
         }
-        .btn {
-            padding: 10px 18px;
+        .filter-select {
+            padding: 10px 12px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            font-size: 13px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex: 0 0 130px;
+            white-space: nowrap;
+        }
+        .filter-select:hover {
+            border-color: var(--primary);
+        }
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15);
+        }
+        .btn-search {
+            padding: 10px 16px;
+            background: var(--primary);
+            color: white;
             border: none;
             border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
-            text-decoration: none;
-            display: inline-flex;
+            transition: all 0.2s ease;
+            display: flex;
             align-items: center;
-            justify-content: center;
             gap: 6px;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
-        .btn-primary {
-            background: var(--accent);
-            color: white;
+        .btn-search:hover {
+            background: var(--primary-strong);
+            transform: translateY(-1px);
         }
-        .btn-primary:hover {
-            background: var(--accent-strong);
-        }
-        .btn-sm {
-            padding: 6px 12px;
-            font-size: 13px;
-        }
-        .btn-success {
-            background: #10b981;
-            color: white;
-        }
-        .btn-info {
-            background: #3b82f6;
-            color: white;
-        }
-        .alert {
-            padding: 12px 16px;
-            border-radius: 6px;
-            margin-bottom: 16px;
-        }
-        .alert-success {
-            background: #d1fae5;
-            color: #065f46;
-            border: 1px solid #a7f3d0;
-        }
-        /* ── Owner-grouped table ── */
         .patients-table {
-            background: var(--card);
-            border-radius: var(--radius);
+            width: 100%;
+            max-width: 1400px;
+            margin: 24px auto 0;
+            background: white;
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--line);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
+            border: 1px solid #e5e7eb;
             animation: pageEnter 0.5s ease;
         }
-        table {
+        .patients-table table {
             width: 100%;
-            border-collapse: collapse;
+            table-layout: fixed;
+            border-collapse: separate;
+            border-spacing: 0;
         }
-        thead {
-            background: #f8fafc;
-        }
-        th {
-            padding: 13px 20px;
+        .patients-table thead th {
+            background: linear-gradient(135deg, #f0f9ff 0%, #f8fafc 100%);
+            padding: 18px 16px;
             text-align: left;
-            font-size: 11px;
             font-weight: 700;
-            color: #64748b;
-            text-transform: uppercase;
-            letter-spacing: 0.9px;
+            color: #0f172a;
             border-bottom: 2px solid #e5e7eb;
+            letter-spacing: -0.01em;
+            font-size: 13px;
+            text-transform: uppercase;
         }
-        td {
-            padding: 0;
-            color: #1f2937;
+        .patients-table tbody tr {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border-bottom: 1px solid #e5e7eb;
         }
-        /* Owner row */
-        .owner-row {
-            cursor: pointer;
-            transition: background 0.15s;
+        .patients-table tbody tr:hover {
+            background-color: #f9fafb;
         }
-        .owner-row:hover { background: #eff6ff; }
-        .owner-row > td {
-            padding: 14px 20px;
-            border-top: 2px solid #e0e7ff;
-            background: #f5f8ff;
+        .patients-table td {
+            padding: 18px 16px;
+            border-bottom: 1px solid #e5e7eb;
+            color: #374151;
+            font-size: 14px;
             vertical-align: middle;
         }
-        .owner-row:first-child > td { border-top: none; }
-        .owner-name-cell {
+        /* Table Data Rows */
+        .data-row {
+            border-bottom: 1px solid #f1f5f9;
+            transition: background 0.15s ease;
+        }
+        .data-row:hover {
+            background: #f8fbff;
+        }
+        .data-row > td {
+            padding: 10px 16px;
+            vertical-align: middle;
+        }
+        .data-row:last-child > td {
+            border-bottom: none;
+        }
+        /* Pet name cell */
+        .pet-name-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .pet-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            flex-shrink: 0;
+            box-shadow: 0 2px 6px rgba(20, 184, 166, 0.3);
+        }
+        .pet-label {
+            font-weight: 600;
+            color: #1f2937;
+            font-size: 14px;
+        }
+        .pet-sub {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 2px;
+        }
+        /* Owner info cell */
+        .owner-info {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        .owner-label {
+            font-weight: 600;
+            color: #1f2937;
+            font-size: 14px;
+        }
+        .owner-sub {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+        /* Details cell */
+        .details-cell {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        .detail-main {
+            font-weight: 500;
+            color: #1f2937;
+            font-size: 14px;
+        }
+        .detail-sub {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+        /* Visit badges */
+        .visit-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background: #ccfbf1;
+            color: #0d7377;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .no-visit-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background: #f3f4f6;
+            color: #9ca3af;
+            border-radius: 6px;
+            font-size: 13px;
+            font-style: italic;
+        }
+        /* Actions column */
+        .actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            border: none;
+            background: #f3f4f6;
+            color: #1f2937;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 16px;
+        }
+        .action-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.05);
+        }
+        .owner-row {
+            background: #f8fafc;
+            border-top: 1px solid #e5e7eb;
+            cursor: pointer;
+        }
+        .owner-row:hover {
+            background: #f1f5f9;
+        }
+        .owner-row td {
+            padding: 12px 16px;
+            vertical-align: middle;
+        }
+        .owner-row .owner-name-cell {
             display: flex;
             align-items: center;
             gap: 12px;
         }
+        .owner-row-contact {
+            font-size: 13px;
+            color: #6b7280;
+            font-weight: 600;
+        }
+        .owner-row-hint {
+            font-size: 12px;
+            color: #94a3b8;
+            font-style: italic;
+        }
+        .owner-row-chevron {
+            text-align: right;
+        }
+        .pet-row {
+            display: none;
+        }
+        .pet-row.visible {
+            display: table-row;
+        }
+        .pet-row.visible > td {
+            background: #ffffff;
+        }
+        .pet-row.visible > td:first-child {
+            padding-left: 34px;
+            position: relative;
+        }
+        .pet-row.visible > td:first-child::before {
+            content: '';
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 2px;
+            background: #cbd5e1;
+            border-radius: 2px;
+        }
         .owner-avatar {
-            width: 38px;
-            height: 38px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 15px;
-            font-weight: 800;
-            flex-shrink: 0;
-            box-shadow: 0 2px 6px rgba(99,102,241,0.35);
-        }
-        .owner-label {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
-            color: #1e1b4b;
+            flex-shrink: 0;
         }
         .pet-count-badge {
             display: inline-flex;
@@ -322,17 +486,9 @@
             background: #e0e7ff;
             color: #4338ca;
             border-radius: 20px;
-            padding: 4px 12px;
+            padding: 4px 10px;
             font-size: 12px;
             font-weight: 700;
-        }
-        .owner-contact {
-            font-size: 13px;
-            color: #6b7280;
-        }
-        .chevron-cell {
-            text-align: right;
-            width: 40px;
         }
         .chevron {
             font-size: 16px;
@@ -340,50 +496,9 @@
             transition: transform 0.22s ease;
             display: inline-block;
         }
-        .chevron.open { transform: rotate(180deg); }
-        /* Pet row */
-        .pet-row { display: none; }
-        .pet-row.visible { display: table-row; }
-        .pet-row > td {
-            padding: 11px 20px;
-            border-top: 1px solid #f1f5f9;
-            background: #fff;
-            vertical-align: middle;
+        .chevron.open {
+            transform: rotate(180deg);
         }
-        .pet-row.visible:last-of-type > td {
-            border-bottom: 2px solid #e0e7ff;
-        }
-        .pet-name-cell {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding-left: 50px;
-        }
-        .pet-icon {
-            width: 30px;
-            height: 30px;
-            border-radius: 8px;
-            background: linear-gradient(135deg, #fce7f3, #fbcfe8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            flex-shrink: 0;
-        }
-        .pet-label { font-weight: 600; color: #111827; font-size: 14px; }
-        .pet-sub   { font-size: 12px; color: #9ca3af; margin-top: 1px; }
-        .badge {
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.3px;
-        }
-        .badge-male   { background: #dbeafe; color: #1e40af; }
-        .badge-female { background: #fce7f3; color: #9f1239; }
-        .visit-date { font-size: 13px; color: #374151; }
-        .no-visit   { font-size: 12px; color: #d1d5db; font-style: italic; }
-        .actions { display: flex; gap: 6px; }
         .empty-state {
             text-align: center;
             padding: 60px 20px;
@@ -731,20 +846,23 @@
         }
         .btn-modal-submit {
             padding: 10px 20px;
-            background: #047857;
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
             color: white;
             border: none;
             border-radius: 6px;
             font-weight: 600;
             cursor: pointer;
+            transition: all 0.2s ease;
         }
         .btn-modal-submit:hover {
-            background: #065f46;
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
         }
         
         /* Registration Modal Styles */
         .registration-modal {
-            display: none;
+            display: none !important;
             position: fixed;
             top: 0;
             left: 0;
@@ -778,12 +896,12 @@
             align-items: center;
             position: sticky;
             top: 0;
-            background: white;
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
             z-index: 10;
         }
         .registration-modal-header h2 {
             margin: 0;
-            color: #047857;
+            color: white;
             font-size: 20px;
         }
         .registration-modal-body {
@@ -837,8 +955,8 @@
         .registration-modal-body .modal-form-group select:focus,
         .registration-modal-body .modal-form-group textarea:focus {
             outline: none;
-            border-color: #047857;
-            box-shadow: 0 0 0 3px rgba(4,120,87,0.1);
+            border-color: #14b8a6;
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15);
         }
         .registration-modal-body .modal-form-group textarea {
             resize: vertical;
@@ -872,16 +990,19 @@
         }
         .registration-modal-actions .btn-modal-submit {
             padding: 10px 20px;
-            background: #047857;
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
             color: white;
             border: none;
             border-radius: 6px;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
+            transition: all 0.2s ease;
         }
         .registration-modal-actions .btn-modal-submit:hover {
-            background: #059669;
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
         }
         .alert-modal {
             padding: 12px 16px;
@@ -1088,150 +1209,414 @@
             margin-left: 4px;
             font-weight: 400;
         }
+
+        /* Top Navigation Bar Styles */
+        .navbar {
+            background: #1e293b;
+            color: white;
+            padding: 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            align-items: center;
+            height: 72px;
+        }
+
+        .navbar i.bi {
+            font-family: bootstrap-icons;
+        }
+
+        .navbar-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0 24px;
+            gap: 24px;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .navbar-brand:hover {
+            opacity: 0.8;
+            transform: translateY(-2px);
+        }
+
+        .navbar-logo {
+            height: 40px;
+            width: 40px;
+            object-fit: contain;
+        }
+
+        .navbar-brand-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .navbar-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .navbar-subtitle {
+            font-size: 11px;
+            opacity: 0.8;
+            margin: 0;
+        }
+
+        .navbar-menu {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .navbar-item {
+            padding: 8px 14px;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 13px;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .navbar-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .navbar-item.active {
+            background: rgba(20, 184, 166, 0.15);
+            color: #14b8a6;
+            border-bottom: 2px solid #14b8a6;
+        }
+
+        .navbar-end {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-shrink: 0;
+        }
+
+        .navbar-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-avatar:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.08);
+        }
+
+        .navbar-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .navbar-user-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .navbar-user-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .navbar-user-role {
+            font-size: 11px;
+            opacity: 0.7;
+        }
+
+        .navbar-profile-btn {
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+        }
+
+        .navbar-profile-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .navbar-logout-btn {
+            padding: 6px 12px;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .navbar-logout-btn:hover {
+            background: rgba(239, 68, 68, 0.25);
+            border-color: rgba(239, 68, 68, 0.5);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 1024px) {
+            .navbar-menu span {
+                display: none;
+            }
+            .navbar-item {
+                padding: 8px 8px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar-container {
+                padding: 0 16px;
+                gap: 12px;
+            }
+            .navbar-menu {
+                display: none;
+            }
+            .navbar-end {
+                gap: 8px;
+            }
+        }
     </style>
 </head>
 <body>
+    <?php if (isset($component)) { $__componentOriginal17611e3b8decae96c78f7c1ff2705ab1 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal17611e3b8decae96c78f7c1ff2705ab1 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.staff-navbar','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('staff-navbar'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal17611e3b8decae96c78f7c1ff2705ab1)): ?>
+<?php $attributes = $__attributesOriginal17611e3b8decae96c78f7c1ff2705ab1; ?>
+<?php unset($__attributesOriginal17611e3b8decae96c78f7c1ff2705ab1); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal17611e3b8decae96c78f7c1ff2705ab1)): ?>
+<?php $component = $__componentOriginal17611e3b8decae96c78f7c1ff2705ab1; ?>
+<?php unset($__componentOriginal17611e3b8decae96c78f7c1ff2705ab1); ?>
+<?php endif; ?>
     <div class="container">
-        <a href="{{ route('dashboard') }}" class="btn-back" style="margin-bottom: 16px;">← Back to Dashboard</a>
         <div class="header">
             <div class="header-top">
-                <a href="{{ route('dashboard') }}" class="header-logo">
-                    <img src="{{ asset('newlogo.png') }}" alt="PAWser" style="height: 35px; object-fit: contain;">
-                </a>
-                <h1>Pet List</h1>
+                <h1>Pet Directory</h1>
             </div>
             
             <div class="header-actions">
-                <button onclick="openRegistrationModal()" class="btn-new-patient">
+                <button onclick="window.location.href='<?php echo e(route('pets.create')); ?>'" class="btn-new-patient">
                     <i class="bi bi-plus-circle"></i> Register New Pet
-                </button>
-                <button onclick="openImportModal()" class="btn-import">
-                    <i class="bi bi-file-earmark-arrow-up"></i> Import from CSV
                 </button>
             </div>
             
-            @if(session('success'))
+            <?php if(session('success')): ?>
             <div class="alert alert-success">
-                {{ session('success') }}
+                <?php echo e(session('success')); ?>
+
             </div>
-            @endif
+            <?php endif; ?>
 
             <div class="search-bar">
                 <div class="search-wrapper">
                     <input 
                         type="search" 
                         id="patientSearch" 
-                        placeholder="Search by pet name, owner, ID, or contact..."
+                        placeholder="Search pet name..."
                         autocomplete="off"
                     >
                     <span class="search-icon"><i class="bi bi-search"></i></span>
                     <div id="autocompleteResults" class="autocomplete-results"></div>
                 </div>
+                <select id="speciesFilter" class="filter-select">
+                    <option value="">All Species</option>
+                    <option value="Dog">Dog</option>
+                    <option value="Cat">Cat</option>
+                    <option value="Rabbit">Rabbit</option>
+                    <option value="Bird">Bird</option>
+                    <option value="Other">Other</option>
+                </select>
+                <select id="statusFilter" class="filter-select">
+                    <option value="">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+                <button class="btn-search">
+                    <i class="bi bi-search"></i> Search
+                </button>
             </div>
         </div>
 
         <div class="patients-table">
-            @if($patients->count() > 0)
-            @php $grouped = $patients->groupBy('owner_name'); @endphp
+            <?php if($patients->count() > 0): ?>
             <table>
                 <thead>
                     <tr>
-                        <th style="width:35%">Owner / Pet</th>
-                        <th style="width:15%">Details</th>
+                        <th style="width:28%">Owner / Pet</th>
+                        <th style="width:24%">Contact</th>
+                        <th style="width:18%">Pets</th>
                         <th style="width:18%">Last Visit</th>
-                        <th style="width:22%">Actions</th>
-                        <th style="width:10%"></th>
+                        <th style="width:12%">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($grouped as $ownerName => $ownerPets)
-                    @php $ownerId = 'owner-' . $loop->index; @endphp
+                    <?php
+                        $groupedPets = $patients->groupBy(function ($patient) {
+                            return ($patient->owner_name ?: 'Unknown Owner') . '|' . ($patient->owner_contact ?: 'No contact');
+                        });
+                    ?>
 
-                    {{-- Owner row --}}
-                    <tr class="owner-row" onclick="toggleOwner('{{ $ownerId }}', this)">
+                    <?php $__currentLoopData = $groupedPets; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $groupKey => $ownerPets): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php
+                        $ownerPet = $ownerPets->first();
+                        $ownerId = 'owner-' . $loop->index;
+                        $ownerLabel = $ownerPet->owner_name ?: 'Unknown Owner';
+                        $ownerContact = $ownerPet->owner_contact ?: 'No contact';
+                    ?>
+                    <tr class="owner-row" data-owner-id="<?php echo e($ownerId); ?>" onclick="toggleOwner('<?php echo e($ownerId); ?>')">
                         <td>
                             <div class="owner-name-cell">
-                                <div class="owner-avatar">{{ strtoupper(substr($ownerName ?: 'U', 0, 1)) }}</div>
-                                <span class="owner-label">{{ $ownerName ?: 'Unknown Owner' }}</span>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="pet-count-badge">
-                                <i class="bi bi-heart-fill" style="font-size:10px;"></i>
-                                {{ $ownerPets->count() }} {{ $ownerPets->count() === 1 ? 'pet' : 'pets' }}
-                            </span>
-                        </td>
-                        <td colspan="2">
-                            <span class="owner-contact">{{ $ownerPets->first()->owner_contact ?: 'No contact on file' }}</span>
-                        </td>
-                        <td class="chevron-cell">
-                            <i class="bi bi-chevron-down chevron" id="chevron-{{ $ownerId }}"></i>
-                        </td>
-                    </tr>
-
-                    {{-- Pet rows (hidden by default) --}}
-                    @foreach($ownerPets as $patient)
-                    <tr class="pet-row" data-owner="{{ $ownerId }}">
-                        <td>
-                            <div class="pet-name-cell">
-                                <div class="pet-icon">🐾</div>
+                                <div class="owner-avatar"><?php echo e(strtoupper(substr($ownerLabel ?: 'U', 0, 1))); ?></div>
                                 <div>
-                                    <div class="pet-label">{{ $patient->pet_name }}</div>
-                                    <div class="pet-sub">{{ $patient->species }}{{ $patient->breed ? ' · ' . $patient->breed : '' }}</div>
+                                    <div class="owner-label"><?php echo e($ownerLabel); ?></div>
+                                    <div class="owner-row-hint"><?php echo e($ownerPets->count()); ?> <?php echo e($ownerPets->count() === 1 ? 'pet' : 'pets'); ?></div>
                                 </div>
                             </div>
                         </td>
                         <td>
-                            <span class="badge badge-{{ strtolower($patient->sex) }}">{{ $patient->sex }}</span>
-                            <span style="font-size:12px; color:#6b7280; margin-left:5px;">{{ $patient->age }} yrs</span>
+                            <div class="owner-row-contact"><?php echo e($ownerContact); ?></div>
                         </td>
                         <td>
-                            @if($patient->visits->first())
-                                <span class="visit-date">{{ $patient->visits->first()->visit_date->format('M d, Y') }}</span>
-                            @else
-                                <span class="no-visit">No visits yet</span>
-                            @endif
+                            <span class="pet-count-badge">
+                                <i class="bi bi-heart-fill" style="font-size:10px;"></i>
+                                <?php echo e($ownerPets->count()); ?> <?php echo e($ownerPets->count() === 1 ? 'pet' : 'pets'); ?>
+
+                            </span>
+                        </td>
+                        <td>
+                            <span class="owner-row-hint">Click to expand pets</span>
+                        </td>
+                        <td class="owner-row-chevron">
+                            <i class="bi bi-chevron-down chevron" id="chevron-<?php echo e($ownerId); ?>"></i>
+                        </td>
+                    </tr>
+
+                    <?php $__currentLoopData = $ownerPets; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $patient): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <tr class="pet-row" data-owner-id="<?php echo e($ownerId); ?>" data-pet-name="<?php echo e(strtolower($patient->pet_name)); ?>" data-owner-name="<?php echo e(strtolower($patient->owner_name ?? '')); ?>" data-species="<?php echo e($patient->species ?? ''); ?>" data-has-visit="<?php echo e($patient->visits->first() ? '1' : '0'); ?>">
+                        <td>
+                            <div class="pet-name-cell">
+                                <div class="pet-avatar"><?php echo e(strtoupper(substr($patient->pet_name ?? 'P', 0, 1))); ?></div>
+                                <div>
+                                    <div class="pet-label"><?php echo e($patient->pet_name); ?></div>
+                                    <div class="pet-sub">ID: <?php echo e($patient->id); ?></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="owner-info">
+                                <div class="owner-label"><?php echo e($patient->owner_name ?: 'Unknown Owner'); ?></div>
+                                <div class="owner-sub"><?php echo e($patient->owner_contact ?: 'No contact'); ?></div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="details-cell">
+                                <div class="detail-main"><?php echo e($patient->species ?? 'Unknown'); ?></div>
+                                <div class="detail-sub"><?php echo e($patient->breed ?? 'No breed'); ?></div>
+                            </div>
+                        </td>
+                        <td>
+                            <?php if($patient->visits->first()): ?>
+                                <span class="visit-badge"><?php echo e($patient->visits->first()->visit_date->format('M d, Y')); ?></span>
+                            <?php else: ?>
+                                <span class="no-visit-badge">No visits yet</span>
+                            <?php endif; ?>
                         </td>
                         <td>
                             <div class="actions">
-                                <a href="{{ route('patients.show', $patient) }}" class="btn btn-info btn-sm">View</a>
-                                <a href="{{ route('patients.edit', $patient) }}" class="btn btn-sm" style="background:#4f46e5;color:white;">Edit</a>
-                                <button onclick="event.stopPropagation(); openVisitModal({{ $patient->id }}, '{{ addslashes($patient->full_name) }}', {{ $patient->age }}, '{{ $patient->sex }}')" class="btn btn-success btn-sm">+ Visit</button>
+                                <a href="<?php echo e(route('pets.show', $patient)); ?>" class="action-btn" title="View Details">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="<?php echo e(route('pets.edit', $patient)); ?>" class="action-btn" title="Edit Pet">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <button type="button" onclick="event.stopPropagation(); openVisitModal(<?php echo e($patient->id); ?>, '<?php echo e(addslashes($patient->pet_name)); ?>', '<?php echo e(addslashes($patient->owner_name ?? '')); ?>')" class="action-btn" title="Add Visit">
+                                    <i class="bi bi-plus"></i>
+                                </button>
                             </div>
                         </td>
-                        <td></td>
                     </tr>
-                    @endforeach
-
-                    {{-- Add Pet row for this owner --}}
-                    <tr class="pet-row add-pet-row" data-owner="{{ $ownerId }}">
-                        <td colspan="5">
-                            <button
-                                class="btn-add-pet"
-                                onclick="event.stopPropagation(); openRegistrationModal('{{ addslashes($ownerName) }}', '{{ $ownerPets->first()->owner_contact }}', '{{ addslashes($ownerPets->first()->address) }}')">
-                                <span class="add-pet-icon"><i class="bi bi-plus"></i></span>
-                                Add pet for <strong style="margin:0 2px;">{{ $ownerName ?: 'this owner' }}</strong>
-                                <span class="add-pet-hint">· new pet, same owner</span>
-                            </button>
-                        </td>
-                    </tr>
-
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </tbody>
             </table>
 
             <div class="pagination">
-                {{ $patients->links() }}
+                <?php echo e($patients->links()); ?>
+
             </div>
-            @else
+            <?php else: ?>
             <div class="empty-state">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                 </svg>
                 <h3>No pets found</h3>
-                <p>Start by registering a new pet</p>
+                <p>Start by registering a new pet or adjust your filters</p>
             </div>
-            @endif
+            <?php endif; ?>
         </div>
     </div>
 
@@ -1239,7 +1624,7 @@
     <div id="patientQuickModal" class="patient-quick-modal">
         <div class="patient-quick-content">
             <div class="patient-quick-header">
-                <h2><i class="bi bi-person-circle"></i> Patient Details</h2>
+                <h2><i class="bi bi-person-circle"></i> Pet Details</h2>
                 <button class="patient-quick-close" onclick="closePatientQuickModal()">&times;</button>
             </div>
             <div class="patient-quick-body">
@@ -1273,18 +1658,85 @@
                         <i class="bi bi-hospital"></i> Add Visit
                     </a>
                 </div>
-            </div>
         </div>
     </div>
 
     <script>
-        // Owner-expand toggle
-        function toggleOwner(ownerId, row) {
-            const petRows = document.querySelectorAll(`.pet-row[data-owner="${ownerId}"]`);
-            const chevron = document.getElementById('chevron-' + ownerId);
-            const isOpen = chevron.classList.contains('open');
-            petRows.forEach(r => r.classList.toggle('visible', !isOpen));
-            chevron.classList.toggle('open', !isOpen);
+        function toggleOwner(ownerId) {
+            const petRows = document.querySelectorAll(`.pet-row[data-owner-id="${ownerId}"]`);
+            const chevron = document.getElementById(`chevron-${ownerId}`);
+            const isOpen = chevron?.classList.contains('open');
+
+            petRows.forEach(row => {
+                row.classList.toggle('visible', !isOpen);
+            });
+
+            chevron?.classList.toggle('open', !isOpen);
+        }
+
+        // Add filter functionality
+        document.getElementById('speciesFilter')?.addEventListener('change', function() {
+            filterTable();
+        });
+
+        document.getElementById('statusFilter')?.addEventListener('change', function() {
+            filterTable();
+        });
+
+        document.querySelector('.btn-search')?.addEventListener('click', function() {
+            filterTable();
+        });
+
+        function filterTable() {
+            const searchTerm = document.getElementById('patientSearch').value.toLowerCase();
+            const speciesFilter = document.getElementById('speciesFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+            const ownerRows = document.querySelectorAll('.owner-row');
+
+            ownerRows.forEach(ownerRow => {
+                const ownerId = ownerRow.dataset.ownerId;
+                const petRows = document.querySelectorAll(`.pet-row[data-owner-id="${ownerId}"]`);
+                const chevron = document.getElementById(`chevron-${ownerId}`);
+                const filterActive = Boolean(searchTerm || speciesFilter || statusFilter);
+                let visiblePets = 0;
+
+                petRows.forEach(row => {
+                    const petName = row.dataset.petName ?? '';
+                    const ownerName = row.dataset.ownerName ?? '';
+                    const species = row.dataset.species ?? '';
+                    const hasVisit = row.dataset.hasVisit === '1';
+                    const rowText = row.textContent.toLowerCase();
+
+                    let show = true;
+
+                    if (searchTerm) {
+                        show = petName.includes(searchTerm) || ownerName.includes(searchTerm) || rowText.includes(searchTerm);
+                    }
+
+                    if (show && speciesFilter) {
+                        show = species === speciesFilter;
+                    }
+
+                    if (show && statusFilter) {
+                        show = statusFilter === 'active' ? hasVisit : !hasVisit;
+                    }
+
+                    row.style.display = filterActive ? (show ? 'table-row' : 'none') : 'none';
+                    row.classList.toggle('visible', filterActive && show);
+
+                    if (show) {
+                        visiblePets += 1;
+                    }
+                });
+
+                ownerRow.style.display = visiblePets > 0 || !filterActive ? '' : 'none';
+
+                if (!filterActive) {
+                    chevron?.classList.remove('open');
+                } else {
+                    chevron?.classList.toggle('open', visiblePets > 0);
+                }
+            });
         }
 
         // Type-ahead search functionality
@@ -1292,7 +1744,7 @@
         const autocompleteResults = document.getElementById('autocompleteResults');
         let searchTimeout;
 
-        searchInput.addEventListener('input', function() {
+        searchInput?.addEventListener('input', function() {
             clearTimeout(searchTimeout);
             const term = this.value.trim();
 
@@ -1302,7 +1754,7 @@
             }
 
             searchTimeout = setTimeout(() => {
-                fetch(`/api/patients/search?term=${encodeURIComponent(term)}`, {
+                fetch(`/api/pets/search?term=${encodeURIComponent(term)}`, {
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                         'Accept': 'application/json'
@@ -1311,10 +1763,10 @@
                 .then(response => response.json())
                 .then(patients => {
                     if (patients.length === 0) {
-                        autocompleteResults.innerHTML = '<div class="autocomplete-item">No patients found</div>';
+                        autocompleteResults.innerHTML = '<div class="autocomplete-item">No pets found</div>';
                     } else {
                         autocompleteResults.innerHTML = patients.map(patient => `
-                            <div class="autocomplete-item" onclick="window.location.href='/patients/${patient.id}'">
+                            <div class="autocomplete-item" onclick="window.location.href='/pets/${patient.id}'">
                                 <div class="name">${patient.name}</div>
                                 <div class="details">${patient.age} yrs • ${patient.sex} ${patient.contact ? '• ' + patient.contact : ''}</div>
                             </div>
@@ -1328,8 +1780,8 @@
 
         // Close autocomplete when clicking outside
         document.addEventListener('click', function(e) {
-            if (!searchInput.contains(e.target) && !autocompleteResults.contains(e.target)) {
-                autocompleteResults.classList.remove('show');
+            if (!searchInput?.contains(e.target) && !autocompleteResults?.contains(e.target)) {
+                autocompleteResults?.classList.remove('show');
             }
         });
 
@@ -1337,7 +1789,6 @@
             const referrer = document.referrer;
             const currentDomain = window.location.origin;
             
-            // Check if we have a referrer from the same domain and it's not the current page
             if (referrer && referrer.startsWith(currentDomain) && referrer !== window.location.href) {
                 window.history.back();
             } else {
@@ -1346,25 +1797,24 @@
         }
 
         // Visit Modal Functions
-        function openVisitModal(patientId, patientName, age, sex) {
+        function openVisitModal(petId, petName, ownerName) {
             document.getElementById('visitModal').classList.add('active');
-            document.getElementById('modalPatientName').textContent = patientName;
-            document.getElementById('modalPatientAge').textContent = age;
-            document.getElementById('modalPatientSex').textContent = sex;
-            document.getElementById('visitPatientId').value = patientId;
+            document.getElementById('modalPatientName').textContent = petName;
+            document.getElementById('modalOwnerName').textContent = ownerName;
+            document.getElementById('visitPatientId').value = petId;
             updateServiceSection();
         }
 
         function closeVisitModal() {
             document.getElementById('visitModal').classList.remove('active');
             document.getElementById('visitForm').reset();
-            updateServiceSection(); // Reset service section visibility
+            updateServiceSection();
         }
 
         // Auto-calculate BMI
         function calculateBMI() {
             const weight = parseFloat(document.getElementById('modalWeight').value);
-            const height = parseFloat(document.getElementById('modalHeight').value) / 100; // convert cm to m
+            const height = parseFloat(document.getElementById('modalHeight').value) / 100;
             
             if (weight > 0 && height > 0) {
                 const bmi = (weight / (height * height)).toFixed(1);
@@ -1374,13 +1824,12 @@
             }
         }
 
-        // Handle service type changes to show/hide relevant sections
+        // Handle service type changes
         function updateServiceSection() {
             const serviceTypeSelect = document.getElementById('modalServiceType');
             const breedingSection = document.getElementById('modalBreedingSection');            
             const referralSection = document.getElementById('modalReferralSection');
             
-            // Get all field elements
             const referredTo = document.getElementById('modalReferredTo');
             const referralReason = document.getElementById('modalReferralReason');
             
@@ -1390,8 +1839,7 @@
             }
             
             const serviceType = serviceTypeSelect.value;
-            console.log('Service type changed to:', serviceType);
-            
+
             const groomingServices = [
                 'Bath & Dry', 'Full Grooming', 'Haircut & Styling', 'Nail Trimming',
                 'Ear Cleaning', 'Teeth Brushing', 'De-shedding Treatment',
@@ -1399,7 +1847,6 @@
             ];
             const groomingSection = document.getElementById('modalGroomingSection');
 
-            // Hide all sections
             [groomingSection, breedingSection, referralSection].forEach(function(section) {
                 if (section) section.style.display = 'none';
             });
@@ -1408,7 +1855,6 @@
                 if (field) field.removeAttribute('required');
             });
 
-            // Show relevant section
             if (groomingServices.includes(serviceType) && groomingSection) {
                 groomingSection.style.display = 'block';
             } else if (serviceType === 'Follow-up' && referralSection) {
@@ -1417,320 +1863,11 @@
                 if (referralReason) referralReason.setAttribute('required', 'required');
             }
         }
-        
-        // No need for DOMContentLoaded since we're using inline onchange
 
         // Close modal when clicking outside
         document.getElementById('visitModal')?.addEventListener('click', function(e) {
             if (e.target === this) {
                 closeVisitModal();
-            }
-        });
-        
-        // Quick View Modal Functions
-        function showPatientQuickModal(patient) {
-            document.getElementById('quickPatientName').textContent = patient.name;
-            document.getElementById('quickPatientAge').textContent = `${patient.age} years old`;
-            document.getElementById('quickPatientSex').textContent = patient.sex;
-            document.getElementById('quickPatientContact').textContent = patient.contact || 'Not provided';
-            document.getElementById('quickPatientAddress').textContent = patient.address || 'Not provided';
-            document.getElementById('quickViewFullBtn').href = `/patients/${patient.id}`;
-            document.getElementById('quickAddVisitBtn').href = `/visits/create?patient_id=${patient.id}`;
-            document.getElementById('patientQuickModal').classList.add('active');
-            autocompleteResults.classList.remove('show');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closePatientQuickModal() {
-            document.getElementById('patientQuickModal').classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        document.getElementById('patientQuickModal')?.addEventListener('click', function(e) {
-            if (e.target === this) closePatientQuickModal();
-        });
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') closePatientQuickModal();
-        });
-
-        // Registration Modal Functions
-        function openRegistrationModal(ownerName = '', ownerContact = '', ownerAddress = '') {
-            const existingOwner = Boolean(ownerName);
-            const existingOwnerField = document.getElementById('regExistingOwner');
-            const ownerNotice = document.getElementById('existingOwnerNotice');
-            const ownerInfoSection = document.getElementById('ownerInfoSection');
-            const ownerNameField = document.getElementById('regOwnerName');
-            const ownerContactField = document.getElementById('regOwnerContact');
-            const ownerAddressField = document.getElementById('regAddress');
-
-            document.getElementById('registrationModal').classList.add('active');
-
-            if (existingOwnerField) {
-                existingOwnerField.value = existingOwner ? '1' : '0';
-            }
-
-            if (ownerNameField) {
-                ownerNameField.value = ownerName || '';
-                ownerNameField.readOnly = existingOwner;
-                ownerNameField.required = true;
-                ownerNameField.style.background = existingOwner ? '#f0fdf4' : '';
-            }
-
-            if (ownerContactField) {
-                ownerContactField.value = ownerContact || '';
-                ownerContactField.readOnly = existingOwner;
-                ownerContactField.style.background = existingOwner ? '#f0fdf4' : '';
-            }
-
-            if (ownerAddressField) {
-                ownerAddressField.value = ownerAddress || '';
-                ownerAddressField.readOnly = existingOwner;
-                ownerAddressField.required = !existingOwner;
-                ownerAddressField.style.background = existingOwner ? '#f0fdf4' : '';
-            }
-
-            if (ownerNotice) {
-                ownerNotice.style.display = existingOwner ? 'block' : 'none';
-            }
-
-            if (ownerInfoSection) {
-                ownerInfoSection.style.display = existingOwner ? 'none' : 'block';
-            }
-        }
-
-        function closeRegistrationModal() {
-            document.getElementById('registrationModal').classList.remove('active');
-            document.getElementById('registrationForm').reset();
-            document.getElementById('registrationAlert').style.display = 'none';
-
-            const existingOwnerField = document.getElementById('regExistingOwner');
-            const ownerNotice = document.getElementById('existingOwnerNotice');
-            const ownerInfoSection = document.getElementById('ownerInfoSection');
-            const ownerNameField = document.getElementById('regOwnerName');
-            const ownerContactField = document.getElementById('regOwnerContact');
-            const ownerAddressField = document.getElementById('regAddress');
-
-            if (existingOwnerField) existingOwnerField.value = '0';
-            if (ownerNotice) ownerNotice.style.display = 'none';
-            if (ownerInfoSection) ownerInfoSection.style.display = 'block';
-
-            if (ownerNameField) {
-                ownerNameField.readOnly = false;
-                ownerNameField.required = true;
-                ownerNameField.style.background = '';
-            }
-            if (ownerContactField) {
-                ownerContactField.readOnly = false;
-                ownerContactField.style.background = '';
-            }
-            if (ownerAddressField) {
-                ownerAddressField.readOnly = false;
-                ownerAddressField.required = true;
-                ownerAddressField.style.background = '';
-            }
-        }
-
-        // Handle registration form submission via AJAX
-        document.getElementById('registrationForm')?.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const alertDiv = document.getElementById('registrationAlert');
-            
-            // Disable submit button
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Registering...';
-            
-            fetch('{{ route("patients.store") }}', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    'Accept': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Show success message
-                    alertDiv.className = 'alert-modal success';
-                    alertDiv.textContent = data.message || 'Patient registered successfully!';
-                    alertDiv.style.display = 'block';
-                    
-                    // Reset form
-                    this.reset();
-                    
-                    // Reload page after 1.5 seconds
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 1500);
-                } else {
-                    // Show error message
-                    alertDiv.className = 'alert-modal error';
-                    if (data.errors) {
-                        const errorList = Object.values(data.errors).flat().map(err => `<li>${err}</li>`).join('');
-                        alertDiv.innerHTML = '<strong>Please fix the following errors:</strong><ul style="margin-top: 8px; margin-left: 20px;">' + errorList + '</ul>';
-                    } else {
-                        alertDiv.textContent = data.message || 'An error occurred. Please try again.';
-                    }
-                    alertDiv.style.display = 'block';
-                    
-                    // Re-enable submit button
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Register Pet';
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alertDiv.className = 'alert-modal error';
-                alertDiv.textContent = 'An error occurred. Please try again.';
-                alertDiv.style.display = 'block';
-                
-                // Re-enable submit button
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Register Pet';
-            });
-        });
-
-        // Close registration modal when clicking outside
-        document.getElementById('registrationModal')?.addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeRegistrationModal();
-            }
-        });
-        
-        // Import Modal Functions
-        function openImportModal() {
-            document.getElementById('importModal').classList.add('active');
-        }
-
-        function closeImportModal() {
-            document.getElementById('importModal').classList.remove('active');
-            document.getElementById('importForm').reset();
-            document.getElementById('importFileInfo').classList.remove('show');
-            document.getElementById('importBtn').disabled = true;
-            document.getElementById('importAlert').style.display = 'none';
-        }
-
-        // File upload handling
-        const importFileInput = document.getElementById('importFileInput');
-        const uploadArea = document.getElementById('uploadArea');
-        const fileInfo = document.getElementById('importFileInfo');
-        const fileName = document.getElementById('importFileName');
-        const importBtn = document.getElementById('importBtn');
-
-        importFileInput?.addEventListener('change', function(e) {
-            if (this.files.length > 0) {
-                fileName.textContent = this.files[0].name;
-                fileInfo.classList.add('show');
-                importBtn.disabled = false;
-            }
-        });
-
-        // Drag and drop
-        uploadArea?.addEventListener('click', function() {
-            importFileInput.click();
-        });
-
-        uploadArea?.addEventListener('dragover', function(e) {
-            e.preventDefault();
-            this.classList.add('dragover');
-        });
-
-        uploadArea?.addEventListener('dragleave', function() {
-            this.classList.remove('dragover');
-        });
-
-        uploadArea?.addEventListener('drop', function(e) {
-            e.preventDefault();
-            this.classList.remove('dragover');
-            
-            if (e.dataTransfer.files.length > 0) {
-                importFileInput.files = e.dataTransfer.files;
-                fileName.textContent = e.dataTransfer.files[0].name;
-                fileInfo.classList.add('show');
-                importBtn.disabled = false;
-            }
-        });
-
-        // Handle import form submission
-        document.getElementById('importForm')?.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const submitBtn = importBtn;
-            const alertDiv = document.getElementById('importAlert');
-            
-            // Disable submit button
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Importing...';
-            
-            fetch('{{ route("patients.import") }}', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    'Accept': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Show success message
-                    alertDiv.className = 'alert-modal success';
-                    let message = data.message;
-                    if (data.errors && data.errors.length > 0) {
-                        message += '<br><br><strong>Some rows failed:</strong><ul style="margin-top: 8px; margin-left: 20px;">';
-                        data.errors.forEach(err => {
-                            message += `<li>${err}</li>`;
-                        });
-                        message += '</ul>';
-                    }
-                    alertDiv.innerHTML = message;
-                    alertDiv.style.display = 'block';
-                    
-                    // Reset form
-                    this.reset();
-                    fileInfo.classList.remove('show');
-                    
-                    // Reload page after 2 seconds
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 2000);
-                } else {
-                    // Show error message
-                    alertDiv.className = 'alert-modal error';
-                    if (data.errors) {
-                        const errorList = Object.values(data.errors).flat().map(err => `<li>${err}</li>`).join('');
-                        alertDiv.innerHTML = '<strong>Please fix the following errors:</strong><ul style="margin-top: 8px; margin-left: 20px;">' + errorList + '</ul>';
-                    } else {
-                        alertDiv.textContent = data.message || 'Import failed. Please check your file and try again.';
-                    }
-                    alertDiv.style.display = 'block';
-                    
-                    // Re-enable submit button
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Import Pets';
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alertDiv.className = 'alert-modal error';
-                alertDiv.textContent = 'An error occurred during import. Please try again.';
-                alertDiv.style.display = 'block';
-                
-                // Re-enable submit button
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Import Pets';
-            });
-        });
-
-        // Close import modal when clicking outside
-        document.getElementById('importModal')?.addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeImportModal();
             }
         });
     </script>
@@ -1751,8 +1888,8 @@
                     </div>
                 </div>
 
-                <form id="visitForm" action="{{ route('visits.store') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
+                <form id="visitForm" action="<?php echo e(route('visits.store')); ?>" method="POST" enctype="multipart/form-data">
+                    <?php echo csrf_field(); ?>
                     <input type="hidden" name="patient_id" id="visitPatientId">
 
                     <div class="modal-section-title">Visit Information</div>
@@ -1934,13 +2071,13 @@
     <div id="importModal" class="import-modal">
         <div class="import-modal-content">
             <div class="import-modal-header">
-                <h2>Import Patient Records</h2>
+                <h2>Import Pet Records</h2>
                 <button class="modal-close" onclick="closeImportModal()" style="background: none; border: none; font-size: 28px; color: #6b7280; cursor: pointer; padding: 0; line-height: 1;">×</button>
             </div>
             <div class="import-modal-body">
                 <div id="importAlert" class="alert-modal" style="display: none;"></div>
                 
-                <p style="color: #6b7280; margin-bottom: 20px; font-size: 14px;">Bulk upload patient data from CSV file</p>
+                <p style="color: #6b7280; margin-bottom: 20px; font-size: 14px;">Bulk upload pet data from CSV file</p>
 
                 <div class="import-info-box">
                     <h3><i class="bi bi-file-earmark-text"></i> CSV File Requirements:</h3>
@@ -1954,7 +2091,7 @@
                 </div>
 
                 <form id="importForm" enctype="multipart/form-data">
-                    @csrf
+                    <?php echo csrf_field(); ?>
                     
                     <div class="upload-area" id="uploadArea">
                         <div class="upload-icon">File</div>
@@ -1970,7 +2107,7 @@
 
                     <div class="registration-modal-actions">
                         <button type="button" class="btn-modal-cancel" onclick="closeImportModal()">Cancel</button>
-                        <button type="submit" class="btn-modal-submit" id="importBtn" disabled>Import Patients</button>
+                        <button type="submit" class="btn-modal-submit" id="importBtn" disabled>Import Pets</button>
                     </div>
                 </form>
 
@@ -1979,7 +2116,7 @@
                     <p style="color: #6b7280; margin-bottom: 16px;">
                         Download this template, fill in your patient data, and upload it above.
                     </p>
-                    <a href="{{ route('patients.download-template') }}" class="btn btn-download" target="_blank">Download CSV Template</a>
+                    <a href="<?php echo e(route('pets.download-template')); ?>" class="btn btn-download" target="_blank">Download CSV Template</a>
 
                     <div class="sample-table">
                         <p style="font-weight: 600; margin: 20px 0 12px; color: #374151;">Sample Format:</p>
@@ -2022,109 +2159,6 @@
         </div>
     </div>
     
-    <!-- Registration Modal -->
-    <div id="registrationModal" class="registration-modal">
-        <div class="registration-modal-content">
-            <div class="registration-modal-header">
-                <h2>Register New Pet</h2>
-                <button class="modal-close" onclick="closeRegistrationModal()" style="background: none; border: none; font-size: 28px; color: #6b7280; cursor: pointer; padding: 0; line-height: 1;">×</button>
-            </div>
-            <div class="registration-modal-body">
-                <div id="registrationAlert" class="alert-modal" style="display: none;"></div>
-                
-                <p style="color: #6b7280; margin-bottom: 20px; font-size: 14px;">Fill in essential patient information.</p>
-
-                <form id="registrationForm">
-                    @csrf
-                    <input type="hidden" id="regExistingOwner" name="existing_owner" value="0">
-
-                    <!-- Pet Information -->
-                    <div class="modal-section-title">Pet Information</div>
-
-                    <div class="modal-form-row">
-                        <div class="modal-form-group">
-                            <label>Pet Name <span class="required">*</span></label>
-                            <input type="text" name="pet_name" required placeholder="e.g. Buddy">
-                        </div>
-                        <div class="modal-form-group">
-                            <label>Species <span class="required">*</span></label>
-                            <select name="species" required>
-                                <option value="">Select species</option>
-                                <option value="Dog">Dog</option>
-                                <option value="Cat">Cat</option>
-                                <option value="Rabbit">Rabbit</option>
-                                <option value="Bird">Bird</option>
-                                <option value="Hamster">Hamster</option>
-                                <option value="Guinea Pig">Guinea Pig</option>
-                                <option value="Fish">Fish</option>
-                                <option value="Reptile">Reptile</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="modal-form-row">
-                        <div class="modal-form-group">
-                            <label>Breed</label>
-                            <input type="text" name="breed" placeholder="e.g. Labrador">
-                        </div>
-                        <div class="modal-form-group">
-                            <label>Color / Markings</label>
-                            <input type="text" name="color" placeholder="e.g. Golden, white paws">
-                        </div>
-                    </div>
-
-                    <div class="modal-form-row">
-                        <div class="modal-form-group">
-                            <label>Date of Birth <span class="required">*</span></label>
-                            <input type="date" name="birthdate" required max="{{ date('Y-m-d') }}">
-                        </div>
-                        <div class="modal-form-group">
-                            <label>Sex <span class="required">*</span></label>
-                            <select name="sex" required>
-                                <option value="">Select</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Neutered Male">Neutered Male</option>
-                                <option value="Spayed Female">Spayed Female</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Owner Information -->
-                    <div id="existingOwnerNotice" class="alert-modal success" style="display:none; margin-bottom: 12px;">
-                        Using existing owner information. No need to re-enter owner details.
-                    </div>
-                    <div id="ownerInfoSection">
-                    <div class="modal-section-title" style="margin-top:16px;">Owner Information</div>
-
-                    <div class="modal-form-row">
-                        <div class="modal-form-group">
-                            <label>Owner Name <span class="required">*</span></label>
-                            <input type="text" id="regOwnerName" name="owner_name" required placeholder="Full name of owner">
-                        </div>
-                        <div class="modal-form-group">
-                            <label>Contact Number</label>
-                            <input type="tel" id="regOwnerContact" name="owner_contact" placeholder="09XX-XXX-XXXX">
-                        </div>
-                    </div>
-
-                    <div class="modal-form-row full">
-                        <div class="modal-form-group">
-                            <label>Address <span class="required">*</span></label>
-                            <textarea id="regAddress" name="address" required placeholder="House No., Street, Barangay, City"></textarea>
-                        </div>
-                    </div>
-                    </div>
-
-                    <!-- Actions -->
-                    <div class="registration-modal-actions">
-                        <button type="button" class="btn-modal-cancel" onclick="closeRegistrationModal()">Cancel</button>
-                        <button type="submit" class="btn-modal-submit">Register Pet</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 </body>
 </html>
+<?php /**PATH C:\Users\Lei\Capstone1-web\resources\views/pets/index.blade.php ENDPATH**/ ?>

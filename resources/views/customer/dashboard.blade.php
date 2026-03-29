@@ -28,6 +28,11 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .navbar i.bi {
+            font-family: bootstrap-icons;
         }
 
         .navbar-container {
@@ -147,6 +152,155 @@
 
         .logout-btn:hover {
             background: rgba(239, 68, 68, 0.2);
+        }
+
+        /* Notification Bell Styles */
+        .notification-bell-wrapper {
+            position: relative;
+        }
+
+        .notification-bell {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .notification-bell:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            border: 2px solid #1e293b;
+        }
+
+        .notification-dropdown {
+            display: none;
+            position: absolute;
+            top: 60px;
+            right: 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            min-width: 350px;
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #e5e7eb;
+        }
+
+        .notification-dropdown.active {
+            display: block;
+        }
+
+        .notification-header {
+            padding: 16px;
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+            color: white;
+            border-radius: 12px 12px 0 0;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .notification-item {
+            padding: 14px 16px;
+            border-bottom: 1px solid #f3f4f6;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            gap: 12px;
+        }
+
+        .notification-item:hover {
+            background: #f9fafb;
+        }
+
+        .notification-item.unread {
+            background: #f0fdf4;
+        }
+
+        .notification-item-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f0fdf4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #14b8a6;
+            flex-shrink: 0;
+        }
+
+        .notification-item-content {
+            flex: 1;
+        }
+
+        .notification-item-title {
+            font-weight: 600;
+            color: #111827;
+            font-size: 13px;
+            margin-bottom: 2px;
+        }
+
+        .notification-item-message {
+            color: #6b7280;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .notification-item-time {
+            color: #9ca3af;
+            font-size: 11px;
+            margin-top: 4px;
+        }
+
+        .notification-empty {
+            padding: 40px 20px;
+            text-align: center;
+            color: #9ca3af;
+            background: #f9fafb;
+        }
+
+        .notification-footer {
+            padding: 12px;
+            text-align: center;
+            border-top: 1px solid #e5e7eb;
+            background: #f9fafb;
+        }
+
+        .notification-footer a {
+            color: #14b8a6;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .notification-footer a:hover {
+            text-decoration: underline;
         }
 
         /* Hide top-nav white bar */
@@ -523,6 +677,7 @@
             }
         }
     </style>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
     <!-- Top Navigation Bar -->
@@ -549,6 +704,102 @@
             </div>
 
             <div class="navbar-end">
+                <!-- Notification Bell -->
+                <div class="notification-bell-wrapper">
+                    <button class="notification-bell" onclick="toggleNotifications()" title="Notifications">
+                        <i class="bi bi-bell"></i>
+                        @php
+                            $unreadCount = auth()->user()->unreadNotifications()->count();
+                        @endphp
+                        @if($unreadCount > 0)
+                            <span class="notification-badge">{{ min($unreadCount, 9) }}</span>
+                        @endif
+                    </button>
+
+                    <!-- Notification Dropdown -->
+                    <div class="notification-dropdown" id="notificationDropdown">
+                        <div class="notification-header">
+                            <span>Notifications</span>
+                            @if($unreadCount > 0)
+                                <button onclick="markAllAsRead()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px;">Mark all as read</button>
+                            @endif
+                        </div>
+
+                        @php
+                            $notifications = auth()->user()->notifications()->orderBy('created_at', 'desc')->limit(8)->get();
+                        @endphp
+
+                        @if($notifications->count() > 0)
+                            @foreach($notifications as $notification)
+                                <div class="notification-item {{ $notification->isUnread() ? 'unread' : '' }}" onclick="notificationClick({{ $notification->id }})">
+                                    <div class="notification-item-icon">
+                                        @if($notification->type == 'request_approved')
+                                            <i class="bi bi-check-circle-fill" style="color: #10b981;"></i>
+                                        @elseif($notification->type == 'request_rejected')
+                                            <i class="bi bi-x-circle-fill" style="color: #ef4444;"></i>
+                                        @else
+                                            <i class="bi bi-info-circle-fill"></i>
+                                        @endif
+                                    </div>
+                                    <div class="notification-item-content">
+                                        <div class="notification-item-title">{{ $notification->title }}</div>
+                                        <div class="notification-item-message">{{ Str::limit($notification->message, 80) }}</div>
+                                        <div class="notification-item-time">{{ $notification->created_at->diffForHumans() }}</div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
+                            <div class="notification-empty">
+                                <p><i class="bi bi-inbox" style="font-size: 24px; display: block; margin-bottom: 8px;"></i>No notifications yet</p>
+                            </div>
+                        @endif
+
+                        @if($notifications->count() > 0)
+                            <div class="notification-footer">
+                                <a href="{{ route('customer.notifications') }}">View All Notifications →</a>
+                            </div>
+                        @endif
+                    </div>
+                    <script>
+                        function toggleNotifications() {
+                            const dropdown = document.getElementById('notificationDropdown');
+                            dropdown.classList.toggle('active');
+                        }
+
+                        function markAllAsRead() {
+                            fetch('{{ route("customer.notifications.mark-all-read") }}', {
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                }
+                            }).then(() => {
+                                location.reload();
+                            });
+                        }
+
+                        function notificationClick(id) {
+                            fetch(`{{ url('customer/notifications') }}/${id}/read`, {
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                }
+                            }).then(res => res.json()).then(data => {
+                                if(data.redirect) {
+                                    window.location.href = data.redirect;
+                                }
+                            });
+                        }
+
+                        // Close dropdown when clicking outside
+                        document.addEventListener('click', function(event) {
+                            const wrapper = document.querySelector('.notification-bell-wrapper');
+                            if (!wrapper.contains(event.target)) {
+                                document.getElementById('notificationDropdown').classList.remove('active');
+                            }
+                        });
+                    </script>
+                </div>
+
                 <div class="user-menu">
                     <a href="{{ route('profile.show') }}" class="user-avatar" style="text-decoration: none;" title="View Profile">
                         {{ substr(auth()->user()->name, 0, 1) }}

@@ -6,7 +6,6 @@
     <title>Request Appointment - PAWser</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
         * {
             margin: 0;
@@ -15,7 +14,7 @@
         }
 
         body {
-            font-family: 'Manrope', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
             min-height: 100vh;
             padding: 20px;
@@ -36,13 +35,13 @@
             border: 1px solid #e5e7eb;
             border-radius: 8px;
             text-decoration: none;
-            color: #333;
+            color: #111827;
             margin-bottom: 20px;
             transition: all 0.3s;
         }
 
         .back-button:hover {
-            background: #f8f9fa;
+            background: #f0fdfa;
             border-color: #14b8a6;
             color: #14b8a6;
         }
@@ -232,7 +231,7 @@
 
         <div class="card">
             <div class="card-header">
-                <h1><i class="bi bi-calendar-plus"></i> Request Appointment</h1>
+                <h1>Request Appointment</h1>
             </div>
 
             <div class="card-body">

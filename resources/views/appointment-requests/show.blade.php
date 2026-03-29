@@ -6,7 +6,6 @@
     <title>Appointment Request Details - PAWser</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
         * {
             margin: 0;
@@ -15,7 +14,7 @@
         }
 
         body {
-            font-family: 'Manrope', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
             min-height: 100vh;
             padding: 20px;
@@ -36,13 +35,13 @@
             border: 1px solid #e5e7eb;
             border-radius: 8px;
             text-decoration: none;
-            color: #333;
+            color: #111827;
             margin-bottom: 20px;
             transition: all 0.3s;
         }
 
         .back-button:hover {
-            background: #f8f9fa;
+            background: #f0fdfa;
             border-color: #14b8a6;
             color: #14b8a6;
         }
@@ -178,17 +177,23 @@
             border-top: 1px solid #e5e7eb;
         }
 
+        .action-buttons > * {
+            flex: 1;
+            min-width: 0;
+        }
+
         button,
         .btn {
-            padding: 12px 24px;
+            padding: 10px 20px;
             border: none;
             border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 14px;
+            font-size: 13px;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
             text-decoration: none;
         }
@@ -344,15 +349,14 @@
         <div class="card">
             <div class="card-header">
                 <h1>
-                    <i class="bi bi-calendar-event"></i>
                     Appointment Request
                 </h1>
-                @if ($request->status === 'pending')
-                    <span class="badge badge-pending">{{ ucfirst($request->status) }}</span>
-                @elseif ($request->status === 'approved')
-                    <span class="badge badge-approved">{{ ucfirst($request->status) }}</span>
-                @elseif ($request->status === 'rejected')
-                    <span class="badge badge-rejected">{{ ucfirst($request->status) }}</span>
+                @if ($appointmentRequest->status === 'pending')
+                    <span class="badge badge-pending">{{ ucfirst($appointmentRequest->status) }}</span>
+                @elseif ($appointmentRequest->status === 'approved')
+                    <span class="badge badge-approved">{{ ucfirst($appointmentRequest->status) }}</span>
+                @elseif ($appointmentRequest->status === 'rejected')
+                    <span class="badge badge-rejected">{{ ucfirst($appointmentRequest->status) }}</span>
                 @endif
             </div>
 
@@ -365,18 +369,18 @@
                     <div class="info-row">
                         <div class="info-item">
                             <div class="info-label">Name</div>
-                            <div class="info-value">{{ $request->user->name }}</div>
+                            <div class="info-value">{{ $appointmentRequest->user?->name ?? 'N/A' }}</div>
                         </div>
                         <div class="info-item">
                             <div class="info-label">Email</div>
-                            <div class="info-value">{{ $request->user->email }}</div>
+                            <div class="info-value">{{ $appointmentRequest->user?->email ?? 'N/A' }}</div>
                         </div>
                     </div>
-                    @if ($request->user->phone)
+                    @if ($appointmentRequest->user?->phone)
                         <div class="info-row">
                             <div class="info-item">
                                 <div class="info-label">Phone</div>
-                                <div class="info-value">{{ $request->user->phone }}</div>
+                                <div class="info-value">{{ $appointmentRequest->user?->phone ?? 'N/A' }}</div>
                             </div>
                         </div>
                     @endif
@@ -390,21 +394,21 @@
                     <div class="info-row">
                         <div class="info-item">
                             <div class="info-label">Pet Name</div>
-                            <div class="info-value">{{ $request->patient->pet_name }}</div>
+                            <div class="info-value">{{ $appointmentRequest->patient?->pet_name ?? 'N/A' }}</div>
                         </div>
                         <div class="info-item">
                             <div class="info-label">Species</div>
-                            <div class="info-value">{{ $request->patient->species }}</div>
+                            <div class="info-value">{{ $appointmentRequest->patient?->species ?? 'N/A' }}</div>
                         </div>
                     </div>
                     <div class="info-row">
                         <div class="info-item">
                             <div class="info-label">Breed</div>
-                            <div class="info-value">{{ $request->patient->breed ?? 'Not specified' }}</div>
+                            <div class="info-value">{{ $appointmentRequest->patient?->breed ?? 'Not specified' }}</div>
                         </div>
                         <div class="info-item">
                             <div class="info-label">Age</div>
-                            <div class="info-value">{{ $request->patient->age ?? 'Not specified' }}</div>
+                            <div class="info-value">{{ $appointmentRequest->patient?->age ?? 'Not specified' }}</div>
                         </div>
                     </div>
                 </div>
@@ -417,51 +421,51 @@
                     <div class="info-row">
                         <div class="info-item">
                             <div class="info-label">Requested Date</div>
-                            <div class="info-value">{{ $request->requested_date->format('l, F j, Y') }}</div>
+                            <div class="info-value">{{ $appointmentRequest->requested_date?->format('l, F j, Y') ?? 'N/A' }}</div>
                         </div>
                         <div class="info-item">
                             <div class="info-label">Requested Time</div>
-                            <div class="info-value">{{ $request->requested_time }}</div>
+                            <div class="info-value">{{ $appointmentRequest->requested_time ?? 'N/A' }}</div>
                         </div>
                     </div>
                     <div class="info-row">
                         <div class="info-item">
                             <div class="info-label">Service Type</div>
-                            <div class="info-value">{{ $request->service_type ?? 'General' }}</div>
+                            <div class="info-value">{{ $appointmentRequest->service_type ?? 'General' }}</div>
                         </div>
                         <div class="info-item">
                             <div class="info-label">Submitted</div>
-                            <div class="info-value">{{ $request->created_at->format('M d, Y h:i A') }}</div>
+                            <div class="info-value">{{ $appointmentRequest->created_at?->format('M d, Y h:i A') ?? 'N/A' }}</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Customer Notes -->
-                @if ($request->preferred_notes)
+                @if ($appointmentRequest->preferred_notes)
                     <div class="section">
                         <div class="section-title">
                             <i class="bi bi-chat-left-text-fill"></i> Customer Notes
                         </div>
                         <div class="notes-box">
-                            <p>{{ $request->preferred_notes }}</p>
+                            <p>{{ $appointmentRequest->preferred_notes ?? 'No notes' }}</p>
                         </div>
                     </div>
                 @endif
 
                 <!-- Rejection Reason (if rejected) -->
-                @if ($request->status === 'rejected' && $request->rejection_reason)
+                @if ($appointmentRequest->status === 'rejected' && $appointmentRequest->rejection_reason)
                     <div class="section">
                         <div class="section-title">
                             <i class="bi bi-exclamation-circle"></i> Rejection Reason
                         </div>
                         <div class="rejection-info">
-                            <p>{{ $request->rejection_reason }}</p>
+                            <p>{{ $appointmentRequest->rejection_reason ?? 'No reason provided' }}</p>
                         </div>
                     </div>
                 @endif
 
                 <!-- Approval Information (if approved) -->
-                @if ($request->status === 'approved' && $request->approvedBy)
+                @if ($appointmentRequest->status === 'approved' && $appointmentRequest->approvedBy)
                     <div class="section">
                         <div class="section-title">
                             <i class="bi bi-check-circle-fill"></i> Approval Information
@@ -469,30 +473,30 @@
                         <div class="info-row">
                             <div class="info-item">
                                 <div class="info-label">Approved By</div>
-                                <div class="info-value">{{ $request->approvedBy->name }}</div>
+                                <div class="info-value">{{ $appointmentRequest->approvedBy?->name ?? 'N/A' }}</div>
                             </div>
                             <div class="info-item">
                                 <div class="info-label">Approved On</div>
-                                <div class="info-value">{{ $request->approved_at->format('M d, Y h:i A') }}</div>
+                                <div class="info-value">{{ $appointmentRequest->approved_at?->format('M d, Y h:i A') ?? 'N/A' }}</div>
                             </div>
                         </div>
                     </div>
                 @endif
 
                 <!-- Action Buttons -->
-                @if ($request->status === 'pending')
+                @if ($appointmentRequest->status === 'pending')
                     <div class="action-buttons">
                         <a href="{{ route('appointment-requests.index') }}" class="btn btn-secondary">
-                            <i class="bi bi-x-circle"></i> Cancel
+                            Cancel
                         </a>
                         <button type="button" onclick="openRejectModal()" class="btn btn-reject">
-                            <i class="bi bi-x"></i> Reject Request
+                            Reject Request
                         </button>
-                        <form action="{{ route('appointment-requests.approve', $request) }}" method="POST" style="display: inline;">
+                        <form action="{{ route('appointment-requests.approve', $appointmentRequest->id) }}" method="POST" style="display: inline;">
                             @csrf
                             @method('PATCH')
                             <button type="submit" class="btn btn-approve">
-                                <i class="bi bi-check"></i> Approve & Create Appointment
+                                Approve & Create Appointment
                             </button>
                         </form>
                     </div>
@@ -508,7 +512,7 @@
             <div class="modal-header">
                 <h2>Reject Appointment Request</h2>
             </div>
-            <form action="{{ route('appointment-requests.reject', $request) }}" method="POST">
+            <form action="{{ route('appointment-requests.reject', $appointmentRequest->id) }}" method="POST">
                 @csrf
                 @method('PATCH')
                 <div class="modal-body">

@@ -58,6 +58,11 @@ Route::middleware(['auth', 'customer'])->prefix('customer')->name('customer.')->
     Route::match(['put', 'patch'], '/pets/{patient}', [PetController::class, 'update'])->name('pets.update');
     Route::get('/appointments', [CustomerDashboardController::class, 'appointments'])->name('appointments.index');
     Route::get('/appointments/{appointment}', [CustomerDashboardController::class, 'showAppointment'])->name('appointments.show');
+    
+    // Notification Routes
+    Route::get('/notifications', [\App\Http\Controllers\NotificationController::class, 'index'])->name('notifications');
+    Route::post('/notifications/mark-all-read', [\App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-read');
+    Route::post('/notifications/{notification}/read', [\App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.mark-read');
 });
 
 // Protected routes group
@@ -69,6 +74,9 @@ Route::middleware('auth')->group(function () {
     Route::match(['put', 'post'], '/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile/picture', [ProfileController::class, 'deleteProfilePicture'])->name('profile.delete-picture');
     
+    // API Routes
+    Route::get('/api/notifications', [\App\Http\Controllers\NotificationController::class, 'getNotifications'])->name('api.notifications');
+    
     // Pet Management Routes
     Route::get('/pets/import/form', [PetController::class, 'showImportForm'])->name('pets.import.form');
     Route::post('/pets/import', [PetController::class, 'import'])->name('pets.import');
@@ -77,12 +85,10 @@ Route::middleware('auth')->group(function () {
         ->parameters(['pets' => 'patient'])
         ->names('pets');
     Route::get('/api/pets/search', [PetController::class, 'search'])->name('pets.search.api');
-    Route::get('/api/pets/{patient}/vital-signs/last', [PetController::class, 'getLastVitalSigns'])->name('pets.vital-signs.last');
     Route::get('/api/species/{speciesId}', [PetController::class, 'getSpeciesCharacteristics'])->name('api.species.characteristics');
 
     // Legacy patient routes (kept for compatibility)
     Route::get('/api/patients/search', [PetController::class, 'search'])->name('patients.search.api');
-    Route::get('/api/patients/{patient}/vital-signs/last', [PetController::class, 'getLastVitalSigns'])->name('patients.vital-signs.last');
     Route::get('/patients/import/form', function () {
         return redirect()->route('pets.import.form');
     })->name('patients.import.form');
@@ -109,6 +115,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/visits-today', [VisitController::class, 'index'])->name('visits.today');
     Route::get('/visits/calendar/view', [VisitController::class, 'calendar'])->name('visits.calendar');
     Route::get('/api/visits/by-date', [VisitController::class, 'getVisitsByDate'])->name('visits.by-date');
+    Route::get('/api/visits/{visit}/details', [VisitController::class, 'getDetails'])->name('visits.getDetails');
     
     // Report Routes (Basic access for all authenticated users)
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
@@ -116,8 +123,6 @@ Route::middleware('auth')->group(function () {
     // Advanced Report Routes (Admin only)
     Route::middleware('admin')->group(function () {
         Route::get('/reports/generate', [ReportController::class, 'generate'])->name('reports.generate');
-        Route::get('/reports/overdue-immunizations', [ReportController::class, 'overdueImmunizations'])->name('reports.overdue-immunizations');
-        Route::get('/reports/high-risk-breeding', [ReportController::class, 'highRiskBreeding'])->name('reports.high-risk-breeding');
         
         // Insight Center (Admin only)
         Route::get('/analytics', [\App\Http\Controllers\InsightCenterController::class, 'index'])->name('analytics.index');
@@ -189,10 +194,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/google/events/{eventId}', [GoogleCalendarController::class, 'updateEvent'])->name('google.events.update');
     Route::delete('/google/events/{eventId}', [GoogleCalendarController::class, 'deleteEvent'])->name('google.events.delete');
 
-    // Services Routes (placeholder - to be implemented)
-    Route::get('/immunizations', function () {
-        return view('immunizations.index');
-    })->name('immunizations.index');
+
 
     // Tools Routes
     Route::get('/automation-support', [\App\Http\Controllers\ActionHubController::class, 'index'])->name('automation.support');

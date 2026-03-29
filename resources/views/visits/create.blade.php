@@ -7,6 +7,12 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
+        :root {
+            --primary: #14b8a6;
+            --primary-strong: #0d9488;
+            --text: #1f2937;
+            --line: #e5e7eb;
+        }
         * {
             margin: 0;
             padding: 0;
@@ -30,71 +36,39 @@
         }
         .header-top {
             display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 8px;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 16px;
         }
         .btn-back {
-            padding: 10px 20px;
-            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
-            color: white;
-            border: none;
+            padding: 10px 16px;
+            background: white;
+            color: #111827;
+            border: 1px solid #111827;
             border-radius: 10px;
             cursor: pointer;
             font-size: 14px;
-            font-weight: 700;
+            font-weight: 600;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 8px rgba(107, 114, 128, 0.3);
+            gap: 8px;
+            transition: all 0.2s ease;
         }
-        
         .btn-back:hover {
-            background: linear-gradient(135deg, #4b5563 0%, #374151 100());
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(107, 114, 128, 0.4);
+            background: #f0fdfa;
+            border-color: #14b8a6;
+            color: #14b8a6;
+            transform: translateY(-1px);
         }
         h1 {
-            color: #047857;
+            color: var(--primary-strong);
             margin: 0;
             flex: 1;
             font-size: 32px;
             font-weight: 800;
             letter-spacing: -0.02em;
-        }
-        .patient-info {
-            background: linear-gradient(135deg, #ecfdf5 0%, #dbeafe 100%);
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 28px;
-            border: 2px solid #a7f3d0;
-            border-left: 5px solid #047857;
-            box-shadow: 0 2px 8px rgba(4, 120, 87, 0.1);
-        }
-        .patient-info h3 {
-            color: #064e3b;
-            margin-bottom: 12px;
-            font-size: 18px;
-            font-weight: 700;
-            letter-spacing: -0.01em;
-        }
-        .patient-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            font-size: 14px;
-            color: #374151;
-        }
-        .patient-details div {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .patient-details strong {
-            color: #064e3b;
-            font-weight: 700;
         }
         .section-title {
             font-size: 18px;
@@ -102,11 +76,17 @@
             color: #0f172a;
             margin: 28px 0 20px;
             padding-bottom: 12px;
-            border-bottom: 2px solid #e5e7eb;
+            border-bottom: 2px solid var(--line);
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: 8px;
             letter-spacing: -0.01em;
+        }
+        .service-field {
+            display: none;
+        }
+        .service-field.show {
+            display: block;
         }
         .form-row {
             display: grid;
@@ -132,7 +112,7 @@
         }
         input, select, textarea {
             padding: 12px 14px;
-            border: 1.5px solid #d1d5db;
+            border: 1.5px solid var(--line);
             border-radius: 10px;
             font-size: 14px;
             font-family: inherit;
@@ -142,8 +122,8 @@
         }
         input:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: #047857;
-            box-shadow: 0 0 0 3px rgba(4, 120, 87, 0.1), inset 0 1px 2px rgba(0, 0, 0, 0.05);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1), inset 0 1px 2px rgba(0, 0, 0, 0.05);
         }
         input::placeholder, textarea::placeholder {
             color: #9ca3af;
@@ -156,17 +136,6 @@
             font-size: 12px;
             color: #6b7280;
             margin-top: 4px;
-        }
-        .vital-signs-card {
-            background: #fef3c7;
-            padding: 20px;
-            border-radius: 8px;
-            border: 2px solid #fbbf24;
-        }
-        .vital-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
         }
         .btn {
             padding: 12px 28px;
@@ -182,32 +151,23 @@
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .btn-primary {
-            background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-strong) 100%);
             color: white;
-            box-shadow: 0 4px 12px rgba(4, 120, 87, 0.3);
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
         }
         .btn-primary:hover {
-            background: linear-gradient(135deg, #065f46 0%, #064e3b 100%);
-            box-shadow: 0 8px 20px rgba(4, 120, 87, 0.4);
+            background: linear-gradient(135deg, var(--primary-strong) 0%, #0f766e 100%);
+            box-shadow: 0 8px 20px rgba(20, 184, 166, 0.4);
             transform: translateY(-2px);
         }
         .btn-secondary {
-            background: #f3f4f6;
-            color: #374151;
-            border: 1px solid #d1d5db;
+            background: white;
+            color: var(--text);
+            border: 1px solid var(--line);
         }
         .btn-secondary:hover {
-            background: #e5e7eb;
+            background: var(--line);
             border-color: #9ca3af;
-        }
-        .btn-copy {
-            background: #3b82f6;
-            color: white;
-            font-size: 13px;
-            padding: 8px 16px;
-        }
-        .btn-copy:hover {
-            background: #2563eb;
         }
         .actions {
             display: flex;
@@ -215,7 +175,7 @@
             justify-content: flex-end;
             margin-top: 32px;
             padding-top: 20px;
-            border-top: 1px solid #e5e7eb;
+            border-top: 1px solid var(--line);
         }
         .alert {
             padding: 12px 16px;
@@ -227,61 +187,14 @@
             color: #991b1b;
             border: 1px solid #fecaca;
         }
-        .status-indicator {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            margin-left: 8px;
-        }
-        .status-normal {
-            background: #10b981;
-        }
-        .status-elevated {
-            background: #f59e0b;
-        }
-        .status-high {
-            background: #ef4444;
-        }
-        .status-low {
-            background: #3b82f6;
-        }
-        .service-section {
-            display: none;
-            background: #f0f9ff;
-            padding: 20px;
-            border-radius: 8px;
-            border: 2px solid #3b82f6;
-            margin-top: 24px;
-        }
-        .service-section.active {
-            display: block;
-        }
-        .service-section h3 {
-            color: #1e40af;
-            margin-bottom: 16px;
-            font-size: 16px;
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header-top">
-            <button onclick="goBack()" class="btn-back">← Back</button>
-            <h1>Record Patient Visit</h1>
+            <a href="{{ route('pets.show', $patient) }}" class="btn-back"><i class="bi bi-arrow-left"></i> Back</a>
+            <h1>Record Visit</h1>
         </div>
-        
-        @if($patient)
-        <div class="patient-info">
-            <h3>{{ $patient->full_name }}</h3>
-            <div class="patient-details">
-                <div><strong>ID:</strong> {{ $patient->patient_id }}</div>
-                <div><strong>Age:</strong> {{ $patient->age }} years</div>
-                <div><strong>Sex:</strong> {{ $patient->sex }}</div>
-                <div><strong>Contact:</strong> {{ $patient->contact_number ?: 'N/A' }}</div>
-            </div>
-        </div>
-        @endif
 
         @if($errors->any())
         <div class="alert alert-error">
@@ -299,176 +212,159 @@
             <input type="hidden" name="patient_id" value="{{ $patient ? $patient->id : old('patient_id') }}">
 
             <!-- Visit Information -->
-            <div class="section-title">Visit Information</div>
+            <div class="section-title"><i class="bi bi-clipboard-check" style="color: var(--primary);"></i>Visit Information</div>
             
             <div class="form-row">
                 <div class="form-group">
                     <label>Service Type <span class="required">*</span></label>
                     <select name="service_type" id="serviceType" required>
                         <option value="">Select service</option>
-                        <optgroup label="Grooming Services">
-                            <option value="Bath & Dry">Bath &amp; Dry</option>
-                            <option value="Full Grooming">Full Grooming</option>
-                            <option value="Haircut & Styling">Haircut &amp; Styling</option>
-                            <option value="Nail Trimming">Nail Trimming</option>
-                            <option value="Ear Cleaning">Ear Cleaning</option>
-                            <option value="Teeth Brushing">Teeth Brushing</option>
-                            <option value="De-shedding Treatment">De-shedding Treatment</option>
-                            <option value="Flea & Tick Treatment">Flea &amp; Tick Treatment</option>
-                            <option value="Paw Treatment">Paw Treatment</option>
-                        </optgroup>
-                        <optgroup label="Other Services">
-                            <option value="Boarding Checkup">Boarding Checkup</option>
-                            <option value="Follow-up">Follow-up</option>
-                            <option value="Other">Other</option>
-                        </optgroup>
+                        <option value="Bath & Dry">Bath &amp; Dry</option>
+                        <option value="Full Grooming">Full Grooming</option>
+                        <option value="Haircut & Styling">Haircut &amp; Styling</option>
+                        <option value="Nail Trimming">Nail Trimming</option>
+                        <option value="Ear Cleaning">Ear Cleaning</option>
+                        <option value="Teeth Brushing">Teeth Brushing</option>
+                        <option value="De-shedding Treatment">De-shedding Treatment</option>
+                        <option value="Flea & Tick Treatment">Flea &amp; Tick Treatment</option>
+                        <option value="Paw Treatment">Paw Treatment</option>
+                        <option value="Boarding Checkup">Boarding Checkup</option>
+                        <option value="Follow-up">Follow-up</option>
+                        <option value="Other">Other</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Veterinarian/Staff</label>
-                    <input type="text" name="health_worker" value="{{ old('health_worker', session('last_health_worker', '')) }}">
-                    <span class="hint">Auto-remembered from last entry</span>
+                    <label>Staff Member</label>
+                    <input type="text" name="health_worker" placeholder="Groomer/Staff name" value="{{ old('health_worker', session('last_health_worker', '')) }}">
+                    <span class="hint">Auto-remembered from last visit</span>
                 </div>
             </div>
 
-            <!-- Pet Profile Section (always visible) -->
-            <div class="section-title">Pet Profile</div>
+            <!-- Grooming Details -->
+            <div class="section-title"><i class="bi bi-scissors" style="color: var(--primary);"></i>Grooming Details</div>
+            
             <div class="form-row">
                 <div class="form-group">
-                    <label>Animal Size</label>
-                    <select name="animal_size">
-                        <option value="">Select size</option>
-                        <option value="Small">Small</option>
-                        <option value="Big">Big</option>
+                    <label>Coat Condition</label>
+                    <select name="coat_condition">
+                        <option value="">Select condition</option>
+                        <option value="Clean">Clean</option>
+                        <option value="Matted">Matted</option>
+                        <option value="Dirty">Dirty</option>
+                        <option value="Shedding">Shedding</option>
+                        <option value="Flea-Infested">Flea-Infested</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Behavior</label>
+                    <label>Pet Behavior</label>
                     <select name="behavior">
                         <option value="">Select behavior</option>
                         <option value="Calm">Calm</option>
+                        <option value="Anxious">Anxious</option>
                         <option value="Aggressive">Aggressive</option>
+                        <option value="Hyperactive">Hyperactive</option>
                     </select>
                 </div>
             </div>
+
+            <!-- Service-Specific Fields -->
+            <div class="service-field" id="fleaTickField">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Treatment Product Used</label>
+                        <input type="text" name="flea_tick_product" placeholder="e.g., Frontline Plus, Advantage II">
+                    </div>
+                    <div class="form-group">
+                        <label>Area Treated</label>
+                        <select name="flea_tick_area">
+                            <option value="">Select area</option>
+                            <option value="Full Body">Full Body</option>
+                            <option value="Head">Head</option>
+                            <option value="Body">Body</option>
+                            <option value="Spot">Spot Treatment</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="service-field" id="nailTrimmingField">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nail Condition Before</label>
+                        <select name="nail_condition_before">
+                            <option value="">Select condition</option>
+                            <option value="Short">Short</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Long">Long</option>
+                            <option value="Overgrown">Overgrown</option>
+                            <option value="Cracked">Cracked</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Nail Condition After</label>
+                        <select name="nail_condition_after">
+                            <option value="">Select condition</option>
+                            <option value="Trimmed">Trimmed</option>
+                            <option value="Buffed">Buffed</option>
+                            <option value="Polished">Polished</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="service-field" id="teethBrushingField">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Dental Observations</label>
+                        <textarea name="dental_notes" placeholder="Any tartar buildup, gum issues, or other observations..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="service-field" id="deshedField">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Shedding Amount</label>
+                        <select name="shedding_amount">
+                            <option value="">Select amount</option>
+                            <option value="Light">Light Shedding</option>
+                            <option value="Moderate">Moderate Shedding</option>
+                            <option value="Heavy">Heavy Shedding</option>
+                            <option value="Extreme">Extreme Shedding</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Hair Removed (approx.)</label>
+                        <input type="text" name="hair_removed" placeholder="e.g., 2 cups, 1 bag">
+                    </div>
+                </div>
+            </div>
+
+            <div class="service-field" id="boardingField">
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label>Health Observations</label>
+                        <textarea name="boarding_observations" placeholder="Pet's health status, energy level, appetite, any concerns..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Image Upload -->
             <div class="form-row">
                 <div class="form-group">
-                    <label>Animal Picture</label>
-                    <input type="file" name="animal_photo" accept="image/*">
-                    <span class="hint">Upload pet/animal photo (optional)</span>
-                </div>
-            </div>
-
-            <!-- Grooming Service Section -->
-            <div id="groomingSection" class="service-section">
-                <h3><i class="bi bi-scissors"></i> Grooming Service Details</h3>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Coat Condition</label>
-                        <select name="coat_condition">
-                            <option value="">Select condition</option>
-                            <option value="Clean">Clean</option>
-                            <option value="Matted">Matted</option>
-                            <option value="Dirty">Dirty</option>
-                            <option value="Shedding">Shedding</option>
-                            <option value="Flea-Infested">Flea-Infested</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Groomer</label>
-                        <input type="text" name="groomer" placeholder="Name of groomer">
-                    </div>
-                </div>
-                <div class="form-row full">
-                    <div class="form-group">
-                        <label>Grooming Notes</label>
-                        <textarea name="grooming_notes" placeholder="Special instructions, coat issues, client requests..."></textarea>
-                    </div>
-                </div>
-            </div>
-
-
-
-            <!-- Referral Section -->
-            <div id="referralSection" class="service-section">
-                <h3><i class="bi bi-hospital"></i> Referral Details</h3>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Referred To <span class="required">*</span></label>
-                        <input type="text" name="referred_to" placeholder="Hospital/Clinic name">
-                    </div>
-                    <div class="form-group">
-                        <label>Reason for Referral <span class="required">*</span></label>
-                        <input type="text" name="referral_reason" placeholder="e.g., High blood pressure">
-                    </div>
-                </div>
-                <div class="form-row full">
-                    <div class="form-group">
-                        <label>Urgency Level</label>
-                        <select name="referral_urgency">
-                            <option value="Routine">Routine</option>
-                            <option value="Urgent">Urgent</option>
-                            <option value="Emergency">Emergency</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-row full">
-                <div class="form-group">
-                    <label>Chief Complaint</label>
-                    <textarea name="chief_complaint">{{ old('chief_complaint') }}</textarea>
-                </div>
-            </div>
-
-            <!-- Vital Signs -->
-            <div class="section-title">
-                <span>Vital Signs</span>
-                @if($patient && $patient->lastVitalSigns)
-                <button type="button" class="btn btn-copy" onclick="copyLastVitalSigns()">
-                    <i class="bi bi-clipboard2"></i> Copy from Last Visit
-                </button>
-                @endif
-            </div>
-
-            <div class="vital-signs-card">
-                <div class="vital-grid">
-                    <div class="form-group">
-                        <label>Heart Rate (bpm)</label>
-                        <input type="number" name="blood_pressure" id="bp" placeholder="80" min="40" max="200">
-                        <span class="hint">Normal: 60-140 bpm (varies by species)</span>
-                    </div>
-                    <div class="form-group">
-                        <label>Temperature (°C)</label>
-                        <input type="number" name="temperature" id="temp" step="0.1" min="30" max="45" placeholder="36.5">
-                        <span class="hint">Normal: 36.1-37.2</span>
-                    </div>
-                    <div class="form-group">
-                        <label>Pulse Rate (bpm)</label>
-                        <input type="number" name="pulse_rate" id="pulse" step="1" min="30" max="200" placeholder="75">
-                        <span class="hint">Normal: 60-100</span>
-                    </div>
-                    <div class="form-group">
-                        <label>Weight (kg)</label>
-                        <input type="number" name="weight" id="weight" step="0.1" min="0" max="500" placeholder="65.5">
-                    </div>
-                    <div class="form-group">
-                        <label>Height (cm)</label>
-                        <input type="number" name="height" id="height" step="0.1" min="0" max="300" placeholder="165">
-                    </div>
-                    <div class="form-group" id="bmiDisplay" style="display: flex; align-items: end;">
-                        <div style="padding: 10px; background: white; border-radius: 6px; width: 100%;">
-                            <label style="margin: 0;">BMI: <span id="bmiValue">-</span></label>
-                        </div>
-                    </div>
+                    <label>Upload Photos</label>
+                    <input type="file" name="visit_photos[]" multiple accept="image/*">
+                    <span class="hint">Upload photos of the grooming results (optional, max 5 images)</span>
                 </div>
             </div>
 
             <!-- Notes -->
-            <div class="form-row full" style="margin-top: 24px;">
+            <div class="section-title"><i class="bi bi-chat-left-text" style="color: var(--primary);"></i>Visit Notes</div>
+            
+            <div class="form-row full">
                 <div class="form-group">
-                    <label>Notes / Recommendations</label>
-                    <textarea name="notes">{{ old('notes') }}</textarea>
+                    <label>Grooming Notes</label>
+                    <textarea name="grooming_notes" placeholder="Special instructions, coat issues, client requests, any observations...">{{ old('grooming_notes') }}</textarea>
                 </div>
             </div>
 
@@ -481,111 +377,41 @@
     </div>
 
     <script>
-        // Service type handler - show/hide specific sections
+        // Service type conditional fields
         const serviceTypeSelect = document.getElementById('serviceType');
-        const groomingSection = document.getElementById('groomingSection');
-        const referralSection = document.getElementById('referralSection');
-
-        const groomingServices = [
-            'Bath & Dry', 'Full Grooming', 'Haircut & Styling', 'Nail Trimming',
-            'Ear Cleaning', 'Teeth Brushing', 'De-shedding Treatment',
-            'Flea & Tick Treatment', 'Paw Treatment'
-        ];
         
-        function updateServiceSection() {
+        const serviceFields = {
+            'Flea & Tick Treatment': 'fleaTickField',
+            'Nail Trimming': 'nailTrimmingField',
+            'Teeth Brushing': 'teethBrushingField',
+            'De-shedding Treatment': 'deshedField',
+            'Boarding Checkup': 'boardingField'
+        };
+
+        function updateServiceFields() {
             const selectedService = serviceTypeSelect.value;
             
-            // Hide all sections first
-            [groomingSection, referralSection].forEach(s => { if(s) s.classList.remove('active'); });
-            
-            // Show relevant section
-            if (groomingServices.includes(selectedService)) {
-                if (groomingSection) groomingSection.classList.add('active');
-            } else if (selectedService === 'Follow-up') {
-                if (referralSection) referralSection.classList.add('active');
-            }
-        }
-        
-        serviceTypeSelect.addEventListener('change', updateServiceSection);
-        
-        // Trigger on page load to show section if service type is pre-selected
-        window.addEventListener('DOMContentLoaded', updateServiceSection);
-
-        function goBack() {
-            const referrer = document.referrer;
-            const currentDomain = window.location.origin;
-            
-            // Check if we have a referrer from the same domain and it's not the current page
-            if (referrer && referrer.startsWith(currentDomain) && referrer !== window.location.href) {
-                window.history.back();
-            } else {
-                window.location.href = '/dashboard';
-            }
-        }
-
-        // Copy from last visit functionality
-        function copyLastVitalSigns() {
-            @if($patient)
-            fetch(`/api/pets/{{ $patient->id }}/vital-signs/last`, {
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    'Accept': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(result => {
-                if (result.success) {
-                    document.getElementById('bp').value = result.data.blood_pressure || '';
-                    document.getElementById('temp').value = result.data.temperature || '';
-                    document.getElementById('pulse').value = result.data.pulse_rate || '';
-                    document.getElementById('weight').value = result.data.weight || '';
-                    document.getElementById('height').value = result.data.height || '';
-                    calculateBMI();
-                    alert('Last vital signs copied successfully.');
-                } else {
-                    alert('No previous vital signs found.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Failed to copy vital signs');
+            // Hide all service fields
+            Object.values(serviceFields).forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field) field.classList.remove('show');
             });
-            @endif
-        }
-
-        // Auto-calculate BMI
-        function calculateBMI() {
-            const weight = parseFloat(document.getElementById('weight').value);
-            const height = parseFloat(document.getElementById('height').value);
             
-            if (weight && height) {
-                const heightInMeters = height / 100;
-                const bmi = (weight / (heightInMeters * heightInMeters)).toFixed(1);
-                document.getElementById('bmiValue').textContent = bmi;
-            } else {
-                document.getElementById('bmiValue').textContent = '-';
+            // Show relevant field
+            if (serviceFields[selectedService]) {
+                const field = document.getElementById(serviceFields[selectedService]);
+                if (field) field.classList.add('show');
             }
         }
 
-        document.getElementById('weight').addEventListener('input', calculateBMI);
-        document.getElementById('height').addEventListener('input', calculateBMI);
+        serviceTypeSelect.addEventListener('change', updateServiceFields);
 
-        // Remember health worker in session storage
+        // Remember health worker/groomer name in session
         document.querySelector('form').addEventListener('submit', function(e) {
             const healthWorker = document.querySelector('[name="health_worker"]').value;
             if (healthWorker) {
                 sessionStorage.setItem('last_health_worker', healthWorker);
             }
-        });
-
-        // Auto-fill today's date (already handled server-side, but for display)
-        window.addEventListener('load', function() {
-            const today = new Date().toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-            });
-            console.log('Visit date:', today);
         });
     </script>
 </body>

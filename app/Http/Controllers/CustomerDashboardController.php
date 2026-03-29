@@ -63,9 +63,7 @@ class CustomerDashboardController extends Controller
 
         $patient->load([
             'visits' => fn($q) => $q->orderBy('visit_date', 'desc'),
-            'vaccinations' => fn($q) => $q->orderBy('date_given', 'desc'),
             'appointments' => fn($q) => $q->where('appointment_date', '>=', now())->orderBy('appointment_date'),
-            'referrals' => fn($q) => $q->orderBy('created_at', 'desc'),
         ]);
         
         return view('customer.pets.show', [

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register New Pet - PAWser</title>
-    <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('bootstrap-icons/bootstrap-icons.min.css')); ?>">
     <style>
         * {
             margin: 0;
@@ -414,7 +414,7 @@
 </head>
 <body>
     <div class="Container">
-        <a href="{{ route('pets.index') }}" class="back-link">
+        <a href="<?php echo e(route('pets.index')); ?>" class="back-link">
             <i class="bi bi-arrow-left"></i> Back to Pets
         </a>
 
@@ -443,19 +443,19 @@
             </div>
         </div>
 
-        @if($errors->any())
+        <?php if($errors->any()): ?>
         <div class="alert alert-error">
             <strong>Please fix the following errors:</strong>
             <ul style="margin-top: 8px; margin-left: 20px;">
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
+                <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <li><?php echo e($error); ?></li>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </ul>
         </div>
-        @endif
+        <?php endif; ?>
 
-        <form action="{{ route('pets.store') }}" method="POST" id="petForm">
-            @csrf
+        <form action="<?php echo e(route('pets.store')); ?>" method="POST" id="petForm">
+            <?php echo csrf_field(); ?>
 
             <!-- Form Progress Indicator -->
             <div class="form-progress">
@@ -472,15 +472,15 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label>Pet Name <span class="required">*</span></label>
-                        <input type="text" name="pet_name" value="{{ old('pet_name') }}" required>
+                        <input type="text" name="pet_name" value="<?php echo e(old('pet_name')); ?>" required>
                     </div>
                     <div class="form-group">
                         <label>Species <span class="required">*</span></label>
                         <select name="species_id" id="speciesSelect" required onchange="loadSpeciesCharacteristics()">
                             <option value="">Select Species</option>
-                            @foreach($species as $sp)
-                                <option value="{{ $sp->id }}" {{ old('species_id') == $sp->id ? 'selected' : '' }}>{{ $sp->name }}</option>
-                            @endforeach
+                            <?php $__currentLoopData = $species; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sp): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($sp->id); ?>" <?php echo e(old('species_id') == $sp->id ? 'selected' : ''); ?>><?php echo e($sp->name); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </select>
                         <div id="speciesCharacteristics" style="margin-top: 12px; padding: 12px; background: #f0fdf4; border-left: 4px solid #14b8a6; border-radius: 6px; display: none;">
                             <strong style="color: #14b8a6; display: block; margin-bottom: 8px;">Species Characteristics:</strong>
@@ -492,26 +492,26 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label>Breed <span class="required">*</span></label>
-                        <input type="text" name="breed" value="{{ old('breed') }}" required placeholder="e.g., Golden Retriever, Persian">
+                        <input type="text" name="breed" value="<?php echo e(old('breed')); ?>" required placeholder="e.g., Golden Retriever, Persian">
                     </div>
                     <div class="form-group">
                         <label>Color</label>
-                        <input type="text" name="color" value="{{ old('color') }}" placeholder="e.g., Brown, White">
+                        <input type="text" name="color" value="<?php echo e(old('color')); ?>" placeholder="e.g., Brown, White">
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label>Birthdate <span class="required">*</span></label>
-                        <input type="date" id="birthdate" name="birthdate" value="{{ old('birthdate') }}" required max="{{ date('Y-m-d') }}">
+                        <input type="date" id="birthdate" name="birthdate" value="<?php echo e(old('birthdate')); ?>" required max="<?php echo e(date('Y-m-d')); ?>">
                         <span class="hint">Age will be auto-calculated<span id="ageDisplay" class="age-display" style="display: none;"></span></span>
                     </div>
                     <div class="form-group">
                         <label>Sex <span class="required">*</span></label>
                         <select name="sex" required>
                             <option value="">Select</option>
-                            <option value="Male" {{ old('sex') == 'Male' ? 'selected' : '' }}>Male</option>
-                            <option value="Female" {{ old('sex') == 'Female' ? 'selected' : '' }}>Female</option>
+                            <option value="Male" <?php echo e(old('sex') == 'Male' ? 'selected' : ''); ?>>Male</option>
+                            <option value="Female" <?php echo e(old('sex') == 'Female' ? 'selected' : ''); ?>>Female</option>
                         </select>
                     </div>
                 </div>
@@ -524,18 +524,18 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label>Owner Name <span class="required">*</span></label>
-                        <input type="text" name="owner_name" value="{{ old('owner_name') }}" required>
+                        <input type="text" name="owner_name" value="<?php echo e(old('owner_name')); ?>" required>
                     </div>
                     <div class="form-group">
                         <label>Owner Contact <span class="required">*</span></label>
-                        <input type="tel" name="owner_contact" value="{{ old('owner_contact') }}" required placeholder="09XX-XXX-XXXX">
+                        <input type="tel" name="owner_contact" value="<?php echo e(old('owner_contact')); ?>" required placeholder="09XX-XXX-XXXX">
                     </div>
                 </div>
 
                 <div class="form-row full">
                     <div class="form-group">
                         <label>Address <span class="required">*</span></label>
-                        <textarea name="address" required>{{ old('address') }}</textarea>
+                        <textarea name="address" required><?php echo e(old('address')); ?></textarea>
                         <span class="hint">House No., Street, Barangay, City</span>
                     </div>
                 </div>
@@ -548,7 +548,7 @@
                     <div class="form-row full">
                         <div class="form-group">
                             <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
-                                <input type="checkbox" name="is_required" value="1" {{ old('is_required') ? 'checked' : '' }} style="width: auto; cursor: pointer;">
+                                <input type="checkbox" name="is_required" value="1" <?php echo e(old('is_required') ? 'checked' : ''); ?> style="width: auto; cursor: pointer;">
                                 <span style="color: #374151; font-weight: 500;">Mark as Requiring Special Care</span>
                             </label>
                             <span class="hint">Check this if the pet requires special care or attention</span>
@@ -557,7 +557,7 @@
                     <div class="form-row full">
                         <div class="form-group">
                             <label style="display: flex; align-items: center; gap: 8px;">
-                                <input type="checkbox" name="privacy_consent" value="1" {{ old('privacy_consent') ? 'checked' : '' }} style="width: auto; cursor: pointer;">
+                                <input type="checkbox" name="privacy_consent" value="1" <?php echo e(old('privacy_consent') ? 'checked' : ''); ?> style="width: auto; cursor: pointer;">
                                 <span style="color: #374151; font-weight: 500;">I consent to data privacy and processing</span>
                             </label>
                             <span class="hint">Please review our <a href="#" style="color: #14b8a6; text-decoration: underline;">privacy policy</a> before consent</span>
@@ -920,3 +920,4 @@
     </script>
 </body>
 </html>
+<?php /**PATH C:\Users\Lei\Capstone1-web\resources\views/pets/create.blade.php ENDPATH**/ ?>

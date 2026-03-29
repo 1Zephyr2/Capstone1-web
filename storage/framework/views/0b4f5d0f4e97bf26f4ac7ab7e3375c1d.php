@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Insight Center - PAWser</title>
-    <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('bootstrap-icons/bootstrap-icons.min.css')); ?>">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
@@ -523,8 +523,8 @@
     <!-- Top Navigation Bar -->
     <nav class="navbar">
         <div class="navbar-container">
-            <a href="{{ route('dashboard') }}" class="navbar-brand">
-                <img src="{{ asset('newlogo.png') }}" alt="PAWSER" class="navbar-logo">
+            <a href="<?php echo e(route('dashboard')); ?>" class="navbar-brand">
+                <img src="<?php echo e(asset('newlogo.png')); ?>" alt="PAWSER" class="navbar-logo">
                 <div class="navbar-brand-text">
                     <div class="navbar-title">PAWSER</div>
                     <div class="navbar-subtitle">Staff Dashboard</div>
@@ -532,61 +532,61 @@
             </a>
 
             <div class="navbar-menu">
-                <a href="{{ route('dashboard') }}" class="navbar-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                <a href="<?php echo e(route('dashboard')); ?>" class="navbar-item <?php echo e(request()->routeIs('dashboard') ? 'active' : ''); ?>">
                     <i class="bi bi-speedometer2"></i>
                     Dashboard
                 </a>
-                <a href="{{ route('pets.index') }}" class="navbar-item {{ request()->routeIs('pets.*') ? 'active' : '' }}">
+                <a href="<?php echo e(route('pets.index')); ?>" class="navbar-item <?php echo e(request()->routeIs('pets.*') ? 'active' : ''); ?>">
                     <i class="bi bi-heart-fill"></i>
                     Pets
                 </a>
-                <a href="{{ route('appointments.index') }}" class="navbar-item {{ request()->routeIs('appointments.*') ? 'active' : '' }}">
+                <a href="<?php echo e(route('appointments.index')); ?>" class="navbar-item <?php echo e(request()->routeIs('appointments.*') ? 'active' : ''); ?>">
                     <i class="bi bi-calendar-check"></i>
                     Appointments
                 </a>
-                @if(Auth::user()->hasStaffAccess())
-                <a href="{{ route('appointment-requests.index') }}" class="navbar-item {{ request()->routeIs('appointment-requests.*') ? 'active' : '' }}">
+                <?php if(Auth::user()->hasStaffAccess()): ?>
+                <a href="<?php echo e(route('appointment-requests.index')); ?>" class="navbar-item <?php echo e(request()->routeIs('appointment-requests.*') ? 'active' : ''); ?>">
                     <i class="bi bi-inbox-fill"></i>
                     Requests
                 </a>
-                @endif
-                <a href="{{ route('visits.today') }}" class="navbar-item {{ request()->routeIs('visits.*') ? 'active' : '' }}">
+                <?php endif; ?>
+                <a href="<?php echo e(route('visits.today')); ?>" class="navbar-item <?php echo e(request()->routeIs('visits.*') ? 'active' : ''); ?>">
                     <i class="bi bi-clock-history"></i>
                     Visits
                 </a>
-                @if(Auth::user()->hasStaffAccess())
-                <a href="{{ route('analytics.index') }}" class="navbar-item {{ request()->routeIs('analytics.*') ? 'active' : '' }}">
+                <?php if(Auth::user()->hasStaffAccess()): ?>
+                <a href="<?php echo e(route('analytics.index')); ?>" class="navbar-item <?php echo e(request()->routeIs('analytics.*') ? 'active' : ''); ?>">
                     <i class="bi bi-graph-up-arrow"></i>
                     Insights
                 </a>
-                <a href="{{ route('automation.support') }}" class="navbar-item {{ request()->routeIs('automation.*') ? 'active' : '' }}">
+                <a href="<?php echo e(route('automation.support')); ?>" class="navbar-item <?php echo e(request()->routeIs('automation.*') ? 'active' : ''); ?>">
                     <i class="bi bi-cpu"></i>
                     Actions
                 </a>
-                @endif
+                <?php endif; ?>
             </div>
 
             <div class="navbar-end">
                 <div class="navbar-user">
-                    @if(Auth::user()->profile_picture)
+                    <?php if(Auth::user()->profile_picture): ?>
                         <div class="navbar-avatar">
-                            <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="{{ Auth::user()->name }}">
+                            <img src="<?php echo e(asset('storage/' . Auth::user()->profile_picture)); ?>" alt="<?php echo e(Auth::user()->name); ?>">
                         </div>
-                    @else
+                    <?php else: ?>
                         <div class="navbar-avatar">
                             <i class="bi bi-person-fill" style="font-size: 18px;"></i>
                         </div>
-                    @endif
+                    <?php endif; ?>
                     <div class="navbar-user-text">
-                        <div class="navbar-user-name">{{ Auth::user()->name }}</div>
-                        <div class="navbar-user-role">{{ Auth::user()->role_name }}</div>
+                        <div class="navbar-user-name"><?php echo e(Auth::user()->name); ?></div>
+                        <div class="navbar-user-role"><?php echo e(Auth::user()->role_name); ?></div>
                     </div>
                 </div>
-                <a href="{{ route('profile.show') }}" class="navbar-profile-btn" title="My Profile">
+                <a href="<?php echo e(route('profile.show')); ?>" class="navbar-profile-btn" title="My Profile">
                     <i class="bi bi-person-circle"></i>
                 </a>
-                <form action="{{ route('logout') }}" method="POST" style="display: inline;">
-                    @csrf
+                <form action="<?php echo e(route('logout')); ?>" method="POST" style="display: inline;">
+                    <?php echo csrf_field(); ?>
                     <button type="submit" class="navbar-logout-btn" title="Logout">
                         <i class="bi bi-box-arrow-right"></i>
                     </button>
@@ -610,35 +610,35 @@
         <div class="metrics-grid">
             <div class="metric-card">
                 <div class="metric-label">Total Pets Registered</div>
-                <div class="metric-value">{{ number_format($metrics['total_patients']) }}</div>
+                <div class="metric-value"><?php echo e(number_format($metrics['total_patients'])); ?></div>
                 <span class="metric-trend trend-neutral">All time</span>
             </div>
 
             <div class="metric-card" style="border-left-color: #f59e0b;">
                 <div class="metric-label">Appointments This Month</div>
-                <div class="metric-value" style="color: #d97706;">{{ number_format($metrics['appointments_this_month']) }}</div>
-                <span class="metric-trend {{ $metrics['appointment_growth_rate'] > 0 ? 'trend-up' : ($metrics['appointment_growth_rate'] < 0 ? 'trend-down' : 'trend-neutral') }}">
-                    {{ $metrics['appointment_growth_rate'] > 0 ? '+' : '' }}{{ $metrics['appointment_growth_rate'] }}% vs last month
+                <div class="metric-value" style="color: #d97706;"><?php echo e(number_format($metrics['appointments_this_month'])); ?></div>
+                <span class="metric-trend <?php echo e($metrics['appointment_growth_rate'] > 0 ? 'trend-up' : ($metrics['appointment_growth_rate'] < 0 ? 'trend-down' : 'trend-neutral')); ?>">
+                    <?php echo e($metrics['appointment_growth_rate'] > 0 ? '+' : ''); ?><?php echo e($metrics['appointment_growth_rate']); ?>% vs last month
                 </span>
             </div>
 
             <div class="metric-card" style="border-left-color: #8b5cf6;">
                 <div class="metric-label">Appointment Completion Rate</div>
-                <div class="metric-value" style="color: #7c3aed;">{{ $metrics['appointment_completion'] }}%</div>
-                <span class="metric-trend trend-neutral">{{ number_format($metrics['completed_appointments']) }} of {{ number_format($metrics['total_appointments']) }} total</span>
+                <div class="metric-value" style="color: #7c3aed;"><?php echo e($metrics['appointment_completion']); ?>%</div>
+                <span class="metric-trend trend-neutral"><?php echo e(number_format($metrics['completed_appointments'])); ?> of <?php echo e(number_format($metrics['total_appointments'])); ?> total</span>
             </div>
 
             <div class="metric-card" style="border-left-color: #10b981;">
                 <div class="metric-label">Upcoming (Next 7 Days)</div>
-                <div class="metric-value" style="color: #059669;">{{ number_format($metrics['upcoming_appointments']) }}</div>
+                <div class="metric-value" style="color: #059669;"><?php echo e(number_format($metrics['upcoming_appointments'])); ?></div>
                 <span class="metric-trend trend-up">Scheduled appointments</span>
             </div>
 
             <div class="metric-card">
                 <div class="metric-label">Visits This Month</div>
-                <div class="metric-value">{{ number_format($metrics['current_month_visits']) }}</div>
-                <span class="metric-trend {{ $metrics['visit_growth_rate'] > 0 ? 'trend-up' : ($metrics['visit_growth_rate'] < 0 ? 'trend-down' : 'trend-neutral') }}">
-                    {{ $metrics['visit_growth_rate'] > 0 ? '+' : '' }}{{ $metrics['visit_growth_rate'] }}% vs last month
+                <div class="metric-value"><?php echo e(number_format($metrics['current_month_visits'])); ?></div>
+                <span class="metric-trend <?php echo e($metrics['visit_growth_rate'] > 0 ? 'trend-up' : ($metrics['visit_growth_rate'] < 0 ? 'trend-down' : 'trend-neutral')); ?>">
+                    <?php echo e($metrics['visit_growth_rate'] > 0 ? '+' : ''); ?><?php echo e($metrics['visit_growth_rate']); ?>% vs last month
                 </span>
             </div>
 
@@ -650,42 +650,42 @@
 
             <div class="insight-item">
                 <h4>Appointment Forecast</h4>
-                <p>This month has <strong>{{ $metrics['appointments_this_month'] }} appointments</strong> booked
-                    ({{ $metrics['appointment_growth_rate'] > 0 ? '+' : '' }}{{ $metrics['appointment_growth_rate'] }}% vs last month).
-                    <strong>{{ $metrics['upcoming_appointments'] }} more</strong> are scheduled for the next 7 days.
-                    Appointment completion rate is <strong>{{ $metrics['appointment_completion'] }}%</strong>
-                    G�� {{ $metrics['no_show_appointments'] }} no-show{{ $metrics['no_show_appointments'] == 1 ? '' : 's' }} and
-                    {{ $metrics['cancelled_appointments'] }} cancellation{{ $metrics['cancelled_appointments'] == 1 ? '' : 's' }} recorded.</p>
+                <p>This month has <strong><?php echo e($metrics['appointments_this_month']); ?> appointments</strong> booked
+                    (<?php echo e($metrics['appointment_growth_rate'] > 0 ? '+' : ''); ?><?php echo e($metrics['appointment_growth_rate']); ?>% vs last month).
+                    <strong><?php echo e($metrics['upcoming_appointments']); ?> more</strong> are scheduled for the next 7 days.
+                    Appointment completion rate is <strong><?php echo e($metrics['appointment_completion']); ?>%</strong>
+                    G�� <?php echo e($metrics['no_show_appointments']); ?> no-show<?php echo e($metrics['no_show_appointments'] == 1 ? '' : 's'); ?> and
+                    <?php echo e($metrics['cancelled_appointments']); ?> cancellation<?php echo e($metrics['cancelled_appointments'] == 1 ? '' : 's'); ?> recorded.</p>
             </div>
 
             <div class="insight-item">
                 <h4>Visit Forecast</h4>
-                <p>Based on the last 3 months average ({{ $metrics['avg_monthly_visits'] }} visits/month) and current growth rate ({{ $metrics['visit_growth_rate'] }}%), we predict approximately <strong>{{ $metrics['predicted_next_month'] }} clinic visits next month</strong>. Adjust staffing accordingly.</p>
+                <p>Based on the last 3 months average (<?php echo e($metrics['avg_monthly_visits']); ?> visits/month) and current growth rate (<?php echo e($metrics['visit_growth_rate']); ?>%), we predict approximately <strong><?php echo e($metrics['predicted_next_month']); ?> clinic visits next month</strong>. Adjust staffing accordingly.</p>
             </div>
 
-            @if($metrics['appointment_growth_rate'] > 20)
+            <?php if($metrics['appointment_growth_rate'] > 20): ?>
             <div class="insight-item">
                 <h4>High Appointment Demand</h4>
-                <p>Appointments have surged by <strong>+{{ $metrics['appointment_growth_rate'] }}%</strong> this month. Consider extending available time slots or adding a second grooming/consultation session to handle demand.</p>
+                <p>Appointments have surged by <strong>+<?php echo e($metrics['appointment_growth_rate']); ?>%</strong> this month. Consider extending available time slots or adding a second grooming/consultation session to handle demand.</p>
             </div>
-            @elseif($metrics['appointment_growth_rate'] < -20)
+            <?php elseif($metrics['appointment_growth_rate'] < -20): ?>
             <div class="insight-item">
                 <h4>Declining Appointment Trend</h4>
-                <p>Appointments dropped by <strong>{{ abs($metrics['appointment_growth_rate']) }}%</strong> this month. Consider promotional outreach (e.g. grooming discounts, vaccination reminders) to re-engage owners.</p>
+                <p>Appointments dropped by <strong><?php echo e(abs($metrics['appointment_growth_rate'])); ?>%</strong> this month. Consider promotional outreach (e.g. grooming discounts, vaccination reminders) to re-engage owners.</p>
             </div>
-            @endif
+            <?php endif; ?>
 
-            @if($metrics['visit_growth_rate'] > 15)
+            <?php if($metrics['visit_growth_rate'] > 15): ?>
             <div class="insight-item">
                 <h4>High Visit Growth Alert</h4>
-                <p>Pet visits are increasing significantly (+{{ $metrics['visit_growth_rate'] }}%). This indicates growing demand. Recommend expanding clinic hours or adding staff to maintain service quality.</p>
+                <p>Pet visits are increasing significantly (+<?php echo e($metrics['visit_growth_rate']); ?>%). This indicates growing demand. Recommend expanding clinic hours or adding staff to maintain service quality.</p>
             </div>
-            @elseif($metrics['visit_growth_rate'] < -15)
+            <?php elseif($metrics['visit_growth_rate'] < -15): ?>
             <div class="insight-item">
                 <h4>Declining Visit Trend Alert</h4>
-                <p>Pet visits have decreased by {{ abs($metrics['visit_growth_rate']) }}%. Consider community outreach programs or reviewing service accessibility to re-engage pet owners.</p>
+                <p>Pet visits have decreased by <?php echo e(abs($metrics['visit_growth_rate'])); ?>%. Consider community outreach programs or reviewing service accessibility to re-engage pet owners.</p>
             </div>
-            @endif
+            <?php endif; ?>
 
         </div>
 
@@ -696,61 +696,62 @@
             <div class="metrics-grid" style="margin-bottom: 24px;">
                 <div class="metric-card">
                     <div class="metric-label">Active Pets (30 days)</div>
-                    <div class="metric-value">{{ number_format($patientActivityMetrics['patients_with_recent_visits']) }}</div>
-                    <span class="metric-trend trend-up">{{ $metrics['total_patients'] > 0 ? round(($patientActivityMetrics['patients_with_recent_visits'] / $metrics['total_patients']) * 100, 1) : 0 }}% of total</span>
+                    <div class="metric-value"><?php echo e(number_format($patientActivityMetrics['patients_with_recent_visits'])); ?></div>
+                    <span class="metric-trend trend-up"><?php echo e($metrics['total_patients'] > 0 ? round(($patientActivityMetrics['patients_with_recent_visits'] / $metrics['total_patients']) * 100, 1) : 0); ?>% of total</span>
                 </div>
 
                 <div class="metric-card">
                     <div class="metric-label">Inactive Pets (90+ days)</div>
-                    <div class="metric-value">{{ number_format($patientActivityMetrics['inactive_patients']) }}</div>
+                    <div class="metric-value"><?php echo e(number_format($patientActivityMetrics['inactive_patients'])); ?></div>
                     <span class="metric-trend trend-down">Need re-engagement</span>
                 </div>
 
                 <div class="metric-card">
                     <div class="metric-label">Never Visited</div>
-                    <div class="metric-value">{{ number_format($patientActivityMetrics['never_visited']) }}</div>
+                    <div class="metric-value"><?php echo e(number_format($patientActivityMetrics['never_visited'])); ?></div>
                     <span class="metric-trend trend-neutral">Registered only</span>
                 </div>
 
                 <div class="metric-card">
                     <div class="metric-label">Pet Retention Rate</div>
-                    <div class="metric-value">{{ $patientActivityMetrics['retention_rate'] }}%</div>
-                    <span class="metric-trend {{ $patientActivityMetrics['retention_rate'] >= 70 ? 'trend-up' : 'trend-down' }}">
-                        {{ $patientActivityMetrics['retention_rate'] >= 70 ? 'Good retention' : 'Needs improvement' }}
+                    <div class="metric-value"><?php echo e($patientActivityMetrics['retention_rate']); ?>%</div>
+                    <span class="metric-trend <?php echo e($patientActivityMetrics['retention_rate'] >= 70 ? 'trend-up' : 'trend-down'); ?>">
+                        <?php echo e($patientActivityMetrics['retention_rate'] >= 70 ? 'Good retention' : 'Needs improvement'); ?>
+
                     </span>
                 </div>
             </div>
 
             <div class="insight-item">
                 <h4><i class="bi bi-people-fill"></i> Pet Visit Patterns</h4>
-                <p>Out of <strong>{{ number_format($metrics['total_patients']) }} total pets</strong>, <strong>{{ number_format($patientActivityMetrics['patients_with_recent_visits']) }} pets ({{ $metrics['total_patients'] > 0 ? round(($patientActivityMetrics['patients_with_recent_visits'] / $metrics['total_patients']) * 100, 1) : 0 }}%) have visited in the last 30 days</strong>. Meanwhile, <strong>{{ number_format($patientActivityMetrics['inactive_patients']) }} pets</strong> haven't visited in over 90 days and may need follow-up contact.</p>
+                <p>Out of <strong><?php echo e(number_format($metrics['total_patients'])); ?> total pets</strong>, <strong><?php echo e(number_format($patientActivityMetrics['patients_with_recent_visits'])); ?> pets (<?php echo e($metrics['total_patients'] > 0 ? round(($patientActivityMetrics['patients_with_recent_visits'] / $metrics['total_patients']) * 100, 1) : 0); ?>%) have visited in the last 30 days</strong>. Meanwhile, <strong><?php echo e(number_format($patientActivityMetrics['inactive_patients'])); ?> pets</strong> haven't visited in over 90 days and may need follow-up contact.</p>
             </div>
 
-            @if($patientActivityMetrics['at_risk_patients'] > 0)
+            <?php if($patientActivityMetrics['at_risk_patients'] > 0): ?>
             <div class="insight-item">
                 <h4><i class="bi bi-exclamation-circle-fill"></i> At-Risk Pet Alert</h4>
-                <p><strong>{{ number_format($patientActivityMetrics['at_risk_patients']) }} pets</strong> are at risk of becoming inactive. They last visited 60-90 days ago. Consider proactive outreach through SMS reminders or calls to re-engage pet owners before they become fully inactive.</p>
+                <p><strong><?php echo e(number_format($patientActivityMetrics['at_risk_patients'])); ?> pets</strong> are at risk of becoming inactive. They last visited 60-90 days ago. Consider proactive outreach through SMS reminders or calls to re-engage pet owners before they become fully inactive.</p>
             </div>
-            @endif
+            <?php endif; ?>
 
-            @if($patientActivityMetrics['never_visited'] > 0)
+            <?php if($patientActivityMetrics['never_visited'] > 0): ?>
             <div class="insight-item">
                 <h4><i class="bi bi-clipboard-data"></i> Never Visited Pets</h4>
-                <p><strong>{{ number_format($patientActivityMetrics['never_visited']) }} pets ({{ $metrics['total_patients'] > 0 ? round(($patientActivityMetrics['never_visited'] / $metrics['total_patients']) * 100, 1) : 0 }}%)</strong> are registered but have never visited the clinic. These may be pre-registered pets or those who registered but didn't complete their first visit. Follow up to confirm their records and encourage a first visit.</p>
+                <p><strong><?php echo e(number_format($patientActivityMetrics['never_visited'])); ?> pets (<?php echo e($metrics['total_patients'] > 0 ? round(($patientActivityMetrics['never_visited'] / $metrics['total_patients']) * 100, 1) : 0); ?>%)</strong> are registered but have never visited the clinic. These may be pre-registered pets or those who registered but didn't complete their first visit. Follow up to confirm their records and encourage a first visit.</p>
             </div>
-            @endif
+            <?php endif; ?>
 
-            @if($patientActivityMetrics['retention_rate'] < 70)
+            <?php if($patientActivityMetrics['retention_rate'] < 70): ?>
             <div class="insight-item">
                 <h4><i class="bi bi-arrow-down-circle-fill"></i> Low Retention Warning</h4>
-                <p>Current pet retention rate is <strong>{{ $patientActivityMetrics['retention_rate'] }}%</strong>, which is below the recommended 70% threshold. This indicates that many pets are not returning for follow-up care. Recommended actions: implement automated appointment reminders, conduct client satisfaction surveys, and improve follow-up protocols.</p>
+                <p>Current pet retention rate is <strong><?php echo e($patientActivityMetrics['retention_rate']); ?>%</strong>, which is below the recommended 70% threshold. This indicates that many pets are not returning for follow-up care. Recommended actions: implement automated appointment reminders, conduct client satisfaction surveys, and improve follow-up protocols.</p>
             </div>
-            @elseif($patientActivityMetrics['retention_rate'] >= 80)
+            <?php elseif($patientActivityMetrics['retention_rate'] >= 80): ?>
             <div class="insight-item">
                 <h4><i class="bi bi-check-circle-fill"></i> Excellent Retention</h4>
-                <p>Pet retention rate of <strong>{{ $patientActivityMetrics['retention_rate'] }}%</strong> is excellent! Pets are regularly returning for care, indicating good service quality and effective follow-up systems. Continue current practices and consider documenting successful strategies.</p>
+                <p>Pet retention rate of <strong><?php echo e($patientActivityMetrics['retention_rate']); ?>%</strong> is excellent! Pets are regularly returning for care, indicating good service quality and effective follow-up systems. Continue current practices and consider documenting successful strategies.</p>
             </div>
-            @endif
+            <?php endif; ?>
         </div>
 
         <!-- Charts Section -->
@@ -843,10 +844,10 @@
         new Chart(document.getElementById('patientGrowthChart'), {
             type: 'line',
             data: {
-                labels: {!! json_encode($patientGrowth->pluck('month')) !!},
+                labels: <?php echo json_encode($patientGrowth->pluck('month')); ?>,
                 datasets: [{
                     label: 'New Pets',
-                    data: {!! json_encode($patientGrowth->pluck('count')) !!},
+                    data: <?php echo json_encode($patientGrowth->pluck('count')); ?>,
                     borderColor: '#059669',
                     backgroundColor: 'rgba(5,150,105,0.1)',
                     fill: true, tension: 0.4, pointRadius: 4
@@ -860,10 +861,10 @@
         new Chart(document.getElementById('appointmentTrendChart'), {
             type: 'bar',
             data: {
-                labels: {!! json_encode($appointmentTrend->pluck('month')) !!},
+                labels: <?php echo json_encode($appointmentTrend->pluck('month')); ?>,
                 datasets: [{
                     label: 'Appointments',
-                    data: {!! json_encode($appointmentTrend->pluck('count')) !!},
+                    data: <?php echo json_encode($appointmentTrend->pluck('count')); ?>,
                     backgroundColor: 'rgba(245,158,11,0.8)',
                     borderColor: '#d97706', borderWidth: 1,
                     borderRadius: 6
@@ -877,10 +878,10 @@
         new Chart(document.getElementById('visitTrendsChart'), {
             type: 'line',
             data: {
-                labels: {!! json_encode($visitTrends->pluck('date')) !!},
+                labels: <?php echo json_encode($visitTrends->pluck('date')); ?>,
                 datasets: [{
                     label: 'Daily Visits',
-                    data: {!! json_encode($visitTrends->pluck('count')) !!},
+                    data: <?php echo json_encode($visitTrends->pluck('count')); ?>,
                     borderColor: '#047857',
                     backgroundColor: 'rgba(4,120,87,0.1)',
                     fill: true, tension: 0.4, pointRadius: 3
@@ -894,8 +895,8 @@
         new Chart(document.getElementById('serviceDistributionChart'), {
             type: 'doughnut',
             data: {
-                labels: {!! json_encode($appointmentServiceDistribution->pluck('service_type')) !!},
-                datasets: [{ data: {!! json_encode($appointmentServiceDistribution->pluck('count')) !!},
+                labels: <?php echo json_encode($appointmentServiceDistribution->pluck('service_type')); ?>,
+                datasets: [{ data: <?php echo json_encode($appointmentServiceDistribution->pluck('count')); ?>,
                     backgroundColor: PALETTE }]
             },
             options: { responsive:true, maintainAspectRatio:false,
@@ -906,8 +907,8 @@
         new Chart(document.getElementById('appointmentStatusChart'), {
             type: 'doughnut',
             data: {
-                labels: {!! json_encode($appointmentStatusBreakdown->pluck('status')->map(fn($s) => ucfirst($s))) !!},
-                datasets: [{ data: {!! json_encode($appointmentStatusBreakdown->pluck('count')) !!},
+                labels: <?php echo json_encode($appointmentStatusBreakdown->pluck('status')->map(fn($s) => ucfirst($s))); ?>,
+                datasets: [{ data: <?php echo json_encode($appointmentStatusBreakdown->pluck('count')); ?>,
                     backgroundColor: ['#059669','#f59e0b','#ef4444','#6b7280','#3b82f6'] }]
             },
             options: { responsive:true, maintainAspectRatio:false,
@@ -918,8 +919,8 @@
         new Chart(document.getElementById('speciesDistributionChart'), {
             type: 'doughnut',
             data: {
-                labels: {!! json_encode($speciesDistribution->pluck('species')) !!},
-                datasets: [{ data: {!! json_encode($speciesDistribution->pluck('count')) !!},
+                labels: <?php echo json_encode($speciesDistribution->pluck('species')); ?>,
+                datasets: [{ data: <?php echo json_encode($speciesDistribution->pluck('count')); ?>,
                     backgroundColor: PALETTE }]
             },
             options: { responsive:true, maintainAspectRatio:false,
@@ -930,10 +931,10 @@
         new Chart(document.getElementById('ageDemographicsChart'), {
             type: 'bar',
             data: {
-                labels: {!! json_encode($ageDemographics->pluck('age_group')) !!},
+                labels: <?php echo json_encode($ageDemographics->pluck('age_group')); ?>,
                 datasets: [{
                     label: 'Pets',
-                    data: {!! json_encode($ageDemographics->pluck('count')) !!},
+                    data: <?php echo json_encode($ageDemographics->pluck('count')); ?>,
                     backgroundColor: 'rgba(5,150,105,0.8)',
                     borderColor: '#059669', borderWidth: 1, borderRadius: 5
                 }]
@@ -946,8 +947,8 @@
         new Chart(document.getElementById('genderDistributionChart'), {
             type: 'pie',
             data: {
-                labels: {!! json_encode($genderDistribution->pluck('sex')) !!},
-                datasets: [{ data: {!! json_encode($genderDistribution->pluck('count')) !!},
+                labels: <?php echo json_encode($genderDistribution->pluck('sex')); ?>,
+                datasets: [{ data: <?php echo json_encode($genderDistribution->pluck('count')); ?>,
                     backgroundColor: ['#059669','#f59e0b','#3b82f6'] }]
             },
             options: { responsive:true, maintainAspectRatio:false,
@@ -958,10 +959,10 @@
         new Chart(document.getElementById('topComplaintsChart'), {
             type: 'bar',
             data: {
-                labels: {!! json_encode($topComplaints->pluck('chief_complaint')) !!},
+                labels: <?php echo json_encode($topComplaints->pluck('chief_complaint')); ?>,
                 datasets: [{
                     label: 'Occurrences',
-                    data: {!! json_encode($topComplaints->pluck('count')) !!},
+                    data: <?php echo json_encode($topComplaints->pluck('count')); ?>,
                     backgroundColor: PALETTE
                 }]
             },
@@ -971,3 +972,4 @@
     </script>
 </body>
 </html>
+<?php /**PATH C:\Users\Lei\Capstone1-web\resources\views/insight-center.blade.php ENDPATH**/ ?>

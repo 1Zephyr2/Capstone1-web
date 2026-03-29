@@ -15,13 +15,18 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
-            padding: 40px;
+            padding: 0;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            padding: 40px;
+            flex: 1;
+            width: 100%;
         }
 
         .header {
@@ -52,23 +57,27 @@
         }
 
         .back-btn {
-            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
-            color: white;
-            border: none;
-            padding: 12px 28px;
-            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: white;
+            color: #111827;
+            border: 1px solid #111827;
+            border-radius: 10px;
             cursor: pointer;
             text-decoration: none;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 8px rgba(20, 184, 166, 0.3);
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 16px rgba(20, 184, 166, 0.4);
         }
 
         .back-btn:hover {
-            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(20, 184, 166, 0.4);
+            background: #f0fdfa;
+            border-color: #14b8a6;
+            color: #14b8a6;
+            transform: translateY(-1px);
         }
 
         .content-card {
@@ -114,9 +123,10 @@
     </style>
 </head>
 <body>
+    @include('components.staff-navbar')
     <div class="container">
         <div class="header">
-            <h1><i class="bi bi-bar-chart-fill"></i> Reports</h1>
+            <h1>Reports</h1>
             <a href="{{ route('dashboard') }}" class="back-btn">← Back to Dashboard</a>
         </div>
 

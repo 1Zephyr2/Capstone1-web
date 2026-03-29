@@ -56,9 +56,9 @@
         }
 
         .back-btn {
-            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
-            color: white;
-            border: none;
+            background: white;
+            color: #111827;
+            border: 1px solid #111827;
             padding: 12px 28px;
             border-radius: 12px;
             cursor: pointer;
@@ -70,7 +70,9 @@
         }
 
         .back-btn:hover {
-            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            background: #f0fdfa;
+            border-color: #14b8a6;
+            color: #14b8a6;
             transform: translateY(-2px);
             box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
         }
@@ -688,33 +690,14 @@
                 </div>
             </div>
 
-            <div id="referral-fields" class="form-card hidden">
-                <div class="card-header">
-                    <h2><i class="bi bi-hospital"></i> Referral Details</h2>
-                </div>
-                <div class="service-grid">
-                    <div class="form-group">
-                        <label for="referred_to">Referred To</label>
-                        <input type="text" name="referred_to" id="referred_to" class="form-control" value="{{ old('referred_to') }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="referral_urgency">Urgency</label>
-                        <select name="referral_urgency" id="referral_urgency" class="form-control">
-                            <option value="">Select Urgency</option>
-                            <option value="routine" {{ old('referral_urgency') == 'routine' ? 'selected' : '' }}>Routine</option>
-                            <option value="urgent" {{ old('referral_urgency') == 'urgent' ? 'selected' : '' }}>Urgent</option>
-                            <option value="emergency" {{ old('referral_urgency') == 'emergency' ? 'selected' : '' }}>Emergency</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
+
 
             <div class="actions">
                 <a href="{{ route('appointments.index') }}" class="btn-secondary">
-                    <i class="bi bi-x-circle"></i> Cancel
+                    Cancel
                 </a>
                 <button type="submit" class="btn-primary">
-                    <i class="bi bi-check-circle"></i> Create Appointment
+                    Create Appointment
                 </button>
             </div>
         </form>
@@ -743,7 +726,6 @@
         const reminderNote     = document.getElementById('reminder_note');
         const notesField       = document.getElementById('notes');
         const appointmentForm  = document.getElementById('appointmentForm');
-        const referralFields      = document.getElementById('referral-fields');
         const serviceType         = document.getElementById('service_type');
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -936,11 +918,6 @@
             reminderSummaryText.textContent = `${channelText} reminders scheduled ${timingLabel.toLowerCase()}.`;
         };
 
-        const updateServiceFields = () => {
-            const selected = serviceType.value;
-            referralFields.classList.toggle('hidden', selected !== 'Referral');
-        };
-
         const checkConflicts = async () => {
             const patientId = patientSelect.value;
             const dateValue = appointmentDate.value;
@@ -1006,10 +983,8 @@
         reminderSms.addEventListener('change', updateReminderSummary);
         reminderEmail.addEventListener('change', updateReminderSummary);
         reminderTiming.addEventListener('change', updateReminderSummary);
-        serviceType.addEventListener('change', updateServiceFields);
 
         updateReminderSummary();
-        updateServiceFields();
         checkConflicts();
     </script>
 </body>

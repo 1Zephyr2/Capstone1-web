@@ -194,7 +194,7 @@
 <body>
     <div class="form-container">
         <div class="form-header">
-            <h1><i class="bi bi-pencil-square"></i> Edit User</h1>
+            <h1>Edit User</h1>
             <p>Update user information and settings</p>
         </div>
 

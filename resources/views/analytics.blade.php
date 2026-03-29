@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
         :root {
             --bg: #f8fafc;
@@ -31,7 +30,7 @@
         }
 
         body {
-            font-family: 'Manrope', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, var(--bg) 0%, var(--bg-alt) 100%);
             padding: 40px;
             min-height: 100vh;
@@ -118,8 +117,8 @@
 
         .back-btn {
             background: white;
-            color: var(--text);
-            border: 1px solid var(--line);
+            color: #111827;
+            border: 1px solid #111827;
             padding: 12px 20px;
             border-radius: 10px;
             cursor: pointer;
@@ -133,8 +132,9 @@
         }
 
         .back-btn:hover {
-            border-color: var(--primary);
-            color: var(--primary);
+            background: #f0fdfa;
+            border-color: #14b8a6;
+            color: #14b8a6;
             transform: translateY(-1px);
         }
 
@@ -399,7 +399,7 @@
 
         <!-- Predictive Insights -->
         <div class="insights-section">
-            <h3><i class="bi bi-lightbulb-fill"></i> Predictive Insights &amp; Recommendations</h3>
+            <h3>Predictive Insights &amp; Recommendations</h3>
 
             <div class="insight-item">
                 <h4>Appointment Forecast</h4>
@@ -444,7 +444,7 @@
 
         <!-- Pet Activity & Retention Analytics -->
         <div class="insights-section" style="margin-top: 32px;">
-            <h3><i class="bi bi-graph-up-arrow"></i> Pet Activity & Retention Predictive Analytics</h3>
+            <h3>Pet Activity & Retention Predictive Analytics</h3>
             
             <div class="metrics-grid" style="margin-bottom: 24px;">
                 <div class="metric-card">
@@ -475,32 +475,32 @@
             </div>
 
             <div class="insight-item">
-                <h4><i class="bi bi-people-fill"></i> Pet Visit Patterns</h4>
+                <h4>Pet Visit Patterns</h4>
                 <p>Out of <strong>{{ number_format($metrics['total_patients']) }} total pets</strong>, <strong>{{ number_format($patientActivityMetrics['patients_with_recent_visits']) }} pets ({{ $metrics['total_patients'] > 0 ? round(($patientActivityMetrics['patients_with_recent_visits'] / $metrics['total_patients']) * 100, 1) : 0 }}%) have visited in the last 30 days</strong>. Meanwhile, <strong>{{ number_format($patientActivityMetrics['inactive_patients']) }} pets</strong> haven't visited in over 90 days and may need follow-up contact.</p>
             </div>
 
             @if($patientActivityMetrics['at_risk_patients'] > 0)
             <div class="insight-item">
-                <h4><i class="bi bi-exclamation-circle-fill"></i> At-Risk Pet Alert</h4>
+                <h4>At-Risk Pet Alert</h4>
                 <p><strong>{{ number_format($patientActivityMetrics['at_risk_patients']) }} pets</strong> are at risk of becoming inactive. They last visited 60-90 days ago. Consider proactive outreach through SMS reminders or calls to re-engage pet owners before they become fully inactive.</p>
             </div>
             @endif
 
             @if($patientActivityMetrics['never_visited'] > 0)
             <div class="insight-item">
-                <h4><i class="bi bi-clipboard-data"></i> Never Visited Pets</h4>
+                <h4>Never Visited Pets</h4>
                 <p><strong>{{ number_format($patientActivityMetrics['never_visited']) }} pets ({{ $metrics['total_patients'] > 0 ? round(($patientActivityMetrics['never_visited'] / $metrics['total_patients']) * 100, 1) : 0 }}%)</strong> are registered but have never visited the clinic. These may be pre-registered pets or those who registered but didn't complete their first visit. Follow up to confirm their records and encourage a first visit.</p>
             </div>
             @endif
 
             @if($patientActivityMetrics['retention_rate'] < 70)
             <div class="insight-item">
-                <h4><i class="bi bi-arrow-down-circle-fill"></i> Low Retention Warning</h4>
+                <h4>Low Retention Warning</h4>
                 <p>Current pet retention rate is <strong>{{ $patientActivityMetrics['retention_rate'] }}%</strong>, which is below the recommended 70% threshold. This indicates that many pets are not returning for follow-up care. Recommended actions: implement automated appointment reminders, conduct client satisfaction surveys, and improve follow-up protocols.</p>
             </div>
             @elseif($patientActivityMetrics['retention_rate'] >= 80)
             <div class="insight-item">
-                <h4><i class="bi bi-check-circle-fill"></i> Excellent Retention</h4>
+                <h4>Excellent Retention</h4>
                 <p>Pet retention rate of <strong>{{ $patientActivityMetrics['retention_rate'] }}%</strong> is excellent! Pets are regularly returning for care, indicating good service quality and effective follow-up systems. Continue current practices and consider documenting successful strategies.</p>
             </div>
             @endif
@@ -513,7 +513,7 @@
             <div class="charts-grid">
                 <!-- Pet Registration Trend -->
                 <div class="chart-card">
-                    <h3><i class="bi bi-graph-up"></i> Pet Registration Trend (6 Months)</h3>
+                    <h3>Pet Registration Trend (6 Months)</h3>
                     <div class="chart-container">
                         <canvas id="patientGrowthChart"></canvas>
                     </div>
@@ -521,7 +521,7 @@
 
                 <!-- Appointment Trend -->
                 <div class="chart-card">
-                    <h3><i class="bi bi-calendar-check"></i> Appointment Trend (6 Months)</h3>
+                    <h3>Appointment Trend (6 Months)</h3>
                     <div class="chart-container">
                         <canvas id="appointmentTrendChart"></canvas>
                     </div>
@@ -529,7 +529,7 @@
 
                 <!-- Daily Visit Patterns -->
                 <div class="chart-card">
-                    <h3><i class="bi bi-hospital"></i> Daily Visit Patterns (30 Days)</h3>
+                    <h3>Daily Visit Patterns (30 Days)</h3>
                     <div class="chart-container">
                         <canvas id="visitTrendsChart"></canvas>
                     </div>
@@ -537,7 +537,7 @@
 
                 <!-- Appointment Service Distribution -->
                 <div class="chart-card">
-                    <h3><i class="bi bi-bullseye"></i> Appointment Service Breakdown</h3>
+                    <h3>Appointment Service Breakdown</h3>
                     <div class="chart-container">
                         <canvas id="serviceDistributionChart"></canvas>
                     </div>
@@ -545,7 +545,7 @@
 
                 <!-- Appointment Status -->
                 <div class="chart-card">
-                    <h3><i class="bi bi-pie-chart-fill"></i> Appointment Status Breakdown</h3>
+                    <h3>Appointment Status Breakdown</h3>
                     <div class="chart-container">
                         <canvas id="appointmentStatusChart"></canvas>
                     </div>
@@ -553,7 +553,7 @@
 
                 <!-- Species Distribution -->
                 <div class="chart-card">
-                    <h3><i class="bi bi-heart-fill"></i> Species Distribution</h3>
+                    <h3>Species Distribution</h3>
                     <div class="chart-container">
                         <canvas id="speciesDistributionChart"></canvas>
                     </div>
@@ -561,7 +561,7 @@
 
                 <!-- Age Demographics -->
                 <div class="chart-card">
-                    <h3><i class="bi bi-people-fill"></i> Pet Age Distribution</h3>
+                    <h3>Pet Age Distribution</h3>
                     <div class="chart-container">
                         <canvas id="ageDemographicsChart"></canvas>
                     </div>
@@ -569,7 +569,7 @@
 
                 <!-- Sex Distribution -->
                 <div class="chart-card">
-                    <h3><i class="bi bi-person-badge"></i> Sex Distribution</h3>
+                    <h3>Sex Distribution</h3>
                     <div class="chart-container">
                         <canvas id="genderDistributionChart"></canvas>
                     </div>
@@ -577,7 +577,7 @@
 
                 <!-- Top Complaints -->
                 <div class="chart-card">
-                    <h3><i class="bi bi-chat-text"></i> Top Chief Complaints</h3>
+                    <h3>Top Chief Complaints</h3>
                     <div class="chart-container">
                         <canvas id="topComplaintsChart"></canvas>
                     </div>

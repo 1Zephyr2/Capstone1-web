@@ -14,6 +14,17 @@ class Visit extends Model
         'chief_complaint',
         'notes',
         'health_worker',
+        'coat_condition',
+        'behavior',
+        'grooming_notes',
+        'flea_tick_product',
+        'flea_tick_area',
+        'nail_condition_before',
+        'nail_condition_after',
+        'dental_notes',
+        'shedding_amount',
+        'hair_removed',
+        'boarding_observations',
     ];
 
     protected $casts = [
@@ -26,14 +37,9 @@ class Visit extends Model
         return $this->belongsTo(Patient::class);
     }
 
-    public function vitalSigns()
+    public function photos()
     {
-        return $this->hasOne(VitalSign::class);
-    }
-
-    public function referral()
-    {
-        return $this->hasOne(Referral::class);
+        return $this->hasMany(VisitPhoto::class);
     }
 
     // Auto-fill today's date on creation (Smart Default)

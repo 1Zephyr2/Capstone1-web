@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Appointments - PAWser</title>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('bootstrap-icons/bootstrap-icons.min.css')); ?>">
     <style>
         * {
             margin: 0;
@@ -649,7 +649,26 @@
     </style>
 </head>
 <body>
-<x-staff-navbar />
+<?php if (isset($component)) { $__componentOriginal17611e3b8decae96c78f7c1ff2705ab1 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal17611e3b8decae96c78f7c1ff2705ab1 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.staff-navbar','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('staff-navbar'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal17611e3b8decae96c78f7c1ff2705ab1)): ?>
+<?php $attributes = $__attributesOriginal17611e3b8decae96c78f7c1ff2705ab1; ?>
+<?php unset($__attributesOriginal17611e3b8decae96c78f7c1ff2705ab1); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal17611e3b8decae96c78f7c1ff2705ab1)): ?>
+<?php $component = $__componentOriginal17611e3b8decae96c78f7c1ff2705ab1; ?>
+<?php unset($__componentOriginal17611e3b8decae96c78f7c1ff2705ab1); ?>
+<?php endif; ?>
 <div class="container">
     <div class="header">
         <div class="header-top">
@@ -657,38 +676,38 @@
         </div>
         
         <div class="header-actions">
-            <a href="{{ route('appointments.create') }}" class="btn btn-primary" style="background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); box-shadow: 0 2px 8px rgba(20, 184, 166, 0.3);">
+            <a href="<?php echo e(route('appointments.create')); ?>" class="btn btn-primary" style="background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); box-shadow: 0 2px 8px rgba(20, 184, 166, 0.3);">
                 <i class="bi bi-plus-circle"></i> New Appointment
             </a>
         </div>
 
         <!-- Filters -->
-        <form method="GET" action="{{ route('appointments.index') }}" class="filters-form">
+        <form method="GET" action="<?php echo e(route('appointments.index')); ?>" class="filters-form">
             <div class="filters-row">
-                <input type="text" name="search" placeholder="Search pet..." value="{{ request('search') }}" class="form-control">
+                <input type="text" name="search" placeholder="Search pet..." value="<?php echo e(request('search')); ?>" class="form-control">
                 
                 <select name="status" class="form-control">
                     <option value="all">All Status</option>
-                    <option value="scheduled" {{ request('status') == 'scheduled' ? 'selected' : '' }}>Scheduled</option>
-                    <option value="confirmed" {{ request('status') == 'confirmed' ? 'selected' : '' }}>Confirmed</option>
-                    <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Completed</option>
-                    <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
-                    <option value="no-show" {{ request('status') == 'no-show' ? 'selected' : '' }}>No-Show</option>
+                    <option value="scheduled" <?php echo e(request('status') == 'scheduled' ? 'selected' : ''); ?>>Scheduled</option>
+                    <option value="confirmed" <?php echo e(request('status') == 'confirmed' ? 'selected' : ''); ?>>Confirmed</option>
+                    <option value="completed" <?php echo e(request('status') == 'completed' ? 'selected' : ''); ?>>Completed</option>
+                    <option value="cancelled" <?php echo e(request('status') == 'cancelled' ? 'selected' : ''); ?>>Cancelled</option>
+                    <option value="no-show" <?php echo e(request('status') == 'no-show' ? 'selected' : ''); ?>>No-Show</option>
                 </select>
 
                 <select name="service_type" class="form-control">
                     <option value="all">All Services</option>
-                    <option value="Bath & Dry" {{ request('service_type') == 'Bath & Dry' ? 'selected' : '' }}>Bath &amp; Dry</option>
-                    <option value="Full Grooming" {{ request('service_type') == 'Full Grooming' ? 'selected' : '' }}>Full Grooming</option>
-                    <option value="Haircut & Styling" {{ request('service_type') == 'Haircut & Styling' ? 'selected' : '' }}>Haircut &amp; Styling</option>
-                    <option value="Nail Trimming" {{ request('service_type') == 'Nail Trimming' ? 'selected' : '' }}>Nail Trimming</option>
-                    <option value="Ear Cleaning" {{ request('service_type') == 'Ear Cleaning' ? 'selected' : '' }}>Ear Cleaning</option>
-                    <option value="Teeth Brushing" {{ request('service_type') == 'Teeth Brushing' ? 'selected' : '' }}>Teeth Brushing</option>
-                    <option value="De-shedding Treatment" {{ request('service_type') == 'De-shedding Treatment' ? 'selected' : '' }}>De-shedding Treatment</option>
-                    <option value="Flea & Tick Treatment" {{ request('service_type') == 'Flea & Tick Treatment' ? 'selected' : '' }}>Flea &amp; Tick Treatment</option>
-                    <option value="Paw Treatment" {{ request('service_type') == 'Paw Treatment' ? 'selected' : '' }}>Paw Treatment</option>
-                    <option value="Boarding Checkup" {{ request('service_type') == 'Boarding Checkup' ? 'selected' : '' }}>Boarding Checkup</option>
-                    <option value="Follow-up" {{ request('service_type') == 'Follow-up' ? 'selected' : '' }}>Follow-up</option>
+                    <option value="Bath & Dry" <?php echo e(request('service_type') == 'Bath & Dry' ? 'selected' : ''); ?>>Bath &amp; Dry</option>
+                    <option value="Full Grooming" <?php echo e(request('service_type') == 'Full Grooming' ? 'selected' : ''); ?>>Full Grooming</option>
+                    <option value="Haircut & Styling" <?php echo e(request('service_type') == 'Haircut & Styling' ? 'selected' : ''); ?>>Haircut &amp; Styling</option>
+                    <option value="Nail Trimming" <?php echo e(request('service_type') == 'Nail Trimming' ? 'selected' : ''); ?>>Nail Trimming</option>
+                    <option value="Ear Cleaning" <?php echo e(request('service_type') == 'Ear Cleaning' ? 'selected' : ''); ?>>Ear Cleaning</option>
+                    <option value="Teeth Brushing" <?php echo e(request('service_type') == 'Teeth Brushing' ? 'selected' : ''); ?>>Teeth Brushing</option>
+                    <option value="De-shedding Treatment" <?php echo e(request('service_type') == 'De-shedding Treatment' ? 'selected' : ''); ?>>De-shedding Treatment</option>
+                    <option value="Flea & Tick Treatment" <?php echo e(request('service_type') == 'Flea & Tick Treatment' ? 'selected' : ''); ?>>Flea &amp; Tick Treatment</option>
+                    <option value="Paw Treatment" <?php echo e(request('service_type') == 'Paw Treatment' ? 'selected' : ''); ?>>Paw Treatment</option>
+                    <option value="Boarding Checkup" <?php echo e(request('service_type') == 'Boarding Checkup' ? 'selected' : ''); ?>>Boarding Checkup</option>
+                    <option value="Follow-up" <?php echo e(request('service_type') == 'Follow-up' ? 'selected' : ''); ?>>Follow-up</option>
                 </select>
 
                 <button type="submit" class="btn btn-search">
@@ -702,13 +721,13 @@
         </div>
     </div>
 
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+    <?php if(session('success')): ?>
+        <div class="alert alert-success"><?php echo e(session('success')); ?></div>
+    <?php endif; ?>
 
-    @if(session('error'))
-        <div class="alert alert-error">{{ session('error') }}</div>
-    @endif
+    <?php if(session('error')): ?>
+        <div class="alert alert-error"><?php echo e(session('error')); ?></div>
+    <?php endif; ?>
 
     <div class="appointments-table">
         <table>
@@ -723,55 +742,56 @@
                 </tr>
             </thead>
             <tbody>
-                @php
+                <?php
                     $today = \Carbon\Carbon::today();
-                @endphp
-                @forelse($appointments as $appointment)
-                    @php
+                ?>
+                <?php $__empty_1 = true; $__currentLoopData = $appointments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $appointment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                    <?php
                         $isToday = $appointment->appointment_date->isSameDay($today);
                         $isUpcoming = !$isToday && $appointment->appointment_date->isAfter($today)
                             && $appointment->appointment_date->diffInDays($today) <= 7;
-                    @endphp
-                    <tr class="{{ $isToday ? 'row-today' : ($isUpcoming ? 'row-upcoming' : '') }}">
+                    ?>
+                    <tr class="<?php echo e($isToday ? 'row-today' : ($isUpcoming ? 'row-upcoming' : '')); ?>">
                         <td>
-                            {{ $appointment->appointment_date->format('M d, Y') }}<br>
-                            <small>{{ \Carbon\Carbon::parse($appointment->appointment_time)->format('h:i A') }}</small>
+                            <?php echo e($appointment->appointment_date->format('M d, Y')); ?><br>
+                            <small><?php echo e(\Carbon\Carbon::parse($appointment->appointment_time)->format('h:i A')); ?></small>
                         </td>
                         <td>
-                            <div class="appt-owner-name">{{ $appointment->patient->owner_name ?? 'Unknown Owner' }}</div>
-                            <div class="appt-pet-name"><i class="bi bi-heart-fill" style="font-size:10px;"></i> {{ $appointment->patient->pet_name }} <span class="appt-species">({{ $appointment->patient->species }})</span></div>
+                            <div class="appt-owner-name"><?php echo e($appointment->patient->owner_name ?? 'Unknown Owner'); ?></div>
+                            <div class="appt-pet-name"><i class="bi bi-heart-fill" style="font-size:10px;"></i> <?php echo e($appointment->patient->pet_name); ?> <span class="appt-species">(<?php echo e($appointment->patient->species); ?>)</span></div>
                         </td>
-                        <td>{{ $appointment->service_type }}</td>
+                        <td><?php echo e($appointment->service_type); ?></td>
                         <td>
-                            <span class="badge badge-{{ $appointment->status }}">
-                                {{ ucfirst($appointment->status) }}
+                            <span class="badge badge-<?php echo e($appointment->status); ?>">
+                                <?php echo e(ucfirst($appointment->status)); ?>
+
                             </span>
                         </td>
-                        <td>{{ $appointment->chief_complaint ?? 'N/A' }}</td>
+                        <td><?php echo e($appointment->chief_complaint ?? 'N/A'); ?></td>
                         <td>
                             <div class="action-buttons">
-                                <a href="{{ route('appointments.show', $appointment) }}" class="btn-action btn-view">
+                                <a href="<?php echo e(route('appointments.show', $appointment)); ?>" class="btn-action btn-view">
                                     <i class="bi bi-eye"></i>
                                 </a>
                                 <button type="button" class="btn-action btn-edit"
                                     onclick="openQuickEdit(
-                                        {{ $appointment->id }},
-                                        '{{ addslashes(($appointment->patient->owner_name ?? 'Unknown') . ' — ' . $appointment->patient->pet_name) }}',
-                                        '{{ $appointment->appointment_date->format('Y-m-d') }}',
-                                        '{{ \Carbon\Carbon::parse($appointment->appointment_time)->format('H:i') }}',
-                                        '{{ addslashes($appointment->service_type) }}',
-                                        '{{ $appointment->status }}',
-                                        '{{ addslashes($appointment->chief_complaint ?? '') }}',
-                                        '{{ addslashes($appointment->health_worker ?? '') }}',
-                                        '{{ addslashes($appointment->notes ?? '') }}',
-                                        '{{ addslashes($appointment->secondary_contact_name ?? '') }}',
-                                        '{{ addslashes($appointment->secondary_contact_number ?? '') }}'
+                                        <?php echo e($appointment->id); ?>,
+                                        '<?php echo e(addslashes(($appointment->patient->owner_name ?? 'Unknown') . ' — ' . $appointment->patient->pet_name)); ?>',
+                                        '<?php echo e($appointment->appointment_date->format('Y-m-d')); ?>',
+                                        '<?php echo e(\Carbon\Carbon::parse($appointment->appointment_time)->format('H:i')); ?>',
+                                        '<?php echo e(addslashes($appointment->service_type)); ?>',
+                                        '<?php echo e($appointment->status); ?>',
+                                        '<?php echo e(addslashes($appointment->chief_complaint ?? '')); ?>',
+                                        '<?php echo e(addslashes($appointment->health_worker ?? '')); ?>',
+                                        '<?php echo e(addslashes($appointment->notes ?? '')); ?>',
+                                        '<?php echo e(addslashes($appointment->secondary_contact_name ?? '')); ?>',
+                                        '<?php echo e(addslashes($appointment->secondary_contact_number ?? '')); ?>'
                                     )">
                                     <i class="bi bi-pencil"></i>
                                 </button>
-                                <form action="{{ route('appointments.destroy', $appointment) }}" method="POST" style="display: inline;">
-                                    @csrf
-                                    @method('DELETE')
+                                <form action="<?php echo e(route('appointments.destroy', $appointment)); ?>" method="POST" style="display: inline;">
+                                    <?php echo csrf_field(); ?>
+                                    <?php echo method_field('DELETE'); ?>
                                     <button type="submit" class="btn-action btn-delete" onclick="return confirm('Are you sure?')">
                                         <i class="bi bi-trash"></i>
                                     </button>
@@ -779,20 +799,21 @@
                             </div>
                         </td>
                     </tr>
-                @empty
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                     <tr>
                         <td colspan="6" style="text-align: center; padding: 40px;">
                             <i class="bi bi-calendar-x" style="font-size: 48px; color: #ccc;"></i>
                             <p style="color: #999; margin-top: 16px;">No appointments found</p>
                         </td>
                     </tr>
-                @endforelse
+                <?php endif; ?>
             </tbody>
         </table>
     </div>
 
     <div class="pagination-wrapper">
-        {{ $appointments->links() }}
+        <?php echo e($appointments->links()); ?>
+
     </div>
 </div>
 
@@ -978,3 +999,4 @@
 </script>
 </body>
 </html>
+<?php /**PATH C:\Users\Lei\Capstone1-web\resources\views/appointments/index.blade.php ENDPATH**/ ?>

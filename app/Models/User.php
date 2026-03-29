@@ -56,6 +56,22 @@ class User extends Authenticatable
     }
 
     /**
+     * Get all notifications for this user
+     */
+    public function notifications()
+    {
+        return $this->hasMany(\App\Models\Notification::class);
+    }
+
+    /**
+     * Get unread notifications for this user
+     */
+    public function unreadNotifications()
+    {
+        return $this->notifications()->whereNull('read_at');
+    }
+
+    /**
      * Check if user is an admin
      */
     public function isAdmin(): bool

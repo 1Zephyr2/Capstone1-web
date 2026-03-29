@@ -28,6 +28,11 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .navbar i.bi {
+            font-family: bootstrap-icons;
         }
 
         .navbar-container {
@@ -169,9 +174,9 @@
             gap: 8px;
             padding: 10px 16px;
             background: white;
-            color: #14b8a6;
+            color: #111827;
             text-decoration: none;
-            border: 1px solid #cbd5e1;
+            border: 1px solid #111827;
             border-radius: 8px;
             margin-bottom: 24px;
             font-size: 14px;
@@ -180,9 +185,9 @@
         }
 
         .back-link:hover {
-            color: #0d9488;
+            color: #14b8a6;
             border-color: #14b8a6;
-            background: #f0fdf4;
+            background: #f0fdfa;
         }
 
         .pet-header {
@@ -206,6 +211,19 @@
 
         .pet-icon-large {
             font-size: 60px;
+            min-width: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pet-photo {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            flex-shrink: 0;
         }
 
         .pet-header-content h1 {
@@ -348,6 +366,132 @@
             margin-bottom: 12px;
         }
 
+        /* Photo Gallery */
+        .photo-gallery-section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e2e8f0;
+            margin-bottom: 24px;
+        }
+
+        .gallery-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            aspect-ratio: 1;
+            cursor: pointer;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.2);
+            border-color: #14b8a6;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-item-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 32px;
+            color: #d1d5db;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-item-icon {
+            opacity: 1;
+        }
+
+        /* Photo Modal */
+        .photo-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .photo-modal.active {
+            display: flex;
+        }
+
+        .photo-modal-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90vh;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .photo-modal-image {
+            max-width: 100%;
+            max-height: 90vh;
+            width: auto;
+            height: auto;
+            display: block;
+        }
+
+        .photo-modal-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .photo-modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
         @media (max-width: 768px) {
             .navbar-center {
                 display: none;
@@ -378,15 +522,15 @@
             </a>
             <div class="navbar-center">
                 <a href="{{ route('customer.dashboard') }}" class="nav-item">
-                    <i class="bi bi-house"></i>
+                    <i class="bi bi-speedometer2"></i>
                     Dashboard
                 </a>
-                <a href="{{ route('customer.pets.index') }}" class="nav-item active">
-                    <i class="bi bi-paw"></i>
+                <a href="{{ route('customer.pets.index') }}" class="nav-item">
+                    <i class="bi bi-heart-pulse"></i>
                     My Pets
                 </a>
                 <a href="{{ route('customer.appointments.index') }}" class="nav-item">
-                    <i class="bi bi-calendar-check"></i>
+                    <i class="bi bi-calendar2-check"></i>
                     Appointments
                 </a>
             </div>
@@ -417,9 +561,13 @@
         <!-- Pet Header -->
         <div class="pet-header">
             <div class="pet-header-info">
-                <div class="pet-icon-large" style="font-size: 60px;">
-                    <i class="bi bi-paw"></i>
-                </div>
+                @if($pet->pet_photo_path)
+                    <img src="{{ asset('storage/' . $pet->pet_photo_path) }}" alt="{{ $pet->pet_name }}" class="pet-photo">
+                @else
+                    <div class="pet-icon-large">
+                        <i class="bi bi-paw"></i>
+                    </div>
+                @endif
                 <div class="pet-header-content">
                     <h1>{{ $pet->pet_name }}</h1>
                     <p>{{ $pet->species ?? 'Unknown Species' }} • {{ $pet->breed ?? 'Unknown Breed' }}</p>
@@ -433,7 +581,43 @@
             </div>
         </div>
 
-        <!-- Quick Info Cards -->
+        <!-- Photo Gallery -->
+        @php
+            $petPhotos = [];
+            if ($pet->pet_photo_path) {
+                $petPhotos[] = [
+                    'path' => $pet->pet_photo_path,
+                    'alt' => $pet->pet_name . ' - Main Photo'
+                ];
+            }
+        @endphp
+
+        @if(!empty($petPhotos))
+        <div class="photo-gallery-section">
+            <div class="gallery-title">
+                <i class="bi bi-images"></i>
+                Pet Photos
+            </div>
+            <div class="gallery-grid">
+                @foreach($petPhotos as $photo)
+                <div class="gallery-item" onclick="openPhotoModal('{{ asset('storage/' . $photo['path']) }}')">
+                    <img src="{{ asset('storage/' . $photo['path']) }}" alt="{{ $photo['alt'] }}">
+                    <div class="gallery-item-icon">
+                        <i class="bi bi-eye-fill"></i>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
+
+        <!-- Photo Modal -->
+        <div class="photo-modal" id="photoModal" onclick="if(event.target.id === 'photoModal') closePhotoModal()">
+            <div class="photo-modal-content">
+                <button class="photo-modal-close" onclick="closePhotoModal()">&times;</button>
+                <img id="modalPhotoImage" class="photo-modal-image" src="" alt="Pet Photo">
+            </div>
+        </div>
         <div class="cards-grid">
             <div class="card">
                 <div class="card-title">
@@ -538,30 +722,27 @@
             @endif
         </div>
 
-        <!-- Referrals -->
-        @if(!$pet->referrals->isEmpty())
-            <div class="section">
-                <div class="section-title">
-                    <i class="bi bi-arrow-up-right-square"></i>
-                    Referrals
-                </div>
+    <script>
+        function openPhotoModal(imagePath) {
+            const modal = document.getElementById('photoModal');
+            const image = document.getElementById('modalPhotoImage');
+            image.src = imagePath;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
 
-                <div class="records-list">
-                    @foreach($pet->referrals as $referral)
-                        <div class="record-item">
-                            <div class="record-title">{{ $referral->reason ?? 'Referral' }}</div>
-                            <div class="record-info">
-                                <i class="bi bi-calendar-event"></i>
-                                {{ $referral->referral_date->format('M d, Y') }}
-                                @if($referral->referred_to)
-                                    • Referred to: {{ $referral->referred_to }}
-                                @endif
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        @endif
-    </div>
+        function closePhotoModal() {
+            const modal = document.getElementById('photoModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal on escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closePhotoModal();
+            }
+        });
+    </script>
 </body>
 </html>

@@ -28,6 +28,11 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .navbar i.bi {
+            font-family: bootstrap-icons;
         }
 
         .navbar-container {
@@ -80,9 +85,9 @@
             color: rgba(255, 255, 255, 0.7);
             font-size: 14px;
             font-weight: 500;
-            border-radius: 8px;
+            color: #111827;
             transition: all 0.3s ease;
-            display: flex;
+            border: 1px solid #111827;
             align-items: center;
             gap: 6px;
             white-space: nowrap;
@@ -91,9 +96,9 @@
         .nav-item:hover {
             background: rgba(255, 255, 255, 0.1);
             color: white;
-        }
+            color: #14b8a6;
 
-        .nav-item.active {
+            background: #f0fdfa;
             background: rgba(20, 184, 166, 0.15);
             color: #14b8a6;
             border-bottom: 2px solid #14b8a6;
@@ -169,9 +174,9 @@
             gap: 8px;
             padding: 10px 16px;
             background: white;
-            color: #14b8a6;
+            color: #111827;
             text-decoration: none;
-            border: 1px solid #cbd5e1;
+            border: 1px solid #111827;
             border-radius: 8px;
             margin-bottom: 24px;
             font-size: 14px;
@@ -180,9 +185,9 @@
         }
 
         .back-link:hover {
-            color: #0d9488;
+            color: #14b8a6;
             border-color: #14b8a6;
-            background: #f0fdf4;
+            background: #f0fdfa;
         }
 
         /* Appointment Header */
@@ -383,15 +388,15 @@
             </a>
             <div class="navbar-center">
                 <a href="{{ route('customer.dashboard') }}" class="nav-item">
-                    <i class="bi bi-house"></i>
+                    <i class="bi bi-speedometer2"></i>
                     Dashboard
                 </a>
                 <a href="{{ route('customer.pets.index') }}" class="nav-item">
-                    <i class="bi bi-paw"></i>
+                    <i class="bi bi-heart-pulse"></i>
                     My Pets
                 </a>
                 <a href="{{ route('customer.appointments.index') }}" class="nav-item active">
-                    <i class="bi bi-calendar-check"></i>
+                    <i class="bi bi-calendar2-check"></i>
                     Appointments
                 </a>
             </div>
