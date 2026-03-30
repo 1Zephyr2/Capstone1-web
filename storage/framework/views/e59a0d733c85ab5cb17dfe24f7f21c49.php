@@ -690,7 +690,6 @@
                     <option value="all">All Status</option>
                     <option value="scheduled" <?php echo e(request('status') == 'scheduled' ? 'selected' : ''); ?>>Scheduled</option>
                     <option value="confirmed" <?php echo e(request('status') == 'confirmed' ? 'selected' : ''); ?>>Confirmed</option>
-                    <option value="completed" <?php echo e(request('status') == 'completed' ? 'selected' : ''); ?>>Completed</option>
                     <option value="cancelled" <?php echo e(request('status') == 'cancelled' ? 'selected' : ''); ?>>Cancelled</option>
                     <option value="no-show" <?php echo e(request('status') == 'no-show' ? 'selected' : ''); ?>>No-Show</option>
                 </select>
@@ -747,9 +746,10 @@
                 ?>
                 <?php $__empty_1 = true; $__currentLoopData = $appointments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $appointment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                     <?php
-                        $isToday = $appointment->appointment_date->isSameDay($today);
+                        $isToday = $appointment->appointment_date->isSameDay($today) && $appointment->status !== 'completed';
                         $isUpcoming = !$isToday && $appointment->appointment_date->isAfter($today)
-                            && $appointment->appointment_date->diffInDays($today) <= 7;
+                            && $appointment->appointment_date->diffInDays($today) <= 7
+                            && $appointment->status !== 'completed';
                     ?>
                     <tr class="<?php echo e($isToday ? 'row-today' : ($isUpcoming ? 'row-upcoming' : '')); ?>">
                         <td>
@@ -978,6 +978,10 @@
                 alert.textContent = '✓ Appointment updated successfully.';
                 alert.style.display = 'block';
                 saveBtn.innerHTML = '<i class="bi bi-check-lg"></i> Saved!';
+                
+                // Notify dashboard to update stats
+                localStorage.setItem('dashboard-update-needed', 'true');
+                
                 setTimeout(() => { closeQuickEditBtn(); window.location.reload(); }, 1200);
             } else {
                 const msgs = data.errors ? Object.values(data.errors).flat().join(' | ') : (data.message || 'Error saving.');

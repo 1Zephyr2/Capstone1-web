@@ -681,7 +681,7 @@
                 <div class="records-list">
                     @foreach($pet->visits as $visit)
                         <div class="record-item">
-                            <div class="record-title">{{ $visit->reason ?? 'Visit' }}</div>
+                            <div class="record-title">{{ $visit->service_type ?? 'Visit' }}</div>
                             <div class="record-info">
                                 <i class="bi bi-calendar-event"></i>
                                 {{ $visit->visit_date->format('M d, Y') }}
@@ -711,7 +711,7 @@
                 <div class="records-list">
                     @foreach($pet->appointments as $appointment)
                         <div class="record-item">
-                            <div class="record-title">{{ $appointment->reason ?? 'Appointment' }}</div>
+                            <div class="record-title">{{ $appointment->service_type ?? 'Appointment' }}</div>
                             <div class="record-info">
                                 <i class="bi bi-calendar-event"></i>
                                 {{ $appointment->appointment_date->format('M d, Y \a\t g:i A') }}

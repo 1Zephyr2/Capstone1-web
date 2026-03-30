@@ -31,9 +31,6 @@
             border-radius: 20px;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
             margin-bottom: 36px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             border: 1px solid rgba(0, 0, 0, 0.06);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -49,12 +46,6 @@
             letter-spacing: -0.02em;
         }
 
-        .header-actions {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-
         .back-btn {
             background: white;
             color: #111827;
@@ -67,6 +58,8 @@
             font-weight: 700;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+            display: inline-block;
+            margin-bottom: 20px;
         }
 
         .back-btn:hover {
@@ -135,8 +128,8 @@
 
         .form-control:focus {
             outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+            border-color: #14b8a6;
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15);
         }
 
         .helper-text {
@@ -180,13 +173,20 @@
         }
 
         .btn-primary {
-            background: #2563eb;
+            background: #14b8a6;
             color: white;
             border: none;
             padding: 12px 22px;
             border-radius: 10px;
             cursor: pointer;
             font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #0d9488;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
         }
 
         .btn-secondary {
@@ -201,6 +201,12 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #d1d5db;
+            transform: translateY(-2px);
         }
 
 
@@ -481,11 +487,9 @@
 </head>
 <body>
     <div class="container">
+        <a href="{{ route('appointments.index') }}" class="back-btn">← Back to Appointments</a>
         <div class="header">
-            <h1><i class="bi bi-calendar-plus"></i> Book Appointment</h1>
-            <div class="header-actions">
-                <a href="{{ route('appointments.index') }}" class="back-btn">← Back to Appointments</a>
-            </div>
+            <h1>Book Appointment</h1>
         </div>
 
         @if ($errors->any())

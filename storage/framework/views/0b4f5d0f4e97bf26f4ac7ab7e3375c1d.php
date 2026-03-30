@@ -183,45 +183,78 @@
             opacity: 0.7;
         }
 
-        .navbar-profile-btn {
-            padding: 6px 12px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-            transition: all 0.3s ease;
+        .navbar-profile-section {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 10px;
+            padding: 8px 12px;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
             text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
 
-        .navbar-profile-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: rgba(255, 255, 255, 0.4);
+        .navbar-profile-section:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             transform: translateY(-2px);
+        }
+
+        .navbar-avatar-img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .navbar-avatar-placeholder {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .navbar-user-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .navbar-user-name {
+            font-weight: 700;
+            font-size: 13px;
+            color: white;
         }
 
         .navbar-logout-btn {
-            padding: 6px 12px;
-            background: rgba(239, 68, 68, 0.15);
-            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 8px 11px;
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.4);
             color: #fca5a5;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 16px;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 6px;
+            justify-content: center;
         }
 
         .navbar-logout-btn:hover {
-            background: rgba(239, 68, 68, 0.25);
-            border-color: rgba(239, 68, 68, 0.5);
+            background: rgba(239, 68, 68, 0.3);
+            border-color: rgba(239, 68, 68, 0.6);
             transform: translateY(-2px);
+            color: #fecaca;
         }
 
         body {
@@ -567,23 +600,19 @@
             </div>
 
             <div class="navbar-end">
-                <div class="navbar-user">
+                <a href="<?php echo e(route('profile.show')); ?>" class="navbar-profile-section">
                     <?php if(Auth::user()->profile_picture): ?>
-                        <div class="navbar-avatar">
-                            <img src="<?php echo e(asset('storage/' . Auth::user()->profile_picture)); ?>" alt="<?php echo e(Auth::user()->name); ?>">
-                        </div>
+                        <img src="<?php echo e(asset('storage/' . Auth::user()->profile_picture)); ?>" alt="<?php echo e(Auth::user()->name); ?>" class="navbar-avatar-img">
                     <?php else: ?>
-                        <div class="navbar-avatar">
-                            <i class="bi bi-person-fill" style="font-size: 18px;"></i>
+                        <div class="navbar-avatar-placeholder">
+                            <?php echo e(strtoupper(substr(Auth::user()->name, 0, 1))); ?>
+
                         </div>
                     <?php endif; ?>
-                    <div class="navbar-user-text">
+                    <div class="navbar-user-info">
                         <div class="navbar-user-name"><?php echo e(Auth::user()->name); ?></div>
-                        <div class="navbar-user-role"><?php echo e(Auth::user()->role_name); ?></div>
+                        <div class="navbar-user-role"><?php echo e(Auth::user()->role_name ?? ucfirst(Auth::user()->role)); ?></div>
                     </div>
-                </div>
-                <a href="<?php echo e(route('profile.show')); ?>" class="navbar-profile-btn" title="My Profile">
-                    <i class="bi bi-person-circle"></i>
                 </a>
                 <form action="<?php echo e(route('logout')); ?>" method="POST" style="display: inline;">
                     <?php echo csrf_field(); ?>

@@ -424,11 +424,11 @@
 
         <!-- Appointment Header -->
         <div class="appointment-header">
-            <h1>{{ $appointment->reason ?? 'Appointment' }}</h1>
+            <h1>{{ $appointment->service_type ?? 'Appointment' }}</h1>
             <div class="appointment-meta">
                 <div class="meta-item">
                     <i class="bi bi-calendar-event"></i>
-                    {{ $appointment->appointment_date->format('l, M d, Y \a\t g:i A') }}
+                    {{ $appointment->appointment_date->format('l, M d, Y') }} at {{ \Carbon\Carbon::parse($appointment->appointment_time)->format('g:i A') }}
                 </div>
                 <div class="meta-item">
                     <i class="bi bi-paw"></i>
@@ -466,7 +466,7 @@
                 </div>
                 <div class="info-item">
                     <span class="info-label">Time</span>
-                    <span class="info-value">{{ $appointment->appointment_date->format('g:i A') }}</span>
+                    <span class="info-value">{{ \Carbon\Carbon::parse($appointment->appointment_time)->format('g:i A') }}</span>
                 </div>
             </div>
 
@@ -509,7 +509,7 @@
             <div class="appointment-info-grid">
                 <div class="info-box">
                     <div class="info-box-label">Reason for Visit</div>
-                    <div class="info-box-value">{{ $appointment->reason ?? 'General Checkup' }}</div>
+                    <div class="info-box-value">{{ $appointment->service_type ?? 'General Checkup' }}</div>
                 </div>
 
                 @if($appointment->status)

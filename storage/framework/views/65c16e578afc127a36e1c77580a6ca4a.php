@@ -13,265 +13,223 @@
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f8fafc;
-            padding: 0;
+            background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
+            padding: 40px;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
         }
 
-        /* Navbar */
-        .navbar {
-            background: #1e293b;
-            color: white;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            align-items: center;
-            height: 72px;
-        }
-
-        .navbar i.bi {
-            font-family: bootstrap-icons;
-        }
-
-        .navbar-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            padding: 0 24px;
-            gap: 24px;
-        }
-
-        .navbar-brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: inherit;
-            transition: all 0.3s ease;
-            flex-shrink: 0;
-        }
-
-        .navbar-brand:hover {
-            opacity: 0.8;
-        }
-
-        .navbar-logo {
-            height: 40px;
-            width: 40px;
-            object-fit: contain;
-        }
-
-        .navbar-menu {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex: 1;
-            justify-content: center;
-        }
-
-        .navbar-item {
-            padding: 8px 14px;
-            text-decoration: none;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 13px;
-            font-weight: 500;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            white-space: nowrap;
-        }
-
-        .navbar-item:hover {
-            background: rgba(255, 255, 255, 0.15);
-            color: white;
-        }
-
-        .navbar-item.active {
-            background: rgba(20, 184, 166, 0.15);
-            color: #14b8a6;
-            border-bottom: 2px solid #14b8a6;
-        }
-
-        .navbar-end {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            flex-shrink: 0;
-        }
-
-        .navbar-title {
-            font-size: 16px;
-            font-weight: 700;
-        }
-
-        .Container {
-            max-width: 800px;
+        .container {
+            max-width: 1200px;
             margin: 0 auto;
-            width: 100%;
-            background: white;
-            padding: 40px 24px;
         }
 
-        h1 {
-            color: #14b8a6;
-            margin: 0;
-            font-size: 28px;
+        .back-btn {
+            background: white;
+            color: #111827;
+            border: 1px solid #111827;
+            padding: 12px 28px;
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 15px;
             font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .back-btn:hover {
+            background: #f0fdfa;
+            border-color: #14b8a6;
+            color: #14b8a6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+            padding: 28px 36px;
+            border-radius: 20px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
+            margin-bottom: 36px;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .header:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 800;
+            color: #111827;
             letter-spacing: -0.02em;
         }
 
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 16px;
-            background: white;
-            color: #0f172a;
-            text-decoration: none;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            margin-bottom: 16px;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .back-link:hover {
-            color: #0f172a;
-            border-color: #14b8a6;
-            background: #f0fdf4;
-        }
-        .subtitle {
-            color: #6b7280;
-            margin-bottom: 30px;
-            font-size: 14px;
-        }
-        .form-section {
+        .form-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.06);
             margin-bottom: 24px;
         }
-        .section-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #374151;
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             margin-bottom: 16px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #e5e7eb;
         }
-        .form-row {
+
+        .card-header h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .form-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 16px;
-            margin-bottom: 16px;
-        }
-        .form-row.full {
-            grid-template-columns: 1fr;
         }
         .form-group {
             display: flex;
             flex-direction: column;
+            gap: 6px;
         }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
         label {
-            font-size: 14px;
-            font-weight: 500;
+            font-weight: 600;
             color: #374151;
-            margin-bottom: 6px;
+            font-size: 14px;
         }
-        label .required {
+
+        .required {
             color: #dc2626;
         }
-        input, select, textarea {
-            padding: 10px 12px;
+
+        .form-control {
+            padding: 12px 14px;
             border: 1px solid #d1d5db;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 14px;
-            font-family: inherit;
-            transition: border-color 0.2s;
+            transition: all 0.2s ease;
         }
-        input:focus, select:focus, textarea:focus {
+
+        .form-control:focus {
             outline: none;
             border-color: #14b8a6;
-            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15);
         }
-        textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-        .hint {
+
+        .helper-text {
             font-size: 12px;
             color: #6b7280;
-            margin-top: 4px;
         }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
+        }
+
+        .optional-section {
+            background: #f9fafb;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 12px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            cursor: pointer;
+            margin-bottom: 0;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .checkbox-label span {
+            color: #374151;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        input[type="checkbox"] {
+            cursor: pointer;
+        }
+
         .actions {
             display: flex;
             gap: 12px;
             justify-content: flex-end;
-            margin-top: 32px;
-            padding-top: 20px;
-            border-top: 1px solid #e5e7eb;
+            margin-top: 12px;
         }
-        button {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
+
         .btn-primary {
-            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+            background: #14b8a6;
             color: white;
-            transition: all 0.2s ease;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s ease;
         }
+
         .btn-primary:hover {
-            background: linear-gradient(135deg, #0d9488 0%, #0a7e70 100%);
+            background: #0d9488;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
         }
-        .btn-primary:disabled, .btn-primary[disabled] {
-            background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
-            cursor: not-allowed;
-            opacity: 0.5;
-            transform: none;
-            box-shadow: none;
-        }
-        .btn-primary:disabled:hover, .btn-primary[disabled]:hover {
-            background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
-            transform: none;
-        }
+
         .btn-secondary {
             background: #e5e7eb;
-            color: #374151;
+            color: #111827;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
         }
+
         .btn-secondary:hover {
             background: #d1d5db;
+            transform: translateY(-2px);
         }
         .alert {
             padding: 12px 16px;
-            border-radius: 6px;
-            margin-bottom: 20px;
+            border-radius: 10px;
+            margin-bottom: 16px;
             font-size: 14px;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
         }
+
         .alert-error {
-            background: #fee2e2;
-            color: #991b1b;
+            background: #fef2f2;
             border: 1px solid #fecaca;
-        }
-        .optional-section {
-            background: #f9fafb;
-            padding: 16px;
-            border-radius: 6px;
-            margin-top: 16px;
+            color: #991b1b;
         }
         .autocomplete-container {
             position: relative;
@@ -410,16 +368,34 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+        @media (max-width: 900px) {
+            body {
+                padding: 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 16px;
+                align-items: flex-start;
+            }
+
+            .checkbox-label {
+                flex-direction: row;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="Container">
-        <a href="<?php echo e(route('pets.index')); ?>" class="back-link">
-            <i class="bi bi-arrow-left"></i> Back to Pets
-        </a>
-
-        <h1>Register New Pet</h1>
-        <p class="subtitle">Fill in essential pet information. Pet ID will be auto-generated.</p>
+    <div class="container">
+        <a href="<?php echo e(route('pets.index')); ?>" class="back-btn">← Back to Pets</a>
+        
+        <div class="header">
+            <h1>Register New Pet</h1>
+        </div>
 
         <!-- Patient Search Autocomplete -->
         <div class="autocomplete-container">
@@ -466,17 +442,17 @@
             </div>
 
             <!-- Pet Information -->
-            <div class="form-section">
-                <div class="section-title">Pet Information</div>
+            <div class="form-card">
+                <div class="card-header"><h2>Pet Information</h2></div>
                 
-                <div class="form-row">
+                <div class="form-grid">
                     <div class="form-group">
                         <label>Pet Name <span class="required">*</span></label>
-                        <input type="text" name="pet_name" value="<?php echo e(old('pet_name')); ?>" required>
+                        <input type="text" name="pet_name" value="<?php echo e(old('pet_name')); ?>" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label>Species <span class="required">*</span></label>
-                        <select name="species_id" id="speciesSelect" required onchange="loadSpeciesCharacteristics()">
+                        <select name="species_id" id="speciesSelect" class="form-control" required onchange="loadSpeciesCharacteristics()">
                             <option value="">Select Species</option>
                             <?php $__currentLoopData = $species; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sp): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <option value="<?php echo e($sp->id); ?>" <?php echo e(old('species_id') == $sp->id ? 'selected' : ''); ?>><?php echo e($sp->name); ?></option>
@@ -489,26 +465,26 @@
                     </div>
                 </div>
 
-                <div class="form-row">
+                <div class="form-grid">
                     <div class="form-group">
                         <label>Breed <span class="required">*</span></label>
-                        <input type="text" name="breed" value="<?php echo e(old('breed')); ?>" required placeholder="e.g., Golden Retriever, Persian">
+                        <input type="text" name="breed" value="<?php echo e(old('breed')); ?>" class="form-control" required placeholder="e.g., Golden Retriever, Persian">
                     </div>
                     <div class="form-group">
                         <label>Color</label>
-                        <input type="text" name="color" value="<?php echo e(old('color')); ?>" placeholder="e.g., Brown, White">
+                        <input type="text" name="color" value="<?php echo e(old('color')); ?>" class="form-control" placeholder="e.g., Brown, White">
                     </div>
                 </div>
 
-                <div class="form-row">
+                <div class="form-grid">
                     <div class="form-group">
                         <label>Birthdate <span class="required">*</span></label>
-                        <input type="date" id="birthdate" name="birthdate" value="<?php echo e(old('birthdate')); ?>" required max="<?php echo e(date('Y-m-d')); ?>">
-                        <span class="hint">Age will be auto-calculated<span id="ageDisplay" class="age-display" style="display: none;"></span></span>
+                        <input type="date" id="birthdate" name="birthdate" value="<?php echo e(old('birthdate')); ?>" class="form-control" required max="<?php echo e(date('Y-m-d')); ?>">
+                        <span class="helper-text">Age will be auto-calculated<span id="ageDisplay" class="age-display" style="display: none;"></span></span>
                     </div>
                     <div class="form-group">
                         <label>Sex <span class="required">*</span></label>
-                        <select name="sex" required>
+                        <select name="sex" class="form-control" required>
                             <option value="">Select</option>
                             <option value="Male" <?php echo e(old('sex') == 'Male' ? 'selected' : ''); ?>>Male</option>
                             <option value="Female" <?php echo e(old('sex') == 'Female' ? 'selected' : ''); ?>>Female</option>
@@ -518,50 +494,50 @@
             </div>
 
             <!-- Owner Information -->
-            <div class="form-section">
-                <div class="section-title">Owner Information</div>
+            <div class="form-card">
+                <div class="card-header"><h2>Owner Information</h2></div>
                 
-                <div class="form-row">
+                <div class="form-grid">
                     <div class="form-group">
                         <label>Owner Name <span class="required">*</span></label>
-                        <input type="text" name="owner_name" value="<?php echo e(old('owner_name')); ?>" required>
+                        <input type="text" name="owner_name" value="<?php echo e(old('owner_name')); ?>" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label>Owner Contact <span class="required">*</span></label>
-                        <input type="tel" name="owner_contact" value="<?php echo e(old('owner_contact')); ?>" required placeholder="09XX-XXX-XXXX">
+                        <input type="tel" name="owner_contact" value="<?php echo e(old('owner_contact')); ?>" class="form-control" required placeholder="09XX-XXX-XXXX">
                     </div>
                 </div>
 
-                <div class="form-row full">
-                    <div class="form-group">
+                <div class="form-grid">
+                    <div class="form-group full-width">
                         <label>Address <span class="required">*</span></label>
-                        <textarea name="address" required><?php echo e(old('address')); ?></textarea>
-                        <span class="hint">House No., Street, Barangay, City</span>
+                        <textarea name="address" class="form-control" required><?php echo e(old('address')); ?></textarea>
+                        <span class="helper-text">House No., Street, Barangay, City</span>
                     </div>
                 </div>
             </div>
 
             <!-- Optional Information -->
-            <div class="form-section">
-                <div class="section-title">Additional Information</div>
+            <div class="form-card">
+                <div class="card-header"><h2>Additional Information</h2></div>
                 <div class="optional-section">
-                    <div class="form-row full">
-                        <div class="form-group">
-                            <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
-                                <input type="checkbox" name="is_required" value="1" <?php echo e(old('is_required') ? 'checked' : ''); ?> style="width: auto; cursor: pointer;">
-                                <span style="color: #374151; font-weight: 500;">Mark as Requiring Special Care</span>
-                            </label>
-                            <span class="hint">Check this if the pet requires special care or attention</span>
-                        </div>
+                    <div class="form-group full-width" style="margin-bottom: 20px;">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="is_required" value="1" <?php echo e(old('is_required') ? 'checked' : ''); ?>>
+                            <div>
+                                <span>Mark as Requiring Special Care</span>
+                                <div class="helper-text" style="margin-top: 4px;">Check this if the pet requires special care or attention</div>
+                            </div>
+                        </label>
                     </div>
-                    <div class="form-row full">
-                        <div class="form-group">
-                            <label style="display: flex; align-items: center; gap: 8px;">
-                                <input type="checkbox" name="privacy_consent" value="1" <?php echo e(old('privacy_consent') ? 'checked' : ''); ?> style="width: auto; cursor: pointer;">
-                                <span style="color: #374151; font-weight: 500;">I consent to data privacy and processing</span>
-                            </label>
-                            <span class="hint">Please review our <a href="#" style="color: #14b8a6; text-decoration: underline;">privacy policy</a> before consent</span>
-                        </div>
+                    <div class="form-group full-width">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="privacy_consent" value="1" <?php echo e(old('privacy_consent') ? 'checked' : ''); ?>>
+                            <div>
+                                <span>I consent to data privacy and processing</span>
+                                <div class="helper-text" style="margin-top: 4px;">Please review our <a href="#" style="color: #14b8a6; text-decoration: underline;">privacy policy</a> before consent</div>
+                            </div>
+                        </label>
                     </div>
                 </div>
             </div>

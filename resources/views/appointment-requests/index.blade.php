@@ -314,6 +314,55 @@
             text-align: center;
         }
 
+        .stat-card.active {
+            background: linear-gradient(135deg, #ccfbf1 0%, #99f6e0 100%);
+            border: 2px solid #14b8a6;
+        }
+
+        .stat-card {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.15);
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 8px 16px;
+            border: 2px solid var(--line);
+            background: white;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: var(--text);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .filter-tab:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .filter-tab.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
         .stat-value {
             font-size: 28px;
             font-weight: 800;
@@ -559,18 +608,26 @@
         @endif
 
         <div class="stats">
-            <div class="stat-card">
-                <div class="stat-value">{{ $requests->where('status', 'pending')->count() }}</div>
+            <a href="{{ route('appointment-requests.index', ['status' => 'pending']) }}" class="stat-card {{ $status === 'pending' ? 'active' : '' }}">
+                <div class="stat-value">{{ $stats['pending'] }}</div>
                 <div class="stat-label">Pending Requests</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" style="color: #059669;">{{ $requests->where('status', 'approved')->count() }}</div>
+            </a>
+            <a href="{{ route('appointment-requests.index', ['status' => 'approved']) }}" class="stat-card {{ $status === 'approved' ? 'active' : '' }}" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); {{ $status === 'approved' ? 'border: 2px solid #10b981;' : '' }}">
+                <div class="stat-value" style="color: #059669;">{{ $stats['approved'] }}</div>
                 <div class="stat-label" style="color: #047857;">Approved</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" style="color: #e11d48;">{{ $requests->where('status', 'rejected')->count() }}</div>
-                <div class="stat-label" style="color: #831843;">Rejected</div>
-            </div>
+            </a>
+            <a href="{{ route('appointment-requests.index', ['status' => 'rejected']) }}" class="stat-card {{ $status === 'rejected' ? 'active' : '' }}" style="background: linear-gradient(135deg, #fee2e2 0%, #fca5a5 100%); {{ $status === 'rejected' ? 'border: 2px solid #ef4444;' : '' }}">
+                <div class="stat-value" style="color: #dc2626;">{{ $stats['rejected'] }}</div>
+                <div class="stat-label" style="color: #991b1b;">Rejected</div>
+            </a>
+            <a href="{{ route('appointment-requests.index', ['status' => 'cancelled']) }}" class="stat-card {{ $status === 'cancelled' ? 'active' : '' }}" style="background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%); {{ $status === 'cancelled' ? 'border: 2px solid #6b7280;' : '' }}">
+                <div class="stat-value" style="color: #4b5563;">{{ $stats['cancelled'] }}</div>
+                <div class="stat-label" style="color: #374151;">Cancelled</div>
+            </a>
+            <a href="{{ route('appointment-requests.index', ['status' => 'all']) }}" class="stat-card {{ $status === 'all' ? 'active' : '' }}" style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); {{ $status === 'all' ? 'border: 2px solid #3b82f6;' : '' }}">
+                <div class="stat-value" style="color: #1d4ed8;">{{ $stats['total'] }}</div>
+                <div class="stat-label" style="color: #1e40af;">All Records</div>
+            </a>
         </div>
 
         <div class="table-container">
@@ -637,7 +694,15 @@
                 <div class="empty-state">
                     <i class="bi bi-inbox"></i>
                     <h3>No Requests</h3>
-                    <p>All appointment requests have been processed.</p>
+                    <p>
+                        @if ($status === 'pending')
+                            All appointment requests have been processed.
+                        @elseif ($status === 'all')
+                            No appointment requests found.
+                        @else
+                            No {{ strtolower($status) }} requests to display.
+                        @endif
+                    </p>
                 </div>
             @endif
         </div>

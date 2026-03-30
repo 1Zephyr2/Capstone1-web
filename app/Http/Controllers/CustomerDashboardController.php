@@ -21,9 +21,10 @@ class CustomerDashboardController extends Controller
             ->orWhere('owner_contact', $user->email)
             ->get();
         
-        // Get upcoming appointments
+        // Get upcoming appointments (exclude completed)
         $appointments = Appointment::whereIn('patient_id', $pets->pluck('id'))
             ->where('appointment_date', '>=', now())
+            ->where('status', '!=', 'completed')
             ->orderBy('appointment_date')
             ->limit(5)
             ->get();
@@ -63,7 +64,7 @@ class CustomerDashboardController extends Controller
 
         $patient->load([
             'visits' => fn($q) => $q->orderBy('visit_date', 'desc'),
-            'appointments' => fn($q) => $q->where('appointment_date', '>=', now())->orderBy('appointment_date'),
+            'appointments' => fn($q) => $q->where('appointment_date', '>=', now())->where('status', '!=', 'completed')->orderBy('appointment_date'),
         ]);
         
         return view('customer.pets.show', [
@@ -83,6 +84,7 @@ class CustomerDashboardController extends Controller
             ->get();
         
         $appointments = Appointment::whereIn('patient_id', $pets->pluck('id'))
+            ->where('status', '!=', 'completed')
             ->orderBy('appointment_date', 'desc')
             ->paginate(15);
         

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
     <title>Today's Visits - PAWser</title>
     <link rel="stylesheet" href="<?php echo e(asset('bootstrap-icons/bootstrap-icons.min.css')); ?>">
     <style>
@@ -756,83 +757,29 @@
         <div class="stats">
             <div class="stat-card">
                 <div class="stat-value" id="totalVisitsToday">0</div>
-                <div class="stat-label">Total Visits Today</div>
+                <div class="stat-label">Total Completed Today</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value" id="totalAbsentToday">0</div>
-                <div class="stat-label">Rescheduled Today</div>
+                <div class="stat-value" id="groomingServicesToday">0</div>
+                <div class="stat-label">Grooming</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value" id="generalCheckupsToday">0</div>
-                <div class="stat-label">Wellness Exams</div>
+                <div class="stat-value" id="medicalServicesToday">0</div>
+                <div class="stat-label">Medical</div>
             </div>
             <div class="stat-card" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-color: #fcd34d;">
-                <div class="stat-value" id="walkInsToday" style="color: #d97706;">0</div>
-                <div class="stat-label" style="color: #92400e;">Walk-ins Today</div>
+                <div class="stat-value" id="otherServicesToday" style="color: #d97706;">0</div>
+                <div class="stat-label" style="color: #92400e;">Other</div>
             </div>
         </div>
 
-        <div class="visits-container">
-            <?php if($visits->count() > 0): ?>
-                <?php
-                    $groupedVisits = $visits->getCollection()->groupBy(fn($v) => $v->patient->owner_name ?: 'Unknown Owner');
-                ?>
-                <?php $__currentLoopData = $groupedVisits; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $ownerName => $ownerVisits): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <div class="owner-group-card">
-                    <div class="owner-group-header open" onclick="toggleOwnerGroup(this)">
-                        <div class="owner-group-left">
-                            <div class="owner-icon"><i class="bi bi-person-fill"></i></div>
-                            <div>
-                                <div class="owner-group-name"><?php echo e($ownerName); ?></div>
-                                <div class="owner-group-meta"><?php echo e($ownerVisits->count()); ?> pet visit<?php echo e($ownerVisits->count() > 1 ? 's' : ''); ?> today</div>
-                            </div>
-                        </div>
-                        <i class="bi bi-chevron-down owner-chevron"></i>
-                    </div>
-                    <div class="owner-pets-list open">
-                        <?php $__currentLoopData = $ownerVisits; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $visit): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <div class="pet-visit-row" onclick="openVisitModal(<?php echo e($visit->id); ?>)">
-                            <div class="pet-visit-left">
-                                <div class="patient-name">
-                                    <?php echo e($visit->patient->full_name); ?>
-
-                                    <?php if($visit->is_walk_in): ?>
-                                    <span style="display: inline-block; background: #fde68a; color: #d97706; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-left: 8px; border: 1px solid #fcd34d;">[WALK-IN]</span>
-                                    <?php endif; ?>
-                                </div>
-                                <div class="patient-info">
-                                    <span><strong>ID:</strong> <?php echo e($visit->patient->patient_id); ?></span>
-                                    <span><strong>Age:</strong> <?php echo e($visit->patient->age); ?> years</span>
-                                    <span><strong>Sex:</strong> <?php echo e($visit->patient->sex); ?></span>
-                                </div>
-                                <div class="click-hint">Click to view full details</div>
-                            </div>
-                            <div class="pet-visit-right">
-                                <span class="service-badge service-<?php echo e(strtolower(str_replace(' ', '-', $visit->service_type))); ?>">
-                                    <?php echo e($visit->service_type); ?>
-
-                                </span>
-                                <div class="visit-time">
-                                    <i class="bi bi-clock"></i> <?php echo e(\Carbon\Carbon::parse($visit->visit_time)->format('h:i A')); ?>
-
-                                </div>
-                            </div>
-                        </div>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                    </div>
-                </div>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-            <?php else: ?>
-            <div class="empty-state">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                </svg>
-                <h3>No visits recorded today</h3>
-                <p>Visit records will appear here as patients are seen</p>
-            </div>
-            <?php endif; ?>
+        <div style="margin-bottom: 20px; display: flex; gap: 12px; align-items: center;">
+            <input type="date" id="filterDate" style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px;" />
+            <input type="text" id="searchVisits" placeholder="Search by owner name..." style="padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; flex: 1;" />
+            <button onclick="resetFilters()" style="padding: 8px 16px; background: #f3f4f6; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Reset</button>
         </div>
-    </div>
+
+        <div id="visitsListContainer" style="margin-top: 20px;"></div>
 
     <!-- Visit Details Modal -->
     <div id="visitModal" class="visit-modal">
@@ -895,21 +842,29 @@
         function calculateStats() {
             if (!visits || visits.length === 0) {
                 document.getElementById('totalVisitsToday').textContent = '0';
-                document.getElementById('totalAbsentToday').textContent = '0';
-                document.getElementById('generalCheckupsToday').textContent = '0';
-                document.getElementById('walkInsToday').textContent = '0';
+                document.getElementById('groomingServicesToday').textContent = '0';
+                document.getElementById('medicalServicesToday').textContent = '0';
+                document.getElementById('otherServicesToday').textContent = '0';
                 return;
             }
 
             const totalVisits = visits.length;
-            const rescheduledCount = visits.filter(v => v.status === 'rescheduled' || v.status === 'cancelled').length;
-            const wellnessCount = visits.filter(v => v.service_type && v.service_type.toLowerCase().includes('wellness')).length;
-            const walkInsCount = visits.filter(v => v.is_walk_in === true || v.is_walk_in === 1).length;
+            
+            // Grooming services
+            const groomingServices = ['Bath & Dry', 'Full Grooming', 'Haircut & Styling', 'Nail Trimming', 'Ear Cleaning', 'Teeth Brushing', 'De-shedding Treatment', 'Flea & Tick Treatment', 'Paw Treatment'];
+            const groomingCount = visits.filter(v => groomingServices.includes(v.service_type)).length;
+            
+            // Medical services
+            const medicalServices = ['Vaccination', 'Spay/Neuter', 'Dental Cleaning', 'Deworming', 'General Checkup', 'Wound Treatment'];
+            const medicalCount = visits.filter(v => medicalServices.includes(v.service_type)).length;
+            
+            // Other services (everything else: Boarding Checkup, Follow-up, Referral, Other)
+            const otherCount = totalVisits - groomingCount - medicalCount;
 
             document.getElementById('totalVisitsToday').textContent = totalVisits;
-            document.getElementById('totalAbsentToday').textContent = rescheduledCount;
-            document.getElementById('generalCheckupsToday').textContent = wellnessCount;
-            document.getElementById('walkInsToday').textContent = walkInsCount;
+            document.getElementById('groomingServicesToday').textContent = groomingCount;
+            document.getElementById('medicalServicesToday').textContent = medicalCount;
+            document.getElementById('otherServicesToday').textContent = otherCount;
         }
 
         // Calculate stats when page loads
@@ -1227,6 +1182,176 @@
                 closeDateAppointments();
             }
         }
+
+        // Auto-refresh today's visits stats every 15 seconds
+        let allVisits = [];
+        
+        function refreshTodaysVisits() {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+            
+            console.log('📡 Fetching /api/visits/today...');
+            fetch('/api/visits/today', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken || '',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                console.log('📨 Response status:', response.status);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('✅ Visits data received:', data);
+                if (data && data.visits && Array.isArray(data.visits)) {
+                    allVisits = data.visits;
+                    console.log('📊 Loaded', allVisits.length, 'visits');
+                    
+                    // Recalculate stats based on service type
+                    const totalVisits = allVisits.length;
+                    
+                    // Grooming services
+                    const groomingServices = ['Bath & Dry', 'Full Grooming', 'Haircut & Styling', 'Nail Trimming', 'Ear Cleaning', 'Teeth Brushing', 'De-shedding Treatment', 'Flea & Tick Treatment', 'Paw Treatment'];
+                    const groomingCount = allVisits.filter(v => groomingServices.includes(v.service_type)).length;
+                    
+                    // Medical services
+                    const medicalServices = ['Vaccination', 'Spay/Neuter', 'Dental Cleaning', 'Deworming', 'General Checkup', 'Wound Treatment'];
+                    const medicalCount = allVisits.filter(v => medicalServices.includes(v.service_type)).length;
+                    
+                    // Other services
+                    const otherCount = totalVisits - groomingCount - medicalCount;
+
+                    // Update displayed stats
+                    document.getElementById('totalVisitsToday').textContent = totalVisits;
+                    document.getElementById('groomingServicesToday').textContent = groomingCount;
+                    document.getElementById('medicalServicesToday').textContent = medicalCount;
+                    document.getElementById('otherServicesToday').textContent = otherCount;
+                    
+                    // Render visits list
+                    console.log('🎨 Rendering visits list...');
+                    renderVisitsList(allVisits);
+                    
+                    console.log('✅ Stats updated - Total:', totalVisits, 'Grooming:', groomingCount, 'Medical:', medicalCount, 'Other:', otherCount);
+                }
+            })
+            .catch(error => {
+                console.error('❌ Error refreshing visits:', error);
+            });
+        }
+
+        function renderVisitsList(visits) {
+            const container = document.getElementById('visitsListContainer');
+            
+            if (visits.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 40px; color: #9ca3af;"><i class="bi bi-inbox" style="font-size: 48px; margin-bottom: 12px; display: block;"></i>No visits recorded yet</div>';
+                return;
+            }
+            
+            // Group visits by owner
+            const visitsByOwner = {};
+            visits.forEach(visit => {
+                if (!visitsByOwner[visit.owner_name]) {
+                    visitsByOwner[visit.owner_name] = [];
+                }
+                visitsByOwner[visit.owner_name].push(visit);
+            });
+            
+            let html = '<div style="display: grid; gap: 16px;">';
+            
+            Object.keys(visitsByOwner).forEach(ownerName => {
+                const ownerVisits = visitsByOwner[ownerName];
+                const ownerInitials = ownerName.split(' ').map(n => n[0]).join('').toUpperCase();
+                
+                html += `
+                    <div style="background: white; padding: 16px; border-radius: 12px; border: 1px solid #e5e7eb;">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                            <div style="width: 40px; height: 40px; border-radius: 50%; background: #14b8a6; color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 16px;">
+                                ${ownerInitials}
+                            </div>
+                            <div>
+                                <div style="font-weight: 600; color: #1f2937; font-size: 15px;">${ownerName}</div>
+                                <div style="font-size: 13px; color: #9ca3af;">${ownerVisits.length} pet${ownerVisits.length !== 1 ? 's' : ''}</div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-left: 28px; padding-left: 12px; border-left: 2px solid #e5e7eb; display: grid; gap: 12px;">
+                `;
+                
+                ownerVisits.forEach(visit => {
+                    const petInitials = (visit.pet_name || 'P').substring(0, 1).toUpperCase();
+                    html += `
+                        <div style="display: flex; align-items: flex-start; gap: 12px;">
+                            <div style="width: 36px; height: 36px; border-radius: 50%; background: #14b8a6; color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; flex-shrink: 0;">
+                                ${petInitials}
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 500; color: #1f2937; font-size: 14px; margin-bottom: 4px;">${visit.pet_name}</div>
+                                <div style="font-size: 12px; color: #9ca3af; margin-bottom: 3px;"><i class="bi bi-clock"></i> ${visit.visit_time || 'TBD'}</div>
+                                <div style="font-size: 12px; color: #9ca3af;"><i class="bi bi-briefcase"></i> ${visit.service_type}</div>
+                            </div>
+                            <div style="background: #d1fae5; color: #065f46; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; flex-shrink: 0;">
+                                Completed
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += `
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function resetFilters() {
+            document.getElementById('filterDate').value = '';
+            document.getElementById('searchVisits').value = '';
+            renderVisitsList(allVisits);
+        }
+
+        // Setup filter listeners
+        document.getElementById('filterDate').addEventListener('change', function() {
+            filterAndRenderVisits();
+        });
+        
+        document.getElementById('searchVisits').addEventListener('input', function() {
+            filterAndRenderVisits();
+        });
+
+        function filterAndRenderVisits() {
+            const dateFilter = document.getElementById('filterDate').value;
+            const searchFilter = document.getElementById('searchVisits').value.toLowerCase();
+            
+            let filtered = allVisits;
+            
+            if (dateFilter) {
+                filtered = filtered.filter(v => v.visit_date === dateFilter);
+            }
+            
+            if (searchFilter) {
+                filtered = filtered.filter(v => {
+                    const ownerName = (v.owner_name || '').toLowerCase();
+                    const petName = (v.pet_name || '').toLowerCase();
+                    return ownerName.includes(searchFilter) || petName.includes(searchFilter);
+                });
+            }
+            
+            renderVisitsList(filtered);
+        }
+
+        // Start refresh interval
+        setInterval(refreshTodaysVisits, 15000);
+        
+        // Initial test - call it once on page load to verify it works
+        console.log('✅ Visits page loaded - refresh function ready');
+        refreshTodaysVisits();
     </script>
 
     <!-- Appointments Calendar Modal -->
@@ -1449,10 +1574,6 @@
             }
         });
         
-        // Notify dashboard of changes
-        window.addEventListener('beforeunload', function() {
-            localStorage.setItem('visits-page-updated', Date.now().toString());
-        });
     })();
     </script>
 </body>

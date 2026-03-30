@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Appointment;
 use App\Models\Patient;
+use App\Models\Visit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
@@ -16,6 +17,9 @@ class AppointmentController extends Controller
     public function index(Request $request)
     {
         $query = Appointment::with('patient');
+
+        // Exclude completed appointments by default
+        $query->where('status', '!=', 'completed');
 
         // Filter by status
         if ($request->has('status') && $request->status !== 'all') {
@@ -178,6 +182,23 @@ class AppointmentController extends Controller
 
             $appointment->update($request->only(['appointment_date', 'appointment_time', 'status']));
 
+            // If marking as completed, create a Visit record with TODAY'S DATE
+            if ($appointment->status === 'completed') {
+                try {
+                    Visit::create([
+                        'patient_id' => $appointment->patient_id,
+                        'visit_date' => today(),
+                        'visit_time' => $appointment->appointment_time,
+                        'service_type' => $appointment->service_type,
+                        'chief_complaint' => $appointment->chief_complaint,
+                        'health_worker' => $appointment->health_worker,
+                    ]);
+                    \Log::info('Visit created successfully for rescheduled appointment ' . $appointment->id);
+                } catch (\Exception $e) {
+                    \Log::error('Failed to create visit for rescheduled appointment: ' . $e->getMessage());
+                }
+            }
+
             if ($request->expectsJson()) {
                 return response()->json([
                     'success' => true,
@@ -217,7 +238,23 @@ class AppointmentController extends Controller
 
         $data = $request->all();
         $data['is_walk_in'] = $request->has('is_walk_in') ? true : false;
+        
+        // Check if status is being set to completed
+        $wasCompleted = $request->filled('status') && $request->status === 'completed';
+        
         $appointment->update($data);
+        
+        // If marking as completed, create a Visit record
+        if ($wasCompleted) {
+            Visit::create([
+                'patient_id' => $appointment->patient_id,
+                'visit_date' => $appointment->appointment_date,
+                'visit_time' => $appointment->appointment_time,
+                'service_type' => $appointment->service_type,
+                'chief_complaint' => $appointment->chief_complaint,
+                'health_worker' => $appointment->health_worker,
+            ]);
+        }
 
         return redirect()->route('appointments.index')
             ->with('success', 'Appointment updated successfully.');
@@ -233,6 +270,23 @@ class AppointmentController extends Controller
             $validated = $request->validate([
                 'status' => 'required|in:scheduled,confirmed,completed,cancelled,no-show,attended,rescheduled',
             ]);
+
+            // Create Visit if status is being set to completed
+            if ($validated['status'] === 'completed') {
+                try {
+                    Visit::create([
+                        'patient_id' => $appointment->patient_id,
+                        'visit_date' => today(),
+                        'visit_time' => $appointment->appointment_time,
+                        'service_type' => $appointment->service_type,
+                        'chief_complaint' => $appointment->chief_complaint,
+                        'health_worker' => $appointment->health_worker,
+                    ]);
+                    \Log::info('Visit created successfully for appointment ' . $appointment->id);
+                } catch (\Exception $e) {
+                    \Log::error('Failed to create visit: ' . $e->getMessage());
+                }
+            }
 
             $appointment->update($validated);
 
@@ -255,6 +309,23 @@ class AppointmentController extends Controller
             'secondary_contact_name'  => 'nullable|string|max:255',
             'secondary_contact_number'=> 'nullable|string|max:50',
         ]);
+
+        // Create Visit if status is being set to completed
+        if ($validated['status'] === 'completed') {
+            try {
+                Visit::create([
+                    'patient_id' => $appointment->patient_id,
+                    'visit_date' => today(),
+                    'visit_time' => $validated['appointment_time'],
+                    'service_type' => $validated['service_type'],
+                    'chief_complaint' => $validated['chief_complaint'] ?? $appointment->chief_complaint,
+                    'health_worker' => $validated['health_worker'] ?? $appointment->health_worker,
+                ]);
+                \Log::info('Visit created successfully for full update appointment ' . $appointment->id);
+            } catch (\Exception $e) {
+                \Log::error('Failed to create visit for full update: ' . $e->getMessage());
+            }
+        }
 
         $appointment->update($validated);
 

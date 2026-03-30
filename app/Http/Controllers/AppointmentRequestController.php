@@ -53,7 +53,7 @@ class AppointmentRequestController extends Controller
             return back()->with('error', 'Unauthorized access to this pet.');
         }
 
-        AppointmentRequest::create([
+        $appointmentRequest = AppointmentRequest::create([
             'user_id' => $user->id,
             'patient_id' => $request->patient_id,
             'requested_date' => $request->requested_date,
@@ -63,6 +63,25 @@ class AppointmentRequestController extends Controller
             'status' => 'pending',
         ]);
 
+        // Notify all staff members of new appointment request
+        $staffMembers = User::where('role', 'staff')->orWhere('role', 'admin')->get();
+        foreach ($staffMembers as $staffUser) {
+            Notification::create([
+                'user_id' => $staffUser->id,
+                'type' => 'new_request',
+                'title' => 'New Appointment Request',
+                'message' => "{$user->name} requested an appointment for {$patient->pet_name} on {$appointmentRequest->requested_date->format('M d, Y')}",
+                'appointment_request_id' => $appointmentRequest->id,
+                'data' => [
+                    'customer_name' => $user->name,
+                    'pet_name' => $patient->pet_name,
+                    'date' => $appointmentRequest->requested_date->format('M d, Y'),
+                    'time' => \Carbon\Carbon::parse($appointmentRequest->requested_time)->format('g:i A'),
+                    'service_type' => $appointmentRequest->service_type ?? 'General',
+                ],
+            ]);
+        }
+
         return redirect()->route('customer.dashboard')
             ->with('success', 'Appointment request submitted successfully! Staff will review and confirm your request.');
     }
@@ -70,7 +89,7 @@ class AppointmentRequestController extends Controller
     /**
      * Show pending appointment requests (staff view)
      */
-    public function index()
+    public function index(Request $request)
     {
         // Only staff/admin can view all requests
         /** @var User $user */
@@ -79,11 +98,27 @@ class AppointmentRequestController extends Controller
             abort(403, 'Unauthorized access. Admin or staff privileges required.');
         }
 
-        $requests = AppointmentRequest::with(['user', 'patient', 'approvedBy'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(20);
+        $status = $request->query('status', 'pending');
+        
+        $query = AppointmentRequest::with(['user', 'patient', 'approvedBy']);
+        
+        // Filter by status unless 'all' is selected
+        if ($status !== 'all') {
+            $query->where('status', $status);
+        }
+        
+        $requests = $query->orderBy('created_at', 'desc')->paginate(20);
+        
+        // Get counts for each status for the stats
+        $stats = [
+            'pending' => AppointmentRequest::where('status', 'pending')->count(),
+            'approved' => AppointmentRequest::where('status', 'approved')->count(),
+            'rejected' => AppointmentRequest::where('status', 'rejected')->count(),
+            'cancelled' => AppointmentRequest::where('status', 'cancelled')->count(),
+            'total' => AppointmentRequest::count(),
+        ];
 
-        return view('appointment-requests.index', compact('requests'));
+        return view('appointment-requests.index', compact('requests', 'status', 'stats'));
     }
 
     /**

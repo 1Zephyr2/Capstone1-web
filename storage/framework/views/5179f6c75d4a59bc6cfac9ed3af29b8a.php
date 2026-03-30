@@ -314,6 +314,55 @@
             text-align: center;
         }
 
+        .stat-card.active {
+            background: linear-gradient(135deg, #ccfbf1 0%, #99f6e0 100%);
+            border: 2px solid #14b8a6;
+        }
+
+        .stat-card {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.15);
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 8px 16px;
+            border: 2px solid var(--line);
+            background: white;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: var(--text);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .filter-tab:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .filter-tab.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
         .stat-value {
             font-size: 28px;
             font-weight: 800;
@@ -579,18 +628,26 @@
         <?php endif; ?>
 
         <div class="stats">
-            <div class="stat-card">
-                <div class="stat-value"><?php echo e($requests->where('status', 'pending')->count()); ?></div>
+            <a href="<?php echo e(route('appointment-requests.index', ['status' => 'pending'])); ?>" class="stat-card <?php echo e($status === 'pending' ? 'active' : ''); ?>">
+                <div class="stat-value"><?php echo e($stats['pending']); ?></div>
                 <div class="stat-label">Pending Requests</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" style="color: #059669;"><?php echo e($requests->where('status', 'approved')->count()); ?></div>
+            </a>
+            <a href="<?php echo e(route('appointment-requests.index', ['status' => 'approved'])); ?>" class="stat-card <?php echo e($status === 'approved' ? 'active' : ''); ?>" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); <?php echo e($status === 'approved' ? 'border: 2px solid #10b981;' : ''); ?>">
+                <div class="stat-value" style="color: #059669;"><?php echo e($stats['approved']); ?></div>
                 <div class="stat-label" style="color: #047857;">Approved</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" style="color: #e11d48;"><?php echo e($requests->where('status', 'rejected')->count()); ?></div>
-                <div class="stat-label" style="color: #831843;">Rejected</div>
-            </div>
+            </a>
+            <a href="<?php echo e(route('appointment-requests.index', ['status' => 'rejected'])); ?>" class="stat-card <?php echo e($status === 'rejected' ? 'active' : ''); ?>" style="background: linear-gradient(135deg, #fee2e2 0%, #fca5a5 100%); <?php echo e($status === 'rejected' ? 'border: 2px solid #ef4444;' : ''); ?>">
+                <div class="stat-value" style="color: #dc2626;"><?php echo e($stats['rejected']); ?></div>
+                <div class="stat-label" style="color: #991b1b;">Rejected</div>
+            </a>
+            <a href="<?php echo e(route('appointment-requests.index', ['status' => 'cancelled'])); ?>" class="stat-card <?php echo e($status === 'cancelled' ? 'active' : ''); ?>" style="background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%); <?php echo e($status === 'cancelled' ? 'border: 2px solid #6b7280;' : ''); ?>">
+                <div class="stat-value" style="color: #4b5563;"><?php echo e($stats['cancelled']); ?></div>
+                <div class="stat-label" style="color: #374151;">Cancelled</div>
+            </a>
+            <a href="<?php echo e(route('appointment-requests.index', ['status' => 'all'])); ?>" class="stat-card <?php echo e($status === 'all' ? 'active' : ''); ?>" style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); <?php echo e($status === 'all' ? 'border: 2px solid #3b82f6;' : ''); ?>">
+                <div class="stat-value" style="color: #1d4ed8;"><?php echo e($stats['total']); ?></div>
+                <div class="stat-label" style="color: #1e40af;">All Records</div>
+            </a>
         </div>
 
         <div class="table-container">
@@ -658,7 +715,15 @@
                 <div class="empty-state">
                     <i class="bi bi-inbox"></i>
                     <h3>No Requests</h3>
-                    <p>All appointment requests have been processed.</p>
+                    <p>
+                        <?php if($status === 'pending'): ?>
+                            All appointment requests have been processed.
+                        <?php elseif($status === 'all'): ?>
+                            No appointment requests found.
+                        <?php else: ?>
+                            No <?php echo e(strtolower($status)); ?> requests to display.
+                        <?php endif; ?>
+                    </p>
                 </div>
             <?php endif; ?>
         </div>

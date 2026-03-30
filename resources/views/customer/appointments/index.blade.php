@@ -578,7 +578,7 @@
                                     <span class="appointment-pet">
                                         <i class="bi bi-paw"></i> {{ $appointment->patient->pet_name ?? 'Unknown Pet' }}
                                     </span>
-                                    <span class="appointment-reason">{{ $appointment->reason ?? 'Checkup' }}</span>
+                                    <span class="appointment-reason">{{ $appointment->service_type ?? 'Checkup' }}</span>
                                     @if($appointment->appointment_date->isToday())
                                         <span class="status-badge status-today">
                                             <i class="bi bi-exclamation-circle"></i> Today
@@ -591,7 +591,7 @@
                                 </div>
                                 <div class="appointment-date">
                                     <i class="bi bi-calendar-event"></i>
-                                    {{ $appointment->appointment_date->format('l, M d, Y \a\t g:i A') }}
+                                    {{ $appointment->appointment_date->format('l, M d, Y') }} at {{ \Carbon\Carbon::parse($appointment->appointment_time)->format('g:i A') }}
                                 </div>
                             </div>
                             <a href="{{ route('customer.appointments.show', $appointment) }}" class="appointment-link">

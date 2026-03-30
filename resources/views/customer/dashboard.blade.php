@@ -910,7 +910,7 @@
                 @foreach($appointments->take(5) as $appointment)
                     <div class="appointment-item">
                         <div class="appointment-info">
-                            <h4>{{ $appointment->patient->pet_name ?? 'Unknown Pet' }} - {{ $appointment->reason ?? 'General Checkup' }}</h4>
+                            <h4>{{ $appointment->patient->pet_name ?? 'Unknown Pet' }} - {{ $appointment->service_type ?? 'Appointment' }}</h4>
                             <p>
                                 <i class="bi bi-calendar-event"></i>
                                 {{ $appointment->appointment_date->format('M d, Y \a\t g:i A') }}

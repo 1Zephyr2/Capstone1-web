@@ -93,6 +93,28 @@
             border-color: rgba(255, 255, 255, 0.5);
         }
 
+        .btn-back {
+            padding: 10px 16px;
+            background: white;
+            color: #14b8a6;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-back:hover {
+            background: #f0fdfa;
+            border-color: #14b8a6;
+            box-shadow: 0 2px 8px rgba(20, 184, 166, 0.2);
+        }
+
         .btn-action {
             padding: 10px 16px;
             background: rgba(255, 255, 255, 0.2);
@@ -447,6 +469,14 @@
             <div>{{ session('success') }}</div>
         </div>
         @endif
+
+        <!-- Back Button -->
+        <div style="margin-bottom: 16px;">
+            <a href="{{ route('patients.index') }}" class="btn-back">
+                <i class="bi bi-arrow-left"></i>
+                Back to Patients
+            </a>
+        </div>
 
         <!-- Pet Header -->
         <div class="pet-header">
