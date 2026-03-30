@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PAWSER - Create Account</title>
-    <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('bootstrap-icons/bootstrap-icons.min.css')); ?>">
     <style>
         * {
             margin: 0;
@@ -18,7 +18,7 @@
             display: flex;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #0f766e 0%, #1e293b 100%);
+            background: linear-gradient(135deg, #4ca699 0%, #556375 100%);
         }
 
         .register-wrapper {
@@ -435,7 +435,7 @@
             <!-- Right Side - Registration Form -->
             <div class="register-right">
                 <div class="register-container">
-                    <a href="{{ route('login') }}" class="back-link">
+                    <a href="<?php echo e(route('login')); ?>" class="back-link">
                         <i class="bi bi-arrow-left"></i>
                         Back to Login
                     </a>
@@ -445,14 +445,15 @@
                         <p>Join our pet care community</p>
                     </div>
 
-                    @if ($errors->any())
+                    <?php if($errors->any()): ?>
                         <div class="alert alert-danger">
-                            <strong>Error:</strong> {{ $errors->first() }}
-                        </div>
-                    @endif
+                            <strong>Error:</strong> <?php echo e($errors->first()); ?>
 
-                    <form method="POST" action="{{ route('customer.register.store') }}" id="registerForm">
-                        @csrf
+                        </div>
+                    <?php endif; ?>
+
+                    <form method="POST" action="<?php echo e(route('customer.register.store')); ?>" id="registerForm">
+                        <?php echo csrf_field(); ?>
 
                         <div class="form-section">
                             <div class="form-row">
@@ -464,17 +465,25 @@
                                             type="text" 
                                             id="name" 
                                             name="name" 
-                                            value="{{ old('name') }}" 
+                                            value="<?php echo e(old('name')); ?>" 
                                             placeholder="John Doe"
                                             required
                                         >
                                     </div>
-                                    @error('name')
+                                    <?php $__errorArgs = ['name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                                         <div class="error-message">
                                             <i class="bi bi-exclamation-circle"></i>
-                                            {{ $message }}
+                                            <?php echo e($message); ?>
+
                                         </div>
-                                    @enderror
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
 
                                 <div class="form-group">
@@ -485,17 +494,25 @@
                                             type="tel" 
                                             id="phone" 
                                             name="phone" 
-                                            value="{{ old('phone') }}" 
+                                            value="<?php echo e(old('phone')); ?>" 
                                             placeholder="(555) 123-4567"
                                             required
                                         >
                                     </div>
-                                    @error('phone')
+                                    <?php $__errorArgs = ['phone'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                                         <div class="error-message">
                                             <i class="bi bi-exclamation-circle"></i>
-                                            {{ $message }}
+                                            <?php echo e($message); ?>
+
                                         </div>
-                                    @enderror
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
                             </div>
                         </div>
@@ -509,17 +526,25 @@
                                         type="email" 
                                         id="email" 
                                         name="email" 
-                                        value="{{ old('email') }}" 
+                                        value="<?php echo e(old('email')); ?>" 
                                         placeholder="your@email.com"
                                         required
                                     >
                                 </div>
-                                @error('email')
+                                <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                                     <div class="error-message">
                                         <i class="bi bi-exclamation-circle"></i>
-                                        {{ $message }}
+                                        <?php echo e($message); ?>
+
                                     </div>
-                                @enderror
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
@@ -532,17 +557,25 @@
                                         type="text" 
                                         id="username" 
                                         name="username" 
-                                        value="{{ old('username') }}" 
+                                        value="<?php echo e(old('username')); ?>" 
                                         placeholder="Choose a username"
                                         required
                                     >
                                 </div>
-                                @error('username')
+                                <?php $__errorArgs = ['username'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                                     <div class="error-message">
                                         <i class="bi bi-exclamation-circle"></i>
-                                        {{ $message }}
+                                        <?php echo e($message); ?>
+
                                     </div>
-                                @enderror
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
@@ -562,12 +595,20 @@
                                 <div class="password-strength">
                                     <div class="password-strength-bar"></div>
                                 </div>
-                                @error('password')
+                                <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                                     <div class="error-message">
                                         <i class="bi bi-exclamation-circle"></i>
-                                        {{ $message }}
+                                        <?php echo e($message); ?>
+
                                     </div>
-                                @enderror
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
@@ -594,7 +635,7 @@
                     </form>
 
                     <div class="login-section">
-                        <p>Already have an account? <a href="{{ route('login') }}">Sign in here</a></p>
+                        <p>Already have an account? <a href="<?php echo e(route('login')); ?>">Sign in here</a></p>
                     </div>
                 </div>
             </div>
@@ -639,3 +680,4 @@
     </script>
 </body>
 </html>
+<?php /**PATH C:\Users\Lei\Capstone1-web\resources\views/auth/customer-register.blade.php ENDPATH**/ ?>

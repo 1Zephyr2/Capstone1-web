@@ -13,10 +13,19 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CustomerDashboardController;
 use App\Models\Patient;
 
-// Redirect root to login
+// Homepage - Shows login options
 Route::get('/', function () {
-    return redirect('/login');
-});
+    return view('welcome');
+})->name('home');
+
+// Public Pages
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+
+Route::get('/services', function () {
+    return view('services');
+})->name('services');
 
 // Authentication Routes
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');

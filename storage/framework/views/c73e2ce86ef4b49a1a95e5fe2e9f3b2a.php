@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PAWSER - Pet Care Management System</title>
-    <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('bootstrap-icons/bootstrap-icons.min.css')); ?>">
     <style>
         * {
             margin: 0;
@@ -372,33 +372,33 @@
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
-            <a href="{{ route('home') }}" class="nav-brand">
+            <a href="<?php echo e(route('home')); ?>" class="nav-brand">
                 <div class="nav-logo">
-                    @if (file_exists(public_path('newlogo.png')))
-                        <img src="{{ asset('newlogo.png') }}" alt="PAWSER Logo">
-                    @else
+                    <?php if(file_exists(public_path('newlogo.png'))): ?>
+                        <img src="<?php echo e(asset('newlogo.png')); ?>" alt="PAWSER Logo">
+                    <?php else: ?>
                         <i class="bi bi-paw-fill"></i>
-                    @endif
+                    <?php endif; ?>
                 </div>
                 PAWSER
             </a>
             
             <div class="nav-menu">
-                <a href="{{ route('home') }}" class="active">Home</a>
+                <a href="<?php echo e(route('home')); ?>" class="active">Home</a>
                 <a href="#about">About</a>
                 <a href="#features">Features</a>
             </div>
             
             <div class="nav-cta">
-                @if (Auth::check())
-                    <a href="{{ route('dashboard') }}" class="btn-login">Dashboard</a>
-                    <form method="POST" action="{{ route('logout') }}" style="margin: 0;">
-                        @csrf
+                <?php if(Auth::check()): ?>
+                    <a href="<?php echo e(route('dashboard')); ?>" class="btn-login">Dashboard</a>
+                    <form method="POST" action="<?php echo e(route('logout')); ?>" style="margin: 0;">
+                        <?php echo csrf_field(); ?>
                         <button type="submit" class="btn-login">Logout</button>
                     </form>
-                @else
-                    <a href="{{ route('login') }}" class="btn-login">Login</a>
-                @endif
+                <?php else: ?>
+                    <a href="<?php echo e(route('login')); ?>" class="btn-login">Login</a>
+                <?php endif; ?>
             </div>
         </div>
     </nav>
@@ -418,21 +418,21 @@
                 </p>
 
                 <div class="login-options">
-                    @if (Auth::check())
-                        <a href="{{ route('dashboard') }}" class="login-btn pet-owner">
+                    <?php if(Auth::check()): ?>
+                        <a href="<?php echo e(route('dashboard')); ?>" class="login-btn pet-owner">
                             <i class="bi bi-speedometer2"></i>
                             Go to Dashboard
                         </a>
-                    @else
-                        <a href="{{ route('login', ['role' => 'pet_owner']) }}" class="login-btn pet-owner">
+                    <?php else: ?>
+                        <a href="<?php echo e(route('login', ['role' => 'pet_owner'])); ?>" class="login-btn pet-owner">
                             <i class="bi bi-person"></i>
                             Login as Pet Owner
                         </a>
-                        <a href="{{ route('login', ['role' => 'staff']) }}" class="login-btn staff">
+                        <a href="<?php echo e(route('login', ['role' => 'staff'])); ?>" class="login-btn staff">
                             <i class="bi bi-briefcase"></i>
                             Login as Staff / Admin
                         </a>
-                    @endif
+                    <?php endif; ?>
                 </div>
 
 
@@ -445,13 +445,13 @@
                     <div class="shape-decoration shape-sm"></div>
                     
                     <div class="logo-container">
-                        @if (file_exists(public_path('newlogo.png')))
-                            <img src="{{ asset('newlogo.png') }}" alt="PAWSER Logo">
-                        @else
+                        <?php if(file_exists(public_path('newlogo.png'))): ?>
+                            <img src="<?php echo e(asset('newlogo.png')); ?>" alt="PAWSER Logo">
+                        <?php else: ?>
                             <div style="font-size: 80px; color: #0d9488;">
                                 <i class="bi bi-paw-fill"></i>
                             </div>
-                        @endif
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -459,3 +459,4 @@
     </main>
 </body>
 </html>
+<?php /**PATH C:\Users\Lei\Capstone1-web\resources\views/welcome.blade.php ENDPATH**/ ?>

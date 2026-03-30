@@ -17,17 +17,77 @@
             display: flex;
             margin: 0;
             padding: 0;
+            background: linear-gradient(135deg, #969696 0%, #b0b0b0 100%);
         }
 
         .login-wrapper {
             display: flex;
             width: 100%;
             min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-card {
+            display: flex;
+            max-width: 1000px;
+            width: 100%;
+            height: 500px;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            background: white;
         }
 
         .login-left {
-            flex: 0 0 45%;
-            background: white;
+            flex: 0 0 50%;
+            background: url('/images/bgreplace.jpg') center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-left::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(13, 148, 136, 0.65), rgba(20, 184, 166, 0.55));
+            backdrop-filter: blur(4px);
+            z-index: 0;
+        }
+
+        .login-left-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: white;
+        }
+
+        .login-left-content h2 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .login-left-content p {
+            font-size: 15px;
+            opacity: 0.98;
+            line-height: 1.6;
+            max-width: 300px;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .login-right {
+            flex: 0 0 50%;
+            background: #1f2937;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -36,108 +96,44 @@
 
         .login-container {
             width: 100%;
-            max-width: 450px;
-            padding: 40px;
-        }
-
-        .login-right {
-            flex: 1;
-            background: url('/images/bgreplace.jpg') center/cover no-repeat;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .login-right::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(5, 150, 105, 0.42), rgba(6, 182, 212, 0.28));
-            z-index: 0;
-        }
-
-        .background-content {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            color: white;
-            padding: 44px 40px;
-            width: min(620px, 92%);
-            border-radius: 24px;
-            background: rgba(15, 23, 42, 0.18);
-            border: 1px solid rgba(255, 255, 255, 0.22);
-            box-shadow: 0 14px 36px rgba(0, 0, 0, 0.22);
-        }
-
-        .background-content h2 {
-            font-size: 46px;
-            margin-bottom: 14px;
-            font-weight: 800;
-            letter-spacing: 0.3px;
-            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.45);
-        }
-
-        .hero-subtitle {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.35);
-        }
-
-        .background-content p {
-            font-size: 18px;
-            line-height: 1.65;
-            opacity: 0.96;
-            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.35);
-            font-weight: 500;
-            max-width: 540px;
-            margin: 0 auto;
+            max-width: 100%;
         }
 
         .login-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .logo {
-            width: 150px;
-            height: 150px;
-            margin: 0 auto 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .logo img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
+            margin-bottom: 28px;
         }
 
         .login-header h1 {
-            color: #1f2937;
+            color: #f9fafb;
             font-size: 28px;
             margin-bottom: 8px;
+            font-weight: 700;
         }
 
         .login-header p {
-            color: #6b7280;
+            color: #9ca3af;
             font-size: 14px;
         }
 
+        .login-header a {
+            color: #14b8a6;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .login-header a:hover {
+            color: #0d9488;
+            text-decoration: underline;
+        }
+
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         label {
             display: block;
-            color: #374151;
-            font-size: 14px;
+            color: #d1d5db;
+            font-size: 13px;
             font-weight: 500;
             margin-bottom: 8px;
         }
@@ -147,76 +143,89 @@
         }
 
         input[type="text"],
-        input[type="password"] {
+        input[type="password"],
+        input[type="email"] {
             width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e5e7eb;
+            padding: 12px 14px;
+            background: #374151;
+            border: 1.5px solid #4b5563;
             border-radius: 8px;
-            font-size: 15px;
-            color: #1f2937;
+            font-size: 14px;
+            color: #f9fafb;
             transition: all 0.3s ease;
         }
 
+        input[type="text"]::placeholder,
+        input[type="password"]::placeholder,
+        input[type="email"]::placeholder {
+            color: #9ca3af;
+        }
+
         input[type="text"]:focus,
-        input[type="password"]:focus {
+        input[type="password"]:focus,
+        input[type="email"]:focus {
             outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            border-color: #14b8a6;
+            background: #4b5563;
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
         }
 
         .checkbox-group {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 24px;
+            margin: 20px 0 24px;
         }
 
         .checkbox-wrapper {
             display: flex;
             align-items: center;
+            gap: 8px;
         }
 
         input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            margin-right: 8px;
+            width: 16px;
+            height: 16px;
             cursor: pointer;
+            accent-color: #14b8a6;
         }
 
         .checkbox-label {
-            color: #4b5563;
-            font-size: 14px;
+            color: #d1d5db;
+            font-size: 13px;
             cursor: pointer;
             user-select: none;
         }
 
         .forgot-link {
-            color: #3b82f6;
-            font-size: 14px;
+            color: #14b8a6;
+            font-size: 13px;
             text-decoration: none;
             transition: color 0.3s ease;
         }
 
         .forgot-link:hover {
-            color: #2563eb;
+            color: #0d9488;
+            text-decoration: underline;
         }
 
         .btn-login {
             width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%);
+            padding: 12px;
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
             transition: transform 0.2s ease, box-shadow 0.3s ease;
+            margin-top: 8px;
         }
 
         .btn-login:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 8px 20px rgba(20, 184, 166, 0.3);
         }
 
         .btn-login:active {
@@ -224,154 +233,213 @@
         }
 
         .alert {
-            padding: 12px 16px;
+            padding: 12px 14px;
             border-radius: 8px;
             margin-bottom: 20px;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .alert-danger {
-            background-color: #fee2e2;
-            color: #991b1b;
-            border: 1px solid #fecaca;
+            background-color: #7f1d1d;
+            color: #fecaca;
+            border: 1px solid #991b1b;
         }
 
         .alert-success {
-            background-color: #d1fae5;
-            color: #065f46;
-            border: 1px solid #a7f3d0;
+            background-color: #064e3b;
+            color: #a7f3d0;
+            border: 1px solid #047857;
         }
 
         .footer-text {
             text-align: center;
-            margin-top: 24px;
+            margin-top: 20px;
             color: #6b7280;
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .register-text {
             text-align: center;
             margin-top: 16px;
-            color: #6b7280;
+            color: #9ca3af;
             font-size: 13px;
         }
 
         .register-text a {
-            color: #3b82f6;
+            color: #14b8a6;
             text-decoration: none;
             font-weight: 600;
             transition: color 0.3s ease;
         }
 
         .register-text a:hover {
-            color: #2563eb;
+            color: #0d9488;
+            text-decoration: underline;
         }
 
         @media (max-width: 768px) {
-            .login-wrapper {
+            .login-card {
                 flex-direction: column;
+                height: auto;
+                max-width: 100%;
             }
 
             .login-left {
-                flex: 1;
-                padding: 20px;
+                flex: 0 0 200px;
+                padding: 30px 20px;
             }
 
             .login-right {
-                display: none;
+                flex: 1;
+                padding: 30px 20px;
             }
 
-            .login-container {
-                padding: 30px 24px;
+            .login-left-content h2 {
+                font-size: 26px;
+            }
+
+            .login-left-content p {
+                font-size: 13px;
             }
 
             .login-header h1 {
                 font-size: 24px;
             }
         }
+
+        @media (max-width: 480px) {
+            .login-wrapper {
+                padding: 10px;
+            }
+
+            .login-left {
+                padding: 25px 15px;
+            }
+
+            .login-right {
+                padding: 25px 15px;
+            }
+
+            .login-container {
+                padding: 0;
+            }
+
+            .login-header h1 {
+                font-size: 22px;
+            }
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            color: #f8fafc;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.25);
+        }
+
+        .back-button:hover {
+            background: #334155;
+            border-color: #475569;
+            color: #5eead4;
+        }
     </style>
 </head>
 <body>
+    <a href="{{ route('home') }}" class="back-button">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        Back to Home
+    </a>
+
     <div class="login-wrapper">
-        <!-- Left Side - Login Form -->
-        <div class="login-left">
-            <div class="login-container">
-                <div class="login-header">
-                    <div class="logo"><img src="{{ asset('newlogo.png') }}" alt="PAWSER Logo"></div>
-                    <h1>PAWSER</h1>
-                    <p>Pet Appointment and Workflow Service &amp; Records System</p>
-                </div>
-
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <strong>Error:</strong> {{ $errors->first() }}
-                    </div>
-                @endif
-
-                @if (session('status'))
-                    <div class="alert alert-success">
-                        {{ session('status') }}
-                    </div>
-                @endif
-
-                <form method="POST" action="{{ route('login') }}">
-                    @csrf
-
-                    <div class="form-group">
-                        <label for="username">Username</label>
-                        <div class="input-wrapper">
-                            <input 
-                                type="text" 
-                                id="username" 
-                                name="username" 
-                                value="{{ old('username') }}" 
-                                required 
-                                autofocus
-                                placeholder="Enter your username"
-                            >
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <div class="input-wrapper">
-                            <input 
-                                type="password" 
-                                id="password" 
-                                name="password" 
-                                required
-                                placeholder="Enter your password"
-                            >
-                        </div>
-                    </div>
-
-                    <div class="checkbox-group">
-                        <div class="checkbox-wrapper">
-                            <input type="checkbox" id="remember" name="remember">
-                            <label for="remember" class="checkbox-label">Remember Me</label>
-                        </div>
-                        <a href="{{ route('password.request') }}" class="forgot-link">Forgot Password?</a>
-                    </div>
-
-                    <button type="submit" class="btn-login">Login</button>
-                </form>
-
-                <div class="footer-text">
-                    &copy; {{ date('Y') }} PAWSER. Designed for Pet Grooming Clinic Staff.
-                </div>
-
-                <div class="register-text">
-                    Are you a pet owner? <a href="{{ route('customer.register.show') }}">Create an account here</a>
+        <div class="login-card">
+            <!-- Left Side - Gradient Background -->
+            <div class="login-left">
+                <div class="login-left-content">
+                    <h2>Welcome Back</h2>
+                    <p>Manage grooming appointments, track pet profiles, and streamline your workflow with PAWSER.</p>
                 </div>
             </div>
-        </div>
 
-        <!-- Right Side - Background -->
-        <div class="login-right">
-            <div class="background-content">
-                <h2>Welcome to PAWSER</h2>
-                <div class="hero-subtitle">Where every pet leaves fresh, happy, and cared for</div>
-                <p>Simplify grooming appointments, track pet profiles, and keep your daily workflow smooth from check-in to pick-up.</p>
+            <!-- Right Side - Login Form -->
+            <div class="login-right">
+                <div class="login-container">
+                    <div class="login-header">
+                        <h1>PAWSER Login</h1>
+                        <p>Don't have an account? <a href="{{ route('customer.register.show') }}">Create one here</a></p>
+                    </div>
+
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <strong>Error:</strong> {{ $errors->first() }}
+                        </div>
+                    @endif
+
+                    @if (session('status'))
+                        <div class="alert alert-success">
+                            {{ session('status') }}
+                        </div>
+                    @endif
+
+                    <form method="POST" action="{{ route('login') }}">
+                        @csrf
+
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <div class="input-wrapper">
+                                <input 
+                                    type="text" 
+                                    id="username" 
+                                    name="username" 
+                                    value="{{ old('username') }}" 
+                                    required 
+                                    autofocus
+                                    placeholder="Enter your username"
+                                >
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <div class="input-wrapper">
+                                <input 
+                                    type="password" 
+                                    id="password" 
+                                    name="password" 
+                                    required
+                                    placeholder="Enter your password"
+                                >
+                            </div>
+                        </div>
+
+                        <div class="checkbox-group">
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" id="remember" name="remember">
+                                <label for="remember" class="checkbox-label">Remember Me</label>
+                            </div>
+                            <a href="{{ route('password.request') }}" class="forgot-link">Forgot Password?</a>
+                        </div>
+
+                        <button type="submit" class="btn-login">Login</button>
+                    </form>
+
+                    <div class="footer-text">
+                        &copy; {{ date('Y') }} PAWSER. Pet Appointment and Workflow Service & Records System.
+                    </div>
+                </div>
             </div>
         </div>
     </div>

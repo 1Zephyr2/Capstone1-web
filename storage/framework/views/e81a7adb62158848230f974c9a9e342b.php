@@ -182,27 +182,31 @@
             letter-spacing: -0.02em;
         }
         .search-bar {
-            display: flex;
-            gap: 10px;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr auto;
+            gap: 12px;
             align-items: center;
-            flex-wrap: nowrap;
             width: 100%;
+            margin-top: 20px;
         }
         .search-wrapper {
-            flex: 0 1 350px;
+            flex: none;
             position: relative;
+            width: 100%;
         }
         .search-wrapper input {
             width: 100%;
             padding: 10px 14px 10px 40px;
-            border: 1px solid var(--line);
+            border: 1.5px solid #d1d5db;
             border-radius: 8px;
-            font-size: 13px;
+            font-size: 14px;
+            background: white;
+            transition: all 0.2s ease;
         }
         .search-wrapper input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15);
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
         }
         .search-icon {
             position: absolute;
@@ -213,14 +217,13 @@
             font-size: 14px;
         }
         .filter-select {
-            padding: 10px 12px;
-            border: 1px solid var(--line);
+            padding: 10px 14px;
+            border: 1.5px solid #d1d5db;
             border-radius: 8px;
-            font-size: 13px;
+            font-size: 14px;
             background: white;
             cursor: pointer;
             transition: all 0.2s ease;
-            flex: 0 0 130px;
             white-space: nowrap;
         }
         .filter-select:hover {
@@ -229,11 +232,11 @@
         .filter-select:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15);
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
         }
         .btn-search {
-            padding: 10px 16px;
-            background: var(--primary);
+            padding: 10px 24px;
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
             color: white;
             border: none;
             border-radius: 8px;
@@ -242,13 +245,16 @@
             transition: all 0.2s ease;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 6px;
             white-space: nowrap;
             flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
         }
         .btn-search:hover {
-            background: var(--primary-strong);
-            transform: translateY(-1px);
+            background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);
+            box-shadow: 0 8px 20px rgba(6, 182, 212, 0.4);
+            transform: translateY(-2px);
         }
         .patients-table {
             width: 100%;
