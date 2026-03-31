@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PAWSER - Login</title>
+    <title>PAWSER - Customer Login</title>
     <style>
         * {
             margin: 0;
@@ -354,10 +354,84 @@
             border-color: #475569;
             color: #5eead4;
         }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .back-button {
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .login-card {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .login-left {
+            animation: fadeIn 0.6s ease-out 0.1s both;
+        }
+
+        .login-right {
+            animation: fadeIn 0.6s ease-out 0.2s both;
+        }
+
+        .login-header {
+            animation: fadeInUp 0.5s ease-out 0.3s both;
+        }
+
+        .form-group {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .form-group:nth-of-type(1) { animation-delay: 0.4s; }
+        .form-group:nth-of-type(2) { animation-delay: 0.5s; }
+        .form-group:nth-of-type(3) { animation-delay: 0.6s; }
+
+        .btn-login {
+            animation: fadeInUp 0.5s ease-out 0.7s both;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"] {
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        input[type="email"]:focus {
+            transform: scale(1.02);
+        }
+
+        .btn-login:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(20, 184, 166, 0.3);
+        }
+
+        .btn-login:active {
+            transform: translateY(-1px);
+        }
     </style>
 </head>
 <body>
-    <a href="<?php echo e(route('home')); ?>" class="back-button">
+    <a href="{{ route('home') }}" class="back-button">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M19 12H5M12 19l-7-7 7-7"/>
         </svg>
@@ -369,8 +443,8 @@
             <!-- Left Side - Gradient Background -->
             <div class="login-left">
                 <div class="login-left-content">
-                    <h2>Welcome Back</h2>
-                    <p>Manage grooming appointments, track pet profiles, and streamline your workflow with PAWSER.</p>
+                    <h2>Pet Owner</h2>
+                    <p>Access your grooming appointments and pet care information anytime, anywhere.</p>
                 </div>
             </div>
 
@@ -378,38 +452,36 @@
             <div class="login-right">
                 <div class="login-container">
                     <div class="login-header">
-                        <h1>PAWSER Login</h1>
-                        <p>Don't have an account? <a href="<?php echo e(route('customer.register.show')); ?>">Create one here</a></p>
+                        <h1>Customer Login</h1>
+                        <p>Don't have an account? <a href="{{ route('customer.register.show') }}">Create one here</a></p>
                     </div>
 
-                    <?php if($errors->any()): ?>
+                    @if ($errors->any())
                         <div class="alert alert-danger">
-                            <strong>Error:</strong> <?php echo e($errors->first()); ?>
-
+                            <strong>Error:</strong> {{ $errors->first() }}
                         </div>
-                    <?php endif; ?>
+                    @endif
 
-                    <?php if(session('status')): ?>
+                    @if (session('status'))
                         <div class="alert alert-success">
-                            <?php echo e(session('status')); ?>
-
+                            {{ session('status') }}
                         </div>
-                    <?php endif; ?>
+                    @endif
 
-                    <form method="POST" action="<?php echo e(route('login')); ?>">
-                        <?php echo csrf_field(); ?>
+                    <form method="POST" action="{{ route('customer.login') }}">
+                        @csrf
 
                         <div class="form-group">
-                            <label for="username">Username</label>
+                            <label for="email">Email Address</label>
                             <div class="input-wrapper">
                                 <input 
-                                    type="text" 
-                                    id="username" 
-                                    name="username" 
-                                    value="<?php echo e(old('username')); ?>" 
+                                    type="email" 
+                                    id="email" 
+                                    name="email" 
+                                    value="{{ old('email') }}" 
                                     required 
                                     autofocus
-                                    placeholder="Enter your username"
+                                    placeholder="Enter your email"
                                 >
                             </div>
                         </div>
@@ -432,19 +504,49 @@
                                 <input type="checkbox" id="remember" name="remember">
                                 <label for="remember" class="checkbox-label">Remember Me</label>
                             </div>
-                            <a href="<?php echo e(route('password.request')); ?>" class="forgot-link">Forgot Password?</a>
+                            <a href="{{ route('password.request') }}" class="forgot-link">Forgot Password?</a>
                         </div>
 
                         <button type="submit" class="btn-login">Login</button>
                     </form>
 
                     <div class="footer-text">
-                        &copy; <?php echo e(date('Y')); ?> PAWSER. Pet Appointment and Workflow Service & Records System.
+                        &copy; {{ date('Y') }} PAWSER. Pet Appointment and Workflow Service & Records System.
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        // Simple page fade-in
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '1';
+        });
+
+        // Add focus effect to inputs
+        const inputs = document.querySelectorAll('input[type="text"], input[type="password"], input[type="email"]');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.style.transform = 'scale(1.02)';
+                this.style.transition = 'transform 0.2s ease';
+            });
+            input.addEventListener('blur', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+
+        // Button hover effect
+        const loginBtn = document.querySelector('.btn-login');
+        if (loginBtn) {
+            loginBtn.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px)';
+                this.style.transition = 'transform 0.2s ease';
+            });
+            loginBtn.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        }
+    </script>
 </body>
 </html>
-<?php /**PATH C:\Users\Lei\Capstone1-web\resources\views/auth/login.blade.php ENDPATH**/ ?>

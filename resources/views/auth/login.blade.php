@@ -354,6 +354,80 @@
             border-color: #475569;
             color: #5eead4;
         }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .back-button {
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .login-card {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .login-left {
+            animation: fadeIn 0.6s ease-out 0.1s both;
+        }
+
+        .login-right {
+            animation: fadeIn 0.6s ease-out 0.2s both;
+        }
+
+        .login-header {
+            animation: fadeInUp 0.5s ease-out 0.3s both;
+        }
+
+        .form-group {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .form-group:nth-of-type(1) { animation-delay: 0.4s; }
+        .form-group:nth-of-type(2) { animation-delay: 0.5s; }
+        .form-group:nth-of-type(3) { animation-delay: 0.6s; }
+
+        .btn-login {
+            animation: fadeInUp 0.5s ease-out 0.7s both;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"] {
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        input[type="email"]:focus {
+            transform: scale(1.02);
+        }
+
+        .btn-login:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(20, 184, 166, 0.3);
+        }
+
+        .btn-login:active {
+            transform: translateY(-1px);
+        }
     </style>
 </head>
 <body>
@@ -369,8 +443,8 @@
             <!-- Left Side - Gradient Background -->
             <div class="login-left">
                 <div class="login-left-content">
-                    <h2>Welcome Back</h2>
-                    <p>Manage grooming appointments, track pet profiles, and streamline your workflow with PAWSER.</p>
+                    <h2>Management</h2>
+                    <p>Manage your clinic records, schedules, and appointments from your secure admin dashboard.</p>
                 </div>
             </div>
 
@@ -378,8 +452,8 @@
             <div class="login-right">
                 <div class="login-container">
                     <div class="login-header">
-                        <h1>PAWSER Login</h1>
-                        <p>Don't have an account? <a href="{{ route('customer.register.show') }}">Create one here</a></p>
+                        <h1>Staff Login</h1>
+                        <p>Login with your staff username</p>
                     </div>
 
                     @if ($errors->any())
@@ -443,5 +517,36 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Simple page fade-in
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '1';
+        });
+
+        // Add focus effect to inputs
+        const inputs = document.querySelectorAll('input[type="text"], input[type="password"], input[type="email"]');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.style.transform = 'scale(1.02)';
+                this.style.transition = 'transform 0.2s ease';
+            });
+            input.addEventListener('blur', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+
+        // Button hover effect
+        const loginBtn = document.querySelector('.btn-login');
+        if (loginBtn) {
+            loginBtn.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px)';
+                this.style.transition = 'transform 0.2s ease';
+            });
+            loginBtn.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        }
+    </script>
 </body>
 </html>

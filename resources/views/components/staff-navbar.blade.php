@@ -15,6 +15,27 @@
         display: flex;
         align-items: center;
         height: 72px;
+        animation: staffFadeIn 0.5s ease-out;
+    }
+
+    @keyframes staffFadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes staffFadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     .navbar-container {
@@ -89,13 +110,15 @@
     .navbar-item:hover {
         opacity: 1;
         background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-2px);
     }
 
     .navbar-item.active {
         background: rgba(20, 184, 166, 0.2);
-        color: #5eead4;
+        color: #14b8a6;
         opacity: 1;
         font-weight: 600;
+        border-bottom: 2px solid #14b8a6;
     }
 
     .navbar-end {
@@ -293,3 +316,20 @@
         </div>
     </div>
 </nav>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const selectors = ['.dashboard-content', '.main-content', 'main'];
+        let delay = 0;
+
+        selectors.forEach(function (selector) {
+            document.querySelectorAll(selector).forEach(function (element) {
+                if (!element.classList.contains('staff-animated')) {
+                    element.style.animation = `staffFadeInUp 0.6s ease-out ${delay}s both`;
+                    element.classList.add('staff-animated');
+                    delay = Math.min(delay + 0.08, 0.2);
+                }
+            });
+        });
+    });
+</script>

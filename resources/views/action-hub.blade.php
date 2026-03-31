@@ -71,6 +71,7 @@
             padding: 40px 20px;
             flex: 1;
             width: 100%;
+            animation: staffFadeInUp 0.6s ease-out;
         }
 
         .header {
@@ -163,6 +164,7 @@
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 16px;
             margin-bottom: 32px;
+            animation: staffFadeInUp 0.6s ease-out 0.1s both;
         }
 
         .stat-card {
@@ -217,6 +219,26 @@
             from {
                 opacity: 0;
                 transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes staffFadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes staffFadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
             }
             to {
                 opacity: 1;
@@ -503,6 +525,7 @@
             display: flex;
             align-items: center;
             height: 72px;
+            animation: staffFadeIn 0.5s ease-out;
         }
 
         .navbar i.bi {

@@ -51,6 +51,35 @@ class LoginController extends Controller
     }
 
     /**
+     * Handle customer login request (email-based).
+     */
+    public function loginCustomer(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        $remember = $request->filled('remember');
+
+        if (Auth::attempt($credentials, $remember)) {
+            $request->session()->regenerate();
+
+            // Redirect to customer dashboard
+            $user = Auth::user();
+            if ($user && $user->role === 'customer') {
+                return redirect()->route('customer.dashboard');
+            }
+
+            return redirect()->intended('/dashboard');
+        }
+
+        throw ValidationException::withMessages([
+            'email' => 'The provided credentials do not match our records.',
+        ]);
+    }
+
+    /**
      * Handle logout request.
      */
     public function logout(Request $request)
@@ -60,6 +89,6 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/login');
+        return redirect()->route('home');
     }
 }

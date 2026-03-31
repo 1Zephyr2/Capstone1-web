@@ -32,6 +32,12 @@ Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
+// Customer Login Routes
+Route::get('/customer/login', function () {
+    return view('auth.customer-login');
+})->name('customer.login');
+Route::post('/customer/login', [LoginController::class, 'loginCustomer']);
+
 // Customer Registration Routes
 Route::get('/register', [CustomerRegisterController::class, 'show'])->name('customer.register.show');
 Route::post('/register', [CustomerRegisterController::class, 'store'])->name('customer.register.store');

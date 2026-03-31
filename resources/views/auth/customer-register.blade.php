@@ -18,7 +18,7 @@
             display: flex;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #0f766e 0%, #1e293b 100%);
+            background: linear-gradient(135deg, #969696 0%, #b0b0b0 100%);
         }
 
         .register-wrapper {
@@ -106,25 +106,29 @@
         }
 
         .back-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            color: #14b8a6;
-            border: 1px solid #14b8a6;
-            background: transparent;
-            padding: 7px 12px;
+            gap: 8px;
+            padding: 10px 16px;
+            background: #1e293b;
+            border: 1px solid #334155;
             border-radius: 8px;
+            color: #f8fafc;
             text-decoration: none;
-            font-size: 12px;
-            margin-bottom: 14px;
+            font-size: 14px;
+            font-weight: 600;
             transition: all 0.3s ease;
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.25);
         }
 
         .back-link:hover {
-            color: #0d9488;
-            border-color: #0d9488;
-            background: rgba(20, 184, 166, 0.1);
-            gap: 10px;
+            background: #334155;
+            border-color: #475569;
+            color: #5eead4;
         }
 
         .register-header {
@@ -230,29 +234,63 @@
         }
 
         .password-strength {
-            height: 3px;
-            background: #4b5563;
+            height: 4px;
+            background: #374151;
             border-radius: 2px;
-            margin-top: 5px;
+            margin-top: 8px;
             overflow: hidden;
+            box-shadow: inset 0 0 0 1px #4b5563;
         }
 
         .password-strength-bar {
             height: 100%;
             background: #ef4444;
-            width: 30%;
+            width: 0%;
             border-radius: 2px;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
+            box-shadow: 0 0 6px rgba(239, 68, 68, 0.5);
         }
 
         .password-strength-bar.medium {
             width: 65%;
             background: #f59e0b;
+            box-shadow: 0 0 6px rgba(245, 158, 11, 0.5);
+        }
+
+        .password-strength-bar.good {
+            width: 85%;
+            background: #3b82f6;
+            box-shadow: 0 0 6px rgba(59, 130, 246, 0.5);
         }
 
         .password-strength-bar.strong {
             width: 100%;
             background: #10b981;
+            box-shadow: 0 0 6px rgba(16, 185, 129, 0.5);
+        }
+
+        .password-strength-text {
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 4px;
+            color: #9ca3af;
+            transition: color 0.3s ease;
+        }
+
+        .password-strength-text.weak {
+            color: #ef4444;
+        }
+
+        .password-strength-text.fair {
+            color: #f59e0b;
+        }
+
+        .password-strength-text.good {
+            color: #3b82f6;
+        }
+
+        .password-strength-text.strong {
+            color: #10b981;
         }
 
         .form-divider {
@@ -359,6 +397,59 @@
             border: 1px solid #047857;
         }
 
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .back-link {
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .register-card {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .register-left {
+            animation: fadeIn 0.6s ease-out 0.1s both;
+        }
+
+        .register-right {
+            animation: fadeIn 0.6s ease-out 0.2s both;
+        }
+
+        .register-header {
+            animation: fadeInUp 0.5s ease-out 0.3s both;
+        }
+
+        .form-group {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .form-section:nth-of-type(1) .form-group { animation-delay: 0.4s; }
+        .form-section:nth-of-type(2) .form-group { animation-delay: 0.5s; }
+        .form-section:nth-of-type(3) .form-group { animation-delay: 0.6s; }
+
+        .btn-register {
+            animation: fadeInUp 0.5s ease-out 0.7s both;
+        }
+
         @media (max-width: 768px) {
             .register-card {
                 flex-direction: column;
@@ -435,9 +526,11 @@
             <!-- Right Side - Registration Form -->
             <div class="register-right">
                 <div class="register-container">
-                    <a href="{{ route('login') }}" class="back-link">
-                        <i class="bi bi-arrow-left"></i>
-                        Back to Login
+                    <a href="{{ route('home') }}" class="back-link">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
+                        Back to Home
                     </a>
 
                     <div class="register-header">
@@ -562,6 +655,7 @@
                                 <div class="password-strength">
                                     <div class="password-strength-bar"></div>
                                 </div>
+                                <div class="password-strength-text">Weak</div>
                                 @error('password')
                                     <div class="error-message">
                                         <i class="bi bi-exclamation-circle"></i>
@@ -602,6 +696,18 @@
     </div>
 
     <script>
+        // Add focus animation to form inputs
+        const inputs = document.querySelectorAll('input[type="text"], input[type="email"], input[type="password"], input[type="tel"]');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.style.transform = 'scale(1.02)';
+                this.style.transition = 'transform 0.2s ease';
+            });
+            input.addEventListener('blur', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+
         // Form validation and password strength indicator
         const form = document.getElementById('registerForm');
         const passwordInput = document.getElementById('password');
@@ -619,23 +725,64 @@
                 if (/[0-9]/.test(password)) strength++;
                 if (/[!@#$%^&*]/.test(password)) strength++;
                 
-                switch(strength) {
-                    case 0:
-                    case 1:
-                        passwordStrengthBar.className = 'password-strength-bar';
-                        passwordStrengthBar.style.width = '30%';
-                        break;
-                    case 2:
-                    case 3:
-                        passwordStrengthBar.className = 'password-strength-bar medium';
-                        passwordStrengthBar.style.width = '65%';
-                        break;
-                    default:
-                        passwordStrengthBar.className = 'password-strength-bar strong';
-                        passwordStrengthBar.style.width = '100%';
+                passwordStrengthBar.style.transition = 'all 0.3s ease';
+                const strengthText = document.querySelector('.password-strength-text');
+                
+                if (password.length === 0) {
+                    passwordStrengthBar.className = 'password-strength-bar';
+                    passwordStrengthBar.style.width = '0%';
+                    if (strengthText) {
+                        strengthText.className = 'password-strength-text';
+                        strengthText.textContent = '';
+                    }
+                } else if (strength <= 1) {
+                    passwordStrengthBar.className = 'password-strength-bar';
+                    passwordStrengthBar.style.width = '30%';
+                    if (strengthText) {
+                        strengthText.className = 'password-strength-text weak';
+                        strengthText.textContent = 'Weak';
+                    }
+                } else if (strength <= 3) {
+                    passwordStrengthBar.className = 'password-strength-bar medium';
+                    passwordStrengthBar.style.width = '65%';
+                    if (strengthText) {
+                        strengthText.className = 'password-strength-text fair';
+                        strengthText.textContent = 'Fair';
+                    }
+                } else if (strength === 4) {
+                    passwordStrengthBar.className = 'password-strength-bar good';
+                    passwordStrengthBar.style.width = '85%';
+                    if (strengthText) {
+                        strengthText.className = 'password-strength-text good';
+                        strengthText.textContent = 'Good';
+                    }
+                } else {
+                    passwordStrengthBar.className = 'password-strength-bar strong';
+                    passwordStrengthBar.style.width = '100%';
+                    if (strengthText) {
+                        strengthText.className = 'password-strength-text strong';
+                        strengthText.textContent = 'Strong';
+                    }
                 }
             });
         }
+
+        // Button hover effect
+        const registerBtn = document.querySelector('.btn-register');
+        if (registerBtn) {
+            registerBtn.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px)';
+                this.style.transition = 'transform 0.2s ease';
+            });
+            registerBtn.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        }
+
+        // Simple page fade-in
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '1';
+        });
     </script>
 </body>
 </html>

@@ -24,23 +24,25 @@
         .navbar {
             background: #1e293b;
             color: white;
-            padding: 0;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             position: sticky;
             top: 0;
             z-index: 100;
-            display: flex;
-            align-items: center;
-            height: 72px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .navbar i.bi {
+            font-family: bootstrap-icons;
         }
 
         .navbar-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 24px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            width: 100%;
-            padding: 0 24px;
-            gap: 24px;
+            height: 72px;
         }
 
         .navbar-brand {
@@ -58,42 +60,31 @@
         }
 
         .navbar-logo {
-            height: 40px;
-            width: 40px;
+            width: 42px;
+            height: 42px;
             object-fit: contain;
         }
 
-        .navbar-brand-text {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
         .navbar-title {
-            font-size: 16px;
+            font-size: 20px;
             font-weight: 700;
-            margin: 0;
+            color: white;
+            letter-spacing: -0.3px;
         }
 
-        .navbar-subtitle {
-            font-size: 11px;
-            opacity: 0.8;
-            margin: 0;
-        }
-
-        .navbar-menu {
+        .navbar-center {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             flex: 1;
             justify-content: center;
         }
 
-        .navbar-item {
-            padding: 8px 14px;
+        .nav-item {
+            padding: 8px 16px;
             text-decoration: none;
             color: rgba(255, 255, 255, 0.7);
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 500;
             border-radius: 8px;
             transition: all 0.3s ease;
@@ -103,98 +94,248 @@
             white-space: nowrap;
         }
 
-        .navbar-item:hover {
+        .nav-item:hover {
             background: rgba(255, 255, 255, 0.1);
             color: white;
+            transform: translateY(-2px);
         }
 
-        .navbar-item.active {
+        .nav-item.active {
             background: rgba(20, 184, 166, 0.15);
             color: #14b8a6;
+            border-bottom: 2px solid #14b8a6;
         }
 
         .navbar-end {
             display: flex;
             align-items: center;
             gap: 16px;
-            flex-shrink: 0;
         }
 
-        .navbar-user {
+        .user-menu {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
-        .navbar-avatar {
-            width: 36px;
-            height: 36px;
+        .user-avatar {
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.2);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 600;
-            overflow: hidden;
-        }
-
-        .navbar-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .navbar-user-text {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .navbar-user-name {
-            font-size: 13px;
-            font-weight: 600;
             color: white;
-        }
-
-        .navbar-user-role {
-            font-size: 11px;
-            opacity: 0.7;
-        }
-
-        .navbar-profile-btn {
-            padding: 6px 12px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            border-radius: 6px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
             cursor: pointer;
-            font-size: 13px;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
         }
 
-        .navbar-profile-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
+        .user-avatar:hover {
+            background: rgba(255, 255, 255, 0.4);
         }
 
-        .navbar-logout-btn {
-            padding: 6px 12px;
+        .logout-btn {
+            padding: 8px 14px;
             background: rgba(239, 68, 68, 0.15);
-            border: 1px solid rgba(239, 68, 68, 0.3);
             color: #fca5a5;
-            border-radius: 6px;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
             cursor: pointer;
             font-size: 13px;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             gap: 6px;
+            font-weight: 500;
         }
 
-        .navbar-logout-btn:hover {
+        .logout-btn:hover {
             background: rgba(239, 68, 68, 0.2);
+        }
+
+        /* Notification Bell Styles */
+        .notification-bell-wrapper {
+            position: relative;
+        }
+
+        .notification-bell {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .notification-bell:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            border: 2px solid #1e293b;
+        }
+
+        .notification-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            min-width: 350px;
+            max-height: 450px;
+            overflow-y: auto;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            margin-top: 8px;
+        }
+
+        .notification-dropdown.active {
+            display: block;
+        }
+
+        .notification-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #111827;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .notification-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid #f3f4f6;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            gap: 12px;
+            color: #666;
+        }
+
+        .notification-item:hover {
+            background: #f9fafb;
+        }
+
+        .notification-item.unread {
+            background: #f0fdf4;
+        }
+
+        .notification-item-icon {
+            flex-shrink: 0;
+            font-size: 18px;
+        }
+
+        .notification-item-content {
+            flex: 1;
+        }
+
+        .notification-item-title {
+            color: #111827;
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 2px;
+        }
+
+        .notification-item-message {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+
+        .notification-item-time {
+            font-size: 11px;
+            color: #9ca3af;
+        }
+
+        .notification-empty {
+            padding: 40px 20px;
+            text-align: center;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .notification-footer {
+            padding: 12px 16px;
+            border-top: 1px solid #e5e7eb;
+            text-align: center;
+        }
+
+        .notification-footer a {
+            color: #14b8a6;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .notification-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .navbar {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .back-link {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .page-header {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .card {
+            animation: fadeInUp 0.6s ease-out 0.1s both;
+        }
+
+        /* Hide top-nav white bar */
+        .top-nav {
+            display: none !important;
         }
 
         /* Main Content */
@@ -466,36 +607,33 @@
     <nav class="navbar">
         <div class="navbar-container">
             <a href="{{ route('dashboard') }}" class="navbar-brand">
-                <img src="{{ asset('newlogo.png') }}" alt="PAWser" class="navbar-logo">
-                <div class="navbar-brand-text">
-                    <div class="navbar-title">PAWser</div>
-                    <div class="navbar-subtitle">Staff Dashboard</div>
-                </div>
+                <img src="{{ asset('newlogo.png') }}" alt="PAWSER" class="navbar-logo" onerror="this.style.display='none'">
+                <span class="navbar-title">PAWSER</span>
             </a>
 
-            <div class="navbar-menu">
-                <a href="{{ route('dashboard') }}" class="navbar-item active">
+            <div class="navbar-center">
+                <a href="{{ route('dashboard') }}" class="nav-item active">
                     <i class="bi bi-speedometer2"></i>
                     Dashboard
                 </a>
-                <a href="{{ route('pets.index') }}" class="navbar-item">
+                <a href="{{ route('pets.index') }}" class="nav-item">
                     <i class="bi bi-heart-fill"></i>
                     Pets
                 </a>
-                <a href="{{ route('appointments.index') }}" class="navbar-item">
+                <a href="{{ route('appointments.index') }}" class="nav-item">
                     <i class="bi bi-calendar-check"></i>
                     Appointments
                 </a>
-                <a href="{{ route('visits.today') }}" class="navbar-item">
+                <a href="{{ route('visits.today') }}" class="nav-item">
                     <i class="bi bi-clock-history"></i>
                     Visits
                 </a>
                 @if(Auth::user()->hasStaffAccess())
-                <a href="{{ route('analytics.index') }}" class="navbar-item">
+                <a href="{{ route('analytics.index') }}" class="nav-item">
                     <i class="bi bi-graph-up-arrow"></i>
                     Insights
                 </a>
-                <a href="{{ route('automation.support') }}" class="navbar-item">
+                <a href="{{ route('automation.support') }}" class="nav-item">
                     <i class="bi bi-cpu"></i>
                     Actions
                 </a>
@@ -503,28 +641,120 @@
             </div>
 
             <div class="navbar-end">
-                <div class="navbar-user">
-                    @if(Auth::user()->profile_picture)
-                        <div class="navbar-avatar">
-                            <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="{{ Auth::user()->name }}">
+                <!-- Notification Bell -->
+                <div class="notification-bell-wrapper">
+                    <button class="notification-bell" onclick="toggleNotifications()" title="Notifications">
+                        <i class="bi bi-bell"></i>
+                        @php
+                            $unreadCount = auth()->user()->unreadNotifications()->count();
+                        @endphp
+                        @if($unreadCount > 0)
+                            <span class="notification-badge">{{ min($unreadCount, 9) }}</span>
+                        @endif
+                    </button>
+
+                    <!-- Notification Dropdown -->
+                    <div class="notification-dropdown" id="notificationDropdown">
+                        <div class="notification-header">
+                            <span>Notifications</span>
+                            @if($unreadCount > 0)
+                                <button onclick="markAllAsRead()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px;">Mark all as read</button>
+                            @endif
                         </div>
-                    @else
-                        <div class="navbar-avatar">
-                            <i class="bi bi-person-fill" style="font-size: 18px;"></i>
-                        </div>
-                    @endif
-                    <div class="navbar-user-text">
-                        <div class="navbar-user-name">{{ Auth::user()->name }}</div>
-                        <div class="navbar-user-role">{{ Auth::user()->role_name ?? (Auth::user()->role === 'admin' ? 'Administrator' : 'Veterinary Staff') }}</div>
+
+                        @php
+                            $notifications = auth()->user()->notifications()->orderBy('created_at', 'desc')->limit(8)->get();
+                        @endphp
+
+                        @if($notifications->count() > 0)
+                            @foreach($notifications as $notification)
+                                <div class="notification-item {{ $notification->isUnread() ? 'unread' : '' }}" onclick="notificationClick({{ $notification->id }})">
+                                    <div class="notification-item-icon">
+                                        @if($notification->type == 'request_approved')
+                                            <i class="bi bi-check-circle-fill" style="color: #10b981;"></i>
+                                        @elseif($notification->type == 'request_rejected')
+                                            <i class="bi bi-x-circle-fill" style="color: #ef4444;"></i>
+                                        @else
+                                            <i class="bi bi-info-circle-fill"></i>
+                                        @endif
+                                    </div>
+                                    <div class="notification-item-content">
+                                        <div class="notification-item-title">{{ $notification->title }}</div>
+                                        <div class="notification-item-message">{{ Str::limit($notification->message, 80) }}</div>
+                                        <div class="notification-item-time">{{ $notification->created_at->diffForHumans() }}</div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
+                            <div class="notification-empty">
+                                <p><i class="bi bi-inbox" style="font-size: 24px; display: block; margin-bottom: 8px;"></i>No notifications yet</p>
+                            </div>
+                        @endif
+
+                        @if($notifications->count() > 0)
+                            <div class="notification-footer">
+                                <a href="{{ route('notifications') }}">View All Notifications →</a>
+                            </div>
+                        @endif
                     </div>
+                    <script>
+                        function toggleNotifications() {
+                            const dropdown = document.getElementById('notificationDropdown');
+                            dropdown.classList.toggle('active');
+                        }
+
+                        function markAllAsRead() {
+                            fetch('{{ route("notifications.mark-all-read") }}', {
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                }
+                            }).then(() => {
+                                location.reload();
+                            });
+                        }
+
+                        function notificationClick(id) {
+                            fetch(`{{ url('notifications') }}/${id}/read`, {
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                }
+                            }).then(res => res.json()).then(data => {
+                                if(data.redirect) {
+                                    window.location.href = data.redirect;
+                                }
+                            });
+                        }
+
+                        document.addEventListener('click', function(event) {
+                            const wrapper = document.querySelector('.notification-bell-wrapper');
+                            const dropdown = document.getElementById('notificationDropdown');
+
+                            if (wrapper && dropdown && !wrapper.contains(event.target)) {
+                                dropdown.classList.remove('active');
+                            }
+                        });
+
+                        document.addEventListener('keydown', function(event) {
+                            if (event.key === 'Escape') {
+                                const dropdown = document.getElementById('notificationDropdown');
+                                if (dropdown) {
+                                    dropdown.classList.remove('active');
+                                }
+                            }
+                        });
+                    </script>
                 </div>
-                <a href="{{ route('profile.show') }}" class="navbar-profile-btn" title="My Profile">
-                    <i class="bi bi-person-circle"></i>
-                </a>
-                <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+
+                <div class="user-avatar">
+                    {{ substr(auth()->user()->name, 0, 1) }}
+                </div>
+                <form method="POST" action="{{ route('logout') }}" style="display: inline;">
                     @csrf
-                    <button type="submit" class="navbar-logout-btn" title="Logout">
+                    <button type="submit" class="logout-btn">
                         <i class="bi bi-box-arrow-right"></i>
+                        Logout
                     </button>
                 </form>
             </div>
@@ -539,7 +769,6 @@
 
         <div class="page-header">
             <h1 class="page-title">
-                <i class="bi bi-person-circle"></i>
                 My Profile
             </h1>
         </div>
@@ -562,7 +791,6 @@
                         </div>
                     @endif
                     <div class="profile-picture-overlay">
-                        <i class="bi bi-pencil-fill"></i>
                     </div>
                 </div>
                 <div class="profile-info">
@@ -595,7 +823,7 @@
                     <i class="bi bi-x-circle"></i> Cancel
                 </a>
                 <a href="{{ route('profile.edit') }}" class="btn btn-primary">
-                    <i class="bi bi-pencil"></i> Edit Profile
+                    Edit Profile
                 </a>
             </div>
         </div>

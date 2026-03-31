@@ -41,6 +41,27 @@
             display: flex;
             align-items: center;
             height: 72px;
+            animation: staffFadeIn 0.5s ease-out;
+        }
+
+        @keyframes staffFadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes staffFadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .navbar i.bi {
@@ -295,6 +316,7 @@
             max-width: 1600px;
             margin: 0 auto;
             padding: 40px;
+            animation: staffFadeInUp 0.6s ease-out;
         }
 
         .header {
@@ -349,6 +371,7 @@
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 28px;
             margin-bottom: 40px;
+            animation: staffFadeInUp 0.6s ease-out 0.1s both;
         }
 
         .metric-card {
@@ -479,6 +502,7 @@
 
         .charts-section {
             margin-bottom: 40px;
+            animation: staffFadeInUp 0.6s ease-out 0.2s both;
         }
 
         .section-title {

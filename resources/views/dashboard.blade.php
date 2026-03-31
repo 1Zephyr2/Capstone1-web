@@ -655,6 +655,43 @@
             display: none;
         }
 
+        /* Staff Page-Load Animations */
+        @keyframes staffFadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes staffFadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .navbar {
+            animation: staffFadeIn 0.5s ease-out;
+        }
+
+        .dashboard-content {
+            animation: staffFadeInUp 0.6s ease-out;
+        }
+
+        .quick-actions {
+            animation: staffFadeInUp 0.6s ease-out 0.1s both;
+        }
+
+        .stats-grid {
+            animation: staffFadeInUp 0.6s ease-out 0.2s both;
+        }
+
         @media (max-width: 1200px) {
             .navbar-subtitle {
                 display: none;

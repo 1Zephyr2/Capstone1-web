@@ -676,6 +676,66 @@
                 font-size: 12px;
             }
         }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .navbar {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .page-header {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .card {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+        .card:nth-child(4) { animation-delay: 0.4s; }
+
+        .pets-section {
+            animation: fadeInUp 0.6s ease-out 0.2s both;
+        }
+
+        .appointments-section {
+            animation: fadeInUp 0.6s ease-out 0.3s both;
+        }
+
+        /* Button hover effects */
+        .login-btn {
+            transition: all 0.3s ease;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+        }
+
+        .login-btn:active {
+            transform: translateY(-1px);
+        }
     </style>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>

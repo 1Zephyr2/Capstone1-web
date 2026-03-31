@@ -15,8 +15,13 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
-            padding: 40px;
             min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        .main-content {
+            padding: 112px 40px 40px;
         }
 
         .container {
@@ -110,6 +115,9 @@
     </style>
 </head>
 <body>
+    <x-staff-navbar />
+
+    <main class="main-content">
     <div class="container">
         <div class="header">
             <h1><i class="bi bi-calendar-event"></i> Today's Appointments</h1>
@@ -124,5 +132,6 @@
             </div>
         </div>
     </div>
+    </main>
 </body>
 </html>
