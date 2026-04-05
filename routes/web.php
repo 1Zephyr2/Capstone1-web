@@ -23,9 +23,12 @@ Route::get('/about', function () {
     return view('about');
 })->name('about');
 
-Route::get('/services', function () {
+Route::get('/features', function () {
     return view('services');
-})->name('services');
+})->name('features');
+
+// Redirect old /services route to /features
+Route::redirect('/services', '/features');
 
 // Authentication Routes
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');

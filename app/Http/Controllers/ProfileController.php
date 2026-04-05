@@ -78,11 +78,14 @@ class ProfileController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'phone' => ['required', 'string', 'regex:/^[0-9]{11}$/', 'max:11'],
+            'phone' => ['required', 'string', 'regex:/^(09\d{9}|09\d{2}-\d{3}-\d{4})$/'],
             'current_password' => ['nullable', 'required_with:new_password'],
             'new_password' => ['nullable', 'min:8', 'confirmed'],
             'profile_picture' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ]);
+
+        // Normalize phone: remove hyphens for storage
+        $validated['phone'] = preg_replace('/\D/', '', $validated['phone']);
 
         // Update basic info
         $user->name = $validated['name'];

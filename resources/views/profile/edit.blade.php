@@ -817,8 +817,8 @@
 
                         <div class="form-group">
                             <label>Phone Number <span class="required">*</span></label>
-                            <input type="tel" name="phone" required value="{{ old('phone', $user->phone) }}" placeholder="11-digit number" maxlength="11" class="form-control">
-                            <p class="helper-text">Format: 09123456789</p>
+                            <input type="tel" name="phone" id="phone" required value="{{ old('phone', $user->phone) }}" placeholder="09XX-XXX-XXXX" pattern="(09\d{9}|09\d{2}-\d{3}-\d{4})" maxlength="13" inputmode="numeric" class="form-control">
+                            <p class="helper-text">Format: 09XX-XXX-XXXX (11 digits)</p>
                         </div>
                     </div>
                 </div>
@@ -858,6 +858,27 @@
                     </button>
                 </div>
             </form>
+
+            <script>
+                // Phone number formatting
+                const phoneInput = document.getElementById('phone');
+                if (phoneInput) {
+                    phoneInput.addEventListener('input', function(e) {
+                        let digits = this.value.replace(/\D/g, '');
+                        if (digits.length > 11) digits = digits.slice(0, 11);
+                        
+                        let formatted = '';
+                        if (digits.length > 0) {
+                            if (digits.length <= 2) formatted = digits;
+                            else if (digits.length <= 4) formatted = digits.slice(0, 2) + digits.slice(2);
+                            else if (digits.length <= 7) formatted = digits.slice(0, 2) + digits.slice(2, 4) + '-' + digits.slice(4);
+                            else formatted = digits.slice(0, 2) + digits.slice(2, 4) + '-' + digits.slice(4, 7) + '-' + digits.slice(7, 11);
+                        }
+                        this.value = formatted;
+                        this.style.borderColor = (digits.length === 11 && digits.startsWith('09')) ? '#10b981' : '#ef4444';
+                    });
+                }
+            </script>
         </div>
     </div>
 </body>

@@ -33,7 +33,10 @@ class DatabaseSeeder extends Seeder
             'role' => 'staff',
         ]);
 
+        // Seed species data first
+        $this->call(SpeciesSeeder::class);
+
         // Seed demo patient data
-        // $this->call(DemoDataSeeder::class);
+        $this->call(DemoDataSeeder::class);
     }
 }

@@ -16,6 +16,7 @@ class DemoDataSeeder extends Seeder
         // Create sample pets for grooming system
         $pets = [
             [
+                'patient_id' => 'PAW-001',
                 'pet_name' => 'Max',
                 'species' => 'Dog',
                 'breed' => 'Golden Retriever',
@@ -27,6 +28,7 @@ class DemoDataSeeder extends Seeder
                 'address' => '123 Main Street, Scout Barrio, Baguio City',
             ],
             [
+                'patient_id' => 'PAW-002',
                 'pet_name' => 'Bella',
                 'species' => 'Cat',
                 'breed' => 'Siamese',
@@ -38,6 +40,7 @@ class DemoDataSeeder extends Seeder
                 'address' => '456 Secondary Road, Scout Barrio, Baguio City',
             ],
             [
+                'patient_id' => 'PAW-003',
                 'pet_name' => 'Charlie',
                 'species' => 'Dog',
                 'breed' => 'Labrador Retriever',
@@ -49,6 +52,7 @@ class DemoDataSeeder extends Seeder
                 'address' => '789 Third Avenue, Scout Barrio, Baguio City',
             ],
             [
+                'patient_id' => 'PAW-004',
                 'pet_name' => 'Luna',
                 'species' => 'Cat',
                 'breed' => 'Persian',
@@ -60,6 +64,7 @@ class DemoDataSeeder extends Seeder
                 'address' => '321 Upper Road, Scout Barrio, Baguio City',
             ],
             [
+                'patient_id' => 'PAW-005',
                 'pet_name' => 'Rocky',
                 'species' => 'Dog',
                 'breed' => 'German Shepherd',
@@ -71,6 +76,7 @@ class DemoDataSeeder extends Seeder
                 'address' => '654 Lower Road, Scout Barrio, Baguio City',
             ],
             [
+                'patient_id' => 'PAW-006',
                 'pet_name' => 'Daisy',
                 'species' => 'Rabbit',
                 'breed' => 'Holland Lop',

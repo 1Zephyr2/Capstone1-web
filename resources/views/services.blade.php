@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Services - PAWSER Pet Care Management</title>
+    <title>Features - PAWSER Pet Care Management</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
@@ -144,21 +144,21 @@
         /* Hero */
         .hero-section {
             background: rgba(31, 41, 55, 0.8);
-            padding: 80px 24px;
+            padding: 120px 24px;
             text-align: center;
             border: 1px solid rgba(126, 232, 223, 0.2);
             backdrop-filter: blur(10px);
         }
 
         .hero-content {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
         }
 
         .hero-content h1 {
-            font-size: 48px;
+            font-size: 56px;
             font-weight: 800;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             color: #e2e8f0;
         }
 
@@ -171,7 +171,7 @@
 
         .hero-content p {
             font-size: 18px;
-            color: #64748b;
+            color: #cbd5e1;
             line-height: 1.8;
         }
 
@@ -179,7 +179,7 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 80px 24px;
+            padding: 120px 24px;
         }
 
         .section-title {
@@ -187,7 +187,7 @@
             font-weight: 800;
             text-align: center;
             margin-bottom: 60px;
-            color: #1e293b;
+            color: #e2e8f0;
         }
 
         .section-title span {
@@ -199,7 +199,7 @@
 
         .section-subtitle {
             text-align: center;
-            color: #64748b;
+            color: #e2e8f0;
             font-size: 16px;
             max-width: 600px;
             margin: 0 auto 60px;
@@ -248,30 +248,30 @@
         }
 
         .service-icon {
-            width: 64px;
-            height: 64px;
+            width: 80px;
+            height: 80px;
             background: linear-gradient(135deg, #f0fdfa 0%, #ecf9f8 100%);
-            border-radius: 12px;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 32px;
+            font-size: 40px;
             color: #0d9488;
-            margin-bottom: 24px;
+            margin-bottom: 30px;
         }
 
         .service-card h3 {
-            font-size: 20px;
+            font-size: 24px;
             font-weight: 700;
-            margin-bottom: 12px;
+            margin-bottom: 20px;
             color: #1e293b;
         }
 
         .service-card p {
-            font-size: 14px;
+            font-size: 15px;
             color: #64748b;
             line-height: 1.8;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
 
         .service-features {
@@ -297,16 +297,17 @@
 
         /* Feature Comparison */
         .comparison-section {
-            margin-top: 100px;
-            padding: 60px;
-            background: linear-gradient(135deg, #f0fdfa 0%, #ecf9f8 100%);
-            border-radius: 12px;
+            margin-top: 120px;
+            padding: 80px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
         }
 
         .comparison-title {
-            font-size: 32px;
+            font-size: 36px;
             font-weight: 800;
-            margin-bottom: 40px;
+            margin-bottom: 60px;
             text-align: center;
             color: #1e293b;
         }
@@ -360,24 +361,25 @@
 
         /* Pricing Section */
         .pricing-section {
-            margin-top: 100px;
+            margin-top: 120px;
             text-align: center;
         }
 
         .pricing-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
+            gap: 40px;
+            margin-top: 60px;
         }
 
         .pricing-card {
             background: white;
             border: 2px solid #e2e8f0;
             border-radius: 12px;
-            padding: 40px;
+            padding: 50px;
             transition: all 0.3s ease;
             position: relative;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
 
         .pricing-card.featured {
@@ -400,14 +402,14 @@
         }
 
         .pricing-name {
-            font-size: 20px;
+            font-size: 24px;
             font-weight: 700;
             margin: 16px 0;
             color: #1e293b;
         }
 
         .pricing-price {
-            font-size: 36px;
+            font-size: 44px;
             font-weight: 800;
             color: #0d9488;
             margin: 16px 0;
@@ -420,7 +422,7 @@
         }
 
         .pricing-description {
-            font-size: 13px;
+            font-size: 15px;
             color: #64748b;
             margin: 16px 0 24px;
         }
@@ -432,9 +434,9 @@
         }
 
         .pricing-features li {
-            padding: 10px 0;
+            padding: 14px 0;
             border-bottom: 1px solid #e2e8f0;
-            font-size: 13px;
+            font-size: 14px;
             color: #64748b;
             display: flex;
             align-items: center;
@@ -451,13 +453,13 @@
         .pricing-btn {
             display: block;
             width: 100%;
-            padding: 12px 24px;
+            padding: 14px 28px;
             background: linear-gradient(135deg, #0d9488 0%, #06b6d4 100%);
             color: white;
             text-decoration: none;
             border-radius: 6px;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 15px;
             transition: all 0.3s ease;
             border: none;
             cursor: pointer;
@@ -473,35 +475,35 @@
         .cta-section {
             background: linear-gradient(135deg, #0d9488 0%, #06b6d4 100%);
             color: white;
-            padding: 60px 24px;
+            padding: 80px 24px;
             text-align: center;
             border-radius: 12px;
-            margin-top: 100px;
+            margin-top: 120px;
         }
 
         .cta-section h2 {
-            font-size: 36px;
+            font-size: 42px;
             font-weight: 800;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .cta-section p {
-            font-size: 16px;
+            font-size: 18px;
             opacity: 0.95;
-            margin-bottom: 30px;
+            margin-bottom: 34px;
             max-width: 500px;
             margin-left: auto;
             margin-right: auto;
         }
 
         .cta-btn {
-            padding: 12px 32px;
+            padding: 14px 36px;
             background: white;
             color: #0d9488;
             text-decoration: none;
             border-radius: 6px;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 15px;
             transition: all 0.3s ease;
             display: inline-block;
             border: none;
@@ -606,7 +608,7 @@
             <div class="nav-menu">
                 <a href="{{ route('home') }}">Home</a>
                 <a href="/about">About</a>
-                <a href="/services" class="active">Services</a>
+                <a href="/features" class="active">Features</a>
             </div>
             <div class="nav-cta">
                 @auth
@@ -630,16 +632,16 @@
     <!-- Hero -->
     <section class="hero-section">
         <div class="hero-content">
-            <h1>Powerful <span>Features</span> for Modern Pet Grooming</h1>
-            <p>Comprehensive tools designed for pet grooming salons and pet owners to streamline grooming service management</p>
+            <h1>Powerful <span>Features</span> of PAWSER</h1>
+            <p>A comprehensive pet care management system with intelligent scheduling, service tracking, and complete client communication tools</p>
         </div>
     </section>
 
     <!-- Main Content -->
     <div class="container">
-        <!-- Services Overview -->
-        <h2 class="section-title">Our <span>Services</span></h2>
-        <p class="section-subtitle">PAWSER provides a complete suite of integrated services to manage all aspects of pet grooming and salon operations</p>
+        <!-- Features Overview -->
+        <h2 class="section-title">Our <span>Features</span></h2>
+        <p class="section-subtitle">PAWSER provides a complete suite of integrated features to manage all aspects of pet grooming and salon operations</p>
 
         <div class="services-grid">
             <!-- Service 1 -->
@@ -729,7 +731,7 @@
 
         <!-- Feature Comparison -->
         <section class="comparison-section">
-            <h2 class="comparison-title">Feature Comparison</h2>
+            <h2 class="comparison-title">Features Overview</h2>
             <table class="comparison-table">
                 <thead>
                     <tr>
@@ -753,20 +755,8 @@
                         <td><span class="check-icon">✓</span></td>
                     </tr>
                     <tr>
-                        <td>Grooming Service Records</td>
+                        <td>Grooming Records</td>
                         <td><span class="check-icon">✓</span></td>
-                        <td><span class="check-icon">✓</span></td>
-                        <td><span class="check-icon">✓</span></td>
-                    </tr>
-                    <tr>
-                        <td>Pet Health & Special Care Tracking</td>
-                        <td><span class="cross-icon">✕</span></td>
-                        <td><span class="check-icon">✓</span></td>
-                        <td><span class="check-icon">✓</span></td>
-                    </tr>
-                    <tr>
-                        <td>Multi-Location Support</td>
-                        <td><span class="cross-icon">✕</span></td>
                         <td><span class="check-icon">✓</span></td>
                         <td><span class="check-icon">✓</span></td>
                     </tr>
@@ -774,12 +764,6 @@
                         <td>Advanced Analytics</td>
                         <td><span class="cross-icon">✕</span></td>
                         <td><span class="check-icon">✓</span></td>
-                        <td><span class="check-icon">✓</span></td>
-                    </tr>
-                    <tr>
-                        <td>API Access</td>
-                        <td><span class="cross-icon">✕</span></td>
-                        <td><span class="cross-icon">✕</span></td>
                         <td><span class="check-icon">✓</span></td>
                     </tr>
                     <tr>
@@ -816,7 +800,7 @@
                 <h4>About PAWSER</h4>
                 <ul>
                     <li><a href="/about">About Us</a></li>
-                    <li><a href="/services">Our Services</a></li>
+                    <li><a href="/features">Our Features</a></li>
                     <li><a href="#">Blog</a></li>
                     <li><a href="#">Careers</a></li>
                 </ul>
@@ -824,7 +808,7 @@
             <div class="footer-section">
                 <h4>Product</h4>
                 <ul>
-                    <li><a href="/services">Features</a></li>
+                    <li><a href="/features">Features</a></li>
                     <li><a href="#">Pricing</a></li>
                     <li><a href="#">Security</a></li>
                     <li><a href="#">API Docs</a></li>

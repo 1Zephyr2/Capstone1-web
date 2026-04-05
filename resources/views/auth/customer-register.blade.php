@@ -579,10 +579,14 @@
                                             id="phone" 
                                             name="phone" 
                                             value="{{ old('phone') }}" 
-                                            placeholder="(555) 123-4567"
+                                            placeholder="09XX-XXX-XXXX"
+                                            pattern="(09\d{9}|09\d{2}-\d{3}-\d{4})"
+                                            maxlength="13"
+                                            inputmode="numeric"
                                             required
                                         >
                                     </div>
+                                    <small style="color: #6b7280; margin-top: 4px; display: block;">Format: 09XX-XXX-XXXX (11 digits)</small>
                                     @error('phone')
                                         <div class="error-message">
                                             <i class="bi bi-exclamation-circle"></i>
@@ -776,6 +780,57 @@
             });
             registerBtn.addEventListener('mouseleave', function() {
                 this.style.transform = 'translateY(0)';
+            });
+        }
+
+        // Philippines phone number formatting
+        const phoneInput = document.getElementById('phone');
+        if (phoneInput) {
+            phoneInput.addEventListener('input', function(e) {
+                // Remove all non-digits
+                let digits = this.value.replace(/\D/g, '');
+                
+                // Limit to 11 digits maximum
+                if (digits.length > 11) {
+                    digits = digits.slice(0, 11);
+                }
+                
+                // Format as we type: 09XX-XXX-XXXX
+                let formatted = '';
+                if (digits.length > 0) {
+                    if (digits.length <= 2) {
+                        formatted = digits; // "09"
+                    } else if (digits.length <= 4) {
+                        formatted = digits.slice(0, 2) + digits.slice(2); // "09XX"
+                    } else if (digits.length <= 7) {
+                        formatted = digits.slice(0, 2) + digits.slice(2, 4) + '-' + digits.slice(4); // "09XX-XXX"
+                    } else {
+                        formatted = digits.slice(0, 2) + digits.slice(2, 4) + '-' + digits.slice(4, 7) + '-' + digits.slice(7, 11); // "09XX-XXX-XXXX"
+                    }
+                }
+                
+                this.value = formatted;
+                
+                // Show/hide error in real-time
+                const errorMsg = this.parentElement.nextElementSibling;
+                if (digits.length === 11 && digits.startsWith('09')) {
+                    this.style.borderColor = '#10b981'; // Green when valid
+                    if (errorMsg && errorMsg.classList.contains('error-message')) {
+                        errorMsg.style.display = 'none';
+                    }
+                } else if (digits.length > 0) {
+                    this.style.borderColor = '#ef4444'; // Red when invalid
+                }
+            });
+            
+            // Validate on blur
+            phoneInput.addEventListener('blur', function() {
+                const digits = this.value.replace(/\D/g, '');
+                if (this.value && (digits.length !== 11 || !digits.startsWith('09'))) {
+                    this.style.borderColor = '#ef4444';
+                } else if (digits.length === 11) {
+                    this.style.borderColor = '#10b981';
+                }
             });
         }
 

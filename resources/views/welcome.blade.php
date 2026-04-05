@@ -522,8 +522,8 @@
             
             <div class="nav-menu">
                 <a href="{{ route('home') }}" class="active">Home</a>
-                <a href="#about">About</a>
-                <a href="#features">Features</a>
+                <a href="{{ route('about') }}">About</a>
+                <a href="{{ route('features') }}">Features</a>
             </div>
             
             <div class="nav-cta">

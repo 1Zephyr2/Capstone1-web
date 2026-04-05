@@ -145,7 +145,7 @@ class PetController extends Controller
                 'birthdate' => 'required|date|before:today',
                 'sex' => 'required|in:Male,Female,Neutered Male,Spayed Female',
                 'emergency_contact_name' => 'nullable|string|max:255',
-                'emergency_contact_number' => 'nullable|string|max:20',
+                'emergency_contact_number' => 'nullable|regex:/^(09\d{9}|09\d{2}-\d{3}-\d{4})$/',
                 'pet_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:4096',
             ]);
         } else {
@@ -160,12 +160,12 @@ class PetController extends Controller
                 'birthdate' => 'required|date|before:today',
                 'sex' => 'required|in:Male,Female,Neutered Male,Spayed Female',
                 'owner_name' => 'required|string|max:255',
-                'owner_contact' => 'nullable|string|max:20',
+                'owner_contact' => 'nullable|regex:/^(09\d{9}|09\d{2}-\d{3}-\d{4})$/',
                 'address' => ($isExistingOwner ? 'nullable' : 'required') . '|string',
                 'is_required' => 'nullable|boolean',
                 'privacy_consent' => 'nullable|boolean',
                 'emergency_contact_name' => 'nullable|string|max:255',
-                'emergency_contact_number' => 'nullable|string|max:20',
+                'emergency_contact_number' => 'nullable|regex:/^(09\d{9}|09\d{2}-\d{3}-\d{4})$/',
             ]);
         }
 
@@ -178,6 +178,16 @@ class PetController extends Controller
                 ], 422);
             }
             return back()->withErrors($validator)->withInput();
+        }
+
+        $validated = $validator->validated();
+        
+        // Normalize phone numbers: remove hyphens for storage
+        if (!empty($validated['owner_contact'])) {
+            $validated['owner_contact'] = preg_replace('/\D/', '', $validated['owner_contact']);
+        }
+        if (!empty($validated['emergency_contact_number'])) {
+            $validated['emergency_contact_number'] = preg_replace('/\D/', '', $validated['emergency_contact_number']);
         }
 
         if ($isCustomer) {
@@ -351,7 +361,7 @@ class PetController extends Controller
                 'birthdate'                 => 'required|date|before:today',
                 'sex'                       => 'required|in:Male,Female,Neutered Male,Spayed Female',
                 'emergency_contact_name'    => 'nullable|string|max:255',
-                'emergency_contact_number'  => 'nullable|string|max:20',
+                'emergency_contact_number'  => 'nullable|regex:/^09\d{2}-\d{3}-\d{4}$/',
                 'pet_photo'                 => 'nullable|image|max:4096',
             ]);
         } else {
@@ -364,12 +374,12 @@ class PetController extends Controller
                 'birthdate'                 => 'required|date|before:today',
                 'sex'                       => 'required|in:Male,Female,Neutered Male,Spayed Female',
                 'owner_name'                => 'required|string|max:255',
-                'owner_contact'             => 'nullable|string|max:20',
+                'owner_contact'             => 'nullable|regex:/^(09\d{9}|09\d{2}-\d{3}-\d{4})$/',
                 'address'                   => 'required|string',
                 'is_required'               => 'nullable|boolean',
                 'privacy_consent'           => 'nullable|boolean',
                 'emergency_contact_name'    => 'nullable|string|max:255',
-                'emergency_contact_number'  => 'nullable|string|max:20',
+                'emergency_contact_number'  => 'nullable|regex:/^(09\d{9}|09\d{2}-\d{3}-\d{4})$/',
                 'pet_photo'                 => 'nullable|image|max:4096',
             ]);
         }
@@ -379,6 +389,14 @@ class PetController extends Controller
         }
 
         $data = $request->except(['_token', '_method', 'pet_photo']);
+
+        // Normalize phone numbers: remove hyphens for storage
+        if (!empty($data['owner_contact'])) {
+            $data['owner_contact'] = preg_replace('/\D/', '', $data['owner_contact']);
+        }
+        if (!empty($data['emergency_contact_number'])) {
+            $data['emergency_contact_number'] = preg_replace('/\D/', '', $data['emergency_contact_number']);
+        }
 
         if ($request->hasFile('pet_photo')) {
             // Delete old photo if exists

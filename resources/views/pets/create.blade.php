@@ -82,12 +82,14 @@
             align-items: center;
             justify-content: space-between;
             margin-bottom: 16px;
+            border-bottom: 3px solid #10b981;
+            padding-bottom: 12px;
         }
 
         .card-header h2 {
             font-size: 20px;
             font-weight: 700;
-            color: #111827;
+            color: #10b981;
         }
 
         .form-grid {
@@ -281,9 +283,9 @@
             gap: 10px;
         }
         .automation-alert.warning {
-            background: #fef3c7;
-            border-color: #f59e0b;
-            color: #92400e;
+            background: #f0fdf4;
+            border-color: #10b981;
+            color: #065f46;
         }
         .automation-alert.info {
             background: #f0fdf4;
@@ -893,6 +895,33 @@
             // Initial progress update
             updateFormProgress();
         });
+
+        // Philippines phone number formatting for owner_contact
+        const ownerContactInput = document.querySelector('[name="owner_contact"]');
+        if (ownerContactInput) {
+            ownerContactInput.addEventListener('input', function(e) {
+                // Remove non-digits
+                let value = this.value.replace(/\D/g, '');
+                
+                // Limit to 11 digits
+                if (value.length > 11) {
+                    value = value.slice(0, 11);
+                }
+                
+                // Format: 09XX-XXX-XXXX
+                if (value.length > 0) {
+                    if (value.length <= 4) {
+                        value = value;
+                    } else if (value.length <= 7) {
+                        value = value.slice(0, 4) + '-' + value.slice(4);
+                    } else {
+                        value = value.slice(0, 4) + '-' + value.slice(4, 7) + '-' + value.slice(7, 11);
+                    }
+                }
+                
+                this.value = value;
+            });
+        }
     </script>
 </body>
 </html>

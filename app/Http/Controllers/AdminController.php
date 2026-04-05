@@ -66,10 +66,15 @@ class AdminController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'max:255', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'phone' => ['nullable', 'regex:/^[0-9]{11}$/', 'max:11'],
+            'phone' => ['nullable', 'regex:/^(09\d{9}|09\d{2}-\d{3}-\d{4})$/'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'role' => ['required', 'in:admin,staff'],
         ]);
+
+        // Normalize phone: remove hyphens for storage
+        if ($validated['phone']) {
+            $validated['phone'] = preg_replace('/\D/', '', $validated['phone']);
+        }
 
         User::create([
             'name' => $validated['name'],
@@ -101,10 +106,15 @@ class AdminController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'max:255', 'unique:users,username,' . $user->id],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
-            'phone' => ['nullable', 'regex:/^[0-9]{11}$/', 'max:11'],
+            'phone' => ['nullable', 'regex:/^(09\d{9}|09\d{2}-\d{3}-\d{4})$/'],
             'role' => ['required', 'in:admin,staff'],
             'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
         ]);
+
+        // Normalize phone: remove hyphens for storage
+        if ($validated['phone']) {
+            $validated['phone'] = preg_replace('/\D/', '', $validated['phone']);
+        }
 
         // Prevent users from changing their own role
         if ($user->id === Auth::id()) {

@@ -30,10 +30,16 @@ class CustomerRegisterController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'phone' => ['required', 'string', 'max:20'],
+            'phone' => ['required', 'regex:/^(09\d{9}|09\d{2}-\d{3}-\d{4})$/'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        // Normalize phone: remove hyphens for storage
+        $validated['phone'] = preg_replace('/\D/', '', $validated['phone']);
+        
+        // Auto-generate username from email (first part before @)
+        $validated['username'] = explode('@', $validated['email'])[0];
+        
         $validated['password'] = Hash::make($validated['password']);
         $validated['role'] = 'customer';
 

@@ -171,7 +171,7 @@
 
         .hero-content p {
             font-size: 18px;
-            color: #64748b;
+            color: #cbd5e1;
             line-height: 1.8;
         }
 
@@ -190,7 +190,7 @@
             font-size: 36px;
             font-weight: 800;
             margin-bottom: 30px;
-            color: #1e293b;
+            color: #e2e8f0;
         }
 
         .section h2 span {
@@ -202,7 +202,7 @@
 
         .section p {
             font-size: 16px;
-            color: #64748b;
+            color: #e2e8f0;
             line-height: 1.8;
             margin-bottom: 16px;
         }
@@ -371,7 +371,7 @@
 
         .timeline-content p {
             font-size: 14px;
-            color: #64748b;
+            color: #e2e8f0;
             margin: 0;
         }
 
@@ -517,7 +517,7 @@
             <div class="nav-menu">
                 <a href="{{ route('home') }}">Home</a>
                 <a href="/about" class="active">About</a>
-                <a href="/services">Services</a>
+                <a href="/features">Features</a>
             </div>
             <div class="nav-cta">
                 @auth
@@ -639,7 +639,7 @@
                 <h4>About PAWSER</h4>
                 <ul>
                     <li><a href="/about">About Us</a></li>
-                    <li><a href="/services">Our Services</a></li>
+                    <li><a href="/features">Our Features</a></li>
                     <li><a href="#">Blog</a></li>
                     <li><a href="#">Careers</a></li>
                 </ul>
@@ -647,7 +647,7 @@
             <div class="footer-section">
                 <h4>Product</h4>
                 <ul>
-                    <li><a href="/services">Features</a></li>
+                    <li><a href="/features">Features</a></li>
                     <li><a href="#">Pricing</a></li>
                     <li><a href="#">Security</a></li>
                     <li><a href="#">API Docs</a></li>
