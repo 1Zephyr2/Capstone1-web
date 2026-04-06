@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Today's Visits - PAWser</title>
+    <title>Today's Visits - PAWSER</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
 
@@ -744,14 +744,6 @@
                 <div class="stat-value" id="groomingServicesToday">0</div>
                 <div class="stat-label">Grooming</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-value" id="medicalServicesToday">0</div>
-                <div class="stat-label">Medical</div>
-            </div>
-            <div class="stat-card" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-color: #fcd34d;">
-                <div class="stat-value" id="otherServicesToday" style="color: #d97706;">0</div>
-                <div class="stat-label" style="color: #92400e;">Other</div>
-            </div>
         </div>
 
         <div style="margin-bottom: 20px; display: flex; gap: 12px; align-items: center;">
@@ -824,8 +816,6 @@
             if (!visits || visits.length === 0) {
                 document.getElementById('totalVisitsToday').textContent = '0';
                 document.getElementById('groomingServicesToday').textContent = '0';
-                document.getElementById('medicalServicesToday').textContent = '0';
-                document.getElementById('otherServicesToday').textContent = '0';
                 return;
             }
 
@@ -835,17 +825,8 @@
             const groomingServices = ['Bath & Dry', 'Full Grooming', 'Haircut & Styling', 'Nail Trimming', 'Ear Cleaning', 'Teeth Brushing', 'De-shedding Treatment', 'Flea & Tick Treatment', 'Paw Treatment'];
             const groomingCount = visits.filter(v => groomingServices.includes(v.service_type)).length;
             
-            // Medical services
-            const medicalServices = ['Vaccination', 'Spay/Neuter', 'Dental Cleaning', 'Deworming', 'General Checkup', 'Wound Treatment'];
-            const medicalCount = visits.filter(v => medicalServices.includes(v.service_type)).length;
-            
-            // Other services (everything else: Boarding Checkup, Follow-up, Referral, Other)
-            const otherCount = totalVisits - groomingCount - medicalCount;
-
             document.getElementById('totalVisitsToday').textContent = totalVisits;
             document.getElementById('groomingServicesToday').textContent = groomingCount;
-            document.getElementById('medicalServicesToday').textContent = medicalCount;
-            document.getElementById('otherServicesToday').textContent = otherCount;
         }
 
         // Calculate stats when page loads
@@ -1559,3 +1540,4 @@
     </script>
 </body>
 </html>
+

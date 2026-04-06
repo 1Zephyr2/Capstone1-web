@@ -69,12 +69,26 @@ class PetController extends Controller
     {
         $term = $request->get('q', $request->get('term', ''));
         $birthday = $request->get('birthday', '');
+        $ownerNames = collect();
         
         $query = $this->scopedQuery();
         
         // Search by term (name, ID, contact)
         if (strlen($term) >= 2) {
-            $query->search($term);
+            $ownerNames = $this->scopedQuery()
+                ->where('owner_name', 'like', "%{$term}%")
+                ->pluck('owner_name')
+                ->filter()
+                ->unique()
+                ->values();
+
+            $query->where(function ($q) use ($term, $ownerNames) {
+                $q->search($term);
+
+                if ($ownerNames->isNotEmpty()) {
+                    $q->orWhereIn('owner_name', $ownerNames->all());
+                }
+            });
         } elseif ($birthday) {
             // If no term but birthday is provided, search by birthday
             $query->whereDate('birthdate', $birthday);
@@ -82,9 +96,37 @@ class PetController extends Controller
             return response()->json([]);
         }
 
-        $patients = $query->limit(10)
-            ->get()
-            ->map(function($patient) {
+        $resultLimit = $ownerNames->isNotEmpty() ? 100 : 10;
+
+        $patients = $query->with('user:id,phone')
+            ->orderBy('owner_name')
+            ->orderBy('pet_name')
+            ->limit($resultLimit)
+            ->get();
+
+        $ownerPetCounts = $patients
+            ->groupBy(function ($patient) {
+                return (string) ($patient->owner_name ?? '');
+            })
+            ->map(function ($ownerPets) {
+                return $ownerPets->count();
+            });
+
+        $patients = $patients->map(function($patient) use ($ownerPetCounts, $ownerNames) {
+                $ownerContact = (string) ($patient->owner_contact ?? '');
+
+                // Backward compatibility: some legacy records stored email in owner_contact.
+                if ($ownerContact !== '' && str_contains($ownerContact, '@')) {
+                    $ownerContact = (string) ($patient->user->phone ?? '');
+                }
+
+                $ownerContactDigits = preg_replace('/\D/', '', $ownerContact);
+                $formattedOwnerContact = $ownerContactDigits;
+
+                if (strlen($ownerContactDigits) === 11 && str_starts_with($ownerContactDigits, '09')) {
+                    $formattedOwnerContact = substr($ownerContactDigits, 0, 4) . '-' . substr($ownerContactDigits, 4, 3) . '-' . substr($ownerContactDigits, 7, 4);
+                }
+
                 return [
                     'id' => $patient->id,
                     'patient_id' => $patient->patient_id,
@@ -92,7 +134,7 @@ class PetController extends Controller
                     'name' => $patient->full_name,
                     'age' => $patient->age,
                     'sex' => $patient->sex,
-                    'contact' => $patient->owner_contact ?? '',
+                    'contact' => $formattedOwnerContact,
                     'address' => $patient->address,
                     'birthdate' => $patient->birthdate ? $patient->birthdate->format('Y-m-d') : null,
                     'pet_name' => $patient->pet_name ?? '',
@@ -100,7 +142,9 @@ class PetController extends Controller
                     'breed' => $patient->breed ?? '',
                     'color' => $patient->color ?? '',
                     'owner_name' => $patient->owner_name ?? '',
-                    'owner_contact' => $patient->owner_contact ?? '',
+                    'owner_pet_count' => (int) ($ownerPetCounts[(string) ($patient->owner_name ?? '')] ?? 1),
+                    'owner_match_expanded' => $ownerNames->isNotEmpty(),
+                    'owner_contact' => $formattedOwnerContact,
                     'emergency_contact_name' => $patient->emergency_contact_name,
                     'emergency_contact_number' => $patient->emergency_contact_number,
                     'species_id' => $patient->species_id,
@@ -145,7 +189,7 @@ class PetController extends Controller
                 'birthdate' => 'required|date|before:today',
                 'sex' => 'required|in:Male,Female,Neutered Male,Spayed Female',
                 'emergency_contact_name' => 'nullable|string|max:255',
-                'emergency_contact_number' => 'nullable|regex:/^(09\d{9}|09\d{2}-\d{3}-\d{4})$/',
+                'emergency_contact_number' => 'nullable|regex:/^09\d{2}-?\d{3}-?\d{4}$/',
                 'pet_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:4096',
             ]);
         } else {
@@ -160,12 +204,12 @@ class PetController extends Controller
                 'birthdate' => 'required|date|before:today',
                 'sex' => 'required|in:Male,Female,Neutered Male,Spayed Female',
                 'owner_name' => 'required|string|max:255',
-                'owner_contact' => 'nullable|regex:/^(09\d{9}|09\d{2}-\d{3}-\d{4})$/',
+                'owner_contact' => 'nullable|regex:/^09\d{2}-?\d{3}-?\d{4}$/',
                 'address' => ($isExistingOwner ? 'nullable' : 'required') . '|string',
                 'is_required' => 'nullable|boolean',
                 'privacy_consent' => 'nullable|boolean',
                 'emergency_contact_name' => 'nullable|string|max:255',
-                'emergency_contact_number' => 'nullable|regex:/^(09\d{9}|09\d{2}-\d{3}-\d{4})$/',
+                'emergency_contact_number' => 'nullable|regex:/^09\d{2}-?\d{3}-?\d{4}$/',
             ]);
         }
 
@@ -204,7 +248,8 @@ class PetController extends Controller
             ]);
             
             $payload['owner_name'] = $user->name;
-            $payload['owner_contact'] = $user->email;
+            $customerPhone = preg_replace('/\D/', '', (string) ($user->phone ?? ''));
+            $payload['owner_contact'] = $customerPhone !== '' ? $customerPhone : null;
             $payload['address'] = $user->address ?? 'Not provided';
             $payload['user_id'] = $user->id;
         } else {
@@ -268,6 +313,35 @@ class PetController extends Controller
             }
         }
 
+        $duplicateQuery = Patient::query()
+            ->whereRaw('LOWER(TRIM(pet_name)) = ?', [strtolower(trim((string) ($payload['pet_name'] ?? '')))])
+            ->whereRaw('LOWER(TRIM(owner_name)) = ?', [strtolower(trim((string) ($payload['owner_name'] ?? '')))])
+            ->whereDate('birthdate', $payload['birthdate']);
+
+        if (!empty($payload['species_id'])) {
+            $duplicateQuery->where('species_id', $payload['species_id']);
+        }
+
+        if ($isCustomer) {
+            $duplicateQuery->where('user_id', $user->id);
+        }
+
+        $existingDuplicate = $duplicateQuery->first();
+
+        if ($existingDuplicate) {
+            $duplicateMessage = 'This pet appears to already be registered. Please open the existing record instead of creating a duplicate.';
+
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $duplicateMessage,
+                    'existing_pet_id' => $existingDuplicate->id,
+                ], 409);
+            }
+
+            return back()->withErrors(['pet_name' => $duplicateMessage])->withInput();
+        }
+
         // Handle pet photo upload for customers
         if ($isCustomer && $request->hasFile('pet_photo')) {
             $path = $request->file('pet_photo')->store('pet-photos', 'public');
@@ -280,7 +354,7 @@ class PetController extends Controller
             if ($request->wantsJson() || $request->ajax()) {
                 return response()->json([
                     'success' => true,
-                    'message' => 'Pet registered successfully! Pet ID: ' . $patient->patient_id,
+                    'message' => 'Pet registered successfully!',
                     'patient' => $patient
                 ]);
             }
@@ -290,7 +364,7 @@ class PetController extends Controller
 
             return redirect()
                 ->route($redirectRoute, $redirectParam)
-                ->with('success', 'Pet registered successfully! Pet ID: ' . $patient->patient_id);
+                ->with('success', 'Pet registered successfully!');
         } catch (\Exception $e) {
             Log::error('Error creating patient: ' . $e->getMessage(), [
                 'exception' => $e,
@@ -374,12 +448,12 @@ class PetController extends Controller
                 'birthdate'                 => 'required|date|before:today',
                 'sex'                       => 'required|in:Male,Female,Neutered Male,Spayed Female',
                 'owner_name'                => 'required|string|max:255',
-                'owner_contact'             => 'nullable|regex:/^(09\d{9}|09\d{2}-\d{3}-\d{4})$/',
+                'owner_contact'             => 'nullable|regex:/^09\d{2}-?\d{3}-?\d{4}$/',
                 'address'                   => 'required|string',
                 'is_required'               => 'nullable|boolean',
                 'privacy_consent'           => 'nullable|boolean',
                 'emergency_contact_name'    => 'nullable|string|max:255',
-                'emergency_contact_number'  => 'nullable|regex:/^(09\d{9}|09\d{2}-\d{3}-\d{4})$/',
+                'emergency_contact_number'  => 'nullable|regex:/^09\d{2}-?\d{3}-?\d{4}$/',
                 'pet_photo'                 => 'nullable|image|max:4096',
             ]);
         }

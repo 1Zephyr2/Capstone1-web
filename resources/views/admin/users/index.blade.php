@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Management - PAWser Admin</title>
+    <title>User Management - PAWSER Admin</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
@@ -12,10 +12,39 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --app-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body,
+        input,
+        select,
+        textarea,
+        button,
+        table,
+        th,
+        td,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        a,
+        label,
+        small,
+        strong,
+        em,
+        li,
+        span,
+        div {
+            font-family: var(--app-font-family) !important;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: var(--app-font-family);
             background: #f8fafc;
-            display: flex;
             min-height: 100vh;
         }
 
@@ -211,8 +240,8 @@
         /* Main Content */
         .main-content {
             flex: 1;
-            margin-left: 260px;
-            padding: 32px;
+            margin-left: 0;
+            padding: 104px 32px 32px;
         }
 
         .page-header {
@@ -246,6 +275,55 @@
 
         .btn-primary:hover {
             background: #1e3a8a;
+        }
+
+        .tab-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab-link {
+            padding: 10px 16px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid #cbd5e1;
+            color: #334155;
+            background: #f8fafc;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab-link:hover {
+            background: #eef2ff;
+            border-color: #94a3b8;
+            color: #1e293b;
+            transform: translateY(-1px);
+        }
+
+        .tab-link.active {
+            background: rgba(20, 184, 166, 0.18);
+            border-color: #14b8a6;
+            color: #0f766e;
+        }
+
+        .tab-count {
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: rgba(148, 163, 184, 0.2);
+            color: #475569;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .tab-link.active .tab-count {
+            background: rgba(20, 184, 166, 0.2);
+            color: #0f766e;
         }
 
         /* Alerts */
@@ -331,6 +409,16 @@
             color: #059669;
         }
 
+        .badge.staff {
+            background: #dcfce7;
+            color: #059669;
+        }
+
+        .badge.customer {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
         .actions {
             display: flex;
             gap: 8px;
@@ -395,67 +483,7 @@
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <a href="{{ route('admin.dashboard') }}" class="logo-container">
-                <div class="logo-icon">
-                    <i class="bi bi-shield-lock"></i>
-                </div>
-                <div class="logo-text">PAWser</div>
-            </a>
-            <div class="sidebar-subtitle">ADMIN PANEL</div>
-        </div>
-
-        <div class="sidebar-menu">
-            <div class="menu-section">
-                <div class="menu-label">MAIN</div>
-                <a href="{{ route('admin.dashboard') }}" class="menu-item">
-                    <span class="menu-icon"><i class="bi bi-speedometer2"></i></span>
-                    <span class="menu-text">Dashboard</span>
-                </a>
-                <a href="{{ route('admin.users.index') }}" class="menu-item active">
-                    <span class="menu-icon"><i class="bi bi-people"></i></span>
-                    <span class="menu-text">User Management</span>
-                </a>
-            </div>
-
-            <div class="menu-section">
-                <div class="menu-label">SYSTEM</div>
-                <a href="{{ route('admin.settings') }}" class="menu-item">
-                    <span class="menu-icon"><i class="bi bi-gear"></i></span>
-                    <span class="menu-text">Settings</span>
-                </a>
-            </div>
-        </div>
-
-        <div class="user-section">
-            <div class="user-info-sidebar">
-                @if(Auth::user()->profile_picture)
-                    <div class="user-avatar-sidebar">
-                        <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="{{ Auth::user()->name }}">
-                    </div>
-                @else
-                    <div class="user-avatar-sidebar">
-                        <i class="bi bi-person-fill" style="font-size: 24px;"></i>
-                    </div>
-                @endif
-                <div class="user-details-sidebar">
-                    <div class="user-name-sidebar">{{ Auth::user()->name }}</div>
-                    <div class="user-role-sidebar">Administrator</div>
-                </div>
-            </div>
-            <a href="{{ route('profile.show') }}" class="logout-btn-sidebar" style="text-decoration: none; margin-bottom: 8px;">
-                <i class="bi bi-person-circle"></i> My Profile
-            </a>
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit" class="logout-btn-sidebar">
-                    <i class="bi bi-box-arrow-right"></i> Logout
-                </button>
-            </form>
-        </div>
-    </div>
+    <x-admin-navbar />
 
     <!-- Main Content -->
     <div class="main-content">
@@ -464,6 +492,19 @@
             <a href="{{ route('admin.users.create') }}" class="btn-primary">
                 <i class="bi bi-person-plus"></i>
                 Add New User
+            </a>
+        </div>
+
+        <div class="tab-bar">
+            <a href="{{ route('admin.users.index', ['tab' => 'staff']) }}" class="tab-link {{ $activeTab === 'staff' ? 'active' : '' }}">
+                <i class="bi bi-people"></i>
+                Staff Accounts
+                <span class="tab-count">{{ $staffCount }}</span>
+            </a>
+            <a href="{{ route('admin.users.index', ['tab' => 'pet_owners']) }}" class="tab-link {{ $activeTab === 'pet_owners' ? 'active' : '' }}">
+                <i class="bi bi-heart"></i>
+                Pet Owner Accounts
+                <span class="tab-count">{{ $petOwnerCount }}</span>
             </a>
         </div>
 
@@ -503,16 +544,18 @@
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->phone ?? '-' }}</td>
                                 <td>
-                                    <span class="badge {{ $user->role === 'admin' ? 'admin' : 'staff' }}">
-                                        {{ $user->role === 'admin' ? 'Administrator' : 'Staff Member' }}
+                                    <span class="badge {{ $user->role === 'admin' ? 'admin' : ($user->role === 'customer' ? 'customer' : 'staff') }}">
+                                        {{ $user->role_name }}
                                     </span>
                                 </td>
                                 <td>{{ $user->created_at->format('M j, Y') }}</td>
                                 <td>
                                     <div class="actions">
-                                        <a href="{{ route('admin.users.edit', $user) }}" class="btn-sm btn-edit">
-                                            <i class="bi bi-pencil"></i> Edit
-                                        </a>
+                                        @if($user->role !== 'customer')
+                                            <a href="{{ route('admin.users.edit', $user) }}" class="btn-sm btn-edit">
+                                                <i class="bi bi-pencil"></i> Edit
+                                            </a>
+                                        @endif
                                         @if($user->id !== Auth::id())
                                             <form action="{{ route('admin.users.destroy', $user) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this user?');">
                                                 @csrf
@@ -545,3 +588,4 @@
     </div>
 </body>
 </html>
+

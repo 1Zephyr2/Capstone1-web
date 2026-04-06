@@ -481,6 +481,16 @@
             background: #f9fafb;
             border-left: 4px solid #14b8a6;
             border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .record-item.visit-clickable {
+            cursor: pointer;
+        }
+
+        .record-item.visit-clickable:hover {
+            background: #f0fdfa;
+            border-left-color: #0d9488;
         }
 
         .record-title {
@@ -492,6 +502,132 @@
         .record-info {
             font-size: 13px;
             color: #9ca3af;
+        }
+
+        .visit-row-meta {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #0f766e;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .record-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .visit-detail-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.62);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            backdrop-filter: blur(6px);
+        }
+
+        .visit-detail-modal.active {
+            display: flex;
+        }
+
+        .visit-detail-content {
+            width: min(92vw, 760px);
+            max-height: 88vh;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .visit-detail-header {
+            padding: 16px 18px;
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .visit-detail-title {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .visit-detail-subtitle {
+            margin: 4px 0 0;
+            font-size: 13px;
+            opacity: 0.95;
+        }
+
+        .visit-detail-close {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.24);
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .visit-detail-body {
+            padding: 16px 18px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .visit-detail-block {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            background: #f8fafc;
+            padding: 12px;
+        }
+
+        .visit-detail-block h4 {
+            margin: 0 0 8px;
+            font-size: 14px;
+            color: #0f172a;
+            font-weight: 700;
+        }
+
+        .visit-detail-text {
+            font-size: 13px;
+            color: #475569;
+            line-height: 1.45;
+        }
+
+        .visit-photos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 10px;
+        }
+
+        .visit-photo-thumb {
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            background: #f8fafc;
+            aspect-ratio: 1;
+        }
+
+        .visit-photo-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
 
         .empty-state {
@@ -959,16 +1095,19 @@
             @else
                 <div class="records-list">
                     @foreach($pet->visits as $visit)
-                        <div class="record-item">
-                            <div class="record-title">{{ $visit->service_type ?? 'Visit' }}</div>
-                            <div class="record-info">
-                                <i class="bi bi-calendar-event"></i>
-                                {{ $visit->visit_date->format('M d, Y') }}
-                                @if($visit->notes)
-                                    • {{ substr($visit->notes, 0, 50) }}{{ strlen($visit->notes) > 50 ? '...' : '' }}
-                                @endif
+                        <a href="{{ route('visits.show', $visit) }}" class="record-link">
+                            <div class="record-item visit-clickable">
+                                <div class="record-title">{{ $visit->service_type ?? 'Visit' }}</div>
+                                <div class="record-info">
+                                    <i class="bi bi-calendar-event"></i>
+                                    {{ $visit->visit_date->format('M d, Y') }}
+                                    @if($visit->notes)
+                                        • {{ substr($visit->notes, 0, 50) }}{{ strlen($visit->notes) > 50 ? '...' : '' }}
+                                    @endif
+                                </div>
+                                <div class="visit-row-meta"><i class="bi bi-eye"></i> View full visit details</div>
                             </div>
-                        </div>
+                        </a>
                     @endforeach
                 </div>
             @endif

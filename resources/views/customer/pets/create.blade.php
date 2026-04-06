@@ -714,7 +714,7 @@
 
             <div class="navbar-center">
                 <a href="{{ route('customer.dashboard') }}" class="nav-item">
-                    <i class="bi bi-speedometer2"></i>
+                    <button type="button" class="btn-secondary" onclick="goBack()">Cancel</button>
                     Dashboard
                 </a>
                 <a href="{{ route('customer.pets.index') }}" class="nav-item active">
@@ -814,6 +814,17 @@
                             });
                         }
                     </script>
+                        function goBack() {
+                            const referrer = document.referrer;
+                            const currentDomain = window.location.origin;
+
+                            if (referrer && referrer.startsWith(currentDomain) && referrer !== window.location.href) {
+                                window.history.back();
+                            } else {
+                                window.location.href = "{{ route('customer.pets.index') }}";
+                            }
+                        }
+
                 </div>
 
                 <div class="user-avatar">
@@ -967,7 +978,7 @@
 
                 <!-- Actions -->
                 <div class="actions">
-                    <button type="button" class="btn-secondary" onclick="window.history.back()">Cancel</button>
+                    <button type="button" class="btn-secondary" onclick="goBack()">Cancel</button>
                     <button type="submit" class="btn-primary">Add Pet</button>
                 </div>
             </form>

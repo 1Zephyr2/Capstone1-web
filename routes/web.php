@@ -177,6 +177,7 @@ Route::middleware('auth')->group(function () {
     })->name('medical.records');
 
     // Appointment Routes
+    Route::get('/appointments/book', [AppointmentController::class, 'create'])->name('appointments.book');
     Route::resource('appointments', AppointmentController::class);
     Route::patch('/appointments/{appointment}/quick-update', [AppointmentController::class, 'quickUpdate'])->name('appointments.quick-update');
     Route::get('/appointments/calendar/data', [AppointmentController::class, 'calendar'])->name('appointments.calendar.data');
@@ -195,7 +196,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/appointment-requests/{appointmentRequest}/reject', [\App\Http\Controllers\AppointmentRequestController::class, 'reject'])->name('appointment-requests.reject');
     
     // Legacy appointment routes for backward compatibility
-    Route::get('/appointments/book', [AppointmentController::class, 'create'])->name('appointments.book');
     Route::get('/appointments/schedule', function () {
         return view('appointments.schedule');
     })->name('appointments.schedule');

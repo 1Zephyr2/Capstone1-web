@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Import Pets - PAWser</title>
+    <title>Import Pets - PAWSER</title>
     <style>
         * {
             margin: 0;
@@ -200,7 +200,7 @@
         <div class="card">
             <div class="header-top">
                 <a href="{{ route('dashboard') }}" class="header-logo">
-                    <img src="{{ asset('newlogo.png') }}" alt="PAWser" style="height: 35px; object-fit: contain;">
+                    <img src="{{ asset('newlogo.png') }}" alt="PAWSER" style="height: 35px; object-fit: contain;">
                 </a>
                 <button onclick="goBack()" class="btn-back">← Back</button>
                 <h1>Import Pet Records</h1>
@@ -365,3 +365,4 @@
     </script>
 </body>
 </html>
+

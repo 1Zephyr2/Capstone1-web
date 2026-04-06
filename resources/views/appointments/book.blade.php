@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Appointment - PAWser</title>
+    <title>Book Appointment - PAWSER</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
@@ -487,7 +487,7 @@
 </head>
 <body>
     <div class="container">
-        <a href="{{ route('appointments.index') }}" class="back-btn">← Back to Appointments</a>
+        <a href="{{ route('appointments.index') }}" class="back-btn">← Back</a>
         <div class="header">
             <h1>Book Appointment</h1>
         </div>
@@ -993,3 +993,4 @@
     </script>
 </body>
 </html>
+

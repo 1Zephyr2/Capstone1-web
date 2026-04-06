@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit User - PAWser Admin</title>
+    <title>Edit User - PAWSER Admin</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
@@ -12,47 +12,84 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --app-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body,
+        input,
+        select,
+        textarea,
+        button,
+        table,
+        th,
+        td,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        a,
+        label,
+        small,
+        strong,
+        em,
+        li,
+        span,
+        div {
+            font-family: var(--app-font-family) !important;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f8fafc;
-            display: flex;
+            font-family: var(--app-font-family);
+            background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
             min-height: 100vh;
+            padding: 104px 24px 40px;
+        }
+
+        .page-wrap {
+            width: 100%;
+            display: flex;
             justify-content: center;
             align-items: flex-start;
-            padding: 32px;
         }
 
         /* Form Container */
         .form-container {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            border: 1px solid #e2e8f0;
+            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+            border-radius: 20px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.06);
             width: 100%;
-            max-width: 800px;
+            max-width: 920px;
             overflow: hidden;
         }
 
         .form-header {
-            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
-            color: white;
-            padding: 20px 24px;
-            text-align: center;
+            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+            color: #111827;
+            padding: 24px 28px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
         }
 
         .form-header h1 {
-            font-size: 24px;
-            font-weight: 600;
+            font-size: 28px;
+            font-weight: 800;
             margin-bottom: 6px;
+            letter-spacing: -0.02em;
         }
 
         .form-header p {
-            opacity: 0.9;
-            font-size: 13px;
+            color: #64748b;
+            opacity: 1;
+            font-size: 14px;
         }
 
         .form-body {
-            padding: 24px;
+            padding: 28px;
         }
 
         .form-group {
@@ -68,9 +105,9 @@
         .form-label {
             display: block;
             margin-bottom: 6px;
-            font-weight: 500;
-            color: #1e293b;
-            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
+            font-size: 14px;
         }
 
         .form-label .required {
@@ -79,24 +116,25 @@
 
         .form-input {
             width: 100%;
-            padding: 10px 14px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
+            padding: 12px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
             font-size: 14px;
             transition: all 0.2s;
+            background: white;
         }
 
         .form-input:focus {
             outline: none;
-            border-color: #1e40af;
-            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+            border-color: #14b8a6;
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15);
         }
 
         .form-select {
             width: 100%;
-            padding: 10px 14px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
+            padding: 12px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
             font-size: 14px;
             background: white;
             cursor: pointer;
@@ -104,8 +142,8 @@
 
         .form-select:focus {
             outline: none;
-            border-color: #1e40af;
-            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+            border-color: #14b8a6;
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15);
         }
 
         .error-message {
@@ -117,17 +155,19 @@
         .form-actions {
             display: flex;
             gap: 12px;
-            margin-top: 20px;
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            justify-content: flex-end;
         }
 
         .btn {
-            flex: 1;
-            padding: 10px 20px;
-            border-radius: 8px;
+            padding: 12px 22px;
+            border-radius: 10px;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
             border: none;
             text-decoration: none;
             display: inline-flex;
@@ -137,21 +177,24 @@
         }
 
         .btn-primary {
-            background: #1e40af;
+            background: #14b8a6;
             color: white;
         }
 
         .btn-primary:hover {
-            background: #1e3a8a;
+            background: #0d9488;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
         }
 
         .btn-secondary {
-            background: #f1f5f9;
-            color: #64748b;
+            background: #e5e7eb;
+            color: #111827;
         }
 
         .btn-secondary:hover {
-            background: #e2e8f0;
+            background: #d1d5db;
+            transform: translateY(-2px);
         }
 
         .alert {
@@ -161,13 +204,13 @@
         }
 
         .alert.error {
-            background: #fee2e2;
-            border: 1px solid #fca5a5;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
             color: #991b1b;
         }
 
         .help-text {
-            font-size: 11px;
+            font-size: 12px;
             color: #64748b;
             margin-top: 4px;
         }
@@ -185,13 +228,38 @@
         }
         
         @media (max-width: 768px) {
+            body {
+                padding: 96px 16px 24px;
+            }
+
             .form-row {
                 grid-template-columns: 1fr;
+            }
+
+            .form-header,
+            .form-body {
+                padding: 20px;
+            }
+
+            .form-header h1 {
+                font-size: 24px;
+            }
+
+            .form-actions {
+                justify-content: stretch;
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
             }
         }
     </style>
 </head>
 <body>
+    <x-admin-navbar />
+
+    <div class="page-wrap">
     <div class="form-container">
         <div class="form-header">
             <h1>Edit User</h1>
@@ -381,5 +449,7 @@
             </script>
         </div>
     </div>
+    </div>
 </body>
 </html>
+

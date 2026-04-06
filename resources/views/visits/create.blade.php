@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Record Visit - PAWser</title>
+    <title>Record Visit - PAWSER</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
@@ -192,7 +192,7 @@
 <body>
     <div class="container">
         <div class="header-top">
-            <a href="{{ route('pets.show', $patient) }}" class="btn-back"><i class="bi bi-arrow-left"></i> Back</a>
+            <a href="{{ route('pets.show', $patient) }}" class="btn-back" onclick="goBack(); return false;"><i class="bi bi-arrow-left"></i> Back</a>
             <h1>Record Visit</h1>
         </div>
 
@@ -370,13 +370,24 @@
 
             <!-- Actions -->
             <div class="actions">
-                <button type="button" class="btn btn-secondary" onclick="window.history.back()">Cancel</button>
+                <button type="button" class="btn btn-secondary" onclick="goBack()">Cancel</button>
                 <button type="submit" class="btn btn-primary">Save Visit</button>
             </div>
         </form>
     </div>
 
     <script>
+        function goBack() {
+            const referrer = document.referrer;
+            const currentDomain = window.location.origin;
+
+            if (referrer && referrer.startsWith(currentDomain) && referrer !== window.location.href) {
+                window.history.back();
+            } else {
+                window.location.href = "{{ route('pets.show', $patient) }}";
+            }
+        }
+
         // Service type conditional fields
         const serviceTypeSelect = document.getElementById('serviceType');
         
@@ -416,3 +427,4 @@
     </script>
 </body>
 </html>
+

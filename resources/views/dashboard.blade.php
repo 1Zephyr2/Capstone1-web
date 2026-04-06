@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - PAWser</title>
+    <title>Dashboard - PAWSER</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
@@ -2661,21 +2661,21 @@
         <main class="dashboard-content">
             <!-- Quick Actions -->
             <div class="quick-actions">
-                <div class="action-card" onclick="openModal('newPatient')" style="cursor: pointer;">
+                <a href="{{ route('pets.create') }}" class="action-card" style="cursor: pointer; text-decoration: none; color: inherit;">
                     <div class="action-icon blue"><i class="bi bi-clipboard2-check"></i></div>
                     <div class="action-details">
-                        <h3>New Pet Record</h3>
-                        <p>Create veterinary record</p>
+                        <h3>Register New Pet</h3>
+                        <p>Add a new pet profile</p>
                     </div>
-                </div>
+                </a>
 
-                <div class="action-card" onclick="openModal('bookAppointment')" style="cursor: pointer;">
+                <a href="{{ route('appointments.book') }}" class="action-card" style="cursor: pointer; text-decoration: none; color: inherit;">
                     <div class="action-icon green"><i class="bi bi-calendar-event"></i></div>
                     <div class="action-details">
                         <h3>Book Appointment</h3>
                         <p>Schedule new visit</p>
                     </div>
-                </div>
+                </a>
 
                 <div class="action-card" onclick="openModal('patientSearch')" style="cursor: pointer;">
                     <div class="action-icon purple"><i class="bi bi-heart-fill"></i></div>
@@ -5381,3 +5381,4 @@ Registered: ${new Date(patient.registeredDate).toLocaleString()}
     </script>
 </body>
 </html>
+

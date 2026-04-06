@@ -1,6 +1,6 @@
-# PAWser - Pet Appointment and Workflow Service & Records System
+# PAWSER - Pet Appointment and Workflow Service & Records System
 
-**Capstone Project** - A comprehensive web-based pet clinic management system built with Laravel. PAWser streamlines pet registration, owner records, appointments, visit documentation, clinic operations, and administrative tasks for veterinary and pet care teams.
+**Capstone Project** - A comprehensive web-based pet clinic management system built with Laravel. PAWSER streamlines pet registration, owner records, appointments, visit documentation, clinic operations, and administrative tasks for veterinary and pet care teams.
 
 ## Table of Contents
 - [Features](#features)
@@ -269,4 +269,4 @@ For technical support or questions:
 
 ---
 
-**PAWser** - Streamlining pet appointments, workflow support, and records management.
+**PAWSER** - Streamlining pet appointments, workflow support, and records management.

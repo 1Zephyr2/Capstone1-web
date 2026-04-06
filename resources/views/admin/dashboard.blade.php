@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - PAWser</title>
+    <title>Admin Dashboard - PAWSER</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
@@ -12,10 +12,39 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --app-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body,
+        input,
+        select,
+        textarea,
+        button,
+        table,
+        th,
+        td,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        a,
+        label,
+        small,
+        strong,
+        em,
+        li,
+        span,
+        div {
+            font-family: var(--app-font-family) !important;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: var(--app-font-family);
             background: #f8fafc;
-            display: flex;
             min-height: 100vh;
             scroll-behavior: smooth;
         }
@@ -244,8 +273,8 @@
         /* Main Content */
         .main-content {
             flex: 1;
-            margin-left: 260px;
-            padding: 32px;
+            margin-left: 0;
+            padding: 104px 32px 32px;
             background: linear-gradient(to bottom, #f8fafc 0%, #f1f5f9 100%);
         }
 
@@ -594,12 +623,8 @@
         }
 
         @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-
             .main-content {
-                margin-left: 0;
+                padding: 96px 16px 24px;
             }
 
             .stats-grid {
@@ -609,67 +634,7 @@
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <a href="{{ route('admin.dashboard') }}" class="logo-container">
-                <div class="logo-icon">
-                    <i class="bi bi-shield-lock"></i>
-                </div>
-                <div class="logo-text">PAWser</div>
-            </a>
-            <div class="sidebar-subtitle">ADMIN PANEL</div>
-        </div>
-
-        <div class="sidebar-menu">
-            <div class="menu-section">
-                <div class="menu-label">MAIN</div>
-                <a href="{{ route('admin.dashboard') }}" class="menu-item active">
-                    <span class="menu-icon"><i class="bi bi-speedometer2"></i></span>
-                    <span class="menu-text">Dashboard</span>
-                </a>
-                <a href="{{ route('admin.users.index') }}" class="menu-item">
-                    <span class="menu-icon"><i class="bi bi-people"></i></span>
-                    <span class="menu-text">User Management</span>
-                </a>
-            </div>
-
-            <div class="menu-section">
-                <div class="menu-label">SYSTEM</div>
-                <a href="{{ route('admin.settings') }}" class="menu-item">
-                    <span class="menu-icon"><i class="bi bi-gear"></i></span>
-                    <span class="menu-text">Settings</span>
-                </a>
-            </div>
-        </div>
-
-        <div class="user-section">
-            <div class="user-info-sidebar">
-                @if(Auth::user()->profile_picture)
-                    <div class="user-avatar-sidebar">
-                        <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="{{ Auth::user()->name }}">
-                    </div>
-                @else
-                    <div class="user-avatar-sidebar">
-                        <i class="bi bi-person-fill" style="font-size: 24px;"></i>
-                    </div>
-                @endif
-                <div class="user-details-sidebar">
-                    <div class="user-name-sidebar">{{ Auth::user()->name }}</div>
-                    <div class="user-role-sidebar">Administrator</div>
-                </div>
-            </div>
-            <a href="{{ route('profile.show') }}" class="logout-btn-sidebar" style="text-decoration: none; margin-bottom: 8px;">
-                <i class="bi bi-person-circle"></i> My Profile
-            </a>
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit" class="logout-btn-sidebar">
-                    <i class="bi bi-box-arrow-right"></i> Logout
-                </button>
-            </form>
-        </div>
-    </div>
+    <x-admin-navbar />
 
     <!-- Main Content -->
     <div class="main-content">
@@ -802,3 +767,4 @@
     </div>
 </body>
 </html>
+

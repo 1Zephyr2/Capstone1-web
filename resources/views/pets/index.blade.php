@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pets - PAWser</title>
+    <title>Pets - PAWSER</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
@@ -98,24 +98,31 @@
             margin-bottom: 20px;
         }
         .btn-new-patient {
-            padding: 12px 22px;
+            padding: 10px 20px;
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-strong) 100%);
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 14px;
-            font-weight: 700;
+            font-weight: 400;
+            line-height: 1.2;
+            letter-spacing: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             transition: all 0.3s ease;
-            box-shadow: 0 8px 20px rgba(20, 184, 166, 0.25);
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
+        }
+        .btn-new-patient i {
+            font-size: 14px;
+            line-height: 1;
         }
         .btn-new-patient:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 24px rgba(20, 184, 166, 0.32);
+            box-shadow: 0 8px 20px rgba(20, 184, 166, 0.4);
         }
         .btn-import {
             padding: 12px 20px;
@@ -221,6 +228,7 @@
             border: 1.5px solid #d1d5db;
             border-radius: 8px;
             font-size: 14px;
+            font-weight: 400;
             background: white;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -240,7 +248,7 @@
             color: white;
             border: none;
             border-radius: 8px;
-            font-weight: 600;
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.2s ease;
             display: flex;
@@ -277,11 +285,11 @@
             background: linear-gradient(135deg, #f0f9ff 0%, #f8fafc 100%);
             padding: 18px 16px;
             text-align: left;
-            font-weight: 700;
+            font-weight: 500;
             color: #0f172a;
             border-bottom: 2px solid #e5e7eb;
             letter-spacing: -0.01em;
-            font-size: 13px;
+            font-size: 12px;
             text-transform: uppercase;
         }
         .patients-table tbody tr {
@@ -295,7 +303,7 @@
             padding: 18px 16px;
             border-bottom: 1px solid #e5e7eb;
             color: #374151;
-            font-size: 14px;
+            font-size: 13px;
             vertical-align: middle;
         }
         /* Table Data Rows */
@@ -332,9 +340,16 @@
             font-weight: 700;
             flex-shrink: 0;
             box-shadow: 0 2px 6px rgba(20, 184, 166, 0.3);
+            overflow: hidden;
+        }
+        .pet-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
         .pet-label {
-            font-weight: 600;
+            font-weight: 500;
             color: #1f2937;
             font-size: 14px;
         }
@@ -350,7 +365,7 @@
             gap: 3px;
         }
         .owner-label {
-            font-weight: 600;
+            font-weight: 500;
             color: #1f2937;
             font-size: 14px;
         }
@@ -365,7 +380,7 @@
             gap: 3px;
         }
         .detail-main {
-            font-weight: 500;
+            font-weight: 400;
             color: #1f2937;
             font-size: 14px;
         }
@@ -381,7 +396,7 @@
             color: #0d7377;
             border-radius: 6px;
             font-size: 13px;
-            font-weight: 600;
+            font-weight: 500;
         }
         .no-visit-badge {
             display: inline-block;
@@ -438,7 +453,7 @@
         .owner-row-contact {
             font-size: 13px;
             color: #6b7280;
-            font-weight: 600;
+            font-weight: 400;
         }
         .owner-row-hint {
             font-size: 12px;
@@ -494,7 +509,7 @@
             border-radius: 20px;
             padding: 4px 10px;
             font-size: 12px;
-            font-weight: 700;
+            font-weight: 500;
         }
         .chevron {
             font-size: 16px;
@@ -1501,8 +1516,24 @@
                 </thead>
                 <tbody>
                     @php
+                        $formatOwnerContact = function ($contact) {
+                            $raw = trim((string) ($contact ?? ''));
+
+                            if ($raw === '' || str_contains($raw, '@')) {
+                                return null;
+                            }
+
+                            $digits = preg_replace('/\D/', '', $raw);
+
+                            if (strlen($digits) === 11 && str_starts_with($digits, '09')) {
+                                return substr($digits, 0, 4) . '-' . substr($digits, 4, 3) . '-' . substr($digits, 7, 4);
+                            }
+
+                            return $digits !== '' ? $digits : $raw;
+                        };
+
                         $groupedPets = $patients->groupBy(function ($patient) {
-                            return ($patient->owner_name ?: 'Unknown Owner') . '|' . ($patient->owner_contact ?: 'No contact');
+                            return strtolower(trim((string) ($patient->owner_name ?: 'Unknown Owner')));
                         });
                     @endphp
 
@@ -1511,7 +1542,27 @@
                         $ownerPet = $ownerPets->first();
                         $ownerId = 'owner-' . $loop->index;
                         $ownerLabel = $ownerPet->owner_name ?: 'Unknown Owner';
-                        $ownerContact = $ownerPet->owner_contact ?: 'No contact';
+                        $displayPets = $ownerPets
+                            ->sortByDesc(function ($pet) use ($formatOwnerContact) {
+                                $hasPhoto = !empty($pet->pet_photo_path) ? 1000000 : 0;
+                                $hasValidContact = !empty($formatOwnerContact($pet->owner_contact)) ? 100000 : 0;
+                                return $hasPhoto + $hasValidContact + (int) $pet->id;
+                            })
+                            ->unique(function ($pet) {
+                                $petName = strtolower(trim((string) ($pet->pet_name ?? '')));
+                                $species = strtolower(trim((string) ($pet->species ?? '')));
+                                $birthdate = $pet->birthdate ? $pet->birthdate->format('Y-m-d') : '';
+
+                                return $petName . '|' . $species . '|' . $birthdate;
+                            })
+                            ->values();
+                        $ownerContact = $ownerPets
+                            ->map(function ($pet) use ($formatOwnerContact) {
+                                return $formatOwnerContact($pet->owner_contact);
+                            })
+                            ->first(function ($contact) {
+                                return !empty($contact);
+                            }) ?: 'No contact';
                     @endphp
                     <tr class="owner-row" data-owner-id="{{ $ownerId }}" onclick="toggleOwner('{{ $ownerId }}')">
                         <td>
@@ -1519,7 +1570,7 @@
                                 <div class="owner-avatar">{{ strtoupper(substr($ownerLabel ?: 'U', 0, 1)) }}</div>
                                 <div>
                                     <div class="owner-label">{{ $ownerLabel }}</div>
-                                    <div class="owner-row-hint">{{ $ownerPets->count() }} {{ $ownerPets->count() === 1 ? 'pet' : 'pets' }}</div>
+                                    <div class="owner-row-hint">{{ $displayPets->count() }} {{ $displayPets->count() === 1 ? 'pet' : 'pets' }}</div>
                                 </div>
                             </div>
                         </td>
@@ -1529,7 +1580,7 @@
                         <td>
                             <span class="pet-count-badge">
                                 <i class="bi bi-heart-fill" style="font-size:10px;"></i>
-                                {{ $ownerPets->count() }} {{ $ownerPets->count() === 1 ? 'pet' : 'pets' }}
+                                {{ $displayPets->count() }} {{ $displayPets->count() === 1 ? 'pet' : 'pets' }}
                             </span>
                         </td>
                         <td>
@@ -1540,21 +1591,30 @@
                         </td>
                     </tr>
 
-                    @foreach($ownerPets as $patient)
+                    @foreach($displayPets as $patient)
+                    @php
+                        $petOwnerContact = $formatOwnerContact($patient->owner_contact) ?: 'No contact';
+                    @endphp
                     <tr class="pet-row" data-owner-id="{{ $ownerId }}" data-pet-name="{{ strtolower($patient->pet_name) }}" data-owner-name="{{ strtolower($patient->owner_name ?? '') }}" data-species="{{ $patient->species ?? '' }}" data-has-visit="{{ $patient->visits->first() ? '1' : '0' }}">
                         <td>
                             <div class="pet-name-cell">
-                                <div class="pet-avatar">{{ strtoupper(substr($patient->pet_name ?? 'P', 0, 1)) }}</div>
+                                <div class="pet-avatar">
+                                    @if($patient->pet_photo_path)
+                                        <img src="{{ asset('storage/' . $patient->pet_photo_path) }}" alt="{{ $patient->pet_name }}">
+                                    @else
+                                        {{ strtoupper(substr($patient->pet_name ?? 'P', 0, 1)) }}
+                                    @endif
+                                </div>
                                 <div>
                                     <div class="pet-label">{{ $patient->pet_name }}</div>
-                                    <div class="pet-sub">ID: {{ $patient->id }}</div>
+                                    <div class="pet-sub">{{ $patient->sex ?? 'Unknown sex' }}</div>
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="owner-info">
                                 <div class="owner-label">{{ $patient->owner_name ?: 'Unknown Owner' }}</div>
-                                <div class="owner-sub">{{ $patient->owner_contact ?: 'No contact' }}</div>
+                                <div class="owner-sub">{{ $petOwnerContact }}</div>
                             </div>
                         </td>
                         <td>
@@ -1578,9 +1638,9 @@
                                 <a href="{{ route('pets.edit', $patient) }}" class="action-btn" title="Edit Pet">
                                     <i class="bi bi-pencil"></i>
                                 </a>
-                                <button type="button" onclick="event.stopPropagation(); openVisitModal({{ $patient->id }}, '{{ addslashes($patient->pet_name) }}', '{{ addslashes($patient->owner_name ?? '') }}')" class="action-btn" title="Add Visit">
+                                <a href="{{ route('visits.create', ['patient_id' => $patient->id]) }}" class="action-btn" title="Add Visit">
                                     <i class="bi bi-plus"></i>
-                                </button>
+                                </a>
                             </div>
                         </td>
                     </tr>
@@ -1782,10 +1842,26 @@
 
         // Visit Modal Functions
         function openVisitModal(petId, petName, ownerName) {
-            document.getElementById('visitModal').classList.add('active');
-            document.getElementById('modalPatientName').textContent = petName;
-            document.getElementById('modalOwnerName').textContent = ownerName;
-            document.getElementById('visitPatientId').value = petId;
+            const visitModal = document.getElementById('visitModal');
+            const modalPatientName = document.getElementById('modalPatientName');
+            const modalOwnerName = document.getElementById('modalOwnerName');
+            const visitPatientId = document.getElementById('visitPatientId');
+
+            if (!visitModal || !visitPatientId) {
+                return;
+            }
+
+            visitModal.classList.add('active');
+
+            if (modalPatientName) {
+                modalPatientName.textContent = petName || '';
+            }
+
+            if (modalOwnerName) {
+                modalOwnerName.textContent = ownerName || 'Unknown Owner';
+            }
+
+            visitPatientId.value = petId;
             updateServiceSection();
         }
 
@@ -1867,6 +1943,7 @@
                 <div class="modal-patient-info">
                     <h3 id="modalPatientName"></h3>
                     <div class="modal-patient-details">
+                        <div><strong>Owner:</strong> <span id="modalOwnerName"></span></div>
                         <div><strong>Age:</strong> <span id="modalPatientAge"></span> years</div>
                         <div><strong>Sex:</strong> <span id="modalPatientSex"></span></div>
                     </div>
@@ -2145,3 +2222,4 @@
     
 </body>
 </html>
+

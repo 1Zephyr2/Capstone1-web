@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register New Pet - PAWser</title>
+    <title>Register New Pet - PAWSER</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
@@ -393,7 +393,7 @@
 </head>
 <body>
     <div class="container">
-        <a href="{{ route('pets.index') }}" class="back-btn">← Back to Pets</a>
+        <a href="{{ route('pets.index') }}" class="back-btn" onclick="goBack(); return false;">← Back</a>
         
         <div class="header">
             <h1>Register New Pet</h1>
@@ -404,11 +404,11 @@
             <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">
                 <i class="bi bi-search"></i> Search Existing Pet (Auto-fill)
             </label>
-            <input type="text" id="patientSearch" placeholder="Type pet name to check if already exists..." 
+            <input type="text" id="patientSearch" placeholder="Type pet name or owner name..." 
                    style="width: 100%; padding: 12px; border: 2px solid #d1d5db; border-radius: 6px; font-size: 14px;">
             <div id="autocompleteResults" class="autocomplete-results"></div>
             <p style="font-size: 12px; color: #6b7280; margin-top: 6px;">
-                <i class="bi bi-lightbulb"></i> Start typing to search. Click on a result to auto-fill their information (you can still edit after).
+                <i class="bi bi-lightbulb"></i> Search by pet or owner. If owner name matches, all of that owner's pets are shown for faster selection.
             </p>
         </div>
 
@@ -546,7 +546,7 @@
 
             <!-- Actions -->
             <div class="actions">
-                <button type="button" class="btn-secondary" onclick="window.history.back()">Cancel</button>
+                <button type="button" class="btn-secondary" onclick="goBack()">Cancel</button>
                 <button type="submit" class="btn-primary">Register Pet</button>
             </div>
         </form>
@@ -698,26 +698,65 @@
             updateFormProgress();
         }
 
-        // Auto-calculate age from birthdate
+        // Auto-calculate age from birthdate (timezone-safe, with months for young pets)
         const birthdateInput = document.getElementById('birthdate');
         const ageDisplay = document.getElementById('ageDisplay');
-        
-        birthdateInput.addEventListener('change', function() {
-            const birthdate = new Date(this.value);
+
+        function parseLocalDate(dateValue) {
+            if (!dateValue) return null;
+            const parts = dateValue.split('-').map(Number);
+            if (parts.length !== 3 || parts.some(Number.isNaN)) return null;
+            const [year, month, day] = parts;
+            return new Date(year, month - 1, day);
+        }
+
+        function formatPhoneNumber(rawValue) {
+            const digits = String(rawValue || '').replace(/\D/g, '');
+            if (digits.length === 11 && digits.startsWith('09')) {
+                return `${digits.slice(0, 4)}-${digits.slice(4, 7)}-${digits.slice(7, 11)}`;
+            }
+            return '';
+        }
+
+        function renderAgeDisplay() {
+            const birthdate = parseLocalDate(birthdateInput.value);
+            if (!birthdate) {
+                ageDisplay.style.display = 'none';
+                updateFormProgress();
+                return;
+            }
+
             const today = new Date();
-            let age = today.getFullYear() - birthdate.getFullYear();
-            const monthDiff = today.getMonth() - birthdate.getMonth();
-            
-            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthdate.getDate())) {
-                age--;
+            let years = today.getFullYear() - birthdate.getFullYear();
+            let months = today.getMonth() - birthdate.getMonth();
+
+            if (today.getDate() < birthdate.getDate()) {
+                months -= 1;
             }
-            
-            if (age >= 0) {
-                ageDisplay.textContent = `Age: ${age} years old`;
-                ageDisplay.style.display = 'inline-block';
+
+            if (months < 0) {
+                years -= 1;
+                months += 12;
             }
+
+            if (years < 0) {
+                ageDisplay.style.display = 'none';
+                updateFormProgress();
+                return;
+            }
+
+            if (years === 0) {
+                ageDisplay.textContent = `Age: ${months} month${months === 1 ? '' : 's'} old`;
+            } else {
+                ageDisplay.textContent = `Age: ${years} year${years === 1 ? '' : 's'} old`;
+            }
+
+            ageDisplay.style.display = 'inline-block';
             updateFormProgress();
-        });
+        }
+
+        birthdateInput.addEventListener('change', renderAgeDisplay);
+        birthdateInput.addEventListener('input', renderAgeDisplay);
 
         // Patient search autocomplete
         const searchInput = document.getElementById('patientSearch');
@@ -753,13 +792,16 @@
             resultsContainer.innerHTML = patients.map(patient => `
                 <div class="autocomplete-item" onclick='fillPatientData(${JSON.stringify(patient)})'>
                     <strong>${patient.pet_name} (${patient.species})</strong>
-                    <small>ID: ${patient.patient_id} | Owner: ${patient.owner_name} | Birthdate: ${patient.birthdate}</small>
+                    <small>Owner: ${patient.owner_name} | Birthdate: ${patient.birthdate}</small>
+                    ${patient.owner_pet_count > 1 ? `<small style="display:block; margin-top:4px; color:#0f766e;">Owner has ${patient.owner_pet_count} pets on record</small>` : ''}
                 </div>
             `).join('');
             resultsContainer.classList.add('active');
         }
         
         function fillPatientData(patient) {
+            const safeOwnerContact = formatPhoneNumber(patient.owner_contact || '');
+
             // Fill form fields
             document.querySelector('[name="pet_name"]').value = patient.pet_name || '';
             document.querySelector('[name="species_id"]').value = patient.species_id || '';
@@ -768,11 +810,11 @@
             document.getElementById('birthdate').value = patient.birthdate || '';
             document.querySelector('[name="sex"]').value = patient.sex || '';
             document.querySelector('[name="owner_name"]').value = patient.owner_name || '';
-            document.querySelector('[name="owner_contact"]').value = patient.owner_contact || '';
+            document.querySelector('[name="owner_contact"]').value = safeOwnerContact;
             document.querySelector('[name="address"]').value = patient.address || '';
             
             // Trigger age calculation and load characteristics
-            birthdateInput.dispatchEvent(new Event('change'));
+            renderAgeDisplay();
             loadSpeciesCharacteristics();
             
             // Hide results
@@ -810,7 +852,7 @@
                         
                         if (exactMatch && duplicateWarning.style.display === 'none') {
                             duplicateWarning.style.display = 'flex';
-                            duplicateMessage.innerHTML = `A pet with this name may already exist: <strong>${exactMatch.pet_name}</strong> (${exactMatch.patient_id}). Please verify before submitting.`;
+                            duplicateMessage.innerHTML = `A pet with this name may already exist: <strong>${exactMatch.pet_name}</strong>. Please verify before submitting.`;
                         }
                     });
             }, 500);
@@ -894,6 +936,7 @@
             }
             // Initial progress update
             updateFormProgress();
+            renderAgeDisplay();
         });
 
         // Philippines phone number formatting for owner_contact
@@ -925,3 +968,4 @@
     </script>
 </body>
 </html>
+

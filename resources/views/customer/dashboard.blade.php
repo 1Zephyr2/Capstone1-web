@@ -539,6 +539,14 @@
             font-size: 20px;
             color: #14b8a6;
             flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .pet-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
 
         .pet-details h3 {
@@ -943,7 +951,11 @@
                         <div class="pet-item">
                             <div class="pet-info">
                                 <div class="pet-icon">
-                                    <i class="bi bi-paw-fill"></i>
+                                    @if($pet->pet_photo_path)
+                                        <img src="{{ asset('storage/' . $pet->pet_photo_path) }}" alt="{{ $pet->pet_name }}">
+                                    @else
+                                        <i class="bi bi-paw-fill"></i>
+                                    @endif
                                 </div>
                                 <div class="pet-details">
                                     <h3>{{ $pet->pet_name }}</h3>

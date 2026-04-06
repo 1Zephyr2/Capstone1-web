@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Action Hub - PAWser</title>
+    <title>Action Hub - PAWSER</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
 
@@ -783,9 +783,9 @@
     <nav class="navbar">
         <div class="navbar-container">
             <a href="{{ route('dashboard') }}" class="navbar-brand">
-                <img src="{{ asset('newlogo.png') }}" alt="PAWser" class="navbar-logo" onerror="this.style.display='none'">
+                <img src="{{ asset('newlogo.png') }}" alt="PAWSER" class="navbar-logo" onerror="this.style.display='none'">
                 <div class="navbar-brand-text">
-                    <p class="navbar-title">PAWser</p>
+                    <p class="navbar-title">PAWSER</p>
                     <p class="navbar-subtitle">Staff Dashboard</p>
                 </div>
             </a>
@@ -1109,3 +1109,4 @@
     </script>
 </body>
 </html>
+

@@ -66,11 +66,20 @@ class NotificationController extends Controller
 
         $notification->markAsRead();
 
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
+        $redirect = null;
+        if ($notification->appointment_request_id) {
+            // Staff can open request details; customers should be sent to a customer-safe page.
+            $redirect = $user->hasStaffAccess()
+                ? route('appointment-requests.show', $notification->appointment_request_id)
+                : route('customer.appointments.index');
+        }
+
         return response()->json([
             'success' => true,
-            'redirect' => $notification->appointment_request_id ? 
-                route('appointment-requests.show', $notification->appointment_request_id) : 
-                null,
+            'redirect' => $redirect,
         ]);
     }
 

@@ -9,6 +9,7 @@ use App\Models\Appointment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class VisitController extends Controller
 {
@@ -178,7 +179,24 @@ class VisitController extends Controller
      */
     public function show(Visit $visit)
     {
-        $visit->load(['patient']);
+        $visit->load(['patient', 'photos']);
+
+        $user = Auth::user();
+        if ($user && !in_array($user->role, ['admin', 'staff'], true)) {
+            $patient = $visit->patient;
+            $userPhoneDigits = preg_replace('/\D/', '', (string) ($user->phone ?? ''));
+            $ownerContactDigits = preg_replace('/\D/', '', (string) ($patient->owner_contact ?? ''));
+
+            $ownsVisit = $patient->user_id === $user->id
+                || $patient->owner_name === $user->name
+                || $patient->owner_contact === $user->email
+                || (!empty($userPhoneDigits) && $ownerContactDigits === $userPhoneDigits);
+
+            if (!$ownsVisit) {
+                abort(403, 'You do not have access to this visit record.');
+            }
+        }
+
         return view('visits.show', compact('visit'));
     }
 

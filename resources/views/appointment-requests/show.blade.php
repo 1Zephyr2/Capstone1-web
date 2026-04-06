@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Appointment Request Details - PAWser</title>
+    <title>Appointment Request Details - PAWSER</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
 
@@ -547,3 +547,4 @@
     </script>
 </body>
 </html>
+

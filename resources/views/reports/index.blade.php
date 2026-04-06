@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monthly Reports - PAWser</title>
+    <title>Monthly Reports - PAWSER</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
@@ -414,7 +414,7 @@
 
         <div class="footer">
             <p><strong>Report generated on {{ now()->format('F d, Y h:i A') }}</strong></p>
-            <p>© 2026 PAWser - Pet Appointment and Workflow Service &amp; Records System</p>
+            <p>© 2026 PAWSER - Pet Appointment and Workflow Service &amp; Records System</p>
         </div>
     </div>
 
@@ -438,3 +438,4 @@
     </script>
 </body>
 </html>
+

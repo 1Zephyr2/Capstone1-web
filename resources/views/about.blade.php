@@ -12,14 +12,47 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --page-bg-start: #969696;
+            --page-bg-end: #b0b0b0;
+            --surface-dark: rgba(31, 41, 55, 0.82);
+            --surface-border: rgba(126, 232, 223, 0.22);
+            --text-main: #e2e8f0;
+            --text-muted: #cbd5e1;
+            --accent-start: #0f766e;
+            --accent-end: #06b6d4;
+            --accent-soft: #7ee8df;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a9a8f 0%, #2d3d52 100%);
-            color: #e2e8f0;
+            background: linear-gradient(135deg, var(--page-bg-start) 0%, var(--page-bg-end) 100%);
+            color: #1e293b;
             line-height: 1.6;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Navigation */
@@ -142,11 +175,20 @@
         }
 
         /* Hero */
+        .intro-box {
+            background: var(--surface-dark);
+            border: 1px solid var(--surface-border);
+            border-radius: 20px;
+            max-width: 1000px;
+            margin: 44px auto 0;
+            box-shadow: 0 14px 34px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
         .hero-section {
-            background: rgba(31, 41, 55, 0.8);
-            padding: 80px 24px;
+            background: transparent;
+            padding: 70px 24px 32px;
             text-align: center;
-            border: 1px solid rgba(126, 232, 223, 0.2);
             backdrop-filter: blur(10px);
         }
 
@@ -159,11 +201,11 @@
             font-size: 48px;
             font-weight: 800;
             margin-bottom: 20px;
-            color: #e2e8f0;
+            color: var(--text-main);
         }
 
         .hero-content h1 span {
-            background: linear-gradient(135deg, #0d9488 0%, #06b6d4 100%);
+            background: linear-gradient(135deg, var(--accent-soft) 0%, #22d3ee 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -171,7 +213,7 @@
 
         .hero-content p {
             font-size: 18px;
-            color: #cbd5e1;
+            color: var(--text-muted);
             line-height: 1.8;
         }
 
@@ -179,22 +221,42 @@
         .container {
             max-width: 1000px;
             margin: 0 auto;
-            padding: 80px 24px;
+            padding: 50px 24px 80px;
+        }
+
+        .container.container-flush {
+            padding-left: 0;
+            padding-right: 0;
         }
 
         .section {
             margin-bottom: 80px;
+            background: var(--surface-dark);
+            border: 1px solid var(--surface-border);
+            border-radius: 18px;
+            padding: 36px;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+        }
+
+        .section.section-plain {
+            margin-bottom: 0;
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
+            padding-top: 8px;
+            padding-bottom: 44px;
         }
 
         .section h2 {
             font-size: 36px;
             font-weight: 800;
             margin-bottom: 30px;
-            color: #e2e8f0;
+            color: var(--text-main);
         }
 
         .section h2 span {
-            background: linear-gradient(135deg, #0d9488 0%, #06b6d4 100%);
+            background: linear-gradient(135deg, var(--accent-soft) 0%, #22d3ee 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -202,7 +264,7 @@
 
         .section p {
             font-size: 16px;
-            color: #e2e8f0;
+            color: var(--text-muted);
             line-height: 1.8;
             margin-bottom: 16px;
         }
@@ -215,29 +277,29 @@
         }
 
         .value-card {
-            background: white;
-            border: 1px solid #e2e8f0;
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(126, 232, 223, 0.2);
             border-radius: 12px;
             padding: 32px;
             transition: all 0.3s ease;
         }
 
         .value-card:hover {
-            border-color: #0d9488;
-            box-shadow: 0 12px 24px rgba(13, 148, 136, 0.12);
+            border-color: var(--accent-soft);
+            box-shadow: 0 12px 24px rgba(126, 232, 223, 0.18);
             transform: translateY(-4px);
         }
 
         .value-icon {
             width: 60px;
             height: 60px;
-            background: linear-gradient(135deg, #f0fdfa 0%, #ecf9f8 100%);
+            background: linear-gradient(135deg, rgba(13, 148, 136, 0.22) 0%, rgba(20, 184, 166, 0.12) 100%);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 28px;
-            color: #0d9488;
+            color: var(--accent-soft);
             margin-bottom: 20px;
         }
 
@@ -245,231 +307,53 @@
             font-size: 18px;
             font-weight: 700;
             margin-bottom: 12px;
-            color: #1e293b;
+            color: var(--text-main);
         }
 
         .value-card p {
             font-size: 14px;
-            color: #64748b;
+            color: var(--text-muted);
         }
 
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
+        nav {
+            animation: fadeIn 0.5s ease-out;
         }
 
-        .team-member {
-            text-align: center;
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 24px;
-            transition: all 0.3s ease;
+        .intro-box {
+            animation: fadeInUp 0.6s ease-out;
         }
 
-        .team-member:hover {
-            border-color: #0d9488;
-            box-shadow: 0 8px 16px rgba(13, 148, 136, 0.1);
+        .container.container-flush .section {
+            animation: fadeInUp 0.6s ease-out;
+            animation-delay: 0.1s;
         }
 
-        .team-avatar {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #0d9488 0%, #06b6d4 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 16px;
-            font-size: 32px;
-            color: white;
+        .value-card {
+            animation: fadeInUp 0.5s ease-out;
         }
 
-        .team-member h3 {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 4px;
-            color: #1e293b;
+        .value-card:nth-child(1) { animation-delay: 0.14s; }
+        .value-card:nth-child(2) { animation-delay: 0.2s; }
+        .value-card:nth-child(3) { animation-delay: 0.26s; }
+        .value-card:nth-child(4) { animation-delay: 0.32s; }
+        .value-card:nth-child(5) { animation-delay: 0.38s; }
+        .value-card:nth-child(6) { animation-delay: 0.44s; }
+
+        @media (prefers-reduced-motion: reduce) {
+            body {
+                transition: none;
+            }
+
+            nav,
+            .intro-box,
+            .container.container-flush .section,
+            .value-card {
+                animation: none;
+            }
         }
 
-        .team-member p {
-            font-size: 13px;
-            color: #0d9488;
-            margin-bottom: 12px;
-        }
 
-        .team-member .description {
-            font-size: 12px;
-            color: #64748b;
-        }
 
-        .timeline {
-            position: relative;
-            padding: 40px 0;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 2px;
-            height: 100%;
-            background: #e2e8f0;
-        }
-
-        .timeline-item {
-            margin-bottom: 50px;
-            position: relative;
-        }
-
-        .timeline-item:nth-child(odd) .timeline-content {
-            margin-left: 0;
-            margin-right: 51%;
-            text-align: right;
-        }
-
-        .timeline-item:nth-child(even) .timeline-content {
-            margin-left: 51%;
-            margin-right: 0;
-        }
-
-        .timeline-marker {
-            position: absolute;
-            left: 50%;
-            top: 0;
-            width: 16px;
-            height: 16px;
-            background: linear-gradient(135deg, #0d9488 0%, #06b6d4 100%);
-            border: 3px solid white;
-            border-radius: 50%;
-            transform: translateX(-50%);
-            z-index: 1;
-        }
-
-        .timeline-content {
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 24px;
-            transition: all 0.3s ease;
-        }
-
-        .timeline-content:hover {
-            border-color: #0d9488;
-            box-shadow: 0 8px 16px rgba(13, 148, 136, 0.1);
-        }
-
-        .timeline-content h3 {
-            font-size: 16px;
-            font-weight: 700;
-            color: #0d9488;
-            margin-bottom: 8px;
-        }
-
-        .timeline-content p {
-            font-size: 14px;
-            color: #e2e8f0;
-            margin: 0;
-        }
-
-        /* CTA */
-        .cta-section {
-            background: linear-gradient(135deg, #0d9488 0%, #06b6d4 100%);
-            color: white;
-            padding: 60px 24px;
-            text-align: center;
-            border-radius: 12px;
-            margin-top: 80px;
-        }
-
-        .cta-section h2 {
-            color: white;
-            font-size: 36px;
-            margin-bottom: 20px;
-        }
-
-        .cta-section p {
-            color: rgba(255, 255, 255, 0.95);
-            font-size: 16px;
-            margin-bottom: 30px;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .cta-btn {
-            padding: 12px 32px;
-            background: white;
-            color: #0d9488;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            display: inline-block;
-            border: none;
-            cursor: pointer;
-        }
-
-        .cta-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Footer */
-        footer {
-            background: #1e293b;
-            color: #cbd5e1;
-            padding: 60px 24px 20px;
-            margin-top: 80px;
-        }
-
-        .footer-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-
-        .footer-section h4 {
-            color: white;
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 16px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .footer-section ul {
-            list-style: none;
-        }
-
-        .footer-section ul li {
-            margin-bottom: 12px;
-        }
-
-        .footer-section a {
-            color: #cbd5e1;
-            text-decoration: none;
-            font-size: 13px;
-            transition: color 0.3s ease;
-        }
-
-        .footer-section a:hover {
-            color: #0d9488;
-        }
-
-        .footer-bottom {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid #334155;
-            font-size: 13px;
-        }
 
         @media (max-width: 768px) {
             .hero-content h1 {
@@ -480,22 +364,13 @@
                 font-size: 28px;
             }
 
-            .timeline::before {
-                left: 10px;
-            }
-
-            .timeline-item:nth-child(odd) .timeline-content,
-            .timeline-item:nth-child(even) .timeline-content {
-                margin-left: 50px;
-                margin-right: 0;
-            }
-
-            .timeline-marker {
-                left: 10px;
-            }
-
             .nav-menu {
                 display: none;
+            }
+
+            .container.container-flush {
+                padding-left: 16px;
+                padding-right: 16px;
             }
         }
     </style>
@@ -529,152 +404,69 @@
                     </form>
                     <a href="/dashboard" class="btn-login">Dashboard</a>
                 @else
-                    <a href="{{ route('login') }}" class="btn-login">
-                        <i class="bi bi-box-arrow-in-right"></i> Login
-                    </a>
-                    <a href="{{ route('login') }}" class="btn-primary">Get Started</a>
                 @endauth
             </div>
         </div>
     </nav>
 
-    <!-- Hero -->
-    <section class="hero-section">
-        <div class="hero-content">
-            <h1>About <span>PAWSER</span></h1>
-            <p>Revolutionizing pet care management through innovative technology and compassionate service</p>
-        </div>
-    </section>
-
-    <!-- Main Content -->
-    <div class="container">
-        <!-- Our Story -->
-        <section class="section">
-            <h2>About <span>PAWSER</span></h2>
-            <p>PAWSER is a comprehensive pet grooming management system designed to streamline operations for grooming salons and pet businesses. Our platform integrates appointment scheduling, client information, grooming service tracking, and staff management into one unified system.</p>
-            <p>Built with modern technology and pet grooming best practices, PAWSER helps grooming salons and pet owners manage detailed service records, track grooming preferences, and improve salon efficiency while reducing administrative burden.</p>
+    <div class="intro-box">
+        <!-- Hero -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1>About <span>PAWSER</span></h1>
+                <p>Revolutionizing pet care management through innovative technology and compassionate service</p>
+            </div>
         </section>
 
-        <!-- Our Values -->
+        <!-- Our Story -->
+        <div class="container">
+            <section class="section section-plain">
+                <h2>About <span>PAWSER</span></h2>
+                <p>PAWSER is an end-to-end pet care management system built to centralize clinic and grooming workflows. It combines appointment scheduling, pet records, visit tracking, notification handling, and operational dashboards in one secure platform.</p>
+                <p>The system is designed for both staff and pet owners. Staff can manage daily operations, requests, and service history efficiently, while pet owners can book, track, and review their pets' records through a clear self-service portal.</p>
+            </section>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container container-flush">
         <section class="section">
-            <h2>Our <span>Values</span></h2>
+            <h2>System <span>Capabilities</span></h2>
             <div class="values-grid">
                 <div class="value-card">
                     <div class="value-icon"><i class="bi bi-heart-fill"></i></div>
-                    <h3>Pet First</h3>
-                    <p>Every decision we make is guided by what's best for pets and their owners. Their health and happiness are our priority.</p>
+                    <h3>Centralized Pet Records</h3>
+                    <p>Maintain complete and organized pet profiles, including service history, owner information, and relevant care details.</p>
                 </div>
                 <div class="value-card">
                     <div class="value-icon"><i class="bi bi-shield-check"></i></div>
-                    <h3>Trust & Security</h3>
-                    <p>We maintain the highest standards of data security and privacy. Your information is sacred to us.</p>
+                    <h3>Role-Based Access</h3>
+                    <p>Separate experiences for staff and pet owners to ensure secure access, clear permissions, and efficient task flows.</p>
                 </div>
                 <div class="value-card">
                     <div class="value-icon"><i class="bi bi-lightbulb"></i></div>
-                    <h3>Innovation</h3>
-                    <p>We continuously improve and innovate to provide the best possible experience for our users.</p>
+                    <h3>Easy Scheduling</h3>
+                    <p>Handle appointment requests, confirmations, and visit timelines with less manual follow-up and fewer booking conflicts.</p>
                 </div>
                 <div class="value-card">
                     <div class="value-icon"><i class="bi bi-people-fill"></i></div>
-                    <h3>Community</h3>
-                    <p>We believe in the power of community and work closely with our users to shape the future of PAWSER.</p>
+                    <h3>Owner Self-Service</h3>
+                    <p>Give pet owners direct visibility into appointments, pet information, and profile management through a simple interface.</p>
                 </div>
                 <div class="value-card">
                     <div class="value-icon"><i class="bi bi-rocket-fill"></i></div>
-                    <h3>Excellence</h3>
-                    <p>We strive for excellence in everything we do, from product design to customer support.</p>
+                    <h3>Operational Insights</h3>
+                    <p>Use dashboards and analytics views to monitor activity trends and improve daily clinic or salon performance.</p>
                 </div>
                 <div class="value-card">
                     <div class="value-icon"><i class="bi bi-globe"></i></div>
-                    <h3>Accessibility</h3>
-                    <p>We make pet grooming management accessible to salons of all sizes and pet owners everywhere.</p>
+                    <h3>Scalable Foundation</h3>
+                    <p>Built to support growing teams and services with maintainable workflows, reusable components, and modern web architecture.</p>
                 </div>
             </div>
         </section>
 
-        <!-- Our Team -->
-        <section class="section">
-            <h2>Our <span>Team</span></h2>
-            <p>PAWSER is powered by a passionate team of dedicated professionals committed to transforming pet care management.</p>
-            <div class="team-grid">
-                <div class="team-member">
-                    <div class="team-avatar"><i class="bi bi-person-fill"></i></div>
-                    <h3>Dr. Sarah Wilson</h3>
-                    <p>Founder & CEO</p>
-                    <p class="description">Pet grooming expert with 15+ years of salon management experience</p>
-                </div>
-                <div class="team-member">
-                    <div class="team-avatar"><i class="bi bi-person-fill"></i></div>
-                    <h3>Mark Chen</h3>
-                    <p>CTO</p>
-                    <p class="description">Full-stack developer with expertise in pet service management systems</p>
-                </div>
-                <div class="team-member">
-                    <div class="team-avatar"><i class="bi bi-person-fill"></i></div>
-                    <h3>Emma Rodriguez</h3>
-                    <p>Head of Product</p>
-                    <p class="description">Product strategist focused on user experience</p>
-                </div>
-                <div class="team-member">
-                    <div class="team-avatar"><i class="bi bi-person-fill"></i></div>
-                    <h3>James Miller</h3>
-                    <p>Lead Support</p>
-                    <p class="description">Customer success specialist with 10+ years in SaaS</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- CTA -->
-        <section class="cta-section">
-            <h2>Get Started with PAWSER</h2>
-            <p>Log in to access your pet grooming management system and start managing your salon or pets efficiently.</p>
-            <a href="{{ route('login') }}" class="cta-btn">Login to Portal</a>
-        </section>
     </div>
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-container">
-            <div class="footer-section">
-                <h4>About PAWSER</h4>
-                <ul>
-                    <li><a href="/about">About Us</a></li>
-                    <li><a href="/features">Our Features</a></li>
-                    <li><a href="#">Blog</a></li>
-                    <li><a href="#">Careers</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>Product</h4>
-                <ul>
-                    <li><a href="/features">Features</a></li>
-                    <li><a href="#">Pricing</a></li>
-                    <li><a href="#">Security</a></li>
-                    <li><a href="#">API Docs</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>Support</h4>
-                <ul>
-                    <li><a href="#">Help Center</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                    <li><a href="#">Community</a></li>
-                    <li><a href="#">Status Page</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>Legal</h4>
-                <ul>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms of Service</a></li>
-                    <li><a href="#">Cookie Policy</a></li>
-                    <li><a href="#">Compliance</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; {{ date('Y') }} PAWSER Pet Care Management System. All rights reserved.</p>
-        </div>
-    </footer>
 </body>
 </html>

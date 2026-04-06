@@ -10,9 +10,47 @@ use App\Models\Appointment;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules;
+use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class AdminController extends Controller
 {
+    /**
+     * Build a stable identity key for customer-account deduplication.
+     */
+    private function customerIdentityKey(User $user): string
+    {
+        $email = strtolower(trim((string) ($user->email ?? '')));
+        if (!empty($email)) {
+            return 'email:' . $email;
+        }
+
+        $phone = preg_replace('/\D/', '', (string) ($user->phone ?? ''));
+        if (!empty($phone)) {
+            return 'phone:' . $phone;
+        }
+
+        $name = strtolower(trim((string) ($user->name ?? '')));
+        $username = strtolower(trim((string) ($user->username ?? '')));
+        return 'fallback:' . $name . '|' . $username;
+    }
+
+    /**
+     * Collapse duplicate customer rows for cleaner admin display.
+     */
+    private function deduplicateCustomers(Collection $customers): Collection
+    {
+        return $customers
+            ->groupBy(function (User $user) {
+                return $this->customerIdentityKey($user);
+            })
+            ->map(function (Collection $group) {
+                return $group->sortByDesc('created_at')->first();
+            })
+            ->sortByDesc('created_at')
+            ->values();
+    }
+
     /**
      * Display the admin dashboard with anonymized statistics
      */
@@ -45,8 +83,44 @@ class AdminController extends Controller
      */
     public function users()
     {
-        $users = User::orderBy('created_at', 'desc')->paginate(15);
-        return view('admin.users.index', compact('users'));
+        $activeTab = request('tab', 'staff');
+        if (!in_array($activeTab, ['staff', 'pet_owners'], true)) {
+            $activeTab = 'staff';
+        }
+
+        $staffCount = User::whereIn('role', ['admin', 'staff'])->count();
+
+        if ($activeTab === 'staff') {
+            $users = User::whereIn('role', ['admin', 'staff'])
+                ->orderBy('created_at', 'desc')
+                ->paginate(15)
+                ->appends(['tab' => $activeTab]);
+
+            $petOwnerCount = User::where('role', 'customer')->count();
+        } else {
+            $deduplicatedCustomers = $this->deduplicateCustomers(
+                User::where('role', 'customer')->orderBy('created_at', 'desc')->get()
+            );
+
+            $petOwnerCount = $deduplicatedCustomers->count();
+
+            $perPage = 15;
+            $page = max((int) request('page', 1), 1);
+            $items = $deduplicatedCustomers->forPage($page, $perPage)->values();
+
+            $users = new LengthAwarePaginator(
+                $items,
+                $petOwnerCount,
+                $perPage,
+                $page,
+                [
+                    'path' => request()->url(),
+                    'query' => request()->query(),
+                ]
+            );
+        }
+
+        return view('admin.users.index', compact('users', 'activeTab', 'staffCount', 'petOwnerCount'));
     }
 
     /**

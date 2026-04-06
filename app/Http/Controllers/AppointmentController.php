@@ -8,6 +8,7 @@ use App\Models\Visit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class AppointmentController extends Controller
 {
@@ -193,9 +194,9 @@ class AppointmentController extends Controller
                         'chief_complaint' => $appointment->chief_complaint,
                         'health_worker' => $appointment->health_worker,
                     ]);
-                    \Log::info('Visit created successfully for rescheduled appointment ' . $appointment->id);
+                    Log::info('Visit created successfully for rescheduled appointment ' . $appointment->id);
                 } catch (\Exception $e) {
-                    \Log::error('Failed to create visit for rescheduled appointment: ' . $e->getMessage());
+                    Log::error('Failed to create visit for rescheduled appointment: ' . $e->getMessage());
                 }
             }
 
@@ -282,9 +283,9 @@ class AppointmentController extends Controller
                         'chief_complaint' => $appointment->chief_complaint,
                         'health_worker' => $appointment->health_worker,
                     ]);
-                    \Log::info('Visit created successfully for appointment ' . $appointment->id);
+                    Log::info('Visit created successfully for appointment ' . $appointment->id);
                 } catch (\Exception $e) {
-                    \Log::error('Failed to create visit: ' . $e->getMessage());
+                    Log::error('Failed to create visit: ' . $e->getMessage());
                 }
             }
 
@@ -321,9 +322,9 @@ class AppointmentController extends Controller
                     'chief_complaint' => $validated['chief_complaint'] ?? $appointment->chief_complaint,
                     'health_worker' => $validated['health_worker'] ?? $appointment->health_worker,
                 ]);
-                \Log::info('Visit created successfully for full update appointment ' . $appointment->id);
+                Log::info('Visit created successfully for full update appointment ' . $appointment->id);
             } catch (\Exception $e) {
-                \Log::error('Failed to create visit for full update: ' . $e->getMessage());
+                Log::error('Failed to create visit for full update: ' . $e->getMessage());
             }
         }
 

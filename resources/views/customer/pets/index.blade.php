@@ -534,6 +534,21 @@
 
         .pet-icon {
             font-size: 36px;
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .pet-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
 
         .pet-card-title {
@@ -900,7 +915,11 @@
                     <div class="pet-card">
                         <div class="pet-card-header">
                             <div class="pet-icon">
-                                <i class="bi bi-paw"></i>
+                                @if($pet->pet_photo_path)
+                                    <img src="{{ asset('storage/' . $pet->pet_photo_path) }}" alt="{{ $pet->pet_name }}">
+                                @else
+                                    <i class="bi bi-paw"></i>
+                                @endif
                             </div>
                             <h2 class="pet-card-title">{{ $pet->pet_name }}</h2>
                         </div>
