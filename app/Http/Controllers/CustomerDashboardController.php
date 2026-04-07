@@ -157,7 +157,10 @@ class CustomerDashboardController extends Controller
             $matchingPets = collect([$patient]);
         }
 
-        $primaryPet = $this->pickPreferredPet($matchingPets) ?? $patient;
+        // Keep the explicitly requested pet as the primary profile record so edits
+        // are immediately reflected to the customer, while still aggregating data
+        // from duplicate legacy records.
+        $primaryPet = $matchingPets->firstWhere('id', $patient->id) ?? $patient;
         $matchingPetIds = $matchingPets->pluck('id')->values();
 
         $visits = Visit::with('photos')

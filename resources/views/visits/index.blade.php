@@ -721,28 +721,10 @@
     </div>
 
     <div class="container">
-        <div class="header">
-            <div class="header-top">
-                <div class="header-left">
-                    <h1>Today's Visits</h1>
-                </div>
-                <div class="header-actions">
-                    <button onclick="openAppointmentsCalendar()" class="btn-calendar" style="padding: 8px 16px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3); transition: all 0.2s; display: flex; align-items: center; gap: 6px;" onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 6px rgba(16, 185, 129, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(16, 185, 129, 0.3)'">
-                        <i class="bi bi-calendar3"></i> View Calendar
-                    </button>
-                </div>
-            </div>
-            <p style="color: #6b7280; font-size: 14px;">{{ now()->format('l, F j, Y') }}</p>
-        </div>
-
         <div class="stats">
             <div class="stat-card">
                 <div class="stat-value" id="totalVisitsToday">0</div>
                 <div class="stat-label">Total Completed Today</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="groomingServicesToday">0</div>
-                <div class="stat-label">Grooming</div>
             </div>
         </div>
 
@@ -815,18 +797,12 @@
         function calculateStats() {
             if (!visits || visits.length === 0) {
                 document.getElementById('totalVisitsToday').textContent = '0';
-                document.getElementById('groomingServicesToday').textContent = '0';
                 return;
             }
 
             const totalVisits = visits.length;
-            
-            // Grooming services
-            const groomingServices = ['Bath & Dry', 'Full Grooming', 'Haircut & Styling', 'Nail Trimming', 'Ear Cleaning', 'Teeth Brushing', 'De-shedding Treatment', 'Flea & Tick Treatment', 'Paw Treatment'];
-            const groomingCount = visits.filter(v => groomingServices.includes(v.service_type)).length;
-            
+
             document.getElementById('totalVisitsToday').textContent = totalVisits;
-            document.getElementById('groomingServicesToday').textContent = groomingCount;
         }
 
         // Calculate stats when page loads
@@ -1172,32 +1148,17 @@
                 if (data && data.visits && Array.isArray(data.visits)) {
                     allVisits = data.visits;
                     console.log('📊 Loaded', allVisits.length, 'visits');
-                    
-                    // Recalculate stats based on service type
+
                     const totalVisits = allVisits.length;
-                    
-                    // Grooming services
-                    const groomingServices = ['Bath & Dry', 'Full Grooming', 'Haircut & Styling', 'Nail Trimming', 'Ear Cleaning', 'Teeth Brushing', 'De-shedding Treatment', 'Flea & Tick Treatment', 'Paw Treatment'];
-                    const groomingCount = allVisits.filter(v => groomingServices.includes(v.service_type)).length;
-                    
-                    // Medical services
-                    const medicalServices = ['Vaccination', 'Spay/Neuter', 'Dental Cleaning', 'Deworming', 'General Checkup', 'Wound Treatment'];
-                    const medicalCount = allVisits.filter(v => medicalServices.includes(v.service_type)).length;
-                    
-                    // Other services
-                    const otherCount = totalVisits - groomingCount - medicalCount;
 
                     // Update displayed stats
                     document.getElementById('totalVisitsToday').textContent = totalVisits;
-                    document.getElementById('groomingServicesToday').textContent = groomingCount;
-                    document.getElementById('medicalServicesToday').textContent = medicalCount;
-                    document.getElementById('otherServicesToday').textContent = otherCount;
                     
                     // Render visits list
                     console.log('🎨 Rendering visits list...');
                     renderVisitsList(allVisits);
-                    
-                    console.log('✅ Stats updated - Total:', totalVisits, 'Grooming:', groomingCount, 'Medical:', medicalCount, 'Other:', otherCount);
+
+                    console.log('✅ Stats updated - Total:', totalVisits);
                 }
             })
             .catch(error => {

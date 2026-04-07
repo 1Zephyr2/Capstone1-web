@@ -22,7 +22,7 @@ class DevelopmentDataSeeder extends Seeder
                 'name' => 'Administrator',
                 'username' => 'admin',
                 'email' => 'admin@caresync.com',
-                'password' => Hash::make('password123'),
+                'password' => Hash::make('admin123'),
                 'role' => 'admin'
             ]);
         }
@@ -32,7 +32,7 @@ class DevelopmentDataSeeder extends Seeder
                 'name' => 'Healthcare Staff',
                 'username' => 'staff',
                 'email' => 'staff@caresync.com',
-                'password' => Hash::make('password123'),
+                'password' => Hash::make('staff123'),
                 'role' => 'staff'
             ]);
         }

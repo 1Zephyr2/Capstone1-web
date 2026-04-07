@@ -2607,10 +2607,6 @@
                     Requests
                 </a>
                 @endif
-                <a href="{{ route('visits.today') }}" class="navbar-item">
-                    <i class="bi bi-clock-history"></i>
-                    Visits
-                </a>
                 @if(Auth::user()->hasStaffAccess())
                 <a href="{{ route('analytics.index') }}" class="navbar-item">
                     <i class="bi bi-graph-up-arrow"></i>
@@ -3903,8 +3899,7 @@
         }
 
         function openCalendarView() {
-            // Redirect to calendar view page or appointments page
-            window.location.href = '{{ route("visits.today") }}';
+            window.location.href = '{{ route("appointments.index") }}';
         }
 
         function openModal(modalType) {

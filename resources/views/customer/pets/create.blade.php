@@ -714,7 +714,6 @@
 
             <div class="navbar-center">
                 <a href="{{ route('customer.dashboard') }}" class="nav-item">
-                    <button type="button" class="btn-secondary" onclick="goBack()">Cancel</button>
                     Dashboard
                 </a>
                 <a href="{{ route('customer.pets.index') }}" class="nav-item active">
@@ -814,16 +813,6 @@
                             });
                         }
                     </script>
-                        function goBack() {
-                            const referrer = document.referrer;
-                            const currentDomain = window.location.origin;
-
-                            if (referrer && referrer.startsWith(currentDomain) && referrer !== window.location.href) {
-                                window.history.back();
-                            } else {
-                                window.location.href = "{{ route('customer.pets.index') }}";
-                            }
-                        }
 
                 </div>
 
@@ -986,6 +975,17 @@
     </div>
 
     <script>
+        function goBack() {
+            const referrer = document.referrer;
+            const currentDomain = window.location.origin;
+
+            if (referrer && referrer.startsWith(currentDomain) && referrer !== window.location.href) {
+                window.history.back();
+            } else {
+                window.location.href = "{{ route('customer.pets.index') }}";
+            }
+        }
+
         // Form Progress Tracking
         const petForm = document.getElementById('petForm');
         const requiredFields = ['pet_name', 'species_id', 'breed', 'birthdate', 'sex'];

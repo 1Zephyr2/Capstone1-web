@@ -6,6 +6,7 @@
 - [Features](#features)
 - [System Requirements](#system-requirements)
 - [Installation Options](#installation-options)
+- [Online and Offline Profiles](#online-and-offline-profiles)
 - [User Accounts](#user-accounts)
 - [Usage Guide](#usage-guide)
 - [Demo Instructions](#demo-instructions)
@@ -129,6 +130,23 @@
    ```
 
 6. **Access the system:** http://localhost/Capstone1-web/public
+
+## Online and Offline Profiles
+
+Use the dedicated runtime guide in `ONLINE_OFFLINE_SETUP.md` for consistent environment switching.
+
+Quick commands:
+
+```bash
+# Offline demo profile (SQLite + seeded data)
+composer run runtime:offline
+
+# Online/hosted profile template (MySQL)
+composer run runtime:online
+
+# Validate whichever profile is active
+composer run runtime:check
+```
 
 ## User Accounts
 

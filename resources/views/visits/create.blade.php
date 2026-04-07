@@ -187,6 +187,104 @@
             color: #991b1b;
             border: 1px solid #fecaca;
         }
+        .field-error {
+            margin-top: 8px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid #fecaca;
+            background: #fef2f2;
+            color: #991b1b;
+            font-size: 13px;
+            font-weight: 500;
+            display: none;
+        }
+        .photo-preview-grid {
+            margin-top: 10px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            gap: 10px;
+        }
+        .photo-preview-item {
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            overflow: hidden;
+            background: #f9fafb;
+            aspect-ratio: 1;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .photo-preview-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.15);
+        }
+        .photo-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .photo-preview-remove {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 24px;
+            height: 24px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(17, 24, 39, 0.8);
+            color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+            line-height: 1;
+        }
+        .photo-preview-remove:hover {
+            background: rgba(220, 38, 38, 0.95);
+        }
+        .photo-preview-item {
+            position: relative;
+        }
+        .preview-lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 20px;
+        }
+        .preview-lightbox.active {
+            display: flex;
+        }
+        .preview-lightbox-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 88vh;
+        }
+        .preview-lightbox-img {
+            max-width: 100%;
+            max-height: 88vh;
+            border-radius: 12px;
+            display: block;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+        }
+        .preview-lightbox-close {
+            position: absolute;
+            top: -12px;
+            right: -12px;
+            width: 34px;
+            height: 34px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.95);
+            color: #111827;
+            font-size: 20px;
+            line-height: 1;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -353,8 +451,10 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Upload Photos</label>
-                    <input type="file" name="visit_photos[]" multiple accept="image/*">
-                    <span class="hint">Upload photos of the grooming results (optional, max 5 images)</span>
+                    <input type="file" id="visitPhotos" name="visit_photos[]" multiple accept="image/*">
+                    <span class="hint">Upload photos of the grooming results (optional, max 5 images, up to 1 MB each)</span>
+                    <div id="visitPhotosError" class="field-error" role="alert" aria-live="polite"></div>
+                    <div id="photoPreviewGrid" class="photo-preview-grid" style="display: none;"></div>
                 </div>
             </div>
 
@@ -374,6 +474,13 @@
                 <button type="submit" class="btn btn-primary">Save Visit</button>
             </div>
         </form>
+    </div>
+
+    <div id="previewLightbox" class="preview-lightbox" onclick="closePreviewLightbox(event)">
+        <div class="preview-lightbox-content">
+            <button type="button" class="preview-lightbox-close" aria-label="Close preview" onclick="closePreviewLightbox()">&times;</button>
+            <img id="previewLightboxImage" class="preview-lightbox-img" src="" alt="Selected photo preview">
+        </div>
     </div>
 
     <script>
@@ -422,6 +529,151 @@
             const healthWorker = document.querySelector('[name="health_worker"]').value;
             if (healthWorker) {
                 sessionStorage.setItem('last_health_worker', healthWorker);
+            }
+        });
+
+        // Live photo preview for selected uploads
+        const visitPhotosInput = document.getElementById('visitPhotos');
+        const visitPhotosError = document.getElementById('visitPhotosError');
+        const photoPreviewGrid = document.getElementById('photoPreviewGrid');
+        const previewLightbox = document.getElementById('previewLightbox');
+        const previewLightboxImage = document.getElementById('previewLightboxImage');
+        const MAX_VISIT_PHOTOS = 5;
+        const MAX_FILE_SIZE_BYTES = 1 * 1024 * 1024;
+        const MAX_TOTAL_SIZE_BYTES = 5 * 1024 * 1024;
+        let selectedVisitPhotoFiles = [];
+
+        function setVisitPhotosError(message) {
+            if (!visitPhotosError) return;
+
+            if (!message) {
+                visitPhotosError.textContent = '';
+                visitPhotosError.style.display = 'none';
+                return;
+            }
+
+            visitPhotosError.textContent = message;
+            visitPhotosError.style.display = 'block';
+        }
+
+        function openPreviewLightbox(imageSrc, imageAlt) {
+            if (!previewLightbox || !previewLightboxImage) return;
+            previewLightboxImage.src = imageSrc;
+            previewLightboxImage.alt = imageAlt || 'Selected photo preview';
+            previewLightbox.classList.add('active');
+        }
+
+        function closePreviewLightbox(event) {
+            if (event && event.target && event.target.id !== 'previewLightbox') {
+                return;
+            }
+            if (!previewLightbox || !previewLightboxImage) return;
+            previewLightbox.classList.remove('active');
+            previewLightboxImage.src = '';
+        }
+
+        window.closePreviewLightbox = closePreviewLightbox;
+
+        function syncVisitPhotosInput() {
+            if (!visitPhotosInput) return;
+
+            const dt = new DataTransfer();
+            selectedVisitPhotoFiles.forEach((file) => dt.items.add(file));
+            visitPhotosInput.files = dt.files;
+        }
+
+        function renderPhotoPreviews() {
+            if (!photoPreviewGrid) return;
+
+            photoPreviewGrid.innerHTML = '';
+
+            if (selectedVisitPhotoFiles.length === 0) {
+                photoPreviewGrid.style.display = 'none';
+                return;
+            }
+
+            selectedVisitPhotoFiles.forEach((file, index) => {
+                if (!file.type.startsWith('image/')) return;
+
+                const imageSrc = URL.createObjectURL(file);
+                const item = document.createElement('div');
+                item.className = 'photo-preview-item';
+                item.tabIndex = 0;
+                item.setAttribute('role', 'button');
+                item.setAttribute('aria-label', `Preview ${file.name}`);
+
+                const image = document.createElement('img');
+                image.src = imageSrc;
+                image.alt = file.name;
+
+                const removeBtn = document.createElement('button');
+                removeBtn.type = 'button';
+                removeBtn.className = 'photo-preview-remove';
+                removeBtn.setAttribute('aria-label', `Remove ${file.name}`);
+                removeBtn.innerHTML = '&times;';
+
+                removeBtn.addEventListener('click', function (event) {
+                    event.stopPropagation();
+                    selectedVisitPhotoFiles.splice(index, 1);
+                    syncVisitPhotosInput();
+                    setVisitPhotosError('');
+                    renderPhotoPreviews();
+                });
+
+                item.addEventListener('click', function () {
+                    openPreviewLightbox(image.src, image.alt);
+                });
+                item.addEventListener('keydown', function (keyEvent) {
+                    if (keyEvent.key === 'Enter' || keyEvent.key === ' ') {
+                        keyEvent.preventDefault();
+                        openPreviewLightbox(image.src, image.alt);
+                    }
+                });
+
+                item.appendChild(image);
+                item.appendChild(removeBtn);
+                photoPreviewGrid.appendChild(item);
+                photoPreviewGrid.style.display = 'grid';
+            });
+        }
+
+        if (visitPhotosInput) {
+            visitPhotosInput.addEventListener('change', function () {
+                selectedVisitPhotoFiles = Array.from(this.files || []);
+
+                setVisitPhotosError('');
+
+                if (selectedVisitPhotoFiles.length > MAX_VISIT_PHOTOS) {
+                    setVisitPhotosError(`You may upload up to ${MAX_VISIT_PHOTOS} photos per visit only. The first ${MAX_VISIT_PHOTOS} files were kept.`);
+                    selectedVisitPhotoFiles = selectedVisitPhotoFiles.slice(0, MAX_VISIT_PHOTOS);
+                }
+
+                const oversizedFile = selectedVisitPhotoFiles.find((file) => file.size > MAX_FILE_SIZE_BYTES);
+                if (oversizedFile) {
+                    setVisitPhotosError('One or more selected photos exceed the 1 MB file size limit. Please choose smaller files.');
+                    selectedVisitPhotoFiles = [];
+                    syncVisitPhotosInput();
+                    renderPhotoPreviews();
+                    return;
+                }
+
+                const totalBytes = selectedVisitPhotoFiles.reduce((sum, file) => sum + file.size, 0);
+                if (totalBytes > MAX_TOTAL_SIZE_BYTES) {
+                    setVisitPhotosError('The total upload size is too large. Please keep the combined photo size within 5 MB.');
+                    selectedVisitPhotoFiles = [];
+                    syncVisitPhotosInput();
+                    renderPhotoPreviews();
+                    return;
+                }
+
+                syncVisitPhotosInput();
+                renderPhotoPreviews();
+            });
+        }
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                closePreviewLightbox();
             }
         });
     </script>

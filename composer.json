@@ -33,6 +33,28 @@
         }
     },
     "scripts": {
+        "env:offline": [
+            "@php -r \"copy('.env.offline.example', '.env');\""
+        ],
+        "env:online": [
+            "@php -r \"copy('.env.online.example', '.env');\""
+        ],
+        "runtime:check": [
+            "powershell -ExecutionPolicy Bypass -File scripts/runtime-check.ps1"
+        ],
+        "runtime:offline": [
+            "@env:offline",
+            "@php artisan key:generate --force",
+            "@php artisan optimize:clear",
+            "@php artisan migrate --force",
+            "@php artisan db:seed --force"
+        ],
+        "runtime:online": [
+            "@env:online",
+            "@php artisan key:generate --force",
+            "@php artisan optimize:clear",
+            "@php artisan migrate --force"
+        ],
         "setup": [
             "composer install",
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",

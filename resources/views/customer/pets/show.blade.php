@@ -470,6 +470,33 @@
             gap: 8px;
         }
 
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .section-toggle-btn {
+            border: 1px solid #d1d5db;
+            background: #f9fafb;
+            color: #374151;
+            border-radius: 8px;
+            padding: 6px 10px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .section-toggle-btn:hover {
+            background: #f3f4f6;
+            border-color: #9ca3af;
+        }
+
         .records-list {
             display: flex;
             flex-direction: column;
@@ -517,6 +544,22 @@
             text-decoration: none;
             color: inherit;
             display: block;
+        }
+
+        .visit-record-item {
+            overflow: hidden;
+            max-height: 220px;
+            opacity: 1;
+            transform: translateY(0);
+            transition: max-height 0.35s ease, opacity 0.25s ease, transform 0.25s ease, margin 0.25s ease;
+        }
+
+        .visit-record-item.visit-hidden {
+            max-height: 0;
+            opacity: 0;
+            transform: translateY(-6px);
+            margin: 0;
+            pointer-events: none;
         }
 
         .visit-detail-modal {
@@ -1082,35 +1125,43 @@
 
         <!-- Visits -->
         <div class="section">
-            <div class="section-title">
-                <i class="bi bi-clipboard-check"></i>
-                Visits
+            <div class="section-header">
+                <div class="section-title">
+                    <i class="bi bi-clipboard-check"></i>
+                    Visits
+                </div>
+                <button type="button" id="visitsToggleBtn" class="section-toggle-btn" onclick="toggleVisitsSection()" aria-expanded="true" aria-controls="visitsSectionBody">
+                    <i id="visitsToggleIcon" class="bi bi-chevron-up"></i>
+                    <span id="visitsToggleLabel">Collapse</span>
+                </button>
             </div>
 
-            @if($pet->visits->isEmpty())
-                <div class="empty-state">
-                    <i class="bi bi-inbox"></i>
-                    <p>No visits recorded yet.</p>
-                </div>
-            @else
-                <div class="records-list">
-                    @foreach($pet->visits as $visit)
-                        <a href="{{ route('visits.show', $visit) }}" class="record-link">
-                            <div class="record-item visit-clickable">
-                                <div class="record-title">{{ $visit->service_type ?? 'Visit' }}</div>
-                                <div class="record-info">
-                                    <i class="bi bi-calendar-event"></i>
-                                    {{ $visit->visit_date->format('M d, Y') }}
-                                    @if($visit->notes)
-                                        • {{ substr($visit->notes, 0, 50) }}{{ strlen($visit->notes) > 50 ? '...' : '' }}
-                                    @endif
+            <div id="visitsSectionBody">
+                @if($pet->visits->isEmpty())
+                    <div class="empty-state">
+                        <i class="bi bi-inbox"></i>
+                        <p>No visits recorded yet.</p>
+                    </div>
+                @else
+                    <div class="records-list">
+                        @foreach($pet->visits as $visit)
+                            <a href="{{ route('visits.show', $visit) }}" class="record-link visit-record-item">
+                                <div class="record-item visit-clickable">
+                                    <div class="record-title">{{ $visit->service_type ?? 'Visit' }}</div>
+                                    <div class="record-info">
+                                        <i class="bi bi-calendar-event"></i>
+                                        {{ $visit->visit_date->format('M d, Y') }}
+                                        @if($visit->notes)
+                                            • {{ substr($visit->notes, 0, 50) }}{{ strlen($visit->notes) > 50 ? '...' : '' }}
+                                        @endif
+                                    </div>
+                                    <div class="visit-row-meta"><i class="bi bi-eye"></i> View full visit details</div>
                                 </div>
-                                <div class="visit-row-meta"><i class="bi bi-eye"></i> View full visit details</div>
-                            </div>
-                        </a>
-                    @endforeach
-                </div>
-            @endif
+                            </a>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
         </div>
 
         <!-- Appointments -->
@@ -1153,6 +1204,38 @@
             const modal = document.getElementById('photoModal');
             modal.classList.remove('active');
             document.body.style.overflow = 'auto';
+        }
+
+        function toggleVisitsSection() {
+            const visitsBody = document.getElementById('visitsSectionBody');
+            const toggleBtn = document.getElementById('visitsToggleBtn');
+            const toggleIcon = document.getElementById('visitsToggleIcon');
+            const toggleLabel = document.getElementById('visitsToggleLabel');
+            const visitItems = visitsBody ? visitsBody.querySelectorAll('.visit-record-item') : [];
+
+            if (!visitsBody || !toggleBtn || !toggleIcon || !toggleLabel) {
+                return;
+            }
+
+            const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+
+            if (isExpanded) {
+                visitItems.forEach((item, index) => {
+                    if (index >= 2) {
+                        item.classList.add('visit-hidden');
+                    }
+                });
+                toggleBtn.setAttribute('aria-expanded', 'false');
+                toggleIcon.className = 'bi bi-chevron-down';
+                toggleLabel.textContent = 'Expand';
+            } else {
+                visitItems.forEach((item) => {
+                    item.classList.remove('visit-hidden');
+                });
+                toggleBtn.setAttribute('aria-expanded', 'true');
+                toggleIcon.className = 'bi bi-chevron-up';
+                toggleLabel.textContent = 'Collapse';
+            }
         }
 
         // Close modal on escape key

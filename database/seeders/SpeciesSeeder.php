@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Species;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -93,7 +94,13 @@ class SpeciesSeeder extends Seeder
         ];
 
         foreach ($species as $item) {
-            \App\Models\Species::create($item);
+            Species::updateOrCreate(
+                ['name' => $item['name']],
+                [
+                    'characteristics' => $item['characteristics'],
+                    'description' => $item['description'],
+                ]
+            );
         }
     }
 }

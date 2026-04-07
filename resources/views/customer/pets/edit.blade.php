@@ -744,7 +744,6 @@
 
         <div class="page-header">
             <h1 class="page-title">
-                <i class="bi bi-pencil-square"></i>
                 Edit {{ $patient->pet_name }}
             </h1>
             <p class="page-subtitle">Update your pet's information and photo</p>

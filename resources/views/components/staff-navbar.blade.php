@@ -283,10 +283,6 @@
                 <span>Requests</span>
             </a>
             @endif
-            <a href="{{ route('visits.today') }}" class="staff-navbar-item {{ request()->routeIs('visits.*') ? 'active' : '' }}">
-                <i class="bi bi-clock-history"></i>
-                <span>Visits</span>
-            </a>
             @if(Auth::user()->hasStaffAccess())
             <a href="{{ route('analytics.index') }}" class="staff-navbar-item {{ request()->routeIs('analytics.*') ? 'active' : '' }}">
                 <i class="bi bi-graph-up-arrow"></i>

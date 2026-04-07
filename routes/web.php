@@ -130,7 +130,7 @@ Route::middleware('auth')->group(function () {
     
     // Visit Management Routes
     Route::resource('visits', VisitController::class);
-    Route::get('/visits-today', [VisitController::class, 'index'])->name('visits.today');
+    Route::redirect('/visits-today', '/dashboard')->name('visits.today');
     Route::get('/visits/calendar/view', [VisitController::class, 'calendar'])->name('visits.calendar');
     Route::get('/api/visits/by-date', [VisitController::class, 'getVisitsByDate'])->name('visits.by-date');
     Route::get('/api/visits/{visit}/details', [VisitController::class, 'getDetails'])->name('visits.getDetails');

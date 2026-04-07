@@ -86,7 +86,13 @@ class VisitController extends Controller
             'shedding_amount' => 'nullable|string',
             'hair_removed' => 'nullable|string',
             'boarding_observations' => 'nullable|string',
-            'visit_photos.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'visit_photos' => 'nullable|array|max:5',
+            'visit_photos.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:1024',
+        ], [
+            'visit_photos.max' => 'You may upload up to 5 photos per visit only.',
+            'visit_photos.*.image' => 'Each selected file must be a valid image.',
+            'visit_photos.*.mimes' => 'Allowed photo formats are JPEG, PNG, JPG, GIF, and WEBP.',
+            'visit_photos.*.max' => 'Each photo must not exceed 1 MB.',
         ]);
 
         DB::beginTransaction();

@@ -624,10 +624,6 @@
                     <i class="bi bi-calendar-check"></i>
                     Appointments
                 </a>
-                <a href="{{ route('visits.today') }}" class="nav-item">
-                    <i class="bi bi-clock-history"></i>
-                    Visits
-                </a>
                 @if(Auth::user()->hasStaffAccess())
                 <a href="{{ route('analytics.index') }}" class="nav-item">
                     <i class="bi bi-graph-up-arrow"></i>

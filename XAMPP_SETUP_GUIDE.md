@@ -1,10 +1,10 @@
-# XAMPP Setup Guide for CareSync
+# XAMPP Setup Guide for PAWSER
 
-**Complete beginner-friendly guide to set up CareSync with XAMPP for offline demos**
+**Complete beginner-friendly guide to set up PAWSER with XAMPP for offline demos**
 
 ## What You'll Need
 - XAMPP (already installed on your computer)
-- Your CareSync project folder
+- Your PAWSER project folder
 - About 15 minutes
 
 ## Why Use XAMPP?
@@ -36,20 +36,20 @@
 2. **Type in address bar**: `http://localhost/phpmyadmin`
 3. **Press Enter** - You'll see phpMyAdmin interface
 4. **Click "New"** in the left sidebar
-5. **Type database name**: `caresync_db`
+5. **Type database name**: `pawser_db`
 6. **Click "Create"** button
 
-**Success**: You should see "caresync_db" in the left sidebar
+**Success**: You should see "pawser_db" in the left sidebar
 
 ### **Step 3: Move Your Project to XAMPP**
 1. **Open File Explorer**
 2. **Navigate to**: `C:\xampp\htdocs\`
-3. **Copy your entire CareSync project folder** into this directory
-4. **Rename the folder** to `caresync`
-5. **Final path should be**: `C:\xampp\htdocs\caresync\`
+3. **Copy your entire Capstone1-web project folder** into this directory
+4. **Rename the folder** to `Capstone1-web`
+5. **Final path should be**: `C:\xampp\htdocs\Capstone1-web\`
 
-### **Step 4: Configure CareSync for XAMPP**
-1. **Open your project folder**: `C:\xampp\htdocs\caresync\`
+### **Step 4: Configure PAWSER for XAMPP**
+1. **Open your project folder**: `C:\xampp\htdocs\Capstone1-web\`
 2. **Find the file**: `.env`
 3. **Open `.env` with Notepad**
 4. **Find these lines and change them**:
@@ -69,7 +69,7 @@
    DB_CONNECTION=mysql
    DB_HOST=127.0.0.1
    DB_PORT=3306
-   DB_DATABASE=caresync_db
+   DB_DATABASE=pawser_db
    DB_USERNAME=root
    DB_PASSWORD=
    ```
@@ -80,7 +80,7 @@
 1. **Open Command Prompt** or PowerShell
 2. **Navigate to your project**:
    ```
-   cd C:\xampp\htdocs\caresync
+   cd C:\xampp\htdocs\Capstone1-web
    ```
 3. **Run these commands one by one**:
    ```
@@ -95,9 +95,9 @@
 
 ### **Step 6: Test Everything Works**
 1. **Open your web browser**
-2. **Type in address bar**: `http://localhost/caresync/public`
+2. **Type in address bar**: `http://localhost/Capstone1-web/public`
 3. **Press Enter**
-4. **You should see the CareSync login page**
+4. **You should see the PAWSER login page**
 
 **Congratulations! XAMPP setup is complete!**
 
@@ -121,14 +121,14 @@
 
 ### **Before Your Demo**
 1. **Start XAMPP** (Apache + MySQL)
-2. **Check**: `http://localhost/caresync/public` loads
+2. **Check**: `http://localhost/Capstone1-web/public` loads
 3. **Prepare demo data** if needed
 
 ### **During Demo**
-1. **Show the application**: `http://localhost/caresync/public`
+1. **Show the application**: `http://localhost/Capstone1-web/public`
 2. **Login and demonstrate features**
 3. **Show database** (optional): `http://localhost/phpmyadmin`
-   - Click "caresync_db" to see tables
+   - Click "pawser_db" to see tables
    - Click table names to see data
 
 ### **After Demo**
@@ -139,11 +139,11 @@
 
 ## Troubleshooting
 
-### **Problem: Can't access localhost/caresync/public**
+### **Problem: Can't access localhost/Capstone1-web/public**
 **Solution**:
 1. Check XAMPP - Apache should be green/running
-2. Verify folder is at `C:\xampp\htdocs\caresync\`
-3. Try: `http://localhost/caresync/public/index.php`
+2. Verify folder is at `C:\\xampp\\htdocs\\Capstone1-web\\`
+3. Try: `http://localhost/Capstone1-web/public/index.php`
 
 ### **Problem: Database connection error**
 **Solution**:
@@ -166,7 +166,7 @@
 
 ### **Problem: Pages look broken (no styling)**
 **Solution**:
-1. Try: `http://localhost/caresync/public` (include `/public`)
+1. Try: `http://localhost/Capstone1-web/public` (include `/public`)
 2. Or run: `php artisan storage:link`
 
 ---
@@ -175,14 +175,14 @@
 
 ### **Quick Demo Reset**
 1. Go to: `http://localhost/phpmyadmin`
-2. Click "caresync_db"
+2. Click "pawser_db"
 3. Select tables with demo data
 4. Click "Empty" to clear data
 5. Run: `php artisan db:seed` to add fresh data
 
 ### **Show Database During Demo**
 1. Open two browser tabs:
-   - Tab 1: Your application (`localhost/caresync/public`)
+   - Tab 1: Your application (`localhost/Capstone1-web/public`)
    - Tab 2: phpMyAdmin (`localhost/phpmyadmin`)
 2. Create a patient in Tab 1
 3. Switch to Tab 2, refresh, show the data was saved!
@@ -197,10 +197,11 @@
 ## Checklist Before Demo
 
 - [ ] XAMPP is started (Apache + MySQL green)
-- [ ] Can access: `http://localhost/caresync/public`
+- [ ] Can access: `http://localhost/Capstone1-web/public`
 - [ ] Can login with admin/admin123
 - [ ] Can create a test patient/appointment
 - [ ] phpMyAdmin accessible at `http://localhost/phpmyadmin`
 - [ ] Have explained that this works completely offline
 
 **You're ready to wow your audience!**
+
