@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Settings - PAWSER Admin</title>
+    <title>System Settings - FURCARE Admin</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
@@ -329,7 +329,7 @@
             <h2 class="card-title">System Information</h2>
             <div class="info-grid">
                 <div class="info-label">Application Name:</div>
-                <div class="info-value">PAWSER - Pet Appointment and Workflow Service &amp; Records System</div>
+                <div class="info-value">FURCARE - Pet Appointment and Workflow Service &amp; Records System</div>
 
                 <div class="info-label">Version:</div>
                 <div class="info-value">1.0.0</div>

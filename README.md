@@ -1,6 +1,6 @@
-# PAWSER - Pet Appointment and Workflow Service & Records System
+# FURCARE - Pet Appointment and Workflow Service & Records System
 
-**Capstone Project** - A comprehensive web-based pet clinic management system built with Laravel. PAWSER streamlines pet registration, owner records, appointments, visit documentation, clinic operations, and administrative tasks for veterinary and pet care teams.
+**Capstone Project** - A comprehensive web-based pet clinic management system built with Laravel. FURCARE streamlines pet registration, owner records, appointments, visit documentation, clinic operations, and administrative tasks for veterinary and pet care teams.
 
 ## Table of Contents
 - [Features](#features)
@@ -104,7 +104,7 @@
 
 2. **Create database:**
    - Go to http://localhost/phpmyadmin
-   - Create new database: `pawser_db`
+   - Create new database: `furcare_db`
 
 3. **Copy project to XAMPP:**
    ```bash
@@ -118,7 +118,7 @@
    DB_CONNECTION=mysql
    DB_HOST=127.0.0.1
    DB_PORT=3306
-   DB_DATABASE=pawser_db
+   DB_DATABASE=furcare_db
    DB_USERNAME=root
    DB_PASSWORD=
    ```
@@ -287,4 +287,4 @@ For technical support or questions:
 
 ---
 
-**PAWSER** - Streamlining pet appointments, workflow support, and records management.
+**FURCARE** - Streamlining pet appointments, workflow support, and records management.

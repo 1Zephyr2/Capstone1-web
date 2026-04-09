@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Profile - PAWSER</title>
+    <title>My Profile - FURCARE</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
@@ -607,8 +607,8 @@
     <nav class="navbar">
         <div class="navbar-container">
             <a href="{{ route('dashboard') }}" class="navbar-brand">
-                <img src="{{ asset('newlogo.png') }}" alt="PAWSER" class="navbar-logo" onerror="this.style.display='none'">
-                <span class="navbar-title">PAWSER</span>
+                <img src="{{ asset('newlogo.png') }}" alt="FURCARE" class="navbar-logo" onerror="this.style.display='none'">
+                <span class="navbar-title">FURCARE</span>
             </a>
 
             <div class="navbar-center">

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PAWSER - Pet Care Management System</title>
+    <title>FURCARE - Pet Care Management System</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
@@ -512,12 +512,12 @@
             <a href="{{ route('home') }}" class="nav-brand">
                 <div class="nav-logo">
                     @if (file_exists(public_path('newlogo.png')))
-                        <img src="{{ asset('newlogo.png') }}" alt="PAWSER Logo">
+                        <img src="{{ asset('newlogo.png') }}" alt="FURCARE Logo">
                     @else
                         <i class="bi bi-paw-fill"></i>
                     @endif
                 </div>
-                PAWSER
+                FURCARE
             </a>
             
             <div class="nav-menu">

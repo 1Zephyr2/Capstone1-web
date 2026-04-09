@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PAWSER - Customer Login</title>
+    <title>FURCARE - Customer Login</title>
     <style>
         * {
             margin: 0;
@@ -511,7 +511,7 @@
                     </form>
 
                     <div class="footer-text">
-                        &copy; {{ date('Y') }} PAWSER. Pet Appointment and Workflow Service & Records System.
+                        &copy; {{ date('Y') }} FURCARE. Pet Appointment and Workflow Service & Records System.
                     </div>
                 </div>
             </div>

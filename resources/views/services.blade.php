@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Features - PAWSER Pet Care Management</title>
+    <title>Features - FURCARE Pet Care Management</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
@@ -396,12 +396,12 @@
             <a href="{{ route('home') }}" class="nav-brand">
                 <div class="nav-logo">
                     @if (file_exists(public_path('newlogo.png')))
-                        <img src="{{ asset('newlogo.png') }}" alt="PAWSER Logo">
+                        <img src="{{ asset('newlogo.png') }}" alt="FURCARE Logo">
                     @else
                         <i class="bi bi-paw-fill"></i>
                     @endif
                 </div>
-                PAWSER
+                FURCARE
             </a>
             <div class="nav-menu">
                 <a href="{{ route('home') }}">Home</a>
@@ -426,7 +426,7 @@
     <!-- Hero -->
     <section class="hero-section">
         <div class="hero-content">
-            <h1>Powerful <span>Features</span> of PAWSER</h1>
+            <h1>Powerful <span>Features</span> of FURCARE</h1>
             <p>A comprehensive pet care management system with intelligent scheduling, service tracking, team coordination, and complete client communication tools.</p>
         </div>
     </section>
@@ -436,7 +436,7 @@
         <!-- Features Overview -->
         <section class="features-shell">
             <h2 class="section-title">System <span>Features</span></h2>
-            <p class="section-subtitle">These are the core features of PAWSER.</p>
+            <p class="section-subtitle">These are the core features of FURCARE.</p>
 
             <div class="services-grid">
                 <!-- Service 1 -->

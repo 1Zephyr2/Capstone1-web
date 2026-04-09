@@ -1,4 +1,4 @@
-﻿<!-- Admin Navigation Bar -->
+<!-- Admin Navigation Bar -->
 <style>
     :root {
         --app-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -279,9 +279,9 @@
 <nav class="admin-navbar">
     <div class="admin-navbar-container">
         <a href="{{ route('admin.dashboard') }}" class="admin-navbar-brand">
-            <img src="{{ asset('newlogo.png') }}" alt="PAWSER" class="admin-navbar-logo" onerror="this.style.display='none'">
+            <img src="{{ asset('newlogo.png') }}" alt="FURCARE" class="admin-navbar-logo" onerror="this.style.display='none'">
             <div class="admin-navbar-brand-text">
-                <p class="admin-navbar-title">PAWSER</p>
+                <p class="admin-navbar-title">FURCARE</p>
                 <p class="admin-navbar-subtitle">Admin Panel</p>
             </div>
         </a>

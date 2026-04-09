@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - PAWSER</title>
+    <title>Dashboard - FURCARE</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
@@ -2581,9 +2581,9 @@
     <nav class="navbar">
         <div class="navbar-container">
             <a href="{{ route('dashboard') }}" class="navbar-brand">
-                <img src="{{ asset('newlogo.png') }}" alt="PAWSER" class="navbar-logo">
+                <img src="{{ asset('newlogo.png') }}" alt="FURCARE" class="navbar-logo">
                 <div class="navbar-brand-text">
-                    <div class="navbar-title">PAWSER</div>
+                    <div class="navbar-title">FURCARE</div>
                     <div class="navbar-subtitle">Staff Dashboard</div>
                 </div>
             </a>

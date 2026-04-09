@@ -1,4 +1,4 @@
-﻿<!-- Staff Navigation Bar -->
+<!-- Staff Navigation Bar -->
 <style>
     .staff-navbar {
         background: #1e293b;
@@ -257,9 +257,9 @@
 <nav class="staff-navbar">
     <div class="staff-navbar-container">
         <a href="{{ route('dashboard') }}" class="staff-navbar-brand">
-            <img src="{{ asset('newlogo.png') }}" alt="PAWSER" class="staff-navbar-logo" onerror="this.style.display='none'">
+            <img src="{{ asset('newlogo.png') }}" alt="FURCARE" class="staff-navbar-logo" onerror="this.style.display='none'">
             <div class="staff-navbar-brand-text">
-                <p class="staff-navbar-title">PAWSER</p>
+                <p class="staff-navbar-title">FURCARE</p>
                 <p class="staff-navbar-subtitle">Staff Dashboard</p>
             </div>
         </a>

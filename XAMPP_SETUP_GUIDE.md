@@ -1,10 +1,10 @@
-# XAMPP Setup Guide for PAWSER
+# XAMPP Setup Guide for FURCARE
 
-**Complete beginner-friendly guide to set up PAWSER with XAMPP for offline demos**
+**Complete beginner-friendly guide to set up FURCARE with XAMPP for offline demos**
 
 ## What You'll Need
 - XAMPP (already installed on your computer)
-- Your PAWSER project folder
+- Your FURCARE project folder
 - About 15 minutes
 
 ## Why Use XAMPP?
@@ -36,10 +36,10 @@
 2. **Type in address bar**: `http://localhost/phpmyadmin`
 3. **Press Enter** - You'll see phpMyAdmin interface
 4. **Click "New"** in the left sidebar
-5. **Type database name**: `pawser_db`
+5. **Type database name**: `furcare_db`
 6. **Click "Create"** button
 
-**Success**: You should see "pawser_db" in the left sidebar
+**Success**: You should see "furcare_db" in the left sidebar
 
 ### **Step 3: Move Your Project to XAMPP**
 1. **Open File Explorer**
@@ -48,7 +48,7 @@
 4. **Rename the folder** to `Capstone1-web`
 5. **Final path should be**: `C:\xampp\htdocs\Capstone1-web\`
 
-### **Step 4: Configure PAWSER for XAMPP**
+### **Step 4: Configure FURCARE for XAMPP**
 1. **Open your project folder**: `C:\xampp\htdocs\Capstone1-web\`
 2. **Find the file**: `.env`
 3. **Open `.env` with Notepad**
@@ -69,7 +69,7 @@
    DB_CONNECTION=mysql
    DB_HOST=127.0.0.1
    DB_PORT=3306
-   DB_DATABASE=pawser_db
+   DB_DATABASE=furcare_db
    DB_USERNAME=root
    DB_PASSWORD=
    ```
@@ -97,7 +97,7 @@
 1. **Open your web browser**
 2. **Type in address bar**: `http://localhost/Capstone1-web/public`
 3. **Press Enter**
-4. **You should see the PAWSER login page**
+4. **You should see the FURCARE login page**
 
 **Congratulations! XAMPP setup is complete!**
 
@@ -128,7 +128,7 @@
 1. **Show the application**: `http://localhost/Capstone1-web/public`
 2. **Login and demonstrate features**
 3. **Show database** (optional): `http://localhost/phpmyadmin`
-   - Click "pawser_db" to see tables
+   - Click "furcare_db" to see tables
    - Click table names to see data
 
 ### **After Demo**
@@ -175,7 +175,7 @@
 
 ### **Quick Demo Reset**
 1. Go to: `http://localhost/phpmyadmin`
-2. Click "pawser_db"
+2. Click "furcare_db"
 3. Select tables with demo data
 4. Click "Empty" to clear data
 5. Run: `php artisan db:seed` to add fresh data

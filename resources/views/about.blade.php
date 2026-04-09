@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About PAWSER - Pet Care Management System</title>
+    <title>About FURCARE - Pet Care Management System</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
@@ -382,12 +382,12 @@
             <a href="{{ route('home') }}" class="nav-brand">
                 <div class="nav-logo">
                     @if (file_exists(public_path('newlogo.png')))
-                        <img src="{{ asset('newlogo.png') }}" alt="PAWSER Logo">
+                        <img src="{{ asset('newlogo.png') }}" alt="FURCARE Logo">
                     @else
                         <i class="bi bi-paw-fill"></i>
                     @endif
                 </div>
-                PAWSER
+                FURCARE
             </a>
             <div class="nav-menu">
                 <a href="{{ route('home') }}">Home</a>
@@ -413,7 +413,7 @@
         <!-- Hero -->
         <section class="hero-section">
             <div class="hero-content">
-                <h1>About <span>PAWSER</span></h1>
+                <h1>About <span>FURCARE</span></h1>
                 <p>Revolutionizing pet care management through innovative technology and compassionate service</p>
             </div>
         </section>
@@ -421,8 +421,8 @@
         <!-- Our Story -->
         <div class="container">
             <section class="section section-plain">
-                <h2>About <span>PAWSER</span></h2>
-                <p>PAWSER is an end-to-end pet care management system built to centralize clinic and grooming workflows. It combines appointment scheduling, pet records, visit tracking, notification handling, and operational dashboards in one secure platform.</p>
+                <h2>About <span>FURCARE</span></h2>
+                <p>FURCARE is an end-to-end pet care management system built to centralize clinic and grooming workflows. It combines appointment scheduling, pet records, visit tracking, notification handling, and operational dashboards in one secure platform.</p>
                 <p>The system is designed for both staff and pet owners. Staff can manage daily operations, requests, and service history efficiently, while pet owners can book, track, and review their pets' records through a clear self-service portal.</p>
             </section>
         </div>

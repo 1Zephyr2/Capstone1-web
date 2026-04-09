@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Pet - PAWSER</title>
+    <title>Add Pet - FURCARE</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * {
@@ -708,8 +708,8 @@
     <nav class="navbar">
         <div class="navbar-container">
             <a href="{{ route('customer.dashboard') }}" class="navbar-brand">
-                <img src="{{ asset('newlogo.png') }}" alt="PAWSER" class="navbar-logo">
-                <span class="navbar-title">PAWSER</span>
+                <img src="{{ asset('newlogo.png') }}" alt="FURCARE" class="navbar-logo">
+                <span class="navbar-title">FURCARE</span>
             </a>
 
             <div class="navbar-center">
