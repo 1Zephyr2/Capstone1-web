@@ -468,6 +468,107 @@
             font-size: 14px;
         }
 
+        .dashboard-actions {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .pet-preview-panel {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e2e8f0;
+            margin-bottom: 28px;
+        }
+
+        .pet-preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .pet-preview-header h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 0;
+        }
+
+        .pet-preview-header p {
+            font-size: 13px;
+            color: #64748b;
+            margin: 4px 0 0 0;
+        }
+
+        .pet-preview-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .pet-preview-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            border-radius: 12px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            min-width: 0;
+        }
+
+        .pet-preview-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.14), rgba(6, 182, 212, 0.12));
+            color: #0f766e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .pet-preview-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .pet-preview-name {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 700;
+            color: #0f172a;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .pet-preview-meta {
+            margin-top: 2px;
+            font-size: 12px;
+            color: #64748b;
+            line-height: 1.35;
+        }
+
+        .pet-preview-empty {
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px dashed #cbd5e1;
+            color: #64748b;
+            text-align: center;
+            font-size: 13px;
+        }
+
         .stat-number {
             font-size: 40px;
             font-weight: 800;
@@ -567,6 +668,27 @@
             align-items: center;
             gap: 16px;
             flex: 1;
+        }
+
+        .pet-link-secondary {
+            padding: 8px 14px;
+            background: white;
+            color: #14b8a6;
+            border: 1px solid #14b8a6;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .pet-link-secondary:hover {
+            background: #f0fdf4;
+            transform: translateY(-2px);
         }
 
         .pet-link {
@@ -673,6 +795,19 @@
 
             .cards-container {
                 grid-template-columns: 1fr;
+            }
+
+            .pet-preview-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .dashboard-actions {
+                gap: 10px;
+            }
+
+            .pet-link-secondary {
+                width: 100%;
+                justify-content: center;
             }
 
             .navbar-end {
@@ -917,55 +1052,39 @@
         </div>
 
         <!-- Action Buttons -->
-        <div style="display: flex; gap: 12px; margin-bottom: 32px; flex-wrap: wrap;">
+        <div class="dashboard-actions">
             <a href="{{ route('appointment-requests.create') }}" style="padding: 14px 24px; background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3); transition: all 0.3s; text-decoration: none;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(20, 184, 166, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(20, 184, 166, 0.3)'">
                 <i class="bi bi-calendar-plus"></i>
                 Request an Appointment
             </a>
-            <a href="{{ route('customer.pets.index') }}" style="padding: 14px 24px; background: white; color: #14b8a6; border: 2px solid #14b8a6; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: all 0.3s;" onmouseover="this.style.background='#f0fdf4'" onmouseout="this.style.background='white'">
-                <i class="bi bi-paw-fill"></i>
-                View All Pets
-            </a>
-            <a href="{{ route('customer.appointments.index') }}" style="padding: 14px 24px; background: white; color: #06b6d4; border: 2px solid #06b6d4; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: all 0.3s;" onmouseover="this.style.background='#ecf9ff'" onmouseout="this.style.background='white'">
-                <i class="bi bi-calendar3"></i>
-                View All Appointments
-            </a>
         </div>
 
-        <!-- Pets List -->
-        <div class="pets-section">
-            <div class="section-title">
-                <i class="bi bi-paw"></i>
-                Your Pets
+        <div class="pet-preview-panel">
+            <div class="pet-preview-header">
+                <div>
+                    <h3><i class="bi bi-paw-fill" style="color:#14b8a6;margin-right:6px;"></i>Your Pets</h3>
+                    <p>Small preview of your registered pets</p>
+                </div>
+                <a href="{{ route('customer.pets.index') }}" class="pet-link-secondary">Open Pets</a>
             </div>
 
             @if($pets->isEmpty())
-                <div class="empty-state">
-                    <i class="bi bi-inbox"></i>
-                    <p>No pets registered yet.</p>
-                    <p style="font-size: 12px; margin-top: 8px;">Contact your veterinary clinic to add your pet.</p>
-                </div>
+                <div class="pet-preview-empty">No pets registered yet.</div>
             @else
-                <div class="pets-list">
-                    @foreach($pets as $pet)
-                        <div class="pet-item">
-                            <div class="pet-info">
-                                <div class="pet-icon">
-                                    @if($pet->pet_photo_path)
-                                        <img src="{{ asset('storage/' . $pet->pet_photo_path) }}" alt="{{ $pet->pet_name }}">
-                                    @else
-                                        <i class="bi bi-paw-fill"></i>
-                                    @endif
-                                </div>
-                                <div class="pet-details">
-                                    <h3>{{ $pet->pet_name }}</h3>
-                                    <p>{{ $pet->species ?? 'Unknown species' }} • {{ $pet->breed ?? 'Unknown breed' }}</p>
-                                </div>
+                <div class="pet-preview-grid">
+                    @foreach($pets->take(4) as $pet)
+                        <div class="pet-preview-item">
+                            <div class="pet-preview-avatar">
+                                @if($pet->pet_photo_path)
+                                    <img src="{{ asset('storage/' . $pet->pet_photo_path) }}" alt="{{ $pet->pet_name }}">
+                                @else
+                                    {{ strtoupper(substr($pet->pet_name ?: 'P', 0, 1)) }}
+                                @endif
                             </div>
-                            <a href="{{ route('customer.pets.show', $pet) }}" class="pet-link">
-                                <i class="bi bi-arrow-right"></i>
-                                View Details
-                            </a>
+                            <div style="min-width: 0;">
+                                <p class="pet-preview-name">{{ $pet->pet_name }}</p>
+                                <div class="pet-preview-meta">{{ $pet->species ?? 'Unknown species' }} • {{ $pet->breed ?? 'Unknown breed' }}</div>
+                            </div>
                         </div>
                     @endforeach
                 </div>

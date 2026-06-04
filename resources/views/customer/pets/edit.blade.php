@@ -399,8 +399,8 @@
 
         /* Photo Upload */
         .photo-upload-section {
-            margin-bottom: 24px;
-            padding: 20px;
+            margin-bottom: 18px;
+            padding: 16px;
             background: #f9fafb;
             border-radius: 10px;
             border: 2px dashed #e5e7eb;
@@ -421,31 +421,31 @@
         }
 
         .photo-upload-icon {
-            font-size: 36px;
+            font-size: 28px;
             color: #14b8a6;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .photo-upload-text {
             color: #64748b;
-            font-size: 14px;
+            font-size: 13px;
             margin: 0;
         }
 
         .photo-upload-hint {
             color: #9ca3af;
-            font-size: 12px;
+            font-size: 11px;
             margin-top: 4px;
         }
 
         .photo-preview {
-            margin-top: 16px;
+            margin-top: 12px;
             text-align: center;
         }
 
         .photo-preview img {
             max-width: 100%;
-            max-height: 200px;
+            max-height: 160px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
@@ -884,6 +884,11 @@
 
         // File input change
         photoInput.addEventListener('change', handleFileSelect);
+
+        if (existingPreview) {
+            existingPreview.addEventListener('click', () => photoInput.click());
+            existingPreview.style.cursor = 'pointer';
+        }
 
         // Drag and drop
         photoUpload.addEventListener('dragover', (e) => {

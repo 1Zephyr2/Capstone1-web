@@ -20,11 +20,11 @@ Route::get('/', function () {
 
 // Public Pages
 Route::get('/about', function () {
-    return view('about');
+    return redirect('/#about');
 })->name('about');
 
 Route::get('/features', function () {
-    return view('services');
+    return redirect('/');
 })->name('features');
 
 // Redirect old /services route to /features

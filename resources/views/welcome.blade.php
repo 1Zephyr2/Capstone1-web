@@ -168,6 +168,181 @@
             animation: fadeInUp 0.6s ease-out;
         }
 
+        .landing-section {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(31, 41, 55, 0.8);
+            border: 1px solid rgba(126, 232, 223, 0.2);
+            border-radius: 24px;
+            padding: 48px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(48px) scale(0.985);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            will-change: opacity, transform;
+        }
+
+        .scroll-reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .section-stack {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 28px;
+            margin-top: 180px;
+        }
+
+        .scroll-hint {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin: 8px auto -90px;
+            padding: 10px 18px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.55);
+            border: 1px solid rgba(126, 232, 223, 0.18);
+            color: #cbd5e1;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
+            animation: scrollBounce 1.8s ease-in-out infinite;
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+
+        .scroll-hint i {
+            color: #7ee8df;
+            font-size: 14px;
+        }
+
+        .scroll-hint.is-hidden {
+            opacity: 0;
+            transform: translateY(10px);
+            pointer-events: none;
+        }
+
+        @keyframes scrollBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(8px);
+            }
+        }
+
+        .section-header {
+            max-width: 760px;
+            margin-bottom: 28px;
+        }
+
+        .section-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            background: rgba(20, 184, 166, 0.1);
+            color: #0f766e;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .section-title {
+            font-size: 34px;
+            line-height: 1.15;
+            color: #e2e8f0;
+            margin-bottom: 12px;
+            letter-spacing: -0.04em;
+        }
+
+        .section-lead {
+            font-size: 16px;
+            color: #cbd5e1;
+            line-height: 1.8;
+        }
+
+        .about-layout {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 20px;
+        }
+
+        .glass-card {
+            background: rgba(55, 65, 81, 0.9);
+            border: 1px solid rgba(126, 232, 223, 0.15);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+        }
+
+        .glass-card h3 {
+            font-size: 20px;
+            color: #e2e8f0;
+            margin-bottom: 12px;
+        }
+
+        .glass-card p {
+            color: #cbd5e1;
+            margin-bottom: 14px;
+            line-height: 1.75;
+        }
+
+        .about-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .about-pills span {
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(20, 184, 166, 0.12);
+            color: #7ee8df;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .info-stack {
+            display: grid;
+            gap: 14px;
+        }
+
+        .info-card {
+            padding: 18px;
+            border-radius: 18px;
+            border: 1px solid rgba(126, 232, 223, 0.15);
+            background: rgba(55, 65, 81, 0.78);
+        }
+
+        .info-card h4 {
+            font-size: 16px;
+            color: #e2e8f0;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-card p {
+            font-size: 14px;
+            color: #cbd5e1;
+            line-height: 1.6;
+            margin: 0;
+        }
+
         .feature-item {
             animation: fadeInUp 0.5s ease-out;
         }
@@ -185,9 +360,11 @@
         main {
             flex: 1;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 40px 24px;
+            flex-direction: column;
+            align-items: stretch;
+            justify-content: flex-start;
+            gap: 28px;
+            padding: 96px 24px 80px;
         }
 
         /* Hero Card */
@@ -204,6 +381,10 @@
             width: 100%;
             border: 1px solid rgba(126, 232, 223, 0.2);
             backdrop-filter: blur(10px);
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: 540px;
         }
 
         .hero-left {
@@ -437,6 +618,14 @@
             .hero-title {
                 font-size: 36px;
             }
+
+            .landing-section {
+                padding: 36px;
+            }
+
+            .about-layout {
+                grid-template-columns: 1fr 1fr;
+            }
         }
 
         @media (max-width: 768px) {
@@ -464,6 +653,19 @@
 
             .login-btn {
                 flex: 1;
+            }
+
+            .landing-section {
+                padding: 28px 20px;
+                border-radius: 18px;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+
+            .about-layout {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -498,6 +700,10 @@
                 flex-direction: column;
             }
 
+            .section-title {
+                font-size: 24px;
+            }
+
             .footer-container {
                 gap: 24px;
                 margin-bottom: 20px;
@@ -519,12 +725,6 @@
                 </div>
                 FURCARE
             </a>
-            
-            <div class="nav-menu">
-                <a href="{{ route('home') }}" class="active">Home</a>
-                <a href="{{ route('about') }}">About</a>
-                <a href="{{ route('features') }}">Features</a>
-            </div>
             
             <div class="nav-cta">
                 @if (Auth::check())
@@ -571,7 +771,6 @@
                     @endif
                 </div>
 
-
             </div>
 
             <!-- Right Visual -->
@@ -608,6 +807,53 @@
                 </div>
             </div>
         </div>
+
+        <div class="scroll-hint" id="scroll-hint">
+            <i class="bi bi-chevron-down"></i>
+            About below
+        </div>
+
+        <div class="section-stack">
+            <section class="landing-section scroll-reveal" id="about">
+                <div class="section-header">
+                    <span class="section-kicker">About FURCARE</span>
+                    <h2 class="section-title">A cleaner way to manage pet care</h2>
+                    <p class="section-lead">FURCARE brings appointments, pet profiles, service history, and communication into one smooth experience for pet owners and staff.</p>
+                </div>
+
+                <div class="about-layout">
+                    <div class="glass-card">
+                        <h3>Why this system exists</h3>
+                        <p>Pet care teams often juggle booking, client updates, and pet details in different places. This homepage now tells that story in one place, so users can learn the platform without jumping to separate pages.</p>
+                        <p>It is designed to feel more like a modern product landing page: a strong hero at the top, then clear sections you can scroll through for the important details.</p>
+
+                        <div class="about-pills">
+                            <span>Appointments</span>
+                            <span>Pet Profiles</span>
+                            <span>Service History</span>
+                            <span>Notifications</span>
+                            <span>Role-based access</span>
+                        </div>
+                    </div>
+
+                    <div class="info-stack">
+                        <div class="info-card">
+                            <h4><i class="bi bi-shield-check"></i> Secure Access</h4>
+                            <p>Separate login paths for pet owners and staff keep the experience simple and the data access controlled.</p>
+                        </div>
+                        <div class="info-card">
+                            <h4><i class="bi bi-phone"></i> Owner-friendly</h4>
+                            <p>Pet owners can check their pets, appointments, and account details from one place without switching pages repeatedly.</p>
+                        </div>
+                        <div class="info-card">
+                            <h4><i class="bi bi-gear-wide-connected"></i> Operational flow</h4>
+                            <p>Staff get a clearer workflow for managing clients, visits, and follow-ups in fewer clicks.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
     </main>
 
     <script>
@@ -639,6 +885,37 @@
                 this.style.transform = 'translateY(0)';
             });
         });
+
+        const revealSections = document.querySelectorAll('.scroll-reveal');
+        const scrollHint = document.getElementById('scroll-hint');
+
+        if ('IntersectionObserver' in window && revealSections.length > 0) {
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    entry.target.classList.toggle('is-visible', entry.isIntersecting);
+                });
+            }, {
+                threshold: 0.22,
+                rootMargin: '0px 0px -80px 0px'
+            });
+
+            revealSections.forEach((section) => revealObserver.observe(section));
+        } else {
+            revealSections.forEach((section) => section.classList.add('is-visible'));
+        }
+
+        if (scrollHint) {
+            const toggleScrollHint = () => {
+                if (window.scrollY > 80) {
+                    scrollHint.classList.add('is-hidden');
+                } else {
+                    scrollHint.classList.remove('is-hidden');
+                }
+            };
+
+            toggleScrollHint();
+            window.addEventListener('scroll', toggleScrollHint, { passive: true });
+        }
 
     </script>
 </body>
