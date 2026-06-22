@@ -13,16 +13,16 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f8fafc;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #FFF8F0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
 
         /* Top Navigation Bar */
         .navbar {
-            background: #1e293b;
+    background: #1C2B33;
             color: white;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             position: sticky;
@@ -99,10 +99,10 @@
         }
 
         .nav-item.active {
-            background: rgba(20, 184, 166, 0.15);
-            color: #14b8a6;
-            border-bottom: 2px solid #14b8a6;
-        }
+    background: rgba(15, 138, 122, 0.18);
+    color: #1DCBA8;
+    border-bottom: 2px solid #1DCBA8;
+}
 
         .navbar-end {
             display: flex;
@@ -322,17 +322,17 @@
         }
 
         .page-title {
-            font-size: 32px;
-            font-weight: 700;
-            color: #0f172a;
-            margin-bottom: 8px;
-            letter-spacing: -0.5px;
-        }
+    font-size: 32px;
+    font-weight: 700;
+    color: #1C2B33;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+}
 
-        .page-subtitle {
-            font-size: 14px;
-            color: #64748b;
-        }
+.page-subtitle {
+    font-size: 14px;
+    color: #7A8B85;
+}
 
         .menu-label {
             padding: 16px 24px 8px 24px;
@@ -420,53 +420,52 @@
         }
 
         .card {
-            background: white;
-            border-radius: 14px;
-            padding: 28px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-            border: 1px solid #e2e8f0;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
+    background: white;
+    border-radius: 12px;
+    padding: 16px 20px;
+    box-shadow: 0 2px 8px rgba(28, 43, 51, 0.06);
+    border: 1px solid #EDE3D6;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
 
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #14b8a6, #06b6d4);
-        }
+.card:hover {
+    box-shadow: 0 8px 24px rgba(15, 138, 122, 0.12);
+    transform: translateY(-2px);
+    border-color: #d4e9e6;
+}
 
-        .card:hover {
-            box-shadow: 0 8px 24px rgba(20, 184, 166, 0.12);
-            transform: translateY(-3px);
-            border-color: #cbd5e1;
-        }
+.card-icon-wrap {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(15, 138, 122, 0.12), rgba(15, 138, 122, 0.07));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
 
-        .card-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #0f172a;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            opacity: 0.85;
-        }
+.card-icon-wrap i {
+    font-size: 20px;
+    color: #0F8A7A;
+}
 
-        .card-title i {
-            font-size: 20px;
-            color: #14b8a6;
-        }
+.card-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: #7A8B85;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-bottom: 2px;
+}
 
-        .card-content {
-            color: #64748b;
-            line-height: 1.6;
-            font-size: 14px;
-        }
+.card-content {
+    color: #94a3b8;
+    font-size: 12px;
+}
 
         .dashboard-actions {
             display: flex;
@@ -476,13 +475,13 @@
         }
 
         .pet-preview-panel {
-            background: white;
-            border-radius: 14px;
-            padding: 20px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-            border: 1px solid #e2e8f0;
-            margin-bottom: 28px;
-        }
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(28, 43, 51, 0.06);
+    border: 1px solid #EDE3D6;
+    margin-bottom: 28px;
+}
 
         .pet-preview-header {
             display: flex;
@@ -493,17 +492,17 @@
         }
 
         .pet-preview-header h3 {
-            font-size: 16px;
-            font-weight: 700;
-            color: #0f172a;
-            margin: 0;
-        }
+    font-size: 16px;
+    font-weight: 700;
+    color: #1C2B33;
+    margin: 0;
+}
 
-        .pet-preview-header p {
-            font-size: 13px;
-            color: #64748b;
-            margin: 4px 0 0 0;
-        }
+.pet-preview-header p {
+    font-size: 13px;
+    color: #7A8B85;
+    margin: 4px 0 0 0;
+}
 
         .pet-preview-grid {
             display: grid;
@@ -570,15 +569,11 @@
         }
 
         .stat-number {
-            font-size: 40px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #14b8a6, #06b6d4);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin: 20px 0 12px 0;
-            letter-spacing: -1px;
-        }
+    font-size: 24px;
+    font-weight: 800;
+    color: #1C2B33;
+    line-height: 1.1;
+}
 
         /* Pets Section */
         .pets-section {
@@ -728,13 +723,13 @@
 
         /* Appointments */
         .appointments-section {
-            margin-top: 32px;
-            background: white;
-            border-radius: 14px;
-            padding: 28px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-            border: 1px solid #e2e8f0;
-        }
+    margin-top: 32px;
+    background: white;
+    border-radius: 14px;
+    padding: 28px;
+    box-shadow: 0 2px 8px rgba(28, 43, 51, 0.06);
+    border: 1px solid #EDE3D6;
+}
 
         .appointment-item {
             display: flex;
@@ -1027,29 +1022,27 @@
         </div>
 
         <!-- Quick Stats -->
-        <div class="cards-container">
-            <div class="card">
-                <div class="card-title">
-                    <i class="bi bi-paw"></i>
-                    Total Pets
-                </div>
-                <div class="stat-number">{{ $pets->count() }}</div>
-                <div class="card-content">
-                    You have {{ $pets->count() }} pet{{ $pets->count() != 1 ? 's' : '' }} registered.
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-title">
-                    <i class="bi bi-calendar-check"></i>
-                    Upcoming Appointments
-                </div>
-                <div class="stat-number">{{ $appointments->count() }}</div>
-                <div class="card-content">
-                    {{ $appointments->count() }} appointment{{ $appointments->count() != 1 ? 's' : '' }} scheduled.
-                </div>
-            </div>
+<div class="cards-container">
+    <div class="card">
+        <div class="card-icon-wrap">
+            <i class="bi bi-paw"></i>
         </div>
+        <div>
+            <div class="card-title">Total Pets</div>
+            <div class="stat-number">{{ $pets->count() }}</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-icon-wrap">
+            <i class="bi bi-calendar-check"></i>
+        </div>
+        <div>
+            <div class="card-title">Upcoming Appointments</div>
+            <div class="stat-number">{{ $appointments->count() }}</div>
+        </div>
+    </div>
+</div>
 
         <!-- Action Buttons -->
         <div class="dashboard-actions">
@@ -1059,8 +1052,13 @@
             </a>
         </div>
 
-        <div class="pet-preview-panel">
-            <div class="pet-preview-header">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+    <div style="flex:1;height:1px;background:#EDE3D6;"></div>
+    <i class="bi bi-paw-fill" style="color:#E8924A;font-size:15px;opacity:0.65;"></i>
+    <div style="flex:1;height:1px;background:#EDE3D6;"></div>
+</div>
+<div class="pet-preview-panel">
+    <div class="pet-preview-header">
                 <div>
                     <h3><i class="bi bi-paw-fill" style="color:#14b8a6;margin-right:6px;"></i>Your Pets</h3>
                     <p>Small preview of your registered pets</p>

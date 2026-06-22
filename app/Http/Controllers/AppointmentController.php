@@ -7,6 +7,7 @@ use App\Models\Patient;
 use App\Models\Visit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -16,8 +17,13 @@ class AppointmentController extends Controller
      * Display a listing of appointments
      */
     public function index(Request $request)
-    {
-        $query = Appointment::with('patient');
+{
+    // Redirect customers to their own appointments page
+    if (Auth::user()->role === 'customer') {
+        return redirect()->route('customer.appointments.index');
+    }
+
+    $query = Appointment::with('patient');
 
         // Exclude completed appointments by default
         $query->where('status', '!=', 'completed');
@@ -111,7 +117,7 @@ class AppointmentController extends Controller
         $validator = Validator::make($request->all(), [
             'patient_id' => 'required|exists:patients,id',
             'appointment_date' => 'required|date|after_or_equal:today',
-            'appointment_time' => 'required',
+            'appointment_time' => 'required|in:09:00:00,10:00:00,11:00:00,13:00:00,14:00:00,15:00:00,16:00:00,17:00:00',
             'service_type' => 'required|string',
             'chief_complaint' => 'nullable|string',
             'health_worker' => 'nullable|string|max:255',
@@ -139,8 +145,9 @@ class AppointmentController extends Controller
 
         $appointment = Appointment::create($data);
 
-        return redirect()->route('dashboard')
-            ->with('success', 'Appointment created successfully.');
+        $redirectRoute = Auth::user()->role === 'customer' ? 'customer.dashboard' : 'dashboard';
+return redirect()->route($redirectRoute)
+    ->with('success', 'Appointment created successfully.');
     }
 
     /**
@@ -170,7 +177,7 @@ class AppointmentController extends Controller
         if ($request->has('appointment_date') && !$request->has('patient_id')) {
             $validator = Validator::make($request->all(), [
                 'appointment_date' => 'required|date',
-                'appointment_time' => 'required',
+                'appointment_time' => 'required|in:09:00:00,10:00:00,11:00:00,13:00:00,14:00:00,15:00:00,16:00:00,17:00:00',
                 'status' => 'nullable|in:scheduled,confirmed,completed,cancelled,no-show,rescheduled,attended',
             ]);
 
@@ -216,7 +223,7 @@ class AppointmentController extends Controller
         $validator = Validator::make($request->all(), [
             'patient_id' => 'required|exists:patients,id',
             'appointment_date' => 'required|date',
-            'appointment_time' => 'required',
+            'appointment_time' => 'required|in:09:00:00,10:00:00,11:00:00,13:00:00,14:00:00,15:00:00,16:00:00,17:00:00',
             'service_type' => 'required|string',
             'chief_complaint' => 'nullable|string',
             'health_worker' => 'nullable|string|max:255',

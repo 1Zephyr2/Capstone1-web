@@ -235,4 +235,64 @@ class AdminController extends Controller
     {
         return view('admin.settings');
     }
+
+    /**
+ * Display service management page
+ */
+public function services()
+{
+    $services = \App\Models\Service::orderBy('sort_order')->get();
+    return view('admin.services', compact('services'));
+}
+
+/**
+ * Store a new service
+ */
+public function storeService(Request $request)
+{
+    $validated = $request->validate([
+        'name'     => 'required|string|max:255|unique:services,name',
+        'category' => 'required|in:Grooming Packages,Other Services',
+    ]);
+
+    $maxOrder = \App\Models\Service::max('sort_order') ?? 0;
+
+    \App\Models\Service::create([
+        'name'       => $validated['name'],
+        'category'   => $validated['category'],
+        'is_active'  => true,
+        'sort_order' => $maxOrder + 1,
+    ]);
+
+    return back()->with('success', 'Service added successfully.');
+}
+
+/**
+ * Update a service
+ */
+public function updateService(Request $request, \App\Models\Service $service)
+{
+    $validated = $request->validate([
+        'name'      => 'required|string|max:255|unique:services,name,' . $service->id,
+        'category' => 'required|in:Grooming Packages,Other Services',
+        'is_active' => 'boolean',
+    ]);
+
+    $service->update([
+        'name'      => $validated['name'],
+        'category'  => $validated['category'],
+        'is_active' => $request->has('is_active'),
+    ]);
+
+    return back()->with('success', 'Service updated successfully.');
+}
+
+/**
+ * Delete a service
+ */
+public function destroyService(\App\Models\Service $service)
+{
+    $service->delete();
+    return back()->with('success', 'Service deleted successfully.');
+}
 }

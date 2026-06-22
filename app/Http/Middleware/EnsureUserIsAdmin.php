@@ -18,9 +18,9 @@ class EnsureUserIsAdmin
     public function handle(Request $request, Closure $next): Response
     {
         $user = Auth::user();
-        if (!Auth::check() || !$user || !in_array($user->role, ['admin', 'staff'])) {
-            abort(403, 'Unauthorized access. Admin or staff privileges required.');
-        }
+        if (!Auth::check() || !$user || !in_array($user->role, ['admin', 'staff', 'super_admin'])) {
+    abort(403, 'Unauthorized access. Admin or staff privileges required.');
+}
 
         return $next($request);
     }

@@ -13,8 +13,8 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f8fafc;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #FFF8F0;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -22,7 +22,7 @@
 
         /* Top Navigation Bar */
         .navbar {
-            background: #1e293b;
+    background: #1C2B33;
             color: white;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             position: sticky;
@@ -99,10 +99,10 @@
         }
 
         .nav-item.active {
-            background: rgba(20, 184, 166, 0.15);
-            color: #14b8a6;
-            border-bottom: 2px solid #14b8a6;
-        }
+    background: rgba(15, 138, 122, 0.18);
+    color: #1DCBA8;
+    border-bottom: 2px solid #1DCBA8;
+}
 
         .navbar-end {
             display: flex;
@@ -840,59 +840,147 @@
 
     <!-- Main Content -->
     <div class="main-content">
-        <div class="page-header">
-            <h1 class="page-title">
-                My Appointments
-            </h1>
-        </div>
+    <div class="page-header">
+        <h1 class="page-title">My Appointments</h1>
+    </div>
 
+    {{-- Appointment Requests Section (pending/rejected/cancelled) --}}
+    @if($appointmentRequests->isNotEmpty())
+    <div style="margin-bottom: 28px;">
+        <h2 style="font-size: 18px; font-weight: 700; color: #0f172a; margin-bottom: 14px; display:flex; align-items:center; gap:8px;">
+            <i class="bi bi-hourglass-split" style="color:#f59e0b;"></i> Appointment Requests
+        </h2>
         <div class="appointments-container">
-            @if($appointments->isEmpty())
-                <div class="empty-state">
-                    <i class="bi bi-inbox"></i>
-                    <p style="font-size: 18px; font-weight: 600;">No Appointments</p>
-                    <p>You don't have any appointments scheduled.</p>
-                </div>
-            @else
-                <div class="appointments-list">
-                    @foreach($appointments as $appointment)
-                        <div class="appointment-item">
-                            <div class="appointment-content">
-                                <div class="appointment-header">
-                                    <span class="appointment-pet">
-                                        <i class="bi bi-paw"></i> {{ $appointment->patient->pet_name ?? 'Unknown Pet' }}
-                                    </span>
-                                    <span class="appointment-reason">{{ $appointment->service_type ?? 'Checkup' }}</span>
-                                    @if($appointment->appointment_date->isToday())
-                                        <span class="status-badge status-today">
-                                            <i class="bi bi-exclamation-circle"></i> Today
-                                        </span>
-                                    @else
-                                        <span class="status-badge status-upcoming">
-                                            <i class="bi bi-check-circle"></i> Upcoming
-                                        </span>
-                                    @endif
-                                </div>
-                                <div class="appointment-date">
-                                    <i class="bi bi-calendar-event"></i>
-                                    {{ $appointment->appointment_date->format('l, M d, Y') }} at {{ \Carbon\Carbon::parse($appointment->appointment_time)->format('g:i A') }}
-                                </div>
-                            </div>
-                            <a href="{{ route('customer.appointments.show', $appointment) }}" class="appointment-link">
-                                <i class="bi bi-arrow-right"></i>
-                                View Details
-                            </a>
+            <div class="appointments-list">
+                @foreach($appointmentRequests as $req)
+                <div class="appointment-item" style="
+                    @if($req->status === 'rejected') background: #fff5f5; border-left: 4px solid #ef4444;
+                    @elseif($req->status === 'pending') border-left: 4px solid #f59e0b;
+                    @else border-left: 4px solid #d1d5db;
+                    @endif
+                ">
+                    <div class="appointment-content">
+                        <div class="appointment-header">
+                            <span class="appointment-pet">
+                                <i class="bi bi-paw"></i> {{ $req->patient->pet_name ?? 'Unknown Pet' }}
+                            </span>
+                            @if($req->service_type)
+                                <span class="appointment-reason">{{ $req->service_type }}</span>
+                            @endif
+                            {{-- Status Badge --}}
+                            @if($req->status === 'pending')
+                                <span class="status-badge" style="background:rgba(245,158,11,0.1); color:#d97706;">
+                                    <i class="bi bi-hourglass-split"></i> Pending Review
+                                </span>
+                            @elseif($req->status === 'rejected')
+                                <span class="status-badge" style="background:rgba(239,68,68,0.1); color:#ef4444;">
+                                    <i class="bi bi-x-circle"></i> Rejected
+                                </span>
+                            @elseif($req->status === 'cancelled')
+                                <span class="status-badge" style="background:rgba(107,114,128,0.1); color:#6b7280;">
+                                    <i class="bi bi-slash-circle"></i> Cancelled
+                                </span>
+                            @endif
                         </div>
-                    @endforeach
-                </div>
 
-                @if($appointments->hasPages())
-                    <div class="pagination-container">
-                        {{ $appointments->links('pagination::simple-tailwind') }}
+                        <div class="appointment-date">
+                            <i class="bi bi-calendar-event"></i>
+                            Requested: {{ $req->requested_date->format('l, M d, Y') }}
+                            at {{ \Carbon\Carbon::parse($req->requested_time)->format('g:i A') }}
+                        </div>
+
+                        {{-- Rejection Reason --}}
+                        @if($req->status === 'rejected' && $req->rejection_reason)
+                            <div style="margin-top: 10px; padding: 12px 14px; background: #fee2e2; border-left: 4px solid #ef4444; border-radius: 6px;">
+                                <p style="font-size: 12px; font-weight: 700; color: #991b1b; margin-bottom: 4px;">
+                                    <i class="bi bi-x-circle-fill"></i> Reason for Rejection:
+                                </p>
+                                <p style="font-size: 13px; color: #7f1d1d; margin: 0; line-height: 1.5;">
+                                    {{ $req->rejection_reason }}
+                                </p>
+                            </div>
+                        @endif
+
+                        {{-- Pending info --}}
+                        @if($req->status === 'pending')
+                            <div style="margin-top: 10px; padding: 10px 14px; background: #fffbeb; border-left: 4px solid #f59e0b; border-radius: 6px;">
+                                <p style="font-size: 12px; color: #92400e; margin: 0;">
+                                    <i class="bi bi-clock"></i> Your request is being reviewed by our staff. You'll be notified once it's processed.
+                                </p>
+                            </div>
+                        @endif
+
+                        <div style="margin-top: 6px; font-size: 12px; color: #9ca3af;">
+                            Submitted {{ $req->created_at->diffForHumans() }}
+                        </div>
                     </div>
-                @endif
-            @endif
+
+                    {{-- Cancel button for pending requests --}}
+                    @if($req->status === 'pending')
+                        <form action="{{ route('appointment-requests.cancel', $req) }}" method="POST" onsubmit="return confirm('Cancel this request?')">
+                            @csrf @method('PATCH')
+                            <button type="submit" style="padding: 8px 14px; background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; white-space: nowrap;">
+                                <i class="bi bi-x"></i> Cancel
+                            </button>
+                        </form>
+                    @endif
+                </div>
+                @endforeach
+            </div>
         </div>
     </div>
+    @endif
+
+    {{-- Confirmed Appointments Section --}}
+    <h2 style="font-size: 18px; font-weight: 700; color: #0f172a; margin-bottom: 14px; display:flex; align-items:center; gap:8px;">
+        <i class="bi bi-calendar-check" style="color:#14b8a6;"></i> Confirmed Appointments
+    </h2>
+    <div class="appointments-container">
+        @if($appointments->isEmpty())
+            <div class="empty-state">
+                <i class="bi bi-inbox"></i>
+                <p style="font-size: 18px; font-weight: 600;">No Appointments</p>
+                <p>You don't have any confirmed appointments scheduled.</p>
+            </div>
+        @else
+            <div class="appointments-list">
+                @foreach($appointments as $appointment)
+                    <div class="appointment-item">
+                        <div class="appointment-content">
+                            <div class="appointment-header">
+                                <span class="appointment-pet">
+                                    <i class="bi bi-paw"></i> {{ $appointment->patient->pet_name ?? 'Unknown Pet' }}
+                                </span>
+                                <span class="appointment-reason">{{ $appointment->service_type ?? 'Checkup' }}</span>
+                                @if($appointment->appointment_date->isToday())
+                                    <span class="status-badge status-today">
+                                        <i class="bi bi-exclamation-circle"></i> Today
+                                    </span>
+                                @else
+                                    <span class="status-badge status-upcoming">
+                                        <i class="bi bi-check-circle"></i> Upcoming
+                                    </span>
+                                @endif
+                            </div>
+                            <div class="appointment-date">
+                                <i class="bi bi-calendar-event"></i>
+                                {{ $appointment->appointment_date->format('l, M d, Y') }} at {{ \Carbon\Carbon::parse($appointment->appointment_time)->format('g:i A') }}
+                            </div>
+                        </div>
+                        <a href="{{ route('customer.appointments.show', $appointment) }}" class="appointment-link">
+                            <i class="bi bi-arrow-right"></i> View Details
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+
+            @if($appointments->hasPages())
+                <div class="pagination-container">
+                    {{ $appointments->links('pagination::simple-tailwind') }}
+                </div>
+            @endif
+        @endif
+    </div>
+</div>
 </body>
 </html>

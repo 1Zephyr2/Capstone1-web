@@ -13,11 +13,12 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f8fafc;
-            padding: 24px;
-            min-height: 100vh;
-        }
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #FFF8F0;
+    padding: 24px;
+    padding-top: 96px;
+    min-height: 100vh;
+}
 
         .main-content {
 
@@ -460,7 +461,7 @@
         }
     </style>
 </head>
-<body>
+<body>\n<x-staff-navbar />
     <!-- Main Content -->
     <div class="main-content">
         @if(session('success'))

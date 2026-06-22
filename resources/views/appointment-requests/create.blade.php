@@ -288,7 +288,17 @@
                                 <span class="icon"><i class="bi bi-clock"></i></span>
                                 Preferred Time <span class="required">*</span>
                             </label>
-                            <input type="time" name="requested_time" required value="{{ old('requested_time', '09:00') }}">
+                            <select name="requested_time" required>
+    <option value="">Select Preferred Time</option>
+    <option value="09:00" {{ old('requested_time', '09:00') == '09:00' ? 'selected' : '' }}>9:00 AM</option>
+    <option value="10:00" {{ old('requested_time') == '10:00' ? 'selected' : '' }}>10:00 AM</option>
+    <option value="11:00" {{ old('requested_time') == '11:00' ? 'selected' : '' }}>11:00 AM</option>
+    <option value="13:00" {{ old('requested_time') == '13:00' ? 'selected' : '' }}>1:00 PM</option>
+    <option value="14:00" {{ old('requested_time') == '14:00' ? 'selected' : '' }}>2:00 PM</option>
+    <option value="15:00" {{ old('requested_time') == '15:00' ? 'selected' : '' }}>3:00 PM</option>
+    <option value="16:00" {{ old('requested_time') == '16:00' ? 'selected' : '' }}>4:00 PM</option>
+    <option value="17:00" {{ old('requested_time') == '17:00' ? 'selected' : '' }}>5:00 PM</option>
+</select>
                         </div>
                     </div>
 
@@ -298,25 +308,18 @@
                             <span class="icon"><i class="bi bi-briefcase-fill"></i></span>
                             Service Type
                         </label>
-                        <select name="service_type">
-                            <option value="">-- Select service type (optional) --</option>
-                            <optgroup label="Grooming Services">
-                                <option value="Bath & Dry" {{ old('service_type') == 'Bath & Dry' ? 'selected' : '' }}>Bath & Dry</option>
-                                <option value="Full Grooming" {{ old('service_type') == 'Full Grooming' ? 'selected' : '' }}>Full Grooming</option>
-                                <option value="Haircut & Styling" {{ old('service_type') == 'Haircut & Styling' ? 'selected' : '' }}>Haircut & Styling</option>
-                                <option value="Nail Trimming" {{ old('service_type') == 'Nail Trimming' ? 'selected' : '' }}>Nail Trimming</option>
-                                <option value="Ear Cleaning" {{ old('service_type') == 'Ear Cleaning' ? 'selected' : '' }}>Ear Cleaning</option>
-                                <option value="Teeth Brushing" {{ old('service_type') == 'Teeth Brushing' ? 'selected' : '' }}>Teeth Brushing</option>
-                                <option value="De-shedding Treatment" {{ old('service_type') == 'De-shedding Treatment' ? 'selected' : '' }}>De-shedding Treatment</option>
-                                <option value="Flea & Tick Treatment" {{ old('service_type') == 'Flea & Tick Treatment' ? 'selected' : '' }}>Flea & Tick Treatment</option>
-                                <option value="Paw Treatment" {{ old('service_type') == 'Paw Treatment' ? 'selected' : '' }}>Paw Treatment</option>
-                            </optgroup>
-                            <optgroup label="Other Services">
-                                <option value="Boarding Checkup" {{ old('service_type') == 'Boarding Checkup' ? 'selected' : '' }}>Boarding Checkup</option>
-                                <option value="Follow-up" {{ old('service_type') == 'Follow-up' ? 'selected' : '' }}>Follow-up</option>
-                                <option value="Other" {{ old('service_type') == 'Other' ? 'selected' : '' }}>Other</option>
-                            </optgroup>
-                        </select>
+                        <select name="service_type" id="service_type" class="form-control" required>
+    <option value="">Select Service</option>
+    @foreach($services as $category => $items)
+        <optgroup label="{{ $category }}">
+            @foreach($items as $svc)
+                <option value="{{ $svc->name }}" {{ old('service_type') == $svc->name ? 'selected' : '' }}>
+                    {{ $svc->name }}
+                </option>
+            @endforeach
+        </optgroup>
+    @endforeach
+</select>
                     </div>
 
                     <!-- Notes -->

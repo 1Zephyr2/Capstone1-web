@@ -366,16 +366,19 @@
         </div>
 
         <div class="card">
-            <h2 class="card-title">Quick Links</h2>
-            <div style="display: flex; flex-direction: column; gap: 12px;">
-                <a href="{{ route('admin.users.index') }}" style="color: #1e40af; text-decoration: none;">
-                    <i class="bi bi-people"></i> Manage Users
-                </a>
-                <a href="{{ route('dashboard') }}" style="color: #1e40af; text-decoration: none;">
-                    <i class="bi bi-arrow-left-right"></i> Switch to Provider View
-                </a>
-            </div>
-        </div>
+    <h2 class="card-title">Quick Links</h2>
+    <div style="display: flex; flex-direction: column; gap: 12px;">
+        <a href="{{ route('admin.users.index') }}" style="color: #1e40af; text-decoration: none;">
+            <i class="bi bi-people"></i> Manage Users
+        </a>
+        <a href="{{ route('dashboard') }}" style="color: #1e40af; text-decoration: none;">
+            <i class="bi bi-arrow-left-right"></i> Switch to Provider View
+        </a>
+        <a href="{{ route('admin.services.index') }}" style="color: #1e40af; text-decoration: none;">
+            <i class="bi bi-scissors"></i> Manage Services
+        </a>
+    </div>
+</div>
     </div>
 </body>
 </html>

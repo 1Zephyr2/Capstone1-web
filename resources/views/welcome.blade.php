@@ -3,920 +3,1075 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FURCARE - Pet Care Management System</title>
+    <title>FURCARE — Bark Pack Pet Grooming & Wellness</title>
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --cream:       #FFF8F0;
+            --teal:        #0F8A7A;
+            --teal-deep:   #0B6B5F;
+            --teal-light:  #E6F4F2;
+            --amber:       #E8924A;
+            --amber-deep:  #C97632;
+            --amber-light: #FEF3E8;
+            --navy:        #1C2B33;
+            --navy-light:  #2E4350;
+            --sage:        #7A8B85;
+            --warm-line:   #EDE3D6;
+            --white:       #FFFFFF;
+            --shadow-sm:   0 2px 8px rgba(28,43,51,0.07);
+            --shadow-md:   0 8px 28px rgba(28,43,51,0.11);
+            --shadow-lg:   0 20px 48px rgba(28,43,51,0.15);
+            --radius:      14px;
         }
+
+        html { scroll-behavior: smooth; }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #969696 0%, #b0b0b0 100%);
-            color: #1e293b;
+            background: var(--cream);
+            color: var(--navy);
             line-height: 1.6;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
         }
 
-        /* Navigation */
-        nav {
-            background: #1e293b;
-            border-bottom: 1px solid rgba(20, 184, 166, 0.2);
-            padding: 16px 0;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        /* ─── NAVBAR ─────────────────────────────────── */
+        .site-nav {
+            background: var(--navy);
+            position: sticky;
+            top: 0;
+            z-index: 200;
+            box-shadow: 0 1px 0 rgba(255,255,255,0.06);
         }
 
-        .nav-container {
-            max-width: 1400px;
+        .nav-inner {
+            max-width: 1280px;
             margin: 0 auto;
-            padding: 0 24px;
+            padding: 0 28px;
+            height: 68px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
+            gap: 24px;
         }
 
         .nav-brand {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             text-decoration: none;
-            font-weight: 700;
-            font-size: 18px;
-            color: white;
-            transition: opacity 0.3s ease;
+            flex-shrink: 0;
         }
 
-        .nav-brand:hover {
-            opacity: 0.8;
-        }
-
-        .nav-logo {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .nav-brand img {
+            height: 38px;
+            width: 38px;
             object-fit: contain;
         }
 
-        .nav-logo img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .nav-menu {
-            display: flex;
-            gap: 30px;
-            align-items: center;
-        }
-
-        .nav-menu a {
-            text-decoration: none;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            padding: 8px 14px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-        }
-
-        .nav-menu a:hover {
-            background: rgba(255, 255, 255, 0.15);
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        .nav-menu a.active {
-            background: rgba(20, 184, 166, 0.15);
-            color: #14b8a6;
-            border-bottom: 2px solid #14b8a6;
-        }
-
-        .nav-cta {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-
-        .btn-login {
-            padding: 8px 20px;
-            border: 1px solid #14b8a6;
-            color: #14b8a6;
-            text-decoration: none;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .btn-login:hover {
-            background: rgba(20, 184, 166, 0.1);
-        }
-
-        .signup-link {
-            text-align: center;
-            font-size: 14px;
-            color: #cbd5e1;
-            margin-top: 12px;
-        }
-
-        .signup-link a {
-            color: #14b8a6;
-            text-decoration: none;
-            font-weight: 600;
-            transition: opacity 0.3s ease;
-        }
-
-        .signup-link a:hover {
-            opacity: 0.8;
-            text-decoration: underline;
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        nav {
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        .hero-card {
-            animation: fadeInUp 0.6s ease-out;
-        }
-
-        .landing-section {
-            width: 100%;
-            max-width: 1400px;
-            margin: 0 auto;
-            background: rgba(31, 41, 55, 0.8);
-            border: 1px solid rgba(126, 232, 223, 0.2);
-            border-radius: 24px;
-            padding: 48px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-        }
-
-        .scroll-reveal {
-            opacity: 0;
-            transform: translateY(48px) scale(0.985);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-            will-change: opacity, transform;
-        }
-
-        .scroll-reveal.is-visible {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-
-        .section-stack {
-            width: 100%;
+        .nav-brand-text {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            gap: 28px;
-            margin-top: 180px;
+            line-height: 1.1;
         }
 
-        .scroll-hint {
-            display: inline-flex;
+        .nav-brand-name {
+            font-size: 17px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.3px;
+        }
+
+        .nav-brand-sub {
+            font-size: 10px;
+            color: rgba(255,255,255,0.55);
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .nav-links {
+            display: flex;
             align-items: center;
-            gap: 10px;
-            margin: 8px auto -90px;
-            padding: 10px 18px;
-            border-radius: 999px;
-            background: rgba(15, 23, 42, 0.55);
-            border: 1px solid rgba(126, 232, 223, 0.18);
-            color: #cbd5e1;
+            gap: 4px;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .nav-links a {
+            padding: 7px 14px;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 500;
+            border-radius: 7px;
+            transition: all 0.2s;
+        }
+
+        .nav-links a:hover { background: rgba(255,255,255,0.09); color: #fff; }
+
+        .nav-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+
+        .btn-ghost {
+            padding: 8px 18px;
+            border: 1.5px solid rgba(255,255,255,0.25);
+            color: rgba(255,255,255,0.85);
+            border-radius: 8px;
             font-size: 13px;
             font-weight: 600;
-            letter-spacing: 0.02em;
-            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
-            animation: scrollBounce 1.8s ease-in-out infinite;
-            transition: opacity 0.35s ease, transform 0.35s ease;
+            text-decoration: none;
+            transition: all 0.2s;
+            background: transparent;
+            cursor: pointer;
+            font-family: inherit;
         }
 
-        .scroll-hint i {
-            color: #7ee8df;
-            font-size: 14px;
+        .btn-ghost:hover { border-color: rgba(255,255,255,0.5); color: #fff; background: rgba(255,255,255,0.06); }
+
+        .btn-primary {
+            padding: 8px 20px;
+            background: var(--teal);
+            color: #fff;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
         }
 
-        .scroll-hint.is-hidden {
-            opacity: 0;
-            transform: translateY(10px);
+        .btn-primary:hover { background: var(--teal-deep); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(15,138,122,0.3); }
+
+        /* ─── HERO ───────────────────────────────────── */
+        .hero {
+            background: var(--navy);
+            color: #fff;
+            overflow: hidden;
+            position: relative;
+            padding: 80px 28px 100px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -120px; right: -120px;
+            width: 480px; height: 480px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(15,138,122,0.22) 0%, transparent 70%);
             pointer-events: none;
         }
 
-        @keyframes scrollBounce {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(8px);
-            }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -80px; left: -80px;
+            width: 360px; height: 360px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(232,146,74,0.12) 0%, transparent 70%);
+            pointer-events: none;
         }
 
-        .section-header {
-            max-width: 760px;
-            margin-bottom: 28px;
-        }
-
-        .section-kicker {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 7px 12px;
-            border-radius: 999px;
-            background: rgba(20, 184, 166, 0.1);
-            color: #0f766e;
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-            margin-bottom: 14px;
-        }
-
-        .section-title {
-            font-size: 34px;
-            line-height: 1.15;
-            color: #e2e8f0;
-            margin-bottom: 12px;
-            letter-spacing: -0.04em;
-        }
-
-        .section-lead {
-            font-size: 16px;
-            color: #cbd5e1;
-            line-height: 1.8;
-        }
-
-        .about-layout {
-            display: grid;
-            grid-template-columns: 1.15fr 0.85fr;
-            gap: 20px;
-        }
-
-        .glass-card {
-            background: rgba(55, 65, 81, 0.9);
-            border: 1px solid rgba(126, 232, 223, 0.15);
-            border-radius: 20px;
-            padding: 24px;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
-        }
-
-        .glass-card h3 {
-            font-size: 20px;
-            color: #e2e8f0;
-            margin-bottom: 12px;
-        }
-
-        .glass-card p {
-            color: #cbd5e1;
-            margin-bottom: 14px;
-            line-height: 1.75;
-        }
-
-        .about-pills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 16px;
-        }
-
-        .about-pills span {
-            padding: 8px 12px;
-            border-radius: 999px;
-            background: rgba(20, 184, 166, 0.12);
-            color: #7ee8df;
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        .info-stack {
-            display: grid;
-            gap: 14px;
-        }
-
-        .info-card {
-            padding: 18px;
-            border-radius: 18px;
-            border: 1px solid rgba(126, 232, 223, 0.15);
-            background: rgba(55, 65, 81, 0.78);
-        }
-
-        .info-card h4 {
-            font-size: 16px;
-            color: #e2e8f0;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .info-card p {
-            font-size: 14px;
-            color: #cbd5e1;
-            line-height: 1.6;
-            margin: 0;
-        }
-
-        .feature-item {
-            animation: fadeInUp 0.5s ease-out;
-        }
-
-        .feature-item:nth-child(1) { animation-delay: 0.1s; }
-        .feature-item:nth-child(2) { animation-delay: 0.2s; }
-        .feature-item:nth-child(3) { animation-delay: 0.3s; }
-        .feature-item:nth-child(4) { animation-delay: 0.4s; }
-
-        .login-options {
-            animation: fadeInUp 0.6s ease-out 0.3s both;
-        }
-
-        /* Main Content */
-        main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-            justify-content: flex-start;
-            gap: 28px;
-            padding: 96px 24px 80px;
-        }
-
-        /* Hero Card */
-        .hero-card {
-            background: rgba(31, 41, 55, 0.8);
-            border-radius: 24px;
+        .hero-inner {
+            max-width: 1280px;
+            margin: 0 auto;
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 60px;
             align-items: center;
-            padding: 60px;
-            max-width: 1200px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            width: 100%;
-            border: 1px solid rgba(126, 232, 223, 0.2);
-            backdrop-filter: blur(10px);
-            width: 100%;
-            max-width: 1400px;
-            margin: 0 auto;
-            min-height: 540px;
+            position: relative;
+            z-index: 1;
         }
 
-        .hero-left {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(15,138,122,0.18);
+            border: 1px solid rgba(15,138,122,0.35);
+            color: #5DD8C8;
+            font-size: 11.5px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 6px 12px;
+            border-radius: 999px;
+            margin-bottom: 20px;
         }
 
         .hero-title {
-            font-size: 48px;
-            font-weight: 800;
-            line-height: 1.2;
-            color: #e2e8f0;
+            font-size: 52px;
+            font-weight: 900;
+            line-height: 1.08;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+            color: #fff;
         }
 
-        .hero-title span {
-            background: linear-gradient(135deg, #7ee8df 0%, #22d3ee 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+        .hero-title .accent { color: #5DD8C8; }
 
-        .hero-description {
+        .hero-desc {
             font-size: 16px;
-            color: #cbd5e1;
+            color: rgba(255,255,255,0.65);
             line-height: 1.8;
+            margin-bottom: 36px;
+            max-width: 460px;
         }
 
-        .login-options {
+        .hero-cta { display: flex; flex-direction: column; gap: 12px; max-width: 340px; }
+
+        .btn-hero-primary {
             display: flex;
-            flex-direction: column;
-            gap: 14px;
-            margin-top: 20px;
-        }
-
-        .login-btn {
-            padding: 16px 32px;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            padding: 15px 28px;
+            background: var(--teal);
+            color: #fff;
+            border-radius: 10px;
             font-size: 15px;
-            font-weight: 600;
-            border-radius: 8px;
+            font-weight: 700;
             text-decoration: none;
-            transition: all 0.3s ease;
+            transition: all 0.25s;
             border: none;
             cursor: pointer;
+            font-family: inherit;
+        }
+
+        .btn-hero-primary:hover { background: var(--teal-deep); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(15,138,122,0.4); }
+
+        .btn-hero-secondary {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-        }
-
-        .login-btn.pet-owner {
-            background: linear-gradient(135deg, #0f766e 0%, #06b6d4 100%);
-            color: white;
-        }
-
-        .login-btn.pet-owner:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 24px rgba(126, 232, 223, 0.35);
-        }
-
-        .login-btn.staff {
-            border: 2px solid #7ee8df;
-            color: #7ee8df;
+            gap: 9px;
+            padding: 14px 28px;
             background: transparent;
-        }
-
-        .login-btn.staff:hover {
-            background: rgba(126, 232, 223, 0.15);
-        }
-
-        .learn-more {
-            display: inline-block;
-            margin-top: 10px;
-            color: #7ee8df;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-            transition: opacity 0.3s ease;
-        }
-
-        .learn-more:hover {
-            opacity: 0.8;
-        }
-
-        /* Hero Right - Visual */
-        .hero-right {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .illustration-box {
-            width: 100%;
-            height: 380px;
-            background: linear-gradient(135deg, rgba(13, 148, 136, 0.15) 0%, rgba(20, 184, 166, 0.1) 100%);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(126, 232, 223, 0.2);
-        }
-
-        .logo-container {
-            width: 380px;
-            height: 380px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .logo-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: drop-shadow(0 4px 12px rgba(13, 148, 136, 0.15));
-        }
-
-        .shape-decoration {
-            position: absolute;
-            border-radius: 50%;
-            opacity: 0.15;
-        }
-
-        .shape-lg {
-            width: 280px;
-            height: 280px;
-            background: linear-gradient(135deg, #7ee8df 0%, #22d3ee 100%);
-            top: -80px;
-            right: -80px;
-        }
-
-        .shape-sm {
-            width: 180px;
-            height: 180px;
-            background: #7ee8df;
-            bottom: -40px;
-            left: -40px;
-        }
-
-        /* Features Grid */
-        .features-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            width: 100%;
-        }
-
-        .feature-item {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(126, 232, 223, 0.2);
-            border-radius: 12px;
-            padding: 24px 16px;
-            text-align: center;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            backdrop-filter: blur(10px);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .feature-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(126, 232, 223, 0.1) 0%, transparent 100%);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            pointer-events: none;
-        }
-
-        .feature-item:hover {
-            background: rgba(255, 255, 255, 0.12);
-            border-color: rgba(126, 232, 223, 0.5);
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
-        }
-
-        .feature-item:hover::before {
-            opacity: 1;
-        }
-
-        .feature-icon {
-            font-size: 32px;
-            color: #7ee8df;
-            margin-bottom: 12px;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            display: inline-block;
-        }
-
-        .feature-item:hover .feature-icon {
-            transform: scale(1.25) rotate(8deg);
-            color: #22d3ee;
-        }
-
-        .feature-item h4 {
+            color: rgba(255,255,255,0.8);
+            border: 1.5px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
             font-size: 15px;
             font-weight: 600;
-            color: #e2e8f0;
-            margin-bottom: 8px;
-            transition: color 0.4s ease;
+            text-decoration: none;
+            transition: all 0.25s;
         }
 
-        .feature-item:hover h4 {
-            color: #7ee8df;
-        }
+        .btn-hero-secondary:hover { border-color: rgba(255,255,255,0.45); color: #fff; background: rgba(255,255,255,0.06); }
 
-        .feature-item p {
+        .hero-register {
             font-size: 13px;
-            color: #cbd5e1;
-            line-height: 1.5;
-            transition: color 0.4s ease;
+            color: rgba(255,255,255,0.45);
+            text-align: center;
         }
 
-        .feature-item:hover p {
-            color: #e2e8f0;
+        .hero-register a { color: #5DD8C8; text-decoration: none; font-weight: 600; }
+        .hero-register a:hover { text-decoration: underline; }
+
+        /* Hero right — feature tiles */
+        .hero-tiles {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
         }
 
-        /* Responsive */
+        .hero-tile {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 14px;
+            padding: 24px 20px;
+            text-align: center;
+            transition: all 0.25s;
+        }
+
+        .hero-tile:hover { background: rgba(255,255,255,0.09); border-color: rgba(93,216,200,0.3); transform: translateY(-3px); }
+
+        .hero-tile-icon { font-size: 30px; color: #5DD8C8; margin-bottom: 10px; display: block; }
+        .hero-tile h4 { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+        .hero-tile p { font-size: 12px; color: rgba(255,255,255,0.55); line-height: 1.5; }
+
+        /* ─── SECTION SHELL ──────────────────────────── */
+        .section { padding: 88px 28px; }
+        .section-alt { background: var(--white); }
+
+        .section-inner { max-width: 1280px; margin: 0 auto; }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--teal);
+            background: var(--teal-light);
+            padding: 5px 11px;
+            border-radius: 999px;
+            margin-bottom: 14px;
+        }
+
+        .section-title {
+            font-size: 36px;
+            font-weight: 800;
+            letter-spacing: -0.8px;
+            color: var(--navy);
+            margin-bottom: 12px;
+            line-height: 1.15;
+        }
+
+        .section-sub {
+            font-size: 15.5px;
+            color: var(--sage);
+            max-width: 560px;
+            line-height: 1.75;
+        }
+
+        .section-head { margin-bottom: 52px; }
+
+        /* ─── PAW DIVIDER (signature element, used once) */
+        .paw-divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 0 0 52px;
+        }
+
+        .paw-divider::before,
+        .paw-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--warm-line);
+        }
+
+        .paw-divider i {
+            color: var(--amber);
+            font-size: 16px;
+            opacity: 0.7;
+        }
+
+        /* ─── SERVICES / PRICING ─────────────────────── */
+        .pricing-note {
+            font-size: 13px;
+            color: var(--sage);
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .pricing-table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--warm-line); box-shadow: var(--shadow-sm); }
+
+        .pricing-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--white);
+            font-size: 14px;
+        }
+
+        .pricing-table thead tr {
+            background: var(--navy);
+            color: #fff;
+        }
+
+        .pricing-table thead th {
+            padding: 14px 18px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .pricing-table thead th:not(:first-child) { text-align: center; }
+
+        .pricing-table thead th.size-header {
+            background: var(--teal);
+            text-align: center;
+        }
+
+        .pricing-table tbody tr { border-bottom: 1px solid var(--warm-line); transition: background 0.15s; }
+        .pricing-table tbody tr:last-child { border-bottom: none; }
+        .pricing-table tbody tr:hover { background: var(--cream); }
+
+        .pricing-table td { padding: 18px 18px; vertical-align: top; }
+        .pricing-table td:not(:first-child) { text-align: center; }
+
+        .pkg-name {
+            font-weight: 800;
+            font-size: 15px;
+            color: var(--navy);
+            margin-bottom: 3px;
+        }
+
+        .pkg-tag {
+            display: inline-block;
+            font-size: 10.5px;
+            font-weight: 600;
+            color: var(--amber-deep);
+            background: var(--amber-light);
+            padding: 2px 7px;
+            border-radius: 999px;
+            margin-bottom: 7px;
+        }
+
+        .pkg-desc { font-size: 12px; color: var(--sage); line-height: 1.55; max-width: 280px; }
+
+        .price {
+            font-weight: 800;
+            font-size: 15px;
+            color: var(--teal-deep);
+        }
+
+        .pkg-highlight { background: var(--teal-light) !important; }
+
+        .size-note {
+            margin-top: 16px;
+            padding: 14px 18px;
+            background: var(--amber-light);
+            border: 1px solid var(--warm-line);
+            border-radius: 10px;
+            font-size: 13px;
+            color: var(--navy);
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+        }
+
+        .size-note i { color: var(--amber); font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+        /* ─── WHY CHOOSE US ──────────────────────────── */
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .why-card {
+            background: var(--white);
+            border: 1px solid var(--warm-line);
+            border-radius: var(--radius);
+            padding: 32px 28px;
+            transition: all 0.25s;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .why-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: #d4e9e6; }
+
+        .why-icon {
+            width: 52px;
+            height: 52px;
+            background: var(--teal-light);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: var(--teal);
+            margin-bottom: 18px;
+        }
+
+        .why-card h3 { font-size: 17px; font-weight: 700; color: var(--navy); margin-bottom: 9px; }
+        .why-card p { font-size: 14px; color: var(--sage); line-height: 1.7; }
+
+        /* ─── ABOUT ──────────────────────────────────── */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 56px;
+            align-items: center;
+        }
+
+        /* TODO: replace with actual clinic photo */
+        .about-photo {
+            border-radius: 20px;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+            background: linear-gradient(135deg, var(--teal-light) 0%, #d0ece9 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            border: 1px solid var(--warm-line);
+            box-shadow: var(--shadow-md);
+        }
+
+        .about-photo i { font-size: 56px; color: var(--teal); opacity: 0.4; }
+        .about-photo span { font-size: 13px; color: var(--sage); font-style: italic; }
+
+        .about-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+
+        .pill {
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: var(--teal-light);
+            color: var(--teal-deep);
+            font-size: 12.5px;
+            font-weight: 600;
+            border: 1px solid #c2deda;
+        }
+
+        .pill.amber {
+            background: var(--amber-light);
+            color: var(--amber-deep);
+            border-color: #f0d5b8;
+        }
+
+        /* ─── SIZING GUIDE ───────────────────────────── */
+        .size-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 16px;
+        }
+
+        .size-card {
+            background: var(--white);
+            border: 1px solid var(--warm-line);
+            border-radius: var(--radius);
+            padding: 24px 16px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s;
+        }
+
+        .size-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: #d4e9e6; }
+
+        .size-badge {
+            display: inline-block;
+            width: 48px;
+            height: 48px;
+            line-height: 48px;
+            border-radius: 50%;
+            background: var(--teal);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .size-card h4 { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+        .size-card p { font-size: 11.5px; color: var(--sage); }
+
+        /* ─── CONTACT / FOOTER ───────────────────────── */
+        .contact-section {
+            background: var(--navy);
+            color: #fff;
+            padding: 88px 28px 0;
+        }
+
+        .contact-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1.6fr 1fr 1fr;
+            gap: 56px;
+            padding-bottom: 64px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .contact-brand-name { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+        .contact-brand-sub { font-size: 13px; color: rgba(255,255,255,0.45); margin-bottom: 18px; }
+        .contact-brand-desc { font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.75; max-width: 320px; }
+
+        .contact-col h4 { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 18px; }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 14px;
+            font-size: 14px;
+            color: rgba(255,255,255,0.65);
+        }
+
+        .contact-item i { color: #5DD8C8; font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+        .hours-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13.5px; color: rgba(255,255,255,0.65); }
+        .hours-row span:last-child { color: #5DD8C8; font-weight: 600; }
+
+        .cta-box {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 4px;
+        }
+
+        .cta-box p { font-size: 13.5px; color: rgba(255,255,255,0.6); margin-bottom: 14px; line-height: 1.6; }
+
+        .btn-cta-footer {
+            display: block;
+            text-align: center;
+            padding: 11px 20px;
+            background: var(--teal);
+            color: #fff;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-cta-footer:hover { background: var(--teal-deep); }
+
+        .footer-bar {
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12.5px;
+            color: rgba(255,255,255,0.3);
+        }
+
+        .footer-bar a { color: rgba(255,255,255,0.4); text-decoration: none; }
+        .footer-bar a:hover { color: rgba(255,255,255,0.7); }
+
+        /* ─── SCROLL REVEAL ──────────────────────────── */
+        .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.65s ease, transform 0.65s ease; }
+        .reveal.visible { opacity: 1; transform: none; }
+
+        /* ─── RESPONSIVE ─────────────────────────────── */
         @media (max-width: 1024px) {
-            .hero-card {
-                padding: 40px;
-                gap: 40px;
-            }
-
-            .hero-title {
-                font-size: 36px;
-            }
-
-            .landing-section {
-                padding: 36px;
-            }
-
-            .about-layout {
-                grid-template-columns: 1fr 1fr;
-            }
+            .why-grid { grid-template-columns: 1fr 1fr; }
+            .size-grid { grid-template-columns: repeat(3, 1fr); }
+            .contact-grid { grid-template-columns: 1fr 1fr; gap: 36px; }
         }
 
         @media (max-width: 768px) {
-            .hero-card {
-                grid-template-columns: 1fr;
-                padding: 30px;
-                gap: 30px;
-            }
-
-            .hero-title {
-                font-size: 28px;
-            }
-
-            .nav-menu {
-                display: none;
-            }
-
-            .features-grid {
-                gap: 16px;
-            }
-
-            .login-options {
-                flex-direction: row;
-            }
-
-            .login-btn {
-                flex: 1;
-            }
-
-            .landing-section {
-                padding: 28px 20px;
-                border-radius: 18px;
-            }
-
-            .section-title {
-                font-size: 28px;
-            }
-
-            .about-layout {
-                grid-template-columns: 1fr;
-            }
+            .nav-links { display: none; }
+            .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+            .hero-title { font-size: 36px; }
+            .hero-tiles { grid-template-columns: 1fr 1fr; }
+            .about-grid { grid-template-columns: 1fr; }
+            .why-grid { grid-template-columns: 1fr; }
+            .size-grid { grid-template-columns: repeat(2, 1fr); }
+            .contact-grid { grid-template-columns: 1fr; gap: 32px; }
+            .section-title { font-size: 28px; }
         }
 
-        @media (max-width: 640px) {
-            main {
-                padding: 20px 16px;
-            }
-
-            .hero-card {
-                padding: 24px;
-                border-radius: 16px;
-            }
-
-            .hero-left {
-                gap: 16px;
-            }
-
-            .hero-title {
-                font-size: 24px;
-            }
-
-            .hero-description {
-                font-size: 14px;
-            }
-
-            .login-btn {
-                padding: 14px 24px;
-                font-size: 14px;
-            }
-
-            .login-options {
-                flex-direction: column;
-            }
-
-            .section-title {
-                font-size: 24px;
-            }
-
-            .footer-container {
-                gap: 24px;
-                margin-bottom: 20px;
-            }
+        @media (max-width: 480px) {
+            .hero { padding: 56px 20px 72px; }
+            .hero-title { font-size: 30px; }
+            .hero-tiles { grid-template-columns: 1fr; }
+            .section { padding: 64px 20px; }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav>
-        <div class="nav-container">
-            <a href="{{ route('home') }}" class="nav-brand">
-                <div class="nav-logo">
-                    @if (file_exists(public_path('newlogo.png')))
-                        <img src="{{ asset('newlogo.png') }}" alt="FURCARE Logo">
-                    @else
-                        <i class="bi bi-paw-fill"></i>
-                    @endif
-                </div>
-                FURCARE
-            </a>
-            
-            <div class="nav-cta">
-                @if (Auth::check())
-                    <a href="{{ route('dashboard') }}" class="btn-login">Dashboard</a>
-                    <form method="POST" action="{{ route('logout') }}" style="margin: 0;">
-                        @csrf
-                        <button type="submit" class="btn-login">Logout</button>
-                    </form>
+
+<!-- ═══════════ NAVBAR ═══════════ -->
+<nav class="site-nav">
+    <div class="nav-inner">
+        <a href="{{ route('home') }}" class="nav-brand">
+            @if(file_exists(public_path('newlogo.png')))
+                <img src="{{ asset('newlogo.png') }}" alt="FURCARE">
+            @else
+                <i class="bi bi-paw-fill" style="font-size:28px;color:#5DD8C8;"></i>
+            @endif
+            <div class="nav-brand-text">
+                <span class="nav-brand-name">FURCARE</span>
+                <span class="nav-brand-sub">Bark Pack Pet Grooming</span>
+            </div>
+        </a>
+
+        <div class="nav-links">
+            <a href="#services">Services & Pricing</a>
+            <a href="#about">About</a>
+            <a href="#sizing">Size Guide</a>
+            <a href="#contact">Contact</a>
+        </div>
+
+        <div class="nav-actions">
+            @if(Auth::check())
+                <a href="{{ route('dashboard') }}" class="btn-primary">
+                    <i class="bi bi-speedometer2"></i> Dashboard
+                </a>
+                <form method="POST" action="{{ route('logout') }}" style="margin:0;">
+                    @csrf
+                    <button type="submit" class="btn-ghost">Logout</button>
+                </form>
+            @else
+                <a href="{{ route('login') }}" class="btn-ghost">Staff Login</a>
+                <a href="{{ route('customer.login') }}" class="btn-primary">Pet Owner Login</a>
+            @endif
+        </div>
+    </div>
+</nav>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero">
+    <div class="hero-inner">
+        <div class="hero-left">
+            <div class="hero-eyebrow">
+                <i class="bi bi-paw-fill"></i>
+                Bark Pack · Baguio City
+            </div>
+
+            <h1 class="hero-title">
+                Your pet deserves<br>
+                <span class="accent">the best care</span>
+            </h1>
+
+            <p class="hero-desc">
+                Professional grooming, wellness services, and easy online booking — all in one place. Book your pet's next appointment in minutes, anytime.
+            </p>
+
+            <div class="hero-cta">
+                @if(Auth::check())
+                    <a href="{{ route('dashboard') }}" class="btn-hero-primary">
+                        <i class="bi bi-speedometer2"></i> Go to Dashboard
+                    </a>
                 @else
-                    <a href="{{ route('login', ['role' => 'staff']) }}" class="btn-login">Staff</a>
+                    <a href="{{ route('customer.login') }}" class="btn-hero-primary">
+                        <i class="bi bi-calendar-plus"></i> Book an Appointment
+                    </a>
+                    <a href="{{ route('login') }}" class="btn-hero-secondary">
+                        <i class="bi bi-person-badge"></i> Staff Portal
+                    </a>
+                    <p class="hero-register">
+                        New here? <a href="{{ route('customer.register.show') }}">Create a free account</a>
+                    </p>
                 @endif
             </div>
         </div>
-    </nav>
 
-    <!-- Main Content -->
-    <main>
-        <div class="hero-card">
-            <!-- Left Content -->
-            <div class="hero-left">
-                <h1 class="hero-title">
-                    <span>Complete Pet Care</span><br>
-                    Management System
-                </h1>
+        <div class="hero-tiles">
+            <div class="hero-tile">
+                <i class="bi bi-calendar-check hero-tile-icon"></i>
+                <h4>Easy Booking</h4>
+                <p>Request appointments online, anytime — no phone calls needed</p>
+            </div>
+            <div class="hero-tile">
+                <i class="bi bi-scissors hero-tile-icon"></i>
+                <h4>Expert Grooming</h4>
+                <p>Premium packages tailored to your pet's breed and coat type</p>
+            </div>
+            <div class="hero-tile">
+                <i class="bi bi-heart-pulse hero-tile-icon"></i>
+                <h4>Health & Wellness</h4>
+                <p>Beyond grooming — health checks, ear cleaning, dental care</p>
+            </div>
+            <div class="hero-tile">
+                <i class="bi bi-bell hero-tile-icon"></i>
+                <h4>Stay Updated</h4>
+                <p>Get real-time notifications on appointment status & updates</p>
+            </div>
+        </div>
+    </div>
+</section>
 
-                <p class="hero-description">
-                    Manage appointments, client information, pet grooming services, and staff in one secure platform designed for pet clinics.
+<!-- ═══════════ SERVICES & PRICING ═══════════ -->
+<section class="section section-alt" id="services">
+    <div class="section-inner">
+        <div class="section-head reveal">
+            <div class="section-label"><i class="bi bi-scissors"></i> Grooming Packages</div>
+            <h2 class="section-title">Services & Pricing</h2>
+            <p class="section-sub">All packages include professional handling by trained groomers. Prices are in Philippine Peso (₱) and may vary depending on coat thickness and condition.</p>
+        </div>
+
+        <div class="reveal">
+            <div class="pricing-note">
+                <i class="bi bi-info-circle" style="color:var(--teal);"></i>
+                Prices shown in Philippine Peso (₱). Final price may vary based on coat thickness and pet behavior.
+            </div>
+
+            <div class="pricing-table-wrap">
+                <table class="pricing-table">
+                    <thead>
+                        <tr>
+                            <th style="width:38%;">Package</th>
+                            <th class="size-header">XS</th>
+                            <th class="size-header">S</th>
+                            <th class="size-header">M</th>
+                            <th class="size-header">L</th>
+                            <th class="size-header">XL</th>
+                            <th class="size-header">Giant</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="pkg-name">Premium</div>
+                                <div class="pkg-tag">All Stages</div>
+                                <div class="pkg-desc">Bath, brush and dry. Recommended for weekly maintenance from the Deluxe, Grande, or Signature package.</div>
+                            </td>
+                            <td><span class="price">₱400</span></td>
+                            <td><span class="price">₱500</span></td>
+                            <td><span class="price">₱600</span></td>
+                            <td><span class="price">₱1,100</span></td>
+                            <td><span class="price">₱1,300</span></td>
+                            <td><span class="price">₱1,500</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="pkg-name">Deluxe</div>
+                                <div class="pkg-tag">Puppy, Kitten & Adult</div>
+                                <div class="pkg-desc">Complete grooming: bath, brush, dry, nail cut/file, toothbrush/gel, anal sac, ear clean and plucking (by request), mild de-matting. Cut: Sanitary (face trim, paw pad, belly, butt).</div>
+                            </td>
+                            <td><span class="price">₱550</span></td>
+                            <td><span class="price">₱650</span></td>
+                            <td><span class="price">₱750</span></td>
+                            <td><span class="price">₱1,250</span></td>
+                            <td><span class="price">₱1,500</span></td>
+                            <td><span class="price">₱2,000</span></td>
+                        </tr>
+                        <tr class="pkg-highlight">
+                            <td>
+                                <div class="pkg-name">Standard</div>
+                                <div class="pkg-tag">Dog</div>
+                                <div class="pkg-desc">Complete grooming: bath, brush, dry, nail cut/file, toothbrush/gel, anal sac, ear clean and plucking (by request). Cut: Face & whole body (Summer or Semi).</div>
+                            </td>
+                            <td><span class="price">₱600</span></td>
+                            <td><span class="price">₱700</span></td>
+                            <td><span class="price">₱800</span></td>
+                            <td><span class="price">₱1,300</span></td>
+                            <td><span class="price">₱1,650</span></td>
+                            <td><span class="price">₱2,100</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="pkg-name">Grande</div>
+                                <div class="pkg-tag">Dog & Cat</div>
+                                <div class="pkg-desc">Complete grooming: bath, brush, dry, nail cut/file, toothbrush/gel, anal sac, ear clean and plucking (by request), mild de-matting. Cut: Dog — face trim, body depends on fur condition. Cat — sanitary or full clip cut.</div>
+                            </td>
+                            <td><span class="price">₱700</span></td>
+                            <td><span class="price">₱800</span></td>
+                            <td><span class="price">₱900</span></td>
+                            <td><span class="price">₱1,500</span></td>
+                            <td><span class="price">₱2,000</span></td>
+                            <td><span class="price">₱2,500</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="pkg-name">BP Signature</div>
+                                <div class="pkg-tag">Dog & Cat</div>
+                                <div class="pkg-desc">Bear type cut (more than 1" full body trim). Complete grooming: bath, brush, dry, nail cut/file, toothbrush/gel, anal sac, ear clean and plucking (by request), mild de-matting.</div>
+                            </td>
+                            <td><span class="price">₱800</span></td>
+                            <td><span class="price">₱900</span></td>
+                            <td><span class="price">₱1,000</span></td>
+                            <td><span class="price">₱1,800</span></td>
+                            <td><span class="price">₱2,400</span></td>
+                            <td><span class="price">₱2,800</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="size-note">
+                <i class="bi bi-rulers"></i>
+                <span>Not sure which size your pet is? Scroll down to our <a href="#sizing" style="color:var(--teal);font-weight:600;">Size Guide</a> below — sizes are based on body length and may vary with coat thickness.</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════ WHY CHOOSE US ═══════════ -->
+<section class="section" id="why">
+    <div class="section-inner">
+        <div class="section-head reveal">
+            <div class="section-label"><i class="bi bi-star"></i> Why Bark Pack</div>
+            <h2 class="section-title">Care you can count on</h2>
+            <p class="section-sub">From the moment you book to the moment you pick up your pet, we make the whole experience smooth and stress-free.</p>
+        </div>
+
+        <div class="why-grid">
+            <div class="why-card reveal">
+                <div class="why-icon"><i class="bi bi-shield-check"></i></div>
+                <h3>Trained & Trusted Groomers</h3>
+                <p>Our team is experienced in handling pets of all temperaments — gentle, patient, and professional every time.</p>
+            </div>
+            <div class="why-card reveal">
+                <div class="why-icon"><i class="bi bi-phone"></i></div>
+                <h3>Online Booking, Anytime</h3>
+                <p>Skip the phone call. Request appointments online in minutes and get real-time status updates straight to your dashboard.</p>
+            </div>
+            <div class="why-card reveal">
+                <div class="why-icon"><i class="bi bi-clipboard2-pulse"></i></div>
+                <h3>Complete Service Records</h3>
+                <p>Every visit, every service, every note — all stored securely in your pet's profile so nothing falls through the cracks.</p>
+            </div>
+            <div class="why-card reveal">
+                <div class="why-icon"><i class="bi bi-scissors"></i></div>
+                <h3>Packages for Every Pet</h3>
+                <p>From basic bath & brush to full signature cuts — we have grooming packages designed for dogs and cats of every size.</p>
+            </div>
+            <div class="why-card reveal">
+                <div class="why-icon"><i class="bi bi-bell"></i></div>
+                <h3>Appointment Reminders</h3>
+                <p>Never miss a grooming session. Get notified when your appointment is confirmed, approaching, or updated.</p>
+            </div>
+            <div class="why-card reveal">
+                <div class="why-icon"><i class="bi bi-heart-pulse"></i></div>
+                <h3>Health & Wellness Focus</h3>
+                <p>Beyond grooming — our services include ear cleaning, nail care, dental hygiene, and wellness checks to keep your pet in top shape.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════ ABOUT ═══════════ -->
+<section class="section section-alt" id="about">
+    <div class="section-inner">
+        <div class="paw-divider">
+            <i class="bi bi-paw-fill"></i>
+        </div>
+
+        <div class="about-grid">
+            <!-- TODO: replace with actual clinic photo -->
+            <div class="about-photo">
+                <i class="bi bi-building"></i>
+                <span><!-- TODO: replace with clinic exterior/interior photo --></span>
+            </div>
+
+            <div class="reveal">
+                <div class="section-label"><i class="bi bi-shop"></i> About Us</div>
+                <h2 class="section-title">A modern clinic for your furry family</h2>
+                <p style="color:var(--sage);font-size:15px;line-height:1.8;margin-bottom:20px;">
+                    Bark Pack is a full-service pet grooming and wellness center in Baguio City. We believe every pet deserves professional, loving care — and every owner deserves a simple, stress-free booking experience.
+                </p>
+                <p style="color:var(--sage);font-size:15px;line-height:1.8;">
+                    FURCARE is our online system that brings your pet's records, appointments, and communications into one place — accessible from any device, any time.
                 </p>
 
-                <div class="login-options">
-                    @if (Auth::check())
-                        <a href="{{ route('dashboard') }}" class="login-btn pet-owner">
-                            <i class="bi bi-speedometer2"></i>
-                            Go to Dashboard
+                <div class="about-pills">
+                    <span class="pill">Grooming</span>
+                    <span class="pill">Health & Wellness</span>
+                    <span class="pill">Hotel</span>
+                    <span class="pill">Supplies</span>
+                    <span class="pill amber">Dogs & Cats</span>
+                    <span class="pill amber">Baguio City</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════ SIZING GUIDE ═══════════ -->
+<section class="section" id="sizing">
+    <div class="section-inner">
+        <div class="section-head reveal">
+            <div class="section-label"><i class="bi bi-rulers"></i> Size Guide</div>
+            <h2 class="section-title">Which size is your pet?</h2>
+            <p class="section-sub">Sizes are measured by body length and may vary depending on coat thickness. When in doubt, our groomers will assess your pet on arrival.</p>
+        </div>
+
+        <div class="size-grid reveal">
+            <div class="size-card">
+                <div class="size-badge">XS</div>
+                <h4>Extra Small</h4>
+                <p>3 – 5 inches<br>body length</p>
+            </div>
+            <div class="size-card">
+                <div class="size-badge">S</div>
+                <h4>Small</h4>
+                <p>6 – 10 inches<br>body length</p>
+            </div>
+            <div class="size-card">
+                <div class="size-badge">M</div>
+                <h4>Medium</h4>
+                <p>10 – 13 inches<br>body length</p>
+            </div>
+            <div class="size-card">
+                <div class="size-badge">L</div>
+                <h4>Large</h4>
+                <p>13 – 18 inches<br>body length</p>
+            </div>
+            <div class="size-card">
+                <div class="size-badge">XL</div>
+                <h4>Extra Large</h4>
+                <p>18 – 22 inches<br>body length</p>
+            </div>
+            <div class="size-card">
+                <div class="size-badge" style="background:var(--amber);">G</div>
+                <h4>Giant</h4>
+                <p>22 – 28 inches<br>body length</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════ CONTACT / FOOTER ═══════════ -->
+<footer class="contact-section" id="contact">
+    <div class="contact-inner">
+        <div class="contact-grid">
+            <!-- Brand col -->
+            <div>
+                <div class="contact-brand-name">Bark Pack</div>
+                <div class="contact-brand-sub">by FURCARE Pet Management System</div>
+                <p class="contact-brand-desc">Professional pet grooming and wellness services in Baguio City. Trusted by pet owners who want the best for their furry family members.</p>
+            </div>
+
+            <!-- Hours col -->
+            <div>
+                <h4>Hours of Operation</h4>
+                <!-- TODO: Replace with real operating hours -->
+                <div class="hours-row"><span>Monday – Friday</span><span>9:00 AM – 6:00 PM</span></div>
+                <div class="hours-row"><span>Saturday</span><span>9:00 AM – 5:00 PM</span></div>
+                <div class="hours-row"><span>Sunday</span><span>Closed</span></div>
+                <p style="font-size:11.5px;color:rgba(255,255,255,0.3);margin-top:12px;"><!-- TODO: confirm actual hours --></p>
+
+                <div style="margin-top:20px;">
+                    <h4>Location</h4>
+                    <!-- TODO: Replace with real address -->
+                    <div class="contact-item">
+                        <i class="bi bi-geo-alt"></i>
+                        <span>Baguio City, Philippines<!-- TODO: add full street address --></span>
+                    </div>
+                    <!-- TODO: Replace with real phone -->
+                    <div class="contact-item">
+                        <i class="bi bi-telephone"></i>
+                        <span><!-- TODO: add phone number --></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA col -->
+            <div>
+                <h4>Ready to Book?</h4>
+                <div class="cta-box">
+                    <p>Create a free pet owner account and request your first grooming appointment online — no phone calls needed.</p>
+                    @if(!Auth::check())
+                        <a href="{{ route('customer.register.show') }}" class="btn-cta-footer">
+                            <i class="bi bi-person-plus"></i> Create Account
+                        </a>
+                        <a href="{{ route('customer.login') }}" class="btn-cta-footer" style="margin-top:8px;background:transparent;border:1px solid rgba(255,255,255,0.15);">
+                            <i class="bi bi-box-arrow-in-right"></i> Sign In
                         </a>
                     @else
-                        <a href="{{ route('customer.login') }}" class="login-btn pet-owner">
-                            <i class="bi bi-person"></i>
-                            Login as Pet Owner
+                        <a href="{{ route('customer.dashboard') }}" class="btn-cta-footer">
+                            <i class="bi bi-speedometer2"></i> Go to Dashboard
                         </a>
-                        <div class="signup-link">
-                            Don't have an account? <a href="{{ route('customer.register.show') }}">Sign up here</a>
-                        </div>
                     @endif
                 </div>
-
-            </div>
-
-            <!-- Right Visual -->
-            <div class="hero-right">
-                <div class="features-grid">
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="bi bi-calendar-event"></i>
-                        </div>
-                        <h4>Easy Appointments</h4>
-                        <p>Quick booking and instant confirmations</p>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="bi bi-scissors"></i>
-                        </div>
-                        <h4>Service Tracking</h4>
-                        <p>Complete grooming service history</p>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="bi bi-people"></i>
-                        </div>
-                        <h4>Team Management</h4>
-                        <p>Organize staff and schedules effortlessly</p>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="bi bi-chat-dots"></i>
-                        </div>
-                        <h4>Client Communication</h4>
-                        <p>Stay connected with your customers</p>
-                    </div>
-                </div>
             </div>
         </div>
 
-        <div class="scroll-hint" id="scroll-hint">
-            <i class="bi bi-chevron-down"></i>
-            About below
+        <div class="footer-bar">
+            <span>© {{ date('Y') }} Bark Pack · FURCARE System · Baguio City, Philippines</span>
+            <span>Built with <i class="bi bi-heart-fill" style="color:var(--amber);font-size:10px;"></i> for pet owners</span>
         </div>
+    </div>
+</footer>
 
-        <div class="section-stack">
-            <section class="landing-section scroll-reveal" id="about">
-                <div class="section-header">
-                    <span class="section-kicker">About FURCARE</span>
-                    <h2 class="section-title">A cleaner way to manage pet care</h2>
-                    <p class="section-lead">FURCARE brings appointments, pet profiles, service history, and communication into one smooth experience for pet owners and staff.</p>
-                </div>
-
-                <div class="about-layout">
-                    <div class="glass-card">
-                        <h3>Why this system exists</h3>
-                        <p>Pet care teams often juggle booking, client updates, and pet details in different places. This homepage now tells that story in one place, so users can learn the platform without jumping to separate pages.</p>
-                        <p>It is designed to feel more like a modern product landing page: a strong hero at the top, then clear sections you can scroll through for the important details.</p>
-
-                        <div class="about-pills">
-                            <span>Appointments</span>
-                            <span>Pet Profiles</span>
-                            <span>Service History</span>
-                            <span>Notifications</span>
-                            <span>Role-based access</span>
-                        </div>
-                    </div>
-
-                    <div class="info-stack">
-                        <div class="info-card">
-                            <h4><i class="bi bi-shield-check"></i> Secure Access</h4>
-                            <p>Separate login paths for pet owners and staff keep the experience simple and the data access controlled.</p>
-                        </div>
-                        <div class="info-card">
-                            <h4><i class="bi bi-phone"></i> Owner-friendly</h4>
-                            <p>Pet owners can check their pets, appointments, and account details from one place without switching pages repeatedly.</p>
-                        </div>
-                        <div class="info-card">
-                            <h4><i class="bi bi-gear-wide-connected"></i> Operational flow</h4>
-                            <p>Staff get a clearer workflow for managing clients, visits, and follow-ups in fewer clicks.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-        </div>
-    </main>
-
-    <script>
-        // Simple page fade-in
-        window.addEventListener('load', () => {
-            document.body.style.opacity = '1';
+<script>
+    // Scroll reveal
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
         });
-
-        // Smooth scroll for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Add hover effect to buttons
-        document.querySelectorAll('.login-btn').forEach(btn => {
-            btn.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-4px)';
-            });
-            btn.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0)';
-            });
-        });
-
-        const revealSections = document.querySelectorAll('.scroll-reveal');
-        const scrollHint = document.getElementById('scroll-hint');
-
-        if ('IntersectionObserver' in window && revealSections.length > 0) {
-            const revealObserver = new IntersectionObserver((entries) => {
-                entries.forEach((entry) => {
-                    entry.target.classList.toggle('is-visible', entry.isIntersecting);
-                });
-            }, {
-                threshold: 0.22,
-                rootMargin: '0px 0px -80px 0px'
-            });
-
-            revealSections.forEach((section) => revealObserver.observe(section));
-        } else {
-            revealSections.forEach((section) => section.classList.add('is-visible'));
-        }
-
-        if (scrollHint) {
-            const toggleScrollHint = () => {
-                if (window.scrollY > 80) {
-                    scrollHint.classList.add('is-hidden');
-                } else {
-                    scrollHint.classList.remove('is-hidden');
-                }
-            };
-
-            toggleScrollHint();
-            window.addEventListener('scroll', toggleScrollHint, { passive: true });
-        }
-
-    </script>
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => observer.observe(el));
+</script>
 </body>
 </html>

@@ -13,241 +13,14 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f8fafc;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #FFF8F0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding-top: 72px;
+}
 
-        /* Top Navigation Bar */
-        .navbar {
-            background: #1e293b;
-            color: white;
-            padding: 0;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            align-items: center;
-            height: 72px;
-        }
-
-        .navbar i.bi {
-            font-family: bootstrap-icons;
-        }
-
-        .navbar-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            padding: 0 24px;
-            gap: 24px;
-        }
-
-        .navbar-brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: inherit;
-            transition: all 0.3s ease;
-            flex-shrink: 0;
-        }
-
-        .navbar-brand:hover {
-            opacity: 0.8;
-            transform: translateY(-2px);
-        }
-
-        .navbar-logo {
-            height: 40px;
-            width: 40px;
-            object-fit: contain;
-        }
-
-        .navbar-brand-text {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .navbar-title {
-            font-size: 16px;
-            font-weight: 700;
-            margin: 0;
-        }
-
-        .navbar-subtitle {
-            font-size: 11px;
-            opacity: 0.8;
-            margin: 0;
-        }
-
-        .navbar-menu {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex: 1;
-            justify-content: center;
-        }
-
-        .navbar-item {
-            padding: 8px 14px;
-            text-decoration: none;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 13px;
-            font-weight: 500;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            white-space: nowrap;
-        }
-
-        .navbar-item:hover {
-            background: rgba(255, 255, 255, 0.15);
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        .navbar-item.active {
-            background: rgba(20, 184, 166, 0.15);
-            color: #14b8a6;
-            border-bottom: 2px solid #14b8a6;
-        }
-
-        .navbar-end {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            flex-shrink: 0;
-        }
-
-        .navbar-user {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .navbar-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .navbar-avatar:hover {
-            background: rgba(255, 255, 255, 0.4);
-            transform: scale(1.08);
-        }
-
-        .navbar-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .navbar-user-text {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .navbar-user-name {
-            font-size: 13px;
-            font-weight: 600;
-            color: white;
-        }
-
-        .navbar-user-role {
-            font-size: 11px;
-            opacity: 0.7;
-        }
-
-        .navbar-profile-section {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 12px;
-            background: transparent;
-            border: none;
-            border-radius: 8px;
-            text-decoration: none;
-            color: white;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .navbar-profile-section:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            transform: translateY(-2px);
-        }
-
-        .navbar-avatar-img {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .navbar-avatar-placeholder {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 14px;
-            color: white;
-            flex-shrink: 0;
-        }
-
-        .navbar-user-info {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .navbar-user-name {
-            font-weight: 700;
-            font-size: 13px;
-            color: white;
-        }
-
-        .navbar-logout-btn {
-            padding: 8px 11px;
-            background: rgba(239, 68, 68, 0.2);
-            border: 1px solid rgba(239, 68, 68, 0.4);
-            color: #fca5a5;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .navbar-logout-btn:hover {
-            background: rgba(239, 68, 68, 0.3);
-            border-color: rgba(239, 68, 68, 0.6);
-            transform: translateY(-2px);
-            color: #fecaca;
-        }
 
         /* Sidebar - Hidden */
         .sidebar {
@@ -454,11 +227,11 @@
 
         /* Main Content */
         .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            background: #f8fafc;
-        }
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #FFF8F0;
+}
 
         /* Sidebar Activities - Hidden */
         .sidebar-activities {
@@ -2577,71 +2350,7 @@
     </style>
 </head>
 <body>
-    <!-- Top Navigation Bar -->
-    <nav class="navbar">
-        <div class="navbar-container">
-            <a href="{{ route('dashboard') }}" class="navbar-brand">
-                <img src="{{ asset('newlogo.png') }}" alt="FURCARE" class="navbar-logo">
-                <div class="navbar-brand-text">
-                    <div class="navbar-title">FURCARE</div>
-                    <div class="navbar-subtitle">Staff Dashboard</div>
-                </div>
-            </a>
-
-            <div class="navbar-menu">
-                <a href="{{ route('dashboard') }}" class="navbar-item active">
-                    <i class="bi bi-speedometer2"></i>
-                    Dashboard
-                </a>
-                <a href="{{ route('pets.index') }}" class="navbar-item">
-                    <i class="bi bi-heart-fill"></i>
-                    Pets
-                </a>
-                <a href="{{ route('appointments.index') }}" class="navbar-item">
-                    <i class="bi bi-calendar-check"></i>
-                    Appointments
-                </a>
-                @if(Auth::user()->hasStaffAccess())
-                <a href="{{ route('appointment-requests.index') }}" class="navbar-item">
-                    <i class="bi bi-inbox-fill"></i>
-                    Requests
-                </a>
-                @endif
-                @if(Auth::user()->hasStaffAccess())
-                <a href="{{ route('analytics.index') }}" class="navbar-item">
-                    <i class="bi bi-graph-up-arrow"></i>
-                    Insights
-                </a>
-                <a href="{{ route('automation.support') }}" class="navbar-item">
-                    <i class="bi bi-cpu"></i>
-                    Actions
-                </a>
-                @endif
-            </div>
-
-            <div class="navbar-end">
-                <a href="{{ route('profile.show') }}" class="navbar-profile-section">
-                    @if(Auth::user()->profile_picture)
-                        <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="{{ Auth::user()->name }}" class="navbar-avatar-img">
-                    @else
-                        <div class="navbar-avatar-placeholder">
-                            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-                        </div>
-                    @endif
-                    <div class="navbar-user-info">
-                        <div class="navbar-user-name">{{ Auth::user()->name }}</div>
-                        <div class="navbar-user-role">{{ Auth::user()->role_name ?? ucfirst(Auth::user()->role) }}</div>
-                    </div>
-                </a>
-                <form action="{{ route('logout') }}" method="POST" style="display: inline;">
-                    @csrf
-                    <button type="submit" class="navbar-logout-btn" title="Logout">
-                        <i class="bi bi-box-arrow-right"></i>
-                    </button>
-                </form>
-            </div>
-        </div>
-    </nav>
+    <x-staff-navbar />
 
     <!-- Main Content -->
     <div class="main-content" id="mainContent">
@@ -2693,7 +2402,7 @@
             </div>
 
             <!-- Action Hub Alerts (compact) -->
-            @if(Auth::user()->hasStaffAccess())
+            @if(Auth::user()->isAdmin())
             <div class="alerts-summary-section">
                 <div class="alerts-summary-card">
                     <div class="alerts-summary-header">

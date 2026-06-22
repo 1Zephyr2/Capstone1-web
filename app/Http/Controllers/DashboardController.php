@@ -14,12 +14,19 @@ use Carbon\Carbon;
 class DashboardController extends Controller
 {
     public function index()
-    {
-        // Redirect admins to admin dashboard
-        $user = Auth::user();
-        if ($user && $user->role === 'admin') {
-            return redirect()->route('admin.dashboard');
-        }
+{
+    // Redirect admins to admin dashboard
+    $user = Auth::user();
+
+// Redirect admins to admin dashboard
+if ($user && $user->role === 'admin') {
+    return redirect()->route('admin.dashboard');
+}
+
+// Redirect customers to their own dashboard
+if ($user && $user->role === 'customer') {
+    return redirect()->route('customer.dashboard');
+}
         
         // Get today's patients (distinct patients who had visits today)
         $todayPatients = Visit::whereDate('visit_date', today())

@@ -197,20 +197,29 @@ class CustomerDashboardController extends Controller
      * Show customer's appointments
      */
     public function appointments(): View
-    {
-        $user = Auth::user();
+{
+    $user = Auth::user();
 
-        $matchedPets = $this->customerPetsQuery($user)->get();
-        
-        $appointments = Appointment::whereIn('patient_id', $matchedPets->pluck('id'))
-            ->where('status', '!=', 'completed')
-            ->orderBy('appointment_date', 'desc')
-            ->paginate(15);
-        
-        return view('customer.appointments.index', [
-            'appointments' => $appointments,
-        ]);
-    }
+    $matchedPets = $this->customerPetsQuery($user)->get();
+    $petIds = $matchedPets->pluck('id');
+
+    // Confirmed appointments
+    $appointments = Appointment::whereIn('patient_id', $petIds)
+        ->where('status', '!=', 'completed')
+        ->orderBy('appointment_date', 'desc')
+        ->paginate(15);
+
+    // Appointment requests (pending, rejected, cancelled)
+    $appointmentRequests = \App\Models\AppointmentRequest::where('user_id', $user->id)
+        ->whereIn('status', ['pending', 'rejected', 'cancelled'])
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+    return view('customer.appointments.index', [
+        'appointments'        => $appointments,
+        'appointmentRequests' => $appointmentRequests,
+    ]);
+}
 
     /**
      * Show a specific appointment details

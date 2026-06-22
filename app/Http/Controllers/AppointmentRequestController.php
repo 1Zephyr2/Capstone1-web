@@ -101,14 +101,38 @@ class AppointmentRequestController extends Controller
     /**
      * Show the form for creating a new appointment request (customer)
      */
-    public function create()
-    {
-        /** @var User $user */
-        $user = Auth::user();
-        $pets = $this->deduplicatePets($this->customerPetsQuery($user)->get());
+public function create(Request $request)
+{
+    /** @var \App\Models\User $user */
+    $user = Auth::user();
 
-        return view('appointment-requests.create', compact('pets'));
+    // Customers get their own simplified request form
+    if ($user->role === 'customer') {
+        $pets = $this->customerPetsQuery($user)
+            ->orderBy('pet_name')
+            ->get();
+
+        $pets = $this->deduplicatePets($pets);
+
+        $services = \App\Models\Service::orderBy('category')->orderBy('name')
+            ->get()
+            ->groupBy('category');
+
+        return view('appointment-requests.create', compact('pets', 'services'));
     }
+
+    // Staff/Admin get the full booking form
+    $patientId = $request->get('patient_id');
+    $patient = $patientId ? Patient::find($patientId) : null;
+    $patients = Patient::orderBy('pet_name')
+        ->get(['id', 'patient_id', 'pet_name', 'species', 'breed', 'color', 'birthdate', 'sex', 'owner_name', 'owner_contact']);
+
+    $services = \App\Models\Service::orderBy('category')->orderBy('name')
+        ->get()
+        ->groupBy('category');
+
+    return view('appointments.book', compact('patient', 'patients', 'services'));
+}
 
     /**
      * Store a newly created appointment request

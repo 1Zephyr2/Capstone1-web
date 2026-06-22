@@ -13,14 +13,14 @@
             box-sizing: border-box;
         }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
-            padding: 0;
-            padding-top: 72px;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #FFF8F0;
+    padding: 0;
+    padding-top: 72px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
         /* Top Navigation Bar */
         .navbar {
             background: #1e293b;

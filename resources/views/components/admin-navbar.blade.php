@@ -287,19 +287,31 @@
         </a>
 
         <div class="admin-navbar-menu">
-            <a href="{{ route('admin.dashboard') }}" class="admin-navbar-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                <i class="bi bi-speedometer2"></i>
-                <span>Dashboard</span>
-            </a>
-            <a href="{{ route('admin.users.index') }}" class="admin-navbar-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
-                <i class="bi bi-people"></i>
-                <span>Users</span>
-            </a>
-            <a href="{{ route('admin.settings') }}" class="admin-navbar-item {{ request()->routeIs('admin.settings') ? 'active' : '' }}">
-                <i class="bi bi-gear"></i>
-                <span>Settings</span>
-            </a>
-        </div>
+    <a href="{{ route('admin.dashboard') }}" class="admin-navbar-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+        <i class="bi bi-speedometer2"></i>
+        <span>Dashboard</span>
+    </a>
+    <a href="{{ route('admin.users.index') }}" class="admin-navbar-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+        <i class="bi bi-people"></i>
+        <span>Users</span>
+    </a>
+    <a href="{{ route('admin.services.index') }}" class="admin-navbar-item {{ request()->routeIs('admin.services.*') ? 'active' : '' }}">
+        <i class="bi bi-scissors"></i>
+        <span>Services</span>
+    </a>
+    <a href="{{ route('analytics.index') }}" class="admin-navbar-item {{ request()->routeIs('analytics.*') ? 'active' : '' }}">
+    <i class="bi bi-graph-up-arrow"></i>
+    <span>Insights</span>
+</a>
+<a href="{{ route('super-admin.audit-logs') }}" class="admin-navbar-item {{ request()->routeIs('super-admin.audit-logs') ? 'active' : '' }}">
+    <i class="bi bi-journal-text"></i>
+    <span>Audit Log</span>
+</a>
+<a href="{{ route('admin.settings') }}" class="admin-navbar-item {{ request()->routeIs('admin.settings') ? 'active' : '' }}">
+    <i class="bi bi-gear"></i>
+    <span>Settings</span>
+</a>
+</div>
 
         <div class="admin-navbar-end">
             <a href="{{ route('profile.show') }}" class="admin-navbar-profile">

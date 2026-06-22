@@ -30,19 +30,19 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, var(--bg) 0%, var(--bg-alt) 100%);
-            padding: 0;
-            padding-top: 72px;
-            min-height: 100vh;
-            color: var(--text);
-            display: flex;
-            flex-direction: column;
-        }
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #FFF8F0;
+    padding: 0;
+    padding-top: 72px;
+    min-height: 100vh;
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+}
 
         /* Top Navigation Bar */
         .navbar {
-            background: #1e293b;
+    background: #1C2B33;
             color: white;
             padding: 0;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -138,10 +138,10 @@
         }
 
         .navbar-item.active {
-            background: rgba(20, 184, 166, 0.15);
-            color: #14b8a6;
-            border-bottom: 2px solid #14b8a6;
-        }
+    background: rgba(15, 138, 122, 0.18);
+    color: #1DCBA8;
+    border-bottom: 2px solid #1DCBA8;
+}
 
         .navbar-end {
             display: flex;

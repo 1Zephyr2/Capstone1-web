@@ -14,12 +14,13 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
-            min-height: 100vh;
-            padding: 20px;
-            color: #0f172a;
-        }
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #FFF8F0;
+    min-height: 100vh;
+    padding: 20px;
+    padding-top: 92px;
+    color: #0f172a;
+}
 
         .container {
             max-width: 800px;
@@ -340,7 +341,7 @@
         }
     </style>
 </head>
-<body>
+<body>\n<x-staff-navbar />
     <div class="container">
         <a href="{{ route('appointment-requests.index') }}" class="back-button">
             <i class="bi bi-arrow-left"></i> Back to Requests

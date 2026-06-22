@@ -9,14 +9,14 @@
     <style>
 
         :root {
-            --bg: #f8fafc;
-            --bg-alt: #f0f9ff;
-            --card: #ffffff;
-            --text: #0f172a;
-            --muted: #6b7280;
-            --line: #e5e7eb;
-            --primary: #14b8a6;
-            --primary-strong: #0d9488;
+    --bg: #FFF8F0;
+    --bg-alt: #FFF8F0;
+    --card: #ffffff;
+    --text: #1C2B33;
+    --muted: #7A8B85;
+    --line: #EDE3D6;
+    --primary: #0F8A7A;
+    --primary-strong: #0B6B5F;
             --accent: #06b6d4;
             --accent-strong: #0891b2;
             --shadow-sm: 0 4px 14px rgba(15, 23, 42, 0.08);
@@ -29,8 +29,8 @@
             box-sizing: border-box;
         }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, var(--bg) 0%, var(--bg-alt) 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #FFF8F0;
             padding: 0;
             padding-top: 72px;
             min-height: 100vh;

@@ -53,6 +53,24 @@ Route::get('/password/reset', function () {
 // Dashboard (protected route)
 Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 
+// Super Admin Routes
+Route::middleware(['auth', 'super_admin'])->prefix('super-admin')->name('super-admin.')->group(function () {
+    Route::get('/dashboard', [\App\Http\Controllers\SuperAdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/admins', [\App\Http\Controllers\SuperAdminController::class, 'admins'])->name('admins.index');
+    Route::get('/admins/create', [\App\Http\Controllers\SuperAdminController::class, 'createAdmin'])->name('admins.create');
+    Route::post('/admins', [\App\Http\Controllers\SuperAdminController::class, 'storeAdmin'])->name('admins.store');
+    Route::get('/admins/{user}/edit', [\App\Http\Controllers\SuperAdminController::class, 'editAdmin'])->name('admins.edit');
+    Route::put('/admins/{user}', [\App\Http\Controllers\SuperAdminController::class, 'updateAdmin'])->name('admins.update');
+    Route::delete('/admins/{user}', [\App\Http\Controllers\SuperAdminController::class, 'destroyAdmin'])->name('admins.destroy');
+    Route::get('/system', [\App\Http\Controllers\SuperAdminController::class, 'system'])->name('system');
+});
+
+// Audit Logs - accessible to both Admin and Super Admin
+Route::middleware(['auth', 'admin'])->prefix('super-admin')->name('super-admin.')->group(function () {
+    Route::get('/audit-logs', [\App\Http\Controllers\SuperAdminController::class, 'auditLogs'])->name('audit-logs');
+});
+
+
 // Admin Routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
@@ -63,6 +81,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::put('/users/{user}', [AdminController::class, 'updateUser'])->name('users.update');
     Route::delete('/users/{user}', [AdminController::class, 'destroyUser'])->name('users.destroy');
     Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
+    // Service Management
+Route::get('/services', [AdminController::class, 'services'])->name('services.index');
+Route::post('/services', [AdminController::class, 'storeService'])->name('services.store');
+Route::put('/services/{service}', [AdminController::class, 'updateService'])->name('services.update');
+Route::delete('/services/{service}', [AdminController::class, 'destroyService'])->name('services.destroy');
 });
 
 // Customer Routes
@@ -217,5 +240,9 @@ Route::middleware('auth')->group(function () {
     // Tools Routes
     Route::get('/automation-support', [\App\Http\Controllers\ActionHubController::class, 'index'])->name('automation.support');
     Route::get('/analytics', [\App\Http\Controllers\InsightCenterController::class, 'index'])->name('analytics.index');
+
+    // Booking Sheet Route (Staff & Admin)
+Route::get('/booking-sheet', [\App\Http\Controllers\BookingSheetController::class, 'index'])->name('booking-sheet.index');
+Route::patch('/booking-sheet/{appointment}', [\App\Http\Controllers\BookingSheetController::class, 'update'])->name('booking-sheet.update');
 });
 

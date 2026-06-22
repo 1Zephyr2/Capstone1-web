@@ -12,11 +12,12 @@
             box-sizing: border-box;
         }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
-            padding: 20px;
-            min-height: 100vh;
-        }
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #FFF8F0;
+    padding: 20px;
+    padding-top: 92px;
+    min-height: 100vh;
+}
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -183,6 +184,8 @@
     </style>
 </head>
 <body>
+<body>
+<x-staff-navbar />
 <div class="container">
     <a href="{{ route('appointments.index') }}" class="back-button">
         <i class="bi bi-arrow-left"></i> Back to Appointments

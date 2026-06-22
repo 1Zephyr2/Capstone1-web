@@ -277,26 +277,38 @@
                 <i class="bi bi-calendar-check"></i>
                 <span>Appointments</span>
             </a>
+
+            <a href="{{ route('booking-sheet.index') }}" class="staff-navbar-item {{ request()->routeIs('booking-sheet.*') ? 'active' : '' }}">
+    <i class="bi bi-table"></i>
+    <span>Booking Sheet</span>
+</a>
+
             @if(Auth::user()->hasStaffAccess())
             <a href="{{ route('appointment-requests.index') }}" class="staff-navbar-item {{ request()->routeIs('appointment-requests.*') ? 'active' : '' }}">
                 <i class="bi bi-inbox-fill"></i>
                 <span>Requests</span>
             </a>
             @endif
-            @if(Auth::user()->hasStaffAccess())
-            <a href="{{ route('analytics.index') }}" class="staff-navbar-item {{ request()->routeIs('analytics.*') ? 'active' : '' }}">
-                <i class="bi bi-graph-up-arrow"></i>
-                <span>Insights</span>
-            </a>
-            <a href="{{ route('automation.support') }}" class="staff-navbar-item {{ request()->routeIs('automation.*') ? 'active' : '' }}">
-                <i class="bi bi-cpu"></i>
-                <span>Actions</span>
-            </a>
-            @endif
+            @if(Auth::user()->isAdmin())
+<a href="{{ route('analytics.index') }}" class="staff-navbar-item {{ request()->routeIs('analytics.*') ? 'active' : '' }}">
+    <i class="bi bi-graph-up-arrow"></i>
+    <span>Insights</span>
+</a>
+<a href="{{ route('automation.support') }}" class="staff-navbar-item {{ request()->routeIs('automation.*') ? 'active' : '' }}">
+    <i class="bi bi-cpu"></i>
+    <span>Actions</span>
+</a>
+@endif
         </div>
 
         <div class="staff-navbar-end">
-            <a href="{{ route('profile.show') }}" class="staff-navbar-profile">
+    @if(Auth::user()->isSuperAdmin())
+        <a href="{{ route('super-admin.dashboard') }}" 
+           style="padding: 7px 14px; background: rgba(245,158,11,0.2); border: 1px solid rgba(245,158,11,0.4); color: #f59e0b; border-radius: 6px; font-size: 12px; font-weight: 700; text-decoration: none; display:flex; align-items:center; gap:6px; white-space:nowrap;">
+            <i class="bi bi-shield-fill-check"></i> Super Admin Panel
+        </a>
+    @endif
+    <a href="{{ route('profile.show') }}" class="staff-navbar-profile">
                 @if(Auth::user()->profile_picture)
                     <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="{{ Auth::user()->name }}" class="staff-navbar-avatar-img">
                 @else

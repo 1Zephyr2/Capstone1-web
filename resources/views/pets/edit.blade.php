@@ -14,12 +14,13 @@
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f8fafc 0%, #f0f4ff 100%);
-            padding: 24px;
-            min-height: 100vh;
-            color: #111827;
-        }
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #FFF8F0;
+    padding: 24px;
+    padding-top: 96px;
+    min-height: 100vh;
+    color: #111827;
+}
         .container { max-width: 860px; margin: 0 auto; }
 
         /* Header */
@@ -207,7 +208,7 @@
         .btn-cancel:hover { background: #e5e7eb; }
     </style>
 </head>
-<body>
+<body>\n<x-staff-navbar />
 <div class="container">
 
     <div class="page-header">

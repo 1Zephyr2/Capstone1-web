@@ -338,7 +338,11 @@
     </style>
 </head>
 <body>
+    @if(Auth::user()->role === 'admin')
+    <x-admin-navbar />
+@else
     <x-staff-navbar />
+@endif
 
     <div class="container">
         <!-- Header -->

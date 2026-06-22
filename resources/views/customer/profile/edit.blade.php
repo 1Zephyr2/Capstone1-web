@@ -13,8 +13,8 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f8fafc;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #FFF8F0;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -22,7 +22,7 @@
 
         /* Top Navigation Bar */
         .navbar {
-            background: #1e293b;
+    background: #1C2B33;
             color: white;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             position: sticky;
@@ -99,10 +99,10 @@
         }
 
         .nav-item.active {
-            background: rgba(20, 184, 166, 0.15);
-            color: #14b8a6;
-            border-bottom: 2px solid #14b8a6;
-        }
+    background: rgba(15, 138, 122, 0.18);
+    color: #1DCBA8;
+    border-bottom: 2px solid #1DCBA8;
+}
 
         .navbar-end {
             display: flex;
@@ -296,11 +296,11 @@
 
         /* Main Content */
         .main-content {
-            flex: 1;
-            width: 100%;
-            padding: 40px 24px;
-            background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
-        }
+    flex: 1;
+    width: 100%;
+    padding: 40px 24px;
+    background: #FFF8F0;
+}
 
         .container {
             max-width: 1200px;

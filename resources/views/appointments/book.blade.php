@@ -605,31 +605,34 @@
                                value="{{ old('appointment_date', now()->format('Y-m-d')) }}" required>
                     </div>
                     <div class="form-group">
-                        <label for="appointment_time">Appointment Time <span class="required">*</span></label>
-                        <input type="time" name="appointment_time" id="appointment_time" class="form-control"
-                               value="{{ old('appointment_time') }}" required>
-                    </div>
+    <label for="appointment_time">Appointment Time <span class="required">*</span></label>
+    <select name="appointment_time" id="appointment_time" class="form-control" required>
+        <option value="">Select Time</option>
+        <option value="09:00:00" {{ old('appointment_time') == '09:00:00' ? 'selected' : '' }}>9:00 AM</option>
+        <option value="10:00:00" {{ old('appointment_time') == '10:00:00' ? 'selected' : '' }}>10:00 AM</option>
+        <option value="11:00:00" {{ old('appointment_time') == '11:00:00' ? 'selected' : '' }}>11:00 AM</option>
+        <option value="13:00:00" {{ old('appointment_time') == '13:00:00' ? 'selected' : '' }}>1:00 PM</option>
+        <option value="14:00:00" {{ old('appointment_time') == '14:00:00' ? 'selected' : '' }}>2:00 PM</option>
+        <option value="15:00:00" {{ old('appointment_time') == '15:00:00' ? 'selected' : '' }}>3:00 PM</option>
+        <option value="16:00:00" {{ old('appointment_time') == '16:00:00' ? 'selected' : '' }}>4:00 PM</option>
+        <option value="17:00:00" {{ old('appointment_time') == '17:00:00' ? 'selected' : '' }}>5:00 PM</option>
+    </select>
+    <span class="helper-text">Available slots: 9AM–11AM, 1PM–5PM (no noon slot)</span>
+</div>
                     <div class="form-group">
                         <label for="service_type">Service Type <span class="required">*</span></label>
                         <select name="service_type" id="service_type" class="form-control" required>
-                            <option value="">Select Service</option>
-                            <optgroup label="Grooming Services">
-                                <option value="Bath & Dry" {{ old('service_type') == 'Bath & Dry' ? 'selected' : '' }}>Bath &amp; Dry</option>
-                                <option value="Full Grooming" {{ old('service_type') == 'Full Grooming' ? 'selected' : '' }}>Full Grooming</option>
-                                <option value="Haircut & Styling" {{ old('service_type') == 'Haircut & Styling' ? 'selected' : '' }}>Haircut &amp; Styling</option>
-                                <option value="Nail Trimming" {{ old('service_type') == 'Nail Trimming' ? 'selected' : '' }}>Nail Trimming</option>
-                                <option value="Ear Cleaning" {{ old('service_type') == 'Ear Cleaning' ? 'selected' : '' }}>Ear Cleaning</option>
-                                <option value="Teeth Brushing" {{ old('service_type') == 'Teeth Brushing' ? 'selected' : '' }}>Teeth Brushing</option>
-                                <option value="De-shedding Treatment" {{ old('service_type') == 'De-shedding Treatment' ? 'selected' : '' }}>De-shedding Treatment</option>
-                                <option value="Flea & Tick Treatment" {{ old('service_type') == 'Flea & Tick Treatment' ? 'selected' : '' }}>Flea &amp; Tick Treatment</option>
-                                <option value="Paw Treatment" {{ old('service_type') == 'Paw Treatment' ? 'selected' : '' }}>Paw Treatment</option>
-                            </optgroup>
-                            <optgroup label="Other Services">
-                                <option value="Boarding Checkup" {{ old('service_type') == 'Boarding Checkup' ? 'selected' : '' }}>Boarding Checkup</option>
-                                <option value="Follow-up" {{ old('service_type') == 'Follow-up' ? 'selected' : '' }}>Follow-up</option>
-                                <option value="Other" {{ old('service_type') == 'Other' ? 'selected' : '' }}>Other</option>
-                            </optgroup>
-                        </select>
+    <option value="">Select Service</option>
+    @foreach($services as $category => $items)
+        <optgroup label="{{ $category }}">
+            @foreach($items as $svc)
+                <option value="{{ $svc->name }}" {{ old('service_type') == $svc->name ? 'selected' : '' }}>
+                    {{ $svc->name }}
+                </option>
+            @endforeach
+        </optgroup>
+    @endforeach
+</select>
                     </div>
                     <div class="form-group">
                         <label for="status">Status</label>
