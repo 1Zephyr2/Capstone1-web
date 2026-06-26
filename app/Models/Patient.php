@@ -86,6 +86,11 @@ class Patient extends Model
         });
     }
 
+    public function healthRecords()
+{
+    return $this->hasMany(PetHealthRecord::class);
+}
+
     // Auto-generate patient ID on creation
     protected static function boot()
     {

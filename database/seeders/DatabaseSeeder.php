@@ -34,6 +34,10 @@ class DatabaseSeeder extends Seeder
             'role' => 'staff',
         ]);
 
+        $this->call([
+        FurcareSeeder::class,
+    ]);
+
         // Seed species data first
         $this->call(SpeciesSeeder::class);
 

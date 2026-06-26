@@ -2416,7 +2416,6 @@
                                 @endif
                             </p>
                         </div>
-                        <a href="{{ route('automation.support') }}" class="view-all-btn">View All →</a>
                     </div>
                     @if(count($topAlerts) > 0)
                     <div class="alerts-grid">

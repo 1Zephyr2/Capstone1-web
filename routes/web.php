@@ -127,6 +127,9 @@ Route::middleware('auth')->group(function () {
         ->names('pets');
     Route::get('/api/pets/search', [PetController::class, 'search'])->name('pets.search.api');
     Route::get('/api/species/{speciesId}', [PetController::class, 'getSpeciesCharacteristics'])->name('api.species.characteristics');
+    Route::post('/pets/{patient}/health-records', [\App\Http\Controllers\PetHealthRecordController::class, 'store'])->name('pets.health-records.store');
+Route::put('/pets/{patient}/health-records/{healthRecord}', [\App\Http\Controllers\PetHealthRecordController::class, 'update'])->name('pets.health-records.update');
+Route::delete('/pets/{patient}/health-records/{healthRecord}', [\App\Http\Controllers\PetHealthRecordController::class, 'destroy'])->name('pets.health-records.destroy');
 
     // Legacy patient routes (kept for compatibility)
     Route::get('/api/patients/search', [PetController::class, 'search'])->name('patients.search.api');

@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', sans-serif; background: #f8fafc; min-height: 100vh; }
+        body { font-family: 'Segoe UI', sans-serif; background: #FFF8F0; min-height: 100vh; }
         .main-content { padding: 104px 32px 32px; }
         .page-title { font-size: 28px; font-weight: 700; color: #1e293b; margin-bottom: 4px; }
         .page-subtitle { color: #64748b; font-size: 14px; margin-bottom: 28px; }

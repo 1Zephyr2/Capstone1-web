@@ -1190,6 +1190,55 @@
             @endif
         </div>
 
+        {{-- Health Background Section (Read-only for customers) --}}
+        @if(isset($healthRecords) && $healthRecords->count() > 0)
+        <div class="section" style="margin-top: 24px;">
+            <div class="section-title">
+                <i class="bi bi-heart-pulse-fill" style="color:#ef4444;"></i>
+                Health Background
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:12px;">
+                @foreach($healthRecords as $record)
+                <div style="background:#f9fafb; border:1px solid #e2e8f0; border-radius:10px; padding:16px; border-left:4px solid {{ $record->status === 'active' ? '#ef4444' : ($record->status === 'monitoring' ? '#f59e0b' : '#10b981') }};">
+                    <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:8px;">
+                        <span style="font-size:15px; font-weight:700; color:#1C2B33;">{{ $record->condition }}</span>
+                        @if($record->status === 'active')
+                            <span style="background:#fee2e2; color:#991b1b; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700;">Active</span>
+                        @elseif($record->status === 'monitoring')
+                            <span style="background:#fef3c7; color:#92400e; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700;">Monitoring</span>
+                        @else
+                            <span style="background:#d1fae5; color:#065f46; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700;">Resolved</span>
+                        @endif
+                    </div>
+
+                    @if($record->diagnosed_date)
+                    <div style="font-size:12px; color:#7A8B85; margin-bottom:8px;">
+                        <i class="bi bi-calendar3"></i> Diagnosed: {{ $record->diagnosed_date->format('M d, Y') }}
+                    </div>
+                    @endif
+
+                    @if($record->medication)
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                        <i class="bi bi-capsule" style="color:#0F8A7A;"></i>
+                        <span style="font-size:13px; font-weight:600; color:#374151;">{{ $record->medication }}</span>
+                        @if($record->dosage)
+                            <span style="font-size:12px; color:#7A8B85;">— {{ $record->dosage }}</span>
+                        @endif
+                    </div>
+                    @endif
+
+                    @if($record->notes)
+                    <div style="background:white; border-radius:6px; padding:8px 12px; font-size:12px; color:#374151; border-left:3px solid #EDE3D6; margin-top:6px;">
+                        <i class="bi bi-info-circle" style="color:#7A8B85;"></i> {{ $record->notes }}
+                    </div>
+                    @endif
+                </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
+
     <script>
         function openPhotoModal(imagePath) {
             const modal = document.getElementById('photoModal');

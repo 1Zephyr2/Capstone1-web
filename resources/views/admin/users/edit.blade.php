@@ -43,11 +43,11 @@
         }
 
         body {
-            font-family: var(--app-font-family);
-            background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
-            min-height: 100vh;
-            padding: 104px 24px 40px;
-        }
+    font-family: var(--app-font-family);
+    background: #FFF8F0;
+    min-height: 100vh;
+    padding: 104px 24px 40px;
+}
 
         .page-wrap {
             width: 100%;

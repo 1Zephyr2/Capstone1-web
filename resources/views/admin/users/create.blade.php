@@ -44,10 +44,10 @@
         }
 
         body {
-            font-family: var(--app-font-family);
-            background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
-            min-height: 100vh;
-        }
+    font-family: var(--app-font-family);
+    background: #FFF8F0;
+    min-height: 100vh;
+}
 
         /* Sidebar */
         .sidebar {

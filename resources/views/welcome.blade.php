@@ -697,7 +697,6 @@
                     <button type="submit" class="btn-ghost">Logout</button>
                 </form>
             @else
-                <a href="{{ route('login') }}" class="btn-ghost">Staff Login</a>
                 <a href="{{ route('customer.login') }}" class="btn-primary">Pet Owner Login</a>
             @endif
         </div>
@@ -731,9 +730,7 @@
                     <a href="{{ route('customer.login') }}" class="btn-hero-primary">
                         <i class="bi bi-calendar-plus"></i> Book an Appointment
                     </a>
-                    <a href="{{ route('login') }}" class="btn-hero-secondary">
-                        <i class="bi bi-person-badge"></i> Staff Portal
-                    </a>
+                    
                     <p class="hero-register">
                         New here? <a href="{{ route('customer.register.show') }}">Create a free account</a>
                     </p>

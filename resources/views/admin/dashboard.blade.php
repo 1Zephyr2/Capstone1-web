@@ -43,11 +43,11 @@
         }
 
         body {
-            font-family: var(--app-font-family);
-            background: #f8fafc;
-            min-height: 100vh;
-            scroll-behavior: smooth;
-        }
+    font-family: var(--app-font-family);
+    background: #FFF8F0;
+    min-height: 100vh;
+    scroll-behavior: smooth;
+}
 
         /* Animations */
         @keyframes fadeIn {
@@ -272,11 +272,11 @@
 
         /* Main Content */
         .main-content {
-            flex: 1;
-            margin-left: 0;
-            padding: 104px 32px 32px;
-            background: linear-gradient(to bottom, #f8fafc 0%, #f1f5f9 100%);
-        }
+    flex: 1;
+    margin-left: 0;
+    padding: 104px 32px 32px;
+    background: #FFF8F0;
+}
 
         .page-header {
             margin-bottom: 32px;

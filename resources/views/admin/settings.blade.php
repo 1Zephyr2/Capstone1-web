@@ -43,10 +43,10 @@
         }
 
         body {
-            font-family: var(--app-font-family);
-            background: #f8fafc;
-            min-height: 100vh;
-        }
+    font-family: var(--app-font-family);
+    background: #FFF8F0;
+    min-height: 100vh;
+}
 
         /* Sidebar */
         .sidebar {

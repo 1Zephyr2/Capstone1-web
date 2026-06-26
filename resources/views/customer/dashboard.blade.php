@@ -1111,11 +1111,6 @@
                         </a>
                     </div>
                 @endforeach
-                @if($appointments->count() > 5)
-                    <div style="text-align: center; margin-top: 16px;">
-                        <a href="{{ route('customer.appointments.index') }}" class="pet-link">View All Appointments</a>
-                    </div>
-                @endif
             </div>
         @endif
     </div>

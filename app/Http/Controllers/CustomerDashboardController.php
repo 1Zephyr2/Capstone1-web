@@ -187,9 +187,12 @@ class CustomerDashboardController extends Controller
 
         $primaryPet->setRelation('visits', $visits);
         $primaryPet->setRelation('appointments', $appointments);
+
+        $healthRecords = $primaryPet->healthRecords()->latest()->get();
         
         return view('customer.pets.show', [
             'pet' => $primaryPet,
+            'healthRecords' => $healthRecords,
         ]);
     }
 

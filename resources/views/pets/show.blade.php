@@ -668,5 +668,201 @@
             }
         });
     </script>
+    {{-- ============================================================ --}}
+{{-- PET HEALTH BACKGROUND SECTION - Add to pets/show.blade.php  --}}
+{{-- Place this AFTER the Visit History section                   --}}
+{{-- ============================================================ --}}
+
+{{-- Load health records: add this to the PetController@show method --}}
+{{-- $healthRecords = $patient->healthRecords()->latest()->get();    --}}
+
+<!-- Health Background Section -->
+<div class="section" style="margin-top: 24px;">
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
+        <div class="section-title" style="margin-bottom:0;">
+            <i class="bi bi-heart-pulse-fill" style="color:#ef4444;"></i>
+            Health Background
+        </div>
+        <button onclick="document.getElementById('addHealthRecordForm').style.display = document.getElementById('addHealthRecordForm').style.display === 'none' ? 'block' : 'none'"
+            style="padding:8px 16px; background:linear-gradient(135deg,#0F8A7A,#0B6B5F); color:white; border:none; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:6px;">
+            <i class="bi bi-plus-circle"></i> Add Record
+        </button>
+    </div>
+
+    {{-- Add Record Form (hidden by default) --}}
+    <div id="addHealthRecordForm" style="display:none; background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:20px; margin-bottom:20px;">
+        <h4 style="font-size:14px; font-weight:700; color:#1C2B33; margin-bottom:16px;"><i class="bi bi-plus-circle" style="color:#0F8A7A;"></i> New Health Record</h4>
+        <form action="{{ route('pets.health-records.store', $patient) }}" method="POST">
+            @csrf
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px;">
+                <div>
+                    <label style="font-size:12px; font-weight:600; color:#374151; display:block; margin-bottom:5px;">Condition / Disease <span style="color:#dc2626;">*</span></label>
+                    <input type="text" name="condition" required placeholder="e.g. Skin Allergy, Mange, Ear Infection"
+                        style="width:100%; padding:10px 12px; border:1.5px solid #d1d5db; border-radius:8px; font-size:13px;">
+                </div>
+                <div>
+                    <label style="font-size:12px; font-weight:600; color:#374151; display:block; margin-bottom:5px;">Date Diagnosed</label>
+                    <input type="date" name="diagnosed_date" max="{{ date('Y-m-d') }}"
+                        style="width:100%; padding:10px 12px; border:1.5px solid #d1d5db; border-radius:8px; font-size:13px;">
+                </div>
+                <div>
+                    <label style="font-size:12px; font-weight:600; color:#374151; display:block; margin-bottom:5px;">Medication / Treatment</label>
+                    <input type="text" name="medication" placeholder="e.g. Apoquel 5.4mg, Medicated Shampoo"
+                        style="width:100%; padding:10px 12px; border:1.5px solid #d1d5db; border-radius:8px; font-size:13px;">
+                </div>
+                <div>
+                    <label style="font-size:12px; font-weight:600; color:#374151; display:block; margin-bottom:5px;">Dosage / Frequency</label>
+                    <input type="text" name="dosage" placeholder="e.g. 1 tablet daily, Apply twice a week"
+                        style="width:100%; padding:10px 12px; border:1.5px solid #d1d5db; border-radius:8px; font-size:13px;">
+                </div>
+            </div>
+            <div style="margin-bottom:14px;">
+                <label style="font-size:12px; font-weight:600; color:#374151; display:block; margin-bottom:5px;">Status <span style="color:#dc2626;">*</span></label>
+                <select name="status" required style="width:200px; padding:10px 12px; border:1.5px solid #d1d5db; border-radius:8px; font-size:13px;">
+                    <option value="active">Active</option>
+                    <option value="monitoring">Monitoring</option>
+                    <option value="resolved">Resolved</option>
+                </select>
+            </div>
+            <div style="margin-bottom:16px;">
+                <label style="font-size:12px; font-weight:600; color:#374151; display:block; margin-bottom:5px;">Notes / Special Instructions</label>
+                <textarea name="notes" rows="2" placeholder="e.g. Avoid sulfate-based shampoos, sensitive to cold water"
+                    style="width:100%; padding:10px 12px; border:1.5px solid #d1d5db; border-radius:8px; font-size:13px; resize:vertical;"></textarea>
+            </div>
+            <div style="display:flex; gap:10px;">
+                <button type="submit" style="padding:9px 20px; background:linear-gradient(135deg,#0F8A7A,#0B6B5F); color:white; border:none; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer;">
+                    <i class="bi bi-check-circle"></i> Save Record
+                </button>
+                <button type="button" onclick="document.getElementById('addHealthRecordForm').style.display='none'"
+                    style="padding:9px 20px; background:#e5e7eb; color:#374151; border:none; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer;">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+
+    {{-- Health Records List --}}
+    @if(isset($healthRecords) && $healthRecords->count() > 0)
+        <div style="display:flex; flex-direction:column; gap:12px;">
+            @foreach($healthRecords as $record)
+            <div style="background:white; border:1px solid #e2e8f0; border-radius:10px; padding:16px; border-left:4px solid {{ $record->status === 'active' ? '#ef4444' : ($record->status === 'monitoring' ? '#f59e0b' : '#10b981') }};">
+                <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:10px;">
+                    <div style="flex:1;">
+                        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+                            <span style="font-size:15px; font-weight:700; color:#1C2B33;">{{ $record->condition }}</span>
+                            {!! $record->status_badge !!}
+                        </div>
+                        @if($record->diagnosed_date)
+                            <div style="font-size:12px; color:#7A8B85; margin-top:4px;">
+                                <i class="bi bi-calendar3"></i> Diagnosed: {{ $record->diagnosed_date->format('M d, Y') }}
+                            </div>
+                        @endif
+                    </div>
+                    <div style="display:flex; gap:6px; flex-shrink:0;">
+                        <button onclick="toggleEditForm('editHealth{{ $record->id }}')"
+                            style="padding:6px 10px; background:#eff6ff; color:#1e40af; border:1px solid #bfdbfe; border-radius:6px; font-size:12px; cursor:pointer;">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <form action="{{ route('pets.health-records.destroy', [$patient, $record]) }}" method="POST" style="display:inline;"
+                            onsubmit="return confirm('Delete this health record?')">
+                            @csrf @method('DELETE')
+                            <button type="submit" style="padding:6px 10px; background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; border-radius:6px; font-size:12px; cursor:pointer;">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                @if($record->medication)
+                <div style="display:flex; gap:8px; align-items:flex-start; margin-bottom:6px;">
+                    <i class="bi bi-capsule" style="color:#0F8A7A; margin-top:2px; flex-shrink:0;"></i>
+                    <div>
+                        <span style="font-size:13px; font-weight:600; color:#374151;">{{ $record->medication }}</span>
+                        @if($record->dosage)
+                            <span style="font-size:12px; color:#7A8B85;"> — {{ $record->dosage }}</span>
+                        @endif
+                    </div>
+                </div>
+                @endif
+
+                @if($record->notes)
+                <div style="background:#f8fafc; border-radius:6px; padding:8px 12px; font-size:12px; color:#374151; border-left:3px solid #EDE3D6;">
+                    <i class="bi bi-info-circle" style="color:#7A8B85;"></i> {{ $record->notes }}
+                </div>
+                @endif
+
+                @if($record->recordedBy)
+                <div style="font-size:11px; color:#9ca3af; margin-top:8px;">
+                    Recorded by {{ $record->recordedBy->name }} on {{ $record->created_at->format('M d, Y') }}
+                </div>
+                @endif
+
+                {{-- Inline Edit Form --}}
+                <div id="editHealth{{ $record->id }}" style="display:none; margin-top:14px; padding:16px; background:#f8fafc; border-radius:8px; border:1px solid #e2e8f0;">
+                    <form action="{{ route('pets.health-records.update', [$patient, $record]) }}" method="POST">
+                        @csrf @method('PUT')
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+                            <div>
+                                <label style="font-size:11px; font-weight:700; color:#374151; display:block; margin-bottom:4px;">Condition</label>
+                                <input type="text" name="condition" value="{{ $record->condition }}" required
+                                    style="width:100%; padding:8px 10px; border:1.5px solid #d1d5db; border-radius:6px; font-size:13px;">
+                            </div>
+                            <div>
+                                <label style="font-size:11px; font-weight:700; color:#374151; display:block; margin-bottom:4px;">Date Diagnosed</label>
+                                <input type="date" name="diagnosed_date" value="{{ $record->diagnosed_date?->format('Y-m-d') }}" max="{{ date('Y-m-d') }}"
+                                    style="width:100%; padding:8px 10px; border:1.5px solid #d1d5db; border-radius:6px; font-size:13px;">
+                            </div>
+                            <div>
+                                <label style="font-size:11px; font-weight:700; color:#374151; display:block; margin-bottom:4px;">Medication</label>
+                                <input type="text" name="medication" value="{{ $record->medication }}"
+                                    style="width:100%; padding:8px 10px; border:1.5px solid #d1d5db; border-radius:6px; font-size:13px;">
+                            </div>
+                            <div>
+                                <label style="font-size:11px; font-weight:700; color:#374151; display:block; margin-bottom:4px;">Dosage</label>
+                                <input type="text" name="dosage" value="{{ $record->dosage }}"
+                                    style="width:100%; padding:8px 10px; border:1.5px solid #d1d5db; border-radius:6px; font-size:13px;">
+                            </div>
+                        </div>
+                        <div style="margin-bottom:12px;">
+                            <label style="font-size:11px; font-weight:700; color:#374151; display:block; margin-bottom:4px;">Status</label>
+                            <select name="status" required style="padding:8px 10px; border:1.5px solid #d1d5db; border-radius:6px; font-size:13px;">
+                                <option value="active" {{ $record->status === 'active' ? 'selected' : '' }}>Active</option>
+                                <option value="monitoring" {{ $record->status === 'monitoring' ? 'selected' : '' }}>Monitoring</option>
+                                <option value="resolved" {{ $record->status === 'resolved' ? 'selected' : '' }}>Resolved</option>
+                            </select>
+                        </div>
+                        <div style="margin-bottom:12px;">
+                            <label style="font-size:11px; font-weight:700; color:#374151; display:block; margin-bottom:4px;">Notes</label>
+                            <textarea name="notes" rows="2" style="width:100%; padding:8px 10px; border:1.5px solid #d1d5db; border-radius:6px; font-size:13px; resize:vertical;">{{ $record->notes }}</textarea>
+                        </div>
+                        <div style="display:flex; gap:8px;">
+                            <button type="submit" style="padding:7px 16px; background:#0F8A7A; color:white; border:none; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer;">
+                                <i class="bi bi-check-circle"></i> Save
+                            </button>
+                            <button type="button" onclick="toggleEditForm('editHealth{{ $record->id }}')"
+                                style="padding:7px 16px; background:#e5e7eb; color:#374151; border:none; border-radius:6px; font-size:12px; cursor:pointer;">
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    @else
+        <div class="empty-state">
+            <i class="bi bi-heart-pulse"></i>
+            <p>No health records on file. Use the Add Record button above to add the first one.</p>
+        </div>
+    @endif
+</div>
+
+{{-- Toggle edit form script - add near bottom of page before </body> --}}
+<script>
+function toggleEditForm(id) {
+    const el = document.getElementById(id);
+    el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+</script>
 </body>
 </html>

@@ -390,12 +390,12 @@ class PetController extends Controller
      * Display the specified patient
      */
     public function show(Patient $patient)
-    {
-        $this->authorizePatient($patient);
-        $patient->load(['visits']);
-        
-        return view('pets.show', compact('patient'));
-    }
+{
+    $patient->load(['visits', 'appointments', 'healthRecords.recordedBy']);
+    $healthRecords = $patient->healthRecords()->latest()->get();
+    
+    return view('pets.show', compact('patient', 'healthRecords'));
+}
 
     /**
      * Show the form for editing the patient

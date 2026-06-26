@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', sans-serif; background: #f8fafc; min-height: 100vh; }
+        body { font-family: 'Segoe UI', sans-serif; background: #FFF8F0; min-height: 100vh; }
         .navbar {
             background: #0f172a; color: white; height: 72px;
             display: flex; align-items: center; padding: 0 24px;

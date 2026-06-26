@@ -655,12 +655,6 @@
         <div class="header-top">
             <h1>Scheduling</h1>
         </div>
-        
-        <div class="header-actions">
-            <a href="{{ route('appointments.create') }}" class="btn btn-primary" style="background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); box-shadow: 0 2px 8px rgba(20, 184, 166, 0.3);">
-                <i class="bi bi-plus-circle"></i> New Appointment
-            </a>
-        </div>
 
         <!-- Filters -->
         <form method="GET" action="{{ route('appointments.index') }}" class="filters-form">
